@@ -183,7 +183,7 @@
 		128228F715B5EC760030D109 /* blocks.png in Resources */ = {isa = PBXBuildFile; fileRef = 128228F615B5EC760030D109 /* blocks.png */; };
 		12B946C515B7295600CB76CD /* MainMenuLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B946C215B7295600CB76CD /* MainMenuLayer.m */; };
 		12B946C615B7295600CB76CD /* MainMenuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B946C415B7295600CB76CD /* MainMenuScene.m */; };
-		FA1348BD15B7157600E5CDB5 /* GameManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1348BC15B7157600E5CDB5 /* GameManager.m */; };
+		FA1348BD15B7157600E5CDB5 /* GameManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA1348BC15B7157600E5CDB5 /* GameManager.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -554,7 +554,7 @@
 		12B946C415B7295600CB76CD /* MainMenuScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuScene.m; sourceTree = "<group>"; };
 		FA1348B915B7133300E5CDB5 /* GlobalConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalConstants.h; sourceTree = "<group>"; };
 		FA1348BB15B7157600E5CDB5 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
-		FA1348BC15B7157600E5CDB5 /* GameManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameManager.m; sourceTree = "<group>"; };
+		FA1348BC15B7157600E5CDB5 /* GameManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameManager.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1171,7 +1171,7 @@
 				128228E815B5EC760030D109 /* AppDelegate.mm */,
 				128228E715B5EC760030D109 /* AppDelegate.h */,
 				FA1348BB15B7157600E5CDB5 /* GameManager.h */,
-				FA1348BC15B7157600E5CDB5 /* GameManager.m */,
+				FA1348BC15B7157600E5CDB5 /* GameManager.mm */,
 			);
 			name = Singletons;
 			sourceTree = "<group>";
@@ -1432,7 +1432,7 @@
 				128228EF15B5EC760030D109 /* IntroLayer.mm in Sources */,
 				128228F215B5EC760030D109 /* GLES-Render.mm in Sources */,
 				128228F515B5EC760030D109 /* PhysicsSprite.mm in Sources */,
-				FA1348BD15B7157600E5CDB5 /* GameManager.m in Sources */,
+				FA1348BD15B7157600E5CDB5 /* GameManager.mm in Sources */,
 				12B946C515B7295600CB76CD /* MainMenuLayer.m in Sources */,
 				12B946C615B7295600CB76CD /* MainMenuScene.m in Sources */,
 			);

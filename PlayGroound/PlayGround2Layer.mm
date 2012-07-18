@@ -225,13 +225,6 @@ enum {
 	bodyDef.position.Set(p.width/2/PTM_RATIO, p.height/2/PTM_RATIO);
 	//b2Body *body = world->CreateBody(&bodyDef);
     mainBody = world->CreateBody(&bodyDef);
-    /*
-     // Define another box shape for our dynamic body.
-     b2PolygonShape dynamicBox;
-     dynamicBox.SetAsBox(.75f, .75f);//These are mid points for our 1m box
-     */
-    //JP Creating a Ball instead of Box
-	// Define the dynamic body fixture.
     
     b2CircleShape dynamicCircle;
     dynamicCircle.m_radius = 0.6f;
@@ -263,18 +256,14 @@ enum {
 	bodyDef.position.Set(p.x/PTM_RATIO, p.y/PTM_RATIO);
 	//b2Body *body = world->CreateBody(&bodyDef);
     mainBody = world->CreateBody(&bodyDef);
-    /*
+    
 	// Define another box shape for our dynamic body.
 	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(.75f, .75f);//These are mid points for our 1m box
-	*/
-    //JP Creating a Ball instead of Box
-	// Define the dynamic body fixture.
-    
-    b2CircleShape dynamicCircle;
-    dynamicCircle.m_radius = 1.0f;
+	dynamicBox.SetAsBox(.5f, .5f);//These are mid points for our 1m box
+	
+
 	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicCircle;	
+	fixtureDef.shape = &dynamicBox;	
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 0.3f;
     fixtureDef.restitution = 0.25;

@@ -11,6 +11,8 @@
 #import "MainMenuScene.h"
 #import "IntroLayer.h"
 #import "HelloWorldLayer.h"
+#import "PlayGround1Scene.h"
+#import "PlayGround2Scene.h"
 
 
 @implementation GameManager
@@ -68,10 +70,10 @@ static GameManager* _sharedGameManager = nil;
             sceneToRun = [IntroLayer scene];
             break;
         case kPlayGround1:
-            sceneToRun = [HelloWorldLayer scene];
+            sceneToRun = [PlayGround1Scene node];
             break;
         case kPlayGround2:
-            sceneToRun = [HelloWorldLayer scene];
+            sceneToRun = [PlayGround2Scene node];
             break;
             
         default:

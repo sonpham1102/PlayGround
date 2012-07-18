@@ -10,7 +10,8 @@
 #import "PhysicsSprite.h"
 
 // Needed PTM_RATIO
-#import "HelloWorldLayer.h"
+//#import "HelloWorldLayer.h"
+#import "GlobalConstants.h"
 
 #pragma mark - PhysicsSprite
 @implementation PhysicsSprite

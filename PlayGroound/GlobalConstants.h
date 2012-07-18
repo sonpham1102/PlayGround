@@ -11,6 +11,7 @@
 #ifndef PlayGroound_GlobalConstants_h
 #define PlayGroound_GlobalConstants_h
 
+#define PTM_RATIO 32
 // Used by the GameManager to know which scene (level) to switch to
 // Following the lcc2d example, 0 = no level, and menu's all have id's under 100
 // The reason for the menu ID range is so that the game manager can check if the level is a menu level or not

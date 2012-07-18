@@ -176,7 +176,6 @@
 		128228E015B5EC760030D109 /* b2Rope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 128228DF15B5EC760030D109 /* b2Rope.cpp */; };
 		128228E615B5EC760030D109 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 128228E515B5EC760030D109 /* main.m */; };
 		128228E915B5EC760030D109 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128228E815B5EC760030D109 /* AppDelegate.mm */; };
-		128228EC15B5EC760030D109 /* HelloWorldLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128228EB15B5EC760030D109 /* HelloWorldLayer.mm */; };
 		128228EF15B5EC760030D109 /* IntroLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128228EE15B5EC760030D109 /* IntroLayer.mm */; };
 		128228F215B5EC760030D109 /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128228F115B5EC760030D109 /* GLES-Render.mm */; };
 		128228F515B5EC760030D109 /* PhysicsSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128228F415B5EC760030D109 /* PhysicsSprite.mm */; };
@@ -543,8 +542,6 @@
 		128228E515B5EC760030D109 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		128228E715B5EC760030D109 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		128228E815B5EC760030D109 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
-		128228EA15B5EC760030D109 /* HelloWorldLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelloWorldLayer.h; sourceTree = "<group>"; };
-		128228EB15B5EC760030D109 /* HelloWorldLayer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = HelloWorldLayer.mm; sourceTree = "<group>"; };
 		128228ED15B5EC760030D109 /* IntroLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntroLayer.h; sourceTree = "<group>"; };
 		128228EE15B5EC760030D109 /* IntroLayer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = IntroLayer.mm; sourceTree = "<group>"; };
 		128228F015B5EC760030D109 /* GLES-Render.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GLES-Render.h"; sourceTree = "<group>"; };
@@ -1235,8 +1232,6 @@
 				12B946CD15B730C100CB76CD /* PlayGround1 */,
 				12B946CB15B730B600CB76CD /* PlayGround2 */,
 				12B946BF15B7290F00CB76CD /* MainMenu */,
-				128228EA15B5EC760030D109 /* HelloWorldLayer.h */,
-				128228EB15B5EC760030D109 /* HelloWorldLayer.mm */,
 				128228ED15B5EC760030D109 /* IntroLayer.h */,
 				128228EE15B5EC760030D109 /* IntroLayer.mm */,
 			);
@@ -1464,7 +1459,6 @@
 				128228E015B5EC760030D109 /* b2Rope.cpp in Sources */,
 				128228E615B5EC760030D109 /* main.m in Sources */,
 				128228E915B5EC760030D109 /* AppDelegate.mm in Sources */,
-				128228EC15B5EC760030D109 /* HelloWorldLayer.mm in Sources */,
 				128228EF15B5EC760030D109 /* IntroLayer.mm in Sources */,
 				128228F215B5EC760030D109 /* GLES-Render.mm in Sources */,
 				128228F515B5EC760030D109 /* PhysicsSprite.mm in Sources */,

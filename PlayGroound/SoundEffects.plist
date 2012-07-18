@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>kMainMenu</key>
+	<dict>
+		<key>VIKING_CURSING_1</key>
+		<string>22k_viking_cursingV1.wav</string>
+	</dict>
+	<key>kNoSceneUninitialized</key>
+	<dict/>
+	<key>kPlayGround1</key>
+	<dict>
+		<key>VIKING_CURSING_1</key>
+		<string>22k_viking_cursingV1.wav</string>
+	</dict>
+	<key>kPlayGround2</key>
+	<dict>
+		<key>PUZZLE_SKULL</key>
+		<string>22k_tap_move_skullV1.wav</string>
+	</dict>
+</dict>
+</plist>

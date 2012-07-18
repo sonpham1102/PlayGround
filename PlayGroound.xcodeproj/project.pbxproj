@@ -187,6 +187,13 @@
 		12B946D615B731C700CB76CD /* PlayGround1Layer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B946D515B731C700CB76CD /* PlayGround1Layer.mm */; };
 		12B946D915B731DF00CB76CD /* PlayGround2Layer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B946D815B731DF00CB76CD /* PlayGround2Layer.mm */; };
 		FA1348BD15B7157600E5CDB5 /* GameManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA1348BC15B7157600E5CDB5 /* GameManager.mm */; };
+		FA1348CF15B7516400E5CDB5 /* SoundEffects.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA1348CE15B7516400E5CDB5 /* SoundEffects.plist */; };
+		FA1348D415B7536C00E5CDB5 /* BackgroundMusic.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA1348D315B7536C00E5CDB5 /* BackgroundMusic.plist */; };
+		FA1348D615B753C100E5CDB5 /* VikingPreludeV1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = FA1348D515B753C100E5CDB5 /* VikingPreludeV1.mp3 */; };
+		FA1348D815B753EA00E5CDB5 /* 22k_viking_cursingV1.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA1348D715B753EA00E5CDB5 /* 22k_viking_cursingV1.wav */; };
+		FA1348DA15B7540300E5CDB5 /* 22k_tap_move_skullV1.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA1348D915B7540300E5CDB5 /* 22k_tap_move_skullV1.wav */; };
+		FA1348DC15B7542C00E5CDB5 /* SpaceDesertV2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = FA1348DB15B7542C00E5CDB5 /* SpaceDesertV2.mp3 */; };
+		FA1348DE15B7544700E5CDB5 /* EscapeTheFutureV3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = FA1348DD15B7544700E5CDB5 /* EscapeTheFutureV3.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -564,6 +571,15 @@
 		FA1348B915B7133300E5CDB5 /* GlobalConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalConstants.h; sourceTree = "<group>"; };
 		FA1348BB15B7157600E5CDB5 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
 		FA1348BC15B7157600E5CDB5 /* GameManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameManager.mm; sourceTree = "<group>"; };
+		FA1348CB15B7505E00E5CDB5 /* AudioContants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioContants.h; sourceTree = "<group>"; };
+		FA1348CE15B7516400E5CDB5 /* SoundEffects.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SoundEffects.plist; sourceTree = "<group>"; };
+		FA1348D215B751E600E5CDB5 /* TODO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TODO.h; sourceTree = "<group>"; };
+		FA1348D315B7536C00E5CDB5 /* BackgroundMusic.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BackgroundMusic.plist; sourceTree = "<group>"; };
+		FA1348D515B753C100E5CDB5 /* VikingPreludeV1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = VikingPreludeV1.mp3; sourceTree = "<group>"; };
+		FA1348D715B753EA00E5CDB5 /* 22k_viking_cursingV1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 22k_viking_cursingV1.wav; sourceTree = "<group>"; };
+		FA1348D915B7540300E5CDB5 /* 22k_tap_move_skullV1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 22k_tap_move_skullV1.wav; sourceTree = "<group>"; };
+		FA1348DB15B7542C00E5CDB5 /* SpaceDesertV2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = SpaceDesertV2.mp3; sourceTree = "<group>"; };
+		FA1348DD15B7544700E5CDB5 /* EscapeTheFutureV3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = EscapeTheFutureV3.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -622,6 +638,9 @@
 		128226DC15B5EC730030D109 /* PlayGroound */ = {
 			isa = PBXGroup;
 			children = (
+				FA1348D115B7517200E5CDB5 /* Music */,
+				FA1348D015B7516900E5CDB5 /* Sounds */,
+				FA1348CD15B7513400E5CDB5 /* Plists */,
 				FA1348B715B712A800E5CDB5 /* Constants */,
 				FA1348B415B7125F00E5CDB5 /* Classes */,
 				128226DD15B5EC730030D109 /* Resources */,
@@ -1211,6 +1230,8 @@
 			isa = PBXGroup;
 			children = (
 				FA1348B915B7133300E5CDB5 /* GlobalConstants.h */,
+				FA1348CB15B7505E00E5CDB5 /* AudioContants.h */,
+				FA1348D215B751E600E5CDB5 /* TODO.h */,
 			);
 			name = Constants;
 			sourceTree = "<group>";
@@ -1236,6 +1257,34 @@
 				128228EE15B5EC760030D109 /* IntroLayer.mm */,
 			);
 			name = Scenes;
+			sourceTree = "<group>";
+		};
+		FA1348CD15B7513400E5CDB5 /* Plists */ = {
+			isa = PBXGroup;
+			children = (
+				FA1348CE15B7516400E5CDB5 /* SoundEffects.plist */,
+				FA1348D315B7536C00E5CDB5 /* BackgroundMusic.plist */,
+			);
+			name = Plists;
+			sourceTree = "<group>";
+		};
+		FA1348D015B7516900E5CDB5 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				FA1348D915B7540300E5CDB5 /* 22k_tap_move_skullV1.wav */,
+				FA1348D715B753EA00E5CDB5 /* 22k_viking_cursingV1.wav */,
+			);
+			name = Sounds;
+			sourceTree = "<group>";
+		};
+		FA1348D115B7517200E5CDB5 /* Music */ = {
+			isa = PBXGroup;
+			children = (
+				FA1348DD15B7544700E5CDB5 /* EscapeTheFutureV3.mp3 */,
+				FA1348DB15B7542C00E5CDB5 /* SpaceDesertV2.mp3 */,
+				FA1348D515B753C100E5CDB5 /* VikingPreludeV1.mp3 */,
+			);
+			name = Music;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1302,6 +1351,13 @@
 				128226F615B5EC730030D109 /* iTunesArtwork in Resources */,
 				1282283415B5EC750030D109 /* ChangeLog in Resources */,
 				128228F715B5EC760030D109 /* blocks.png in Resources */,
+				FA1348CF15B7516400E5CDB5 /* SoundEffects.plist in Resources */,
+				FA1348D415B7536C00E5CDB5 /* BackgroundMusic.plist in Resources */,
+				FA1348D615B753C100E5CDB5 /* VikingPreludeV1.mp3 in Resources */,
+				FA1348D815B753EA00E5CDB5 /* 22k_viking_cursingV1.wav in Resources */,
+				FA1348DA15B7540300E5CDB5 /* 22k_tap_move_skullV1.wav in Resources */,
+				FA1348DC15B7542C00E5CDB5 /* SpaceDesertV2.mp3 in Resources */,
+				FA1348DE15B7544700E5CDB5 /* EscapeTheFutureV3.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

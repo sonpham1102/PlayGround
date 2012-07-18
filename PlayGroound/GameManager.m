@@ -8,6 +8,7 @@
 
 #import "GameManager.h"
 #import "cocos2d.h"
+#import "MainMenuScene.h"
 
 @implementation GameManager
 
@@ -61,7 +62,7 @@ static GameManager* _sharedGameManager = nil;
     
     switch (levelID) {
         case kMainMenu:
-            //
+            sceneToRun = [MainMenuScene node];
             break;
         case kPlayGround1:
             //

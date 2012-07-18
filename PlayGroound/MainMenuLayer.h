@@ -8,6 +8,7 @@
 
 #import "CCLayer.h"
 #import "cocos2d.h"
+#import "GameManager.h"
 
 @interface MainMenuLayer : CCLayer {
     CCMenu *mainMenu;

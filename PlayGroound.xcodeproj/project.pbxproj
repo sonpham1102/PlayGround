@@ -181,6 +181,8 @@
 		128228F215B5EC760030D109 /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128228F115B5EC760030D109 /* GLES-Render.mm */; };
 		128228F515B5EC760030D109 /* PhysicsSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128228F415B5EC760030D109 /* PhysicsSprite.mm */; };
 		128228F715B5EC760030D109 /* blocks.png in Resources */ = {isa = PBXBuildFile; fileRef = 128228F615B5EC760030D109 /* blocks.png */; };
+		12B946B115B70C3E00CB76CD /* MainMenuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B946B015B70C3E00CB76CD /* MainMenuScene.m */; };
+		12B946B415B70C5D00CB76CD /* MainMenuLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B946B315B70C5D00CB76CD /* MainMenuLayer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -545,6 +547,10 @@
 		128228F315B5EC760030D109 /* PhysicsSprite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhysicsSprite.h; sourceTree = "<group>"; };
 		128228F415B5EC760030D109 /* PhysicsSprite.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PhysicsSprite.mm; sourceTree = "<group>"; };
 		128228F615B5EC760030D109 /* blocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blocks.png; path = Resources/blocks.png; sourceTree = "<group>"; };
+		12B946AF15B70C3E00CB76CD /* MainMenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuScene.h; sourceTree = "<group>"; };
+		12B946B015B70C3E00CB76CD /* MainMenuScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuScene.m; sourceTree = "<group>"; };
+		12B946B215B70C5D00CB76CD /* MainMenuLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuLayer.h; sourceTree = "<group>"; };
+		12B946B315B70C5D00CB76CD /* MainMenuLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuLayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -603,6 +609,7 @@
 		128226DC15B5EC730030D109 /* PlayGroound */ = {
 			isa = PBXGroup;
 			children = (
+				12B946B515B722AB00CB76CD /* Classes */,
 				128228E715B5EC760030D109 /* AppDelegate.h */,
 				128228E815B5EC760030D109 /* AppDelegate.mm */,
 				128228EA15B5EC760030D109 /* HelloWorldLayer.h */,
@@ -1142,6 +1149,49 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		12B946AC15B70BDF00CB76CD /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				12B946B715B722F300CB76CD /* Prototype1 */,
+				12B946B615B722E200CB76CD /* Prototype2 */,
+				12B946AE15B70BEA00CB76CD /* MainMenu */,
+			);
+			name = Scenes;
+			sourceTree = "<group>";
+		};
+		12B946AE15B70BEA00CB76CD /* MainMenu */ = {
+			isa = PBXGroup;
+			children = (
+				12B946AF15B70C3E00CB76CD /* MainMenuScene.h */,
+				12B946B015B70C3E00CB76CD /* MainMenuScene.m */,
+				12B946B215B70C5D00CB76CD /* MainMenuLayer.h */,
+				12B946B315B70C5D00CB76CD /* MainMenuLayer.m */,
+			);
+			name = MainMenu;
+			sourceTree = "<group>";
+		};
+		12B946B515B722AB00CB76CD /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				12B946AC15B70BDF00CB76CD /* Scenes */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		12B946B615B722E200CB76CD /* Prototype2 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Prototype2;
+			sourceTree = "<group>";
+		};
+		12B946B715B722F300CB76CD /* Prototype1 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Prototype1;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1367,6 +1417,8 @@
 				128228EF15B5EC760030D109 /* IntroLayer.mm in Sources */,
 				128228F215B5EC760030D109 /* GLES-Render.mm in Sources */,
 				128228F515B5EC760030D109 /* PhysicsSprite.mm in Sources */,
+				12B946B115B70C3E00CB76CD /* MainMenuScene.m in Sources */,
+				12B946B415B70C5D00CB76CD /* MainMenuLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1472,6 +1524,7 @@
 				128228FC15B5EC760030D109 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

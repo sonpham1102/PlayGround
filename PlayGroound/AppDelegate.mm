@@ -10,6 +10,8 @@
 
 #import "AppDelegate.h"
 #import "IntroLayer.h"
+#import "MainMenuScene.h"
+#import "MainMenuLayer.h"
 
 @implementation AppController
 
@@ -76,8 +78,10 @@
 	[CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
 	
 	// and add the scene to the stack. The director will run it when it automatically when the view is displayed.
-	[director_ pushScene: [IntroLayer scene]]; 
-	
+	//[director_ pushScene: [IntroLayer scene]]; 
+	//[director_ pushScene: [MainMenuLayer scene]];
+    //HACK TO LOAD MAINMENU
+    [[CCDirector sharedDirector] runWithScene:[MainMenuScene node]];
 	
 	// Create a Navigation Controller with the Director
 	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];

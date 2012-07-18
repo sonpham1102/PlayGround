@@ -93,11 +93,11 @@ static GameManager* _sharedGameManager = nil;
     //Special case Menu code goes here
     if (IS_IPAD())
     {
-        
+        bool iPad = true;
     }
     else 
     {
-        
+        bool iPad = false;
     }
     
     //switch to the new Level's scene

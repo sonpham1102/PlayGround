@@ -24,7 +24,7 @@ typedef enum
 } LevelIDs;
 
 // A macro to determine if iPad or not
-#ifdef UI_USER_INTERFACE_IDIOM()
+#ifdef UI_USER_INTERFACE_IDIOM//()
 #define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 #else
 #define IS_IPAD() (NO)

@@ -181,6 +181,7 @@
 		128228F215B5EC760030D109 /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128228F115B5EC760030D109 /* GLES-Render.mm */; };
 		128228F515B5EC760030D109 /* PhysicsSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128228F415B5EC760030D109 /* PhysicsSprite.mm */; };
 		128228F715B5EC760030D109 /* blocks.png in Resources */ = {isa = PBXBuildFile; fileRef = 128228F615B5EC760030D109 /* blocks.png */; };
+		FA1348BD15B7157600E5CDB5 /* GameManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1348BC15B7157600E5CDB5 /* GameManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -545,6 +546,9 @@
 		128228F315B5EC760030D109 /* PhysicsSprite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhysicsSprite.h; sourceTree = "<group>"; };
 		128228F415B5EC760030D109 /* PhysicsSprite.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PhysicsSprite.mm; sourceTree = "<group>"; };
 		128228F615B5EC760030D109 /* blocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blocks.png; path = Resources/blocks.png; sourceTree = "<group>"; };
+		FA1348B915B7133300E5CDB5 /* GlobalConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalConstants.h; sourceTree = "<group>"; };
+		FA1348BB15B7157600E5CDB5 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
+		FA1348BC15B7157600E5CDB5 /* GameManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -603,16 +607,8 @@
 		128226DC15B5EC730030D109 /* PlayGroound */ = {
 			isa = PBXGroup;
 			children = (
-				128228E715B5EC760030D109 /* AppDelegate.h */,
-				128228E815B5EC760030D109 /* AppDelegate.mm */,
-				128228EA15B5EC760030D109 /* HelloWorldLayer.h */,
-				128228EB15B5EC760030D109 /* HelloWorldLayer.mm */,
-				128228ED15B5EC760030D109 /* IntroLayer.h */,
-				128228EE15B5EC760030D109 /* IntroLayer.mm */,
-				128228F015B5EC760030D109 /* GLES-Render.h */,
-				128228F115B5EC760030D109 /* GLES-Render.mm */,
-				128228F315B5EC760030D109 /* PhysicsSprite.h */,
-				128228F415B5EC760030D109 /* PhysicsSprite.mm */,
+				FA1348B715B712A800E5CDB5 /* Constants */,
+				FA1348B415B7125F00E5CDB5 /* Classes */,
 				128226DD15B5EC730030D109 /* Resources */,
 				128226F715B5EC730030D109 /* libs */,
 				128228E315B5EC760030D109 /* Supporting Files */,
@@ -1142,6 +1138,57 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		FA1348B415B7125F00E5CDB5 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				FA1348B615B7126B00E5CDB5 /* Singletons */,
+				FA1348BA15B714E200E5CDB5 /* Scenes */,
+				FA1348B815B712BA00E5CDB5 /* Physics */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		FA1348B615B7126B00E5CDB5 /* Singletons */ = {
+			isa = PBXGroup;
+			children = (
+				128228E815B5EC760030D109 /* AppDelegate.mm */,
+				128228E715B5EC760030D109 /* AppDelegate.h */,
+				FA1348BB15B7157600E5CDB5 /* GameManager.h */,
+				FA1348BC15B7157600E5CDB5 /* GameManager.m */,
+			);
+			name = Singletons;
+			sourceTree = "<group>";
+		};
+		FA1348B715B712A800E5CDB5 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				FA1348B915B7133300E5CDB5 /* GlobalConstants.h */,
+			);
+			name = Constants;
+			sourceTree = "<group>";
+		};
+		FA1348B815B712BA00E5CDB5 /* Physics */ = {
+			isa = PBXGroup;
+			children = (
+				128228F015B5EC760030D109 /* GLES-Render.h */,
+				128228F115B5EC760030D109 /* GLES-Render.mm */,
+				128228F315B5EC760030D109 /* PhysicsSprite.h */,
+				128228F415B5EC760030D109 /* PhysicsSprite.mm */,
+			);
+			name = Physics;
+			sourceTree = "<group>";
+		};
+		FA1348BA15B714E200E5CDB5 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				128228EA15B5EC760030D109 /* HelloWorldLayer.h */,
+				128228EB15B5EC760030D109 /* HelloWorldLayer.mm */,
+				128228ED15B5EC760030D109 /* IntroLayer.h */,
+				128228EE15B5EC760030D109 /* IntroLayer.mm */,
+			);
+			name = Scenes;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1367,6 +1414,7 @@
 				128228EF15B5EC760030D109 /* IntroLayer.mm in Sources */,
 				128228F215B5EC760030D109 /* GLES-Render.mm in Sources */,
 				128228F515B5EC760030D109 /* PhysicsSprite.mm in Sources */,
+				FA1348BD15B7157600E5CDB5 /* GameManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1472,6 +1520,7 @@
 				128228FC15B5EC760030D109 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

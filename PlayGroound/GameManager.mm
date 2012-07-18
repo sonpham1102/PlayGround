@@ -65,10 +65,10 @@ static GameManager* _sharedGameManager = nil;
     
     switch (levelID) {
         case kMainMenu:
-            sceneToRun = [MainMenuScene node];
+            sceneToRun = [IntroLayer scene];
             break;
         case kPlayGround1:
-            sceneToRun = [IntroLayer scene];
+            sceneToRun = [HelloWorldLayer scene];
             break;
         case kPlayGround2:
             sceneToRun = [HelloWorldLayer scene];

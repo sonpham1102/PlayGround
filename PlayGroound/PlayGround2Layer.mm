@@ -89,8 +89,8 @@ enum {
 	[CCMenuItemFont setFontSize:22];
 	
 	// Reset Button
-	CCMenuItemLabel *reset = [CCMenuItemFont itemWithString:@"Reset" block:^(id sender){
-		[[GameManager sharedGameManager] runLevelWithID:kPlayGround2];
+	CCMenuItemLabel *reset = [CCMenuItemFont itemWithString:@"Main Menu" block:^(id sender){
+		[[GameManager sharedGameManager] runLevelWithID:kMainMenu];
 	}];
 	
 	// Achievement Menu Item using blocks

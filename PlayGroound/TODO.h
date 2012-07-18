@@ -13,7 +13,10 @@ AP: Add support for sound events with multiple versions
  This would mean changing the Plist structure to have a "varations" field
  When a sound is requested, we would check to see if it has any varations, and if so,
  randomly choose one
+ Just remember that we need a unique ID for every sound (for the loaded/unloaded array at least)
  
- 
+AP: Look at a tutorial on NSDictionaries ... I'm not totally sure what's happening in the sound loading
+
+AP: Write a GetDictionaryFromPlist function for Gamemanager, use it at least twice, probably more 
 
 END NOTES */

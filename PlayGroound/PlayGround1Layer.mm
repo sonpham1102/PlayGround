@@ -258,7 +258,10 @@ enum {
 
 - (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-	//Add a new body/atlas sprite at the touched location
+    //AP : just adding a sound test here
+    PLAYSOUNDEFFECT(VIKING_CURSING_1);
+    
+    //Add a new body/atlas sprite at the touched location
 	for( UITouch *touch in touches ) {
 		CGPoint location = [touch locationInView: [touch view]];
 		

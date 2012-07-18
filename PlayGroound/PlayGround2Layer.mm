@@ -289,6 +289,10 @@ enum {
 
 - (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    //AP : just adding a sound test here
+    PLAYSOUNDEFFECT(PUZZLE_SKULL);
+    
+    
     //JP Dont want to add bodies on touches now 
     /*
 	//Add a new body/atlas sprite at the touched location

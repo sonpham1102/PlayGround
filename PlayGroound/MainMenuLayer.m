@@ -15,6 +15,14 @@
 -(void) playScene:(CCMenuItemFont*)itemPassedIn
 {
     CCLOG(@"Should load Scene %d",[itemPassedIn tag]);
+    if ([itemPassedIn tag] == 1) {
+        [[GameManager sharedGameManager] runLevelWithID:kPlayGround1];
+    } else if ([itemPassedIn tag] == 2) {
+        [[GameManager sharedGameManager] runLevelWithID:kPlayGround2];
+    } else {
+        CCLOG(@"Damn level not found %d",[itemPassedIn tag]);
+    }
+
 }
 
 -(void) displayMenu {

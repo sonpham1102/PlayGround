@@ -9,6 +9,9 @@
 #import "GameManager.h"
 #import "cocos2d.h"
 #import "MainMenuScene.h"
+#import "IntroLayer.h"
+#import "HelloWorldLayer.h"
+
 
 @implementation GameManager
 
@@ -65,10 +68,10 @@ static GameManager* _sharedGameManager = nil;
             sceneToRun = [MainMenuScene node];
             break;
         case kPlayGround1:
-            //
+            sceneToRun = [IntroLayer scene];
             break;
         case kPlayGround2:
-            //
+            sceneToRun = [HelloWorldLayer scene];
             break;
             
         default:

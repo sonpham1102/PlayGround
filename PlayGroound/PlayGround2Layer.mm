@@ -59,8 +59,9 @@ enum {
 #endif
 		[self addChild:parent z:0 tag:kTagParentNode];
 		
-		
-		[self addNewSpriteAtPosition:ccp(s.width/2, s.height/2)];
+		//[self addNewSpriteAtPosition:ccp(s.width/2, s.height/2)];
+        //JP Creating a Ball to play with instead of Box
+        [self createBall];
 		
 		CCLabelTTF *label = [CCLabelTTF labelWithString:@"This is Level 2" fontName:@"Marker Felt" fontSize:32];
 		[self addChild:label z:0];
@@ -89,10 +90,12 @@ enum {
 	[CCMenuItemFont setFontSize:22];
 	
 	// Reset Button
-	CCMenuItemLabel *reset = [CCMenuItemFont itemWithString:@"Main Menu" block:^(id sender){
+	CCMenuItemLabel *reset = [CCMenuItemFont itemWithString:@"Main Menu" block:^(id sender)
+    {
 		[[GameManager sharedGameManager] runLevelWithID:kMainMenu];
 	}];
-	
+	//JP : Not using Achievements and Leader Boards of now
+    /*
 	// Achievement Menu Item using blocks
 	CCMenuItem *itemAchievement = [CCMenuItemFont itemWithString:@"Achievements" block:^(id sender) {
 		
@@ -119,14 +122,20 @@ enum {
 		[[app navController] presentModalViewController:leaderboardViewController animated:YES];
 		
 		[leaderboardViewController release];
-	}];
+	}];*/
 	
-	CCMenu *menu = [CCMenu menuWithItems:itemAchievement, itemLeaderboard, reset, nil];
+    //JP: Removed menu options for Achievments and LeaderBoards, Also Reduced Size of text;
+    [reset setScale:0.75f];
+	//CCMenu *menu = [CCMenu menuWithItems:itemAchievement, itemLeaderboard, reset, nil];
+    CCMenu *menu = [CCMenu menuWithItems:reset, nil];
+    
 	
 	[menu alignItemsVertically];
 	
+    //JP: Repositioned Menu to Upper Right Corner
+    //    Should use IPAD Idiom to set properly
 	CGSize size = [[CCDirector sharedDirector] winSize];
-	[menu setPosition:ccp( size.width/2, size.height/2)];
+	[menu setPosition:ccp( size.width*0.9, size.height*0.95)];
 	
 	
 	[self addChild: menu z:-1];	
@@ -207,6 +216,32 @@ enum {
 	kmGLPopMatrix();
 }
 
+-(void) createBall{
+    
+    CGSize p = [CCDirector sharedDirector].winSize;
+    
+    b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position.Set(p.width/2/PTM_RATIO, p.height/2/PTM_RATIO);
+	//b2Body *body = world->CreateBody(&bodyDef);
+    mainBody = world->CreateBody(&bodyDef);
+    /*
+     // Define another box shape for our dynamic body.
+     b2PolygonShape dynamicBox;
+     dynamicBox.SetAsBox(.75f, .75f);//These are mid points for our 1m box
+     */
+    //JP Creating a Ball instead of Box
+	// Define the dynamic body fixture.
+    
+    b2CircleShape dynamicCircle;
+    dynamicCircle.m_radius = 0.6f;
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &dynamicCircle;	
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.3f;
+    fixtureDef.restitution = 0.25;
+	mainBody->CreateFixture(&fixtureDef);}
+
 -(void) addNewSpriteAtPosition:(CGPoint)p
 {
 	CCLOG(@"Add sprite %0.2f x %02.f",p.x,p.y);
@@ -226,20 +261,26 @@ enum {
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(p.x/PTM_RATIO, p.y/PTM_RATIO);
-	b2Body *body = world->CreateBody(&bodyDef);
-	
+	//b2Body *body = world->CreateBody(&bodyDef);
+    mainBody = world->CreateBody(&bodyDef);
+    /*
 	// Define another box shape for our dynamic body.
 	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(.5f, .5f);//These are mid points for our 1m box
-	
+	dynamicBox.SetAsBox(.75f, .75f);//These are mid points for our 1m box
+	*/
+    //JP Creating a Ball instead of Box
 	// Define the dynamic body fixture.
+    
+    b2CircleShape dynamicCircle;
+    dynamicCircle.m_radius = 1.0f;
 	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicBox;	
+	fixtureDef.shape = &dynamicCircle;	
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 0.3f;
-	body->CreateFixture(&fixtureDef);
+    fixtureDef.restitution = 0.25;
+	mainBody->CreateFixture(&fixtureDef);
 	
-	[sprite setPhysicsBody:body];
+	[sprite setPhysicsBody:mainBody];
 }
 
 -(void) update: (ccTime) dt
@@ -259,6 +300,8 @@ enum {
 
 - (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    //JP Dont want to add bodies on touches now 
+    /*
 	//Add a new body/atlas sprite at the touched location
 	for( UITouch *touch in touches ) {
 		CGPoint location = [touch locationInView: [touch view]];
@@ -266,8 +309,10 @@ enum {
 		location = [[CCDirector sharedDirector] convertToGL: location];
 		
 		[self addNewSpriteAtPosition: location];
-	}
+	}*/
 }
+
+
 
 #pragma mark GameKit delegate
 

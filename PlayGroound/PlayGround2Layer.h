@@ -25,7 +25,8 @@
 @interface PlayGround2Layer : CCLayer <GKAchievementViewControllerDelegate, GKLeaderboardViewControllerDelegate>
 {
 	CCTexture2D *spriteTexture_;	// weak ref
-	b2World* world;					// strong ref
+	b2World* world;                 // strong ref
+    b2Body* mainBody;
 	GLESDebugDraw *m_debugDraw;		// strong ref
 }
 

@@ -13,6 +13,7 @@
 
 #import "PhysicsSprite.h"
 #import "GameManager.h"
+#import "Rocket.h"
 
 enum {
 	kTagParentNode = 1,
@@ -34,6 +35,9 @@ enum {
 {
 	if( (self=[super init])) {
 		
+        touchRight = nil;
+        touchLeft = nil;
+        
 		// enable events
 		
 		self.isTouchEnabled = YES;
@@ -61,7 +65,11 @@ enum {
 		
 		//[self addNewSpriteAtPosition:ccp(s.width/2, s.height/2)];
         //JP Creating a Ball to play with instead of Box
-        [self createBall];
+        //[self createBall];
+        
+        rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width/2, s.height/2)];
+        
+        
 		
 		CCLabelTTF *label = [CCLabelTTF labelWithString:@"This is Level 2" fontName:@"Marker Felt" fontSize:32];
 		[self addChild:label z:0];
@@ -287,22 +295,41 @@ enum {
 	world->Step(dt, velocityIterations, positionIterations);	
 }
 
+-(void) fireLeft {
+    [rocket fireLeftRocket];
+}
+
+-(void) fireRight {
+    [rocket fireRightRocket];
+}
+
+-(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    for (UITouch *touch in touches){
+        CGPoint location = [touch locationInView:[touch view]];
+        location = [[CCDirector sharedDirector] convertToGL:location];
+        
+        if (location.x < [CCDirector sharedDirector].winSize.width/2) {
+            [self schedule:@selector(fireLeft)];
+            touchLeft = touch;
+        } else {
+            [self schedule:@selector(fireRight)];
+            touchRight = touch;
+        }
+    }    
+}
+
 - (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    //AP : just adding a sound test here
-    PLAYSOUNDEFFECT(PUZZLE_SKULL);
-    
-    
-    //JP Dont want to add bodies on touches now 
-    /*
-	//Add a new body/atlas sprite at the touched location
-	for( UITouch *touch in touches ) {
-		CGPoint location = [touch locationInView: [touch view]];
-		
-		location = [[CCDirector sharedDirector] convertToGL: location];
-		
-		[self addNewSpriteAtPosition: location];
-	}*/
+    for (UITouch *touch in touches) {
+        
+        if (touch == touchLeft) {
+            [self unschedule:@selector(fireLeft)];
+            touchLeft = nil;
+        } else  if (touch == touchRight) {
+            [self unschedule:@selector(fireRight)];
+            touchRight = nil;
+        }
+    } 
 }
 
 

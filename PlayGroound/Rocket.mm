@@ -23,7 +23,7 @@
     body = world->CreateBody(&bodyDef);
     
     b2FixtureDef fixtureDef;
-    fixtureDef.density = 1.0f;
+    fixtureDef.density = 5.0f;
     fixtureDef.friction = 0.5f;
     fixtureDef.restitution = 0.0f;
     
@@ -32,14 +32,14 @@
     fixtureDef.shape = &shape;
     
     b2Vec2 vert[] = {
-        b2Vec2(SCALE_FACTOR * 1.0 , SCALE_FACTOR * 2.5),
-        b2Vec2(SCALE_FACTOR * -1.0 , SCALE_FACTOR * 2.5),
+        b2Vec2(SCALE_FACTOR * 0.0 , SCALE_FACTOR * 2.5),
+        //b2Vec2(SCALE_FACTOR * -1.0 , SCALE_FACTOR * 2.5),
         b2Vec2(SCALE_FACTOR * -1.0 , SCALE_FACTOR * -0.5),
         b2Vec2(SCALE_FACTOR * 1.0 , SCALE_FACTOR * -0.5),
     };
     
-    shape.Set(vert, 4);
-    
+    shape.Set(vert, 3);
+    fixtureDef.density = 1.0f;
     body->CreateFixture(&fixtureDef);
     
     b2Vec2 vert1[] = {
@@ -64,27 +64,29 @@
     
     body->CreateFixture(&fixtureDef);
     
+    body->SetAngularDamping(10.0f);
+    
 }
 
 -(void) fireLeftRocket {
     
     b2Vec2 bodyCenter = body->GetWorldCenter();
-    b2Vec2 impulse = b2Vec2(0,body->GetMass() * 0.50f);
+    b2Vec2 impulse = b2Vec2(0,body->GetMass() * 0.5f);
     b2Vec2 impulseWorld = body->GetWorldPoint(impulse);
     impulseWorld = impulseWorld - bodyCenter;
     b2Vec2 impulsePoint = body->GetWorldPoint(b2Vec2(-1.25 * SCALE_FACTOR,
-                                                     -1.75 * SCALE_FACTOR));
+                                                     /*-1.75*/0.0 * SCALE_FACTOR));
     body->ApplyLinearImpulse(impulseWorld, impulsePoint);
 }
 
 -(void) fireRightRocket {
     
     b2Vec2 bodyCenter = body->GetWorldCenter();
-    b2Vec2 impulse = b2Vec2(0,body->GetMass() * 0.50f);
+    b2Vec2 impulse = b2Vec2(0,body->GetMass() * 0.5f);
     b2Vec2 impulseWorld = body->GetWorldPoint(impulse);
     impulseWorld = impulseWorld - bodyCenter;
     b2Vec2 impulsePoint = body->GetWorldPoint(b2Vec2(1.25 * SCALE_FACTOR,
-                                                     -1.75 * SCALE_FACTOR));
+                                                     /*-1.75*/0.0 * SCALE_FACTOR));
     body->ApplyLinearImpulse(impulseWorld, impulsePoint);
     
 }

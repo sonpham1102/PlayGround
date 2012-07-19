@@ -309,11 +309,17 @@ enum {
         location = [[CCDirector sharedDirector] convertToGL:location];
         
         if (location.x < [CCDirector sharedDirector].winSize.width/2) {
-            [self schedule:@selector(fireLeft)];
-            touchLeft = touch;
+            if (touchLeft == nil)
+            {
+                [self schedule:@selector(fireLeft)];
+                touchLeft = touch;
+            }
         } else {
-            [self schedule:@selector(fireRight)];
-            touchRight = touch;
+            if (touchRight == nil)
+            {
+                [self schedule:@selector(fireRight)];
+                touchRight = touch;
+            }
         }
     }    
 }

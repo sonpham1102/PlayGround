@@ -14,14 +14,20 @@
 #import "cocos2d.h"
 #import "Box2D.h"
 #import "GLES-Render.h"
+#import "Rocket.h"
 
 // HelloWorldLayer
 @interface PlayGround2Layer : CCLayer <GKAchievementViewControllerDelegate, GKLeaderboardViewControllerDelegate>
 {
+    Rocket *rocket;
 	CCTexture2D *spriteTexture_;	// weak ref
 	b2World* world;                 // strong ref
     b2Body* mainBody;
 	GLESDebugDraw *m_debugDraw;		// strong ref
+    
+    UITouch* touchLeft;
+    UITouch* touchRight;
+    
 }
 
 @end

@@ -12,6 +12,7 @@
 #import "IntroLayer.h"
 #import "PlayGround1Scene.h"
 #import "PlayGround2Scene.h"
+#import "OptionsScene.h"
 
 
 @implementation GameManager
@@ -23,6 +24,9 @@ static GameManager* _sharedGameManager = nil;
 @synthesize managerSoundState;
 @synthesize listOfSoundEffectFiles;
 @synthesize soundEffectsState;
+@synthesize isMusicON;
+@synthesize isSoundEffectsON;
+
 
 //creates the _sharedGameManager (if necessary) and returns a pointer to it
 +(GameManager*) sharedGameManager
@@ -56,6 +60,8 @@ static GameManager* _sharedGameManager = nil;
     self = [super init];
     if (self != nil)
     {
+        isMusicON = YES;
+        isSoundEffectsON = YES;
         CCLOG(@"Game Manager initialized");
         currentLevel = kLevelUnitialized;
         hasAudioBeenInitialized = NO;
@@ -144,6 +150,9 @@ static GameManager* _sharedGameManager = nil;
             break;
         case kPlayGround2:
             result = @"kPlayGround2";
+            break;
+        case kOptionsMenu:
+            result = @"kOptionsMenu";
             break;
         default:
             [NSException raise:NSGenericException format:@"UnHandled Level ID for audio"];
@@ -287,9 +296,18 @@ static GameManager* _sharedGameManager = nil;
     [pool release];
 }
 
+// stops background music
+-(void)stopBackgroundTrack {
+    [soundEngine stopBackgroundMusic];
+}
+    
+
 // plays the background music for the Level 
 -(void) playBackgroundTrack:(LevelIDs)levelID
 {
+    if (!isMusicON) {
+        return;
+    }
     //wait to make sure the sound engine is initialized
     if ((managerSoundState != kAudioManagerReady) && (managerSoundState != kAudioManagerFailed))
     {
@@ -355,6 +373,9 @@ static GameManager* _sharedGameManager = nil;
 
 -(ALuint) playSoundEffect:(NSString *)soundEffectKey
 {
+    if (!isSoundEffectsON) {
+        return nil;
+    }
     ALuint soundID = 0;
     if (managerSoundState == kAudioManagerReady)
     {
@@ -395,6 +416,9 @@ static GameManager* _sharedGameManager = nil;
             break;
         case kPlayGround2:
             sceneToRun = [PlayGround2Scene node];
+            break;
+        case kOptionsMenu:
+            sceneToRun = [OptionsScene node];
             break;
             
         default:

@@ -1569,6 +1569,8 @@
 				FA8182ED15B866D8003AC851 /* GameObj.m in Sources */,
 				FA8182F315B87426003AC851 /* GameChar.m in Sources */,
 				FA8182F615B87709003AC851 /* GameCharPhysics.mm in Sources */,
+				12B946FE15B860F600CB76CD /* OptionsScene.m in Sources */,
+				12B9470115B8611300CB76CD /* OptionsLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

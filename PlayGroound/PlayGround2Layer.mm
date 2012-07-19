@@ -38,6 +38,9 @@ enum {
         touchRight = nil;
         touchLeft = nil;
         
+        leftRocketSoundID = 0;
+        rightRocketSoundID = 0;
+        
 		// enable events
 		
 		self.isTouchEnabled = YES;
@@ -313,12 +316,14 @@ enum {
             {
                 [self schedule:@selector(fireLeft)];
                 touchLeft = touch;
+                leftRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
             }
         } else {
             if (touchRight == nil)
             {
                 [self schedule:@selector(fireRight)];
                 touchRight = touch;
+                rightRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
             }
         }
     }    
@@ -331,9 +336,11 @@ enum {
         if (touch == touchLeft) {
             [self unschedule:@selector(fireLeft)];
             touchLeft = nil;
+            STOPSOUNDEFFECT(leftRocketSoundID);
         } else  if (touch == touchRight) {
             [self unschedule:@selector(fireRight)];
             touchRight = nil;
+            STOPSOUNDEFFECT(rightRocketSoundID);
         }
     } 
 }

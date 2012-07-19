@@ -200,6 +200,8 @@
 		FA8182ED15B866D8003AC851 /* GameObj.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8182EC15B866D8003AC851 /* GameObj.m */; };
 		FA8182F315B87426003AC851 /* GameChar.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8182F215B87426003AC851 /* GameChar.m */; };
 		FA8182F615B87709003AC851 /* GameCharPhysics.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA8182F515B87709003AC851 /* GameCharPhysics.mm */; };
+		FA81830015B8B0E5003AC851 /* 22k_cargo_space_freighter_farV1.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA8182FF15B8B0E5003AC851 /* 22k_cargo_space_freighter_farV1.wav */; };
+		FA81830315B8B1E3003AC851 /* 22k_cargo_space_freighter_closeV2.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA81830215B8B1E3003AC851 /* 22k_cargo_space_freighter_closeV2.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -598,6 +600,8 @@
 		FA8182F215B87426003AC851 /* GameChar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameChar.m; sourceTree = "<group>"; };
 		FA8182F415B87709003AC851 /* GameCharPhysics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCharPhysics.h; sourceTree = "<group>"; };
 		FA8182F515B87709003AC851 /* GameCharPhysics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameCharPhysics.mm; sourceTree = "<group>"; };
+		FA8182FF15B8B0E5003AC851 /* 22k_cargo_space_freighter_farV1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 22k_cargo_space_freighter_farV1.wav; sourceTree = "<group>"; };
+		FA81830215B8B1E3003AC851 /* 22k_cargo_space_freighter_closeV2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 22k_cargo_space_freighter_closeV2.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1302,6 +1306,8 @@
 		FA1348D015B7516900E5CDB5 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				FA81830215B8B1E3003AC851 /* 22k_cargo_space_freighter_closeV2.wav */,
+				FA8182FF15B8B0E5003AC851 /* 22k_cargo_space_freighter_farV1.wav */,
 				FA1348D915B7540300E5CDB5 /* 22k_tap_move_skullV1.wav */,
 				FA1348D715B753EA00E5CDB5 /* 22k_viking_cursingV1.wav */,
 			);
@@ -1404,6 +1410,8 @@
 				FA1348DA15B7540300E5CDB5 /* 22k_tap_move_skullV1.wav in Resources */,
 				FA1348DC15B7542C00E5CDB5 /* SpaceDesertV2.mp3 in Resources */,
 				FA1348DE15B7544700E5CDB5 /* EscapeTheFutureV3.mp3 in Resources */,
+				FA81830015B8B0E5003AC851 /* 22k_cargo_space_freighter_farV1.wav in Resources */,
+				FA81830315B8B1E3003AC851 /* 22k_cargo_space_freighter_closeV2.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

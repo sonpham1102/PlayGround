@@ -371,6 +371,16 @@ static GameManager* _sharedGameManager = nil;
     }
 }
 
+-(ALuint) playSoundEffectLooped:(NSString *)soundEffectKey
+{
+    ALuint iSoundHandle = [self playSoundEffect:soundEffectKey];
+    if (iSoundHandle != 0)
+    {
+        alSourcei(iSoundHandle, AL_LOOPING, 1);
+    }
+    return iSoundHandle;
+}
+
 -(ALuint) playSoundEffect:(NSString *)soundEffectKey
 {
     if (!isSoundEffectsON) {

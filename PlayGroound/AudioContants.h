@@ -26,6 +26,8 @@ typedef enum {
 
 #define PLAYSOUNDEFFECT(...) \
 [[GameManager sharedGameManager] playSoundEffect:@#__VA_ARGS__]
+#define PLAYSOUNDEFFECTLOOPED(...) \
+[[GameManager sharedGameManager] playSoundEffectLooped:@#__VA_ARGS__]
 #define STOPSOUNDEFFECT(...) \
 [[GameManager sharedGameManager] stopSoundEffect:__VA_ARGS__]
 

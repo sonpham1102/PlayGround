@@ -44,6 +44,9 @@
 //plays a sound effect.  The key and the file it plays are found in the Plist
 //Returns an int to be used to stop the sound
 -(ALuint)playSoundEffect:(NSString*)soundEffectKey;
+//for looped sound effects
+-(ALuint)playSoundEffectLooped:(NSString*)soundEffectKey;
+
 //stop a sound effect using the id
 -(void)stopSoundEffect:(ALuint)soundEffectID;
 //play background music for the level ID

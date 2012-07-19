@@ -194,6 +194,9 @@
 		FA1348DA15B7540300E5CDB5 /* 22k_tap_move_skullV1.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA1348D915B7540300E5CDB5 /* 22k_tap_move_skullV1.wav */; };
 		FA1348DC15B7542C00E5CDB5 /* SpaceDesertV2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = FA1348DB15B7542C00E5CDB5 /* SpaceDesertV2.mp3 */; };
 		FA1348DE15B7544700E5CDB5 /* EscapeTheFutureV3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = FA1348DD15B7544700E5CDB5 /* EscapeTheFutureV3.mp3 */; };
+		FA8182ED15B866D8003AC851 /* GameObj.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8182EC15B866D8003AC851 /* GameObj.m */; };
+		FA8182F315B87426003AC851 /* GameChar.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8182F215B87426003AC851 /* GameChar.m */; };
+		FA8182F615B87709003AC851 /* GameCharPhysics.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA8182F515B87709003AC851 /* GameCharPhysics.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -580,6 +583,12 @@
 		FA1348D915B7540300E5CDB5 /* 22k_tap_move_skullV1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 22k_tap_move_skullV1.wav; sourceTree = "<group>"; };
 		FA1348DB15B7542C00E5CDB5 /* SpaceDesertV2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = SpaceDesertV2.mp3; sourceTree = "<group>"; };
 		FA1348DD15B7544700E5CDB5 /* EscapeTheFutureV3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = EscapeTheFutureV3.mp3; sourceTree = "<group>"; };
+		FA8182EB15B866D8003AC851 /* GameObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObj.h; sourceTree = "<group>"; };
+		FA8182EC15B866D8003AC851 /* GameObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObj.m; sourceTree = "<group>"; };
+		FA8182F115B87426003AC851 /* GameChar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameChar.h; sourceTree = "<group>"; };
+		FA8182F215B87426003AC851 /* GameChar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameChar.m; sourceTree = "<group>"; };
+		FA8182F415B87709003AC851 /* GameCharPhysics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCharPhysics.h; sourceTree = "<group>"; };
+		FA8182F515B87709003AC851 /* GameCharPhysics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameCharPhysics.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1209,6 +1218,7 @@
 			isa = PBXGroup;
 			children = (
 				FA1348B615B7126B00E5CDB5 /* Singletons */,
+				FA8182E915B865CF003AC851 /* GameObjects */,
 				FA1348BA15B714E200E5CDB5 /* Scenes */,
 				FA1348B815B712BA00E5CDB5 /* Physics */,
 			);
@@ -1285,6 +1295,19 @@
 				FA1348D515B753C100E5CDB5 /* VikingPreludeV1.mp3 */,
 			);
 			name = Music;
+			sourceTree = "<group>";
+		};
+		FA8182E915B865CF003AC851 /* GameObjects */ = {
+			isa = PBXGroup;
+			children = (
+				FA8182EB15B866D8003AC851 /* GameObj.h */,
+				FA8182EC15B866D8003AC851 /* GameObj.m */,
+				FA8182F115B87426003AC851 /* GameChar.h */,
+				FA8182F215B87426003AC851 /* GameChar.m */,
+				FA8182F415B87709003AC851 /* GameCharPhysics.h */,
+				FA8182F515B87709003AC851 /* GameCharPhysics.mm */,
+			);
+			name = GameObjects;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1525,6 +1548,9 @@
 				12B946D315B7317900CB76CD /* PlayGround2Scene.mm in Sources */,
 				12B946D615B731C700CB76CD /* PlayGround1Layer.mm in Sources */,
 				12B946D915B731DF00CB76CD /* PlayGround2Layer.mm in Sources */,
+				FA8182ED15B866D8003AC851 /* GameObj.m in Sources */,
+				FA8182F315B87426003AC851 /* GameChar.m in Sources */,
+				FA8182F615B87709003AC851 /* GameCharPhysics.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

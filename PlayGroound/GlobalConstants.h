@@ -29,6 +29,16 @@ typedef enum
     kPlayGround2 = 120
 } LevelIDs;
 
+// GameObj types
+typedef enum {
+    kObjTypeNone
+}GameObjType;
+
+// GameChar states
+typedef enum {
+    kStateSpawning
+}CharStates;
+
 // A macro to determine if iPad or not
 #ifdef UI_USER_INTERFACE_IDIOM//()
 #define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)

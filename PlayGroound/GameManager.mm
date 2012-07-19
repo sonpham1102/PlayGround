@@ -337,8 +337,11 @@ static GameManager* _sharedGameManager = nil;
         NSString *levelIDName = [self formatSceneTypeToString:levelID];
         NSString *trackFileName = [plistDictionary objectForKey:levelIDName];
         
-        [soundEngine preloadEffect:trackFileName];
-        [soundEngine playBackgroundMusic:trackFileName loop:YES];
+        if (trackFileName.length != 0)
+        {
+            [soundEngine preloadEffect:trackFileName];
+            [soundEngine playBackgroundMusic:trackFileName loop:YES];
+        }
     }
 }
 

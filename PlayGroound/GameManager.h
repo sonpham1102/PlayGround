@@ -14,6 +14,10 @@
 @interface GameManager : NSObject
 {
     LevelIDs currentLevel;
+    
+    // Variables to Track Audio Options
+    BOOL isMusicON;
+    BOOL isSoundEffectsON;
 
     // Added for audio
     BOOL hasAudioBeenInitialized;
@@ -33,6 +37,8 @@
 @property (readwrite) GameManagerSoundState managerSoundState;
 @property (nonatomic, retain) NSMutableDictionary *listOfSoundEffectFiles;
 @property (nonatomic, retain) NSMutableDictionary *soundEffectsState;
+@property (readwrite) BOOL isMusicON;
+@property (readwrite) BOOL isSoundEffectsON;
 
 -(void)setupAudioEngine;
 //plays a sound effect.  The key and the file it plays are found in the Plist
@@ -43,6 +49,7 @@
 //play background music for the level ID
 //AP: this is different than the lcc2d approach so we can store the music/level in a Plist
 -(void)playBackgroundTrack:(LevelIDs)levelID;
+-(void)stopBackgroundTrack;
 
 
 @end

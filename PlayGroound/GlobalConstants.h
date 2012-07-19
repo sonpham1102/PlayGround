@@ -20,6 +20,7 @@ typedef enum
 {
     kLevelUnitialized = 0,
     kMainMenu = 1,
+    kOptionsMenu = 2,
     kPlayGround1 = 100,
     kPlayGround2 = 120
 } LevelIDs;

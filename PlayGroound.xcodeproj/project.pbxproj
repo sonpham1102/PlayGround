@@ -186,6 +186,8 @@
 		12B946D315B7317900CB76CD /* PlayGround2Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B946D215B7317900CB76CD /* PlayGround2Scene.mm */; };
 		12B946D615B731C700CB76CD /* PlayGround1Layer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B946D515B731C700CB76CD /* PlayGround1Layer.mm */; };
 		12B946D915B731DF00CB76CD /* PlayGround2Layer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B946D815B731DF00CB76CD /* PlayGround2Layer.mm */; };
+		12B946FE15B860F600CB76CD /* OptionsScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B946FD15B860F600CB76CD /* OptionsScene.m */; };
+		12B9470115B8611300CB76CD /* OptionsLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B9470015B8611300CB76CD /* OptionsLayer.m */; };
 		FA1348BD15B7157600E5CDB5 /* GameManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA1348BC15B7157600E5CDB5 /* GameManager.mm */; };
 		FA1348CF15B7516400E5CDB5 /* SoundEffects.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA1348CE15B7516400E5CDB5 /* SoundEffects.plist */; };
 		FA1348D415B7536C00E5CDB5 /* BackgroundMusic.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA1348D315B7536C00E5CDB5 /* BackgroundMusic.plist */; };
@@ -568,6 +570,10 @@
 		12B946D515B731C700CB76CD /* PlayGround1Layer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround1Layer.mm; sourceTree = "<group>"; };
 		12B946D715B731DF00CB76CD /* PlayGround2Layer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGround2Layer.h; sourceTree = "<group>"; };
 		12B946D815B731DF00CB76CD /* PlayGround2Layer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround2Layer.mm; sourceTree = "<group>"; };
+		12B946FC15B860F600CB76CD /* OptionsScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionsScene.h; sourceTree = "<group>"; };
+		12B946FD15B860F600CB76CD /* OptionsScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionsScene.m; sourceTree = "<group>"; };
+		12B946FF15B8611300CB76CD /* OptionsLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionsLayer.h; sourceTree = "<group>"; };
+		12B9470015B8611300CB76CD /* OptionsLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionsLayer.m; sourceTree = "<group>"; };
 		FA1348B915B7133300E5CDB5 /* GlobalConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalConstants.h; sourceTree = "<group>"; };
 		FA1348BB15B7157600E5CDB5 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
 		FA1348BC15B7157600E5CDB5 /* GameManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameManager.mm; sourceTree = "<group>"; };
@@ -1205,6 +1211,17 @@
 			name = PlayGround1;
 			sourceTree = "<group>";
 		};
+		12B946FA15B8609C00CB76CD /* Options */ = {
+			isa = PBXGroup;
+			children = (
+				12B946FC15B860F600CB76CD /* OptionsScene.h */,
+				12B946FD15B860F600CB76CD /* OptionsScene.m */,
+				12B946FF15B8611300CB76CD /* OptionsLayer.h */,
+				12B9470015B8611300CB76CD /* OptionsLayer.m */,
+			);
+			name = Options;
+			sourceTree = "<group>";
+		};
 		FA1348B415B7125F00E5CDB5 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -1250,6 +1267,7 @@
 		FA1348BA15B714E200E5CDB5 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				12B946FA15B8609C00CB76CD /* Options */,
 				12B946CD15B730C100CB76CD /* PlayGround1 */,
 				12B946CB15B730B600CB76CD /* PlayGround2 */,
 				12B946BF15B7290F00CB76CD /* MainMenu */,
@@ -1525,6 +1543,8 @@
 				12B946D315B7317900CB76CD /* PlayGround2Scene.mm in Sources */,
 				12B946D615B731C700CB76CD /* PlayGround1Layer.mm in Sources */,
 				12B946D915B731DF00CB76CD /* PlayGround2Layer.mm in Sources */,
+				12B946FE15B860F600CB76CD /* OptionsScene.m in Sources */,
+				12B9470115B8611300CB76CD /* OptionsLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

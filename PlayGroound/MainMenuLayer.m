@@ -19,7 +19,9 @@
         [[GameManager sharedGameManager] runLevelWithID:kPlayGround1];
     } else if ([itemPassedIn tag] == 2) {
         [[GameManager sharedGameManager] runLevelWithID:kPlayGround2];
-    } else {
+    } else if ([itemPassedIn tag] == 3) {
+        [[GameManager sharedGameManager] runLevelWithID:kOptionsMenu];
+    } else  {
         CCLOG(@"Damn level not found %d",[itemPassedIn tag]);
     }
 
@@ -40,10 +42,18 @@
                                                      fontSize:24.0f];
     CCMenuItemLabel *playScene2 = [CCMenuItemLabel itemWithLabel:playScene2Label target:self
                                                         selector:@selector(playScene:)];
-    [playScene2 setTag:2];  
+    [playScene2 setTag:2];
+    
+    CCLabelTTF *playOptionsScene = [CCLabelTTF labelWithString:@"Options"
+                                                      fontName:@"Arial-BoldMT"
+                                                      fontSize:24.0f];
+    CCMenuItemLabel *playOptions = [CCMenuItemLabel itemWithLabel:playOptionsScene
+                                                           target:self 
+                                                         selector:@selector(playScene:)];
+    [playOptions setTag:3];
     
     
-    mainMenu = [CCMenu menuWithItems:playScene1,playScene2, nil];
+    mainMenu = [CCMenu menuWithItems:playScene1,playScene2,playOptions, nil];
     [mainMenu alignItemsVerticallyWithPadding:screenSize.height * 0.059f];
     [mainMenu setPosition:ccp(screenSize.width/2, screenSize.height/2)];
     

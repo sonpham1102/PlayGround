@@ -250,7 +250,7 @@ static GameManager* _sharedGameManager = nil;
     //get all entries and preload
     for (NSString *keyString in soundEffectsToLoad)
     {
-//        CCLOG(@"\nLoading Audio Key: %@ File: %@", keyString, [soundEffectsToLoad objectForKey:keyString]);
+        CCLOG(@"\nLoading Audio Key: %@ File: %@", keyString, [soundEffectsToLoad objectForKey:keyString]);
         [soundEngine preloadEffect:[soundEffectsToLoad objectForKey:keyString]];
         [soundEffectsState setObject:[NSNumber numberWithBool:SFX_LOADED] forKey:keyString];
     }
@@ -281,7 +281,7 @@ static GameManager* _sharedGameManager = nil;
         {
             [soundEffectsState setObject:[NSNumber numberWithBool:SFX_NOTLOADED] forKey:keyString];
             [soundEngine unloadEffect:keyString];
-//            CCLOG(@"\nUnloading Audio Key: %@ File: %@", keyString, [soundEffectsToUnload objectForKey:keyString]);
+            CCLOG(@"\nUnloading Audio Key: %@ File: %@", keyString, [soundEffectsToUnload objectForKey:keyString]);
         }
     }
     [pool release];

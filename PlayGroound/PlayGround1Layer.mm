@@ -259,7 +259,7 @@ enum {
 - (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     //AP : just adding a sound test here
-    PLAYSOUNDEFFECT(VIKING_CURSING_1);
+    PLAYSOUNDEFFECT(PUZZLE_SKULL);
     
     //Add a new body/atlas sprite at the touched location
 	for( UITouch *touch in touches ) {

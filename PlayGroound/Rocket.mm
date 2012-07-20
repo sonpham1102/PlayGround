@@ -65,9 +65,9 @@
     body->CreateFixture(&fixtureDef);
     
     //AP: add a little bouncy ball on the end
-    fixtureDef.restitution = 0.60f;
+    fixtureDef.restitution = 0.50f;
     b2CircleShape circle;
-    circle.m_radius = 0.15;
+    circle.m_radius = 0.05;
     circle.m_p = b2Vec2(0, SCALE_FACTOR *2.5);
     fixtureDef.shape = &circle;
     

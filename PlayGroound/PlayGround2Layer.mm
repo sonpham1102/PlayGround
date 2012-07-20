@@ -24,7 +24,6 @@ enum {
 
 @interface PlayGround2Layer()
 -(void) initPhysics;
--(void) addNewSpriteAtPosition:(CGPoint)p;
 -(void) createMenu;
 @end
 
@@ -225,62 +224,6 @@ enum {
 	world->DrawDebugData();	
 	
 	kmGLPopMatrix();
-}
-
--(void) createBall{
-    
-    CGSize p = [CCDirector sharedDirector].winSize;
-    
-    b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(p.width/2/PTM_RATIO, p.height/2/PTM_RATIO);
-	//b2Body *body = world->CreateBody(&bodyDef);
-    mainBody = world->CreateBody(&bodyDef);
-    
-    b2CircleShape dynamicCircle;
-    dynamicCircle.m_radius = 0.6f;
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicCircle;	
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.3f;
-    fixtureDef.restitution = 0.25;
-	mainBody->CreateFixture(&fixtureDef);}
-
--(void) addNewSpriteAtPosition:(CGPoint)p
-{
-	CCLOG(@"Add sprite %0.2f x %02.f",p.x,p.y);
-	CCNode *parent = [self getChildByTag:kTagParentNode];
-	
-	//We have a 64x64 sprite sheet with 4 different 32x32 images.  The following code is
-	//just randomly picking one of the images
-	int idx = (CCRANDOM_0_1() > .5 ? 0:1);
-	int idy = (CCRANDOM_0_1() > .5 ? 0:1);
-	PhysicsSprite *sprite = [PhysicsSprite spriteWithTexture:spriteTexture_ rect:CGRectMake(32 * idx,32 * idy,32,32)];						
-	[parent addChild:sprite];
-	
-	sprite.position = ccp( p.x, p.y);
-	
-	// Define the dynamic body.
-	//Set up a 1m squared box in the physics world
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(p.x/PTM_RATIO, p.y/PTM_RATIO);
-	//b2Body *body = world->CreateBody(&bodyDef);
-    mainBody = world->CreateBody(&bodyDef);
-    
-	// Define another box shape for our dynamic body.
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(.5f, .5f);//These are mid points for our 1m box
-	
-
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicBox;	
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.3f;
-    fixtureDef.restitution = 0.25;
-	mainBody->CreateFixture(&fixtureDef);
-	
-	[sprite setPhysicsBody:mainBody];
 }
 
 -(void) update: (ccTime) dt

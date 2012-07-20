@@ -197,15 +197,15 @@ enum {
 	groundBody->CreateFixture(&groundBox,0);
 	
 	// top
-	groundBox.Set(b2Vec2(0,s.height/PTM_RATIO), b2Vec2(s.width/PTM_RATIO,s.height/PTM_RATIO));
+	groundBox.Set(b2Vec2(0,s.height/PTM_RATIO*4), b2Vec2(s.width/PTM_RATIO,s.height/PTM_RATIO*4));
 	groundBody->CreateFixture(&groundBox,0);
 	
 	// left
-	groundBox.Set(b2Vec2(0,s.height/PTM_RATIO), b2Vec2(0,0));
+	groundBox.Set(b2Vec2(0,s.height/PTM_RATIO*4), b2Vec2(0,0));
 	groundBody->CreateFixture(&groundBox,0);
 	
 	// right
-	groundBox.Set(b2Vec2(s.width/PTM_RATIO,s.height/PTM_RATIO), b2Vec2(s.width/PTM_RATIO,0));
+	groundBox.Set(b2Vec2(s.width/PTM_RATIO,s.height/PTM_RATIO*4), b2Vec2(s.width/PTM_RATIO,0));
 	groundBody->CreateFixture(&groundBox,0);
 }
 
@@ -295,7 +295,25 @@ enum {
 	
 	// Instruct the world to perform a single step of simulation. It is
 	// generally best to keep the time step and iterations fixed.
-	world->Step(dt, velocityIterations, positionIterations);	
+	world->Step(dt, velocityIterations, positionIterations);
+	[self followRocket];
+}
+
+-(void)followRocket {
+    
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+
+    b2Vec2 position = rocket.body->GetPosition();
+    
+    float fixtedPostion = winSize.height/2;
+    float newY = fixtedPostion - position.y * PTM_RATIO;
+    
+    newY = MIN(newY,0);
+    newY = MAX(newY,-winSize.height * 3);
+    
+    CGPoint newPos = ccp(self.position.x, newY);
+    
+    [self setPosition:newPos];
 }
 
 -(void) fireLeft {

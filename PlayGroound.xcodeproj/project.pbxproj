@@ -202,6 +202,7 @@
 		FA8182F615B87709003AC851 /* GameCharPhysics.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA8182F515B87709003AC851 /* GameCharPhysics.mm */; };
 		FA81830015B8B0E5003AC851 /* 22k_cargo_space_freighter_farV1.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA8182FF15B8B0E5003AC851 /* 22k_cargo_space_freighter_farV1.wav */; };
 		FA81830315B8B1E3003AC851 /* 22k_cargo_space_freighter_closeV2.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA81830215B8B1E3003AC851 /* 22k_cargo_space_freighter_closeV2.wav */; };
+		FA81830915B9BB64003AC851 /* RocketMan.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA81830815B9BB64003AC851 /* RocketMan.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -602,6 +603,8 @@
 		FA8182F515B87709003AC851 /* GameCharPhysics.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameCharPhysics.mm; sourceTree = "<group>"; };
 		FA8182FF15B8B0E5003AC851 /* 22k_cargo_space_freighter_farV1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 22k_cargo_space_freighter_farV1.wav; sourceTree = "<group>"; };
 		FA81830215B8B1E3003AC851 /* 22k_cargo_space_freighter_closeV2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 22k_cargo_space_freighter_closeV2.wav; sourceTree = "<group>"; };
+		FA81830715B9BB64003AC851 /* RocketMan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RocketMan.h; sourceTree = "<group>"; };
+		FA81830815B9BB64003AC851 /* RocketMan.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RocketMan.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1335,6 +1338,8 @@
 				FA8182F515B87709003AC851 /* GameCharPhysics.mm */,
 				12B9470615B883BE00CB76CD /* Rocket.h */,
 				12B9470715B883BE00CB76CD /* Rocket.mm */,
+				FA81830715B9BB64003AC851 /* RocketMan.h */,
+				FA81830815B9BB64003AC851 /* RocketMan.mm */,
 			);
 			name = GameObjects;
 			sourceTree = "<group>";
@@ -1585,6 +1590,7 @@
 				12B946FE15B860F600CB76CD /* OptionsScene.m in Sources */,
 				12B9470115B8611300CB76CD /* OptionsLayer.m in Sources */,
 				12B9470815B883BE00CB76CD /* Rocket.mm in Sources */,
+				FA81830915B9BB64003AC851 /* RocketMan.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

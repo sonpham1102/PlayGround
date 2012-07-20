@@ -1595,6 +1595,7 @@
 				12B946FE15B860F600CB76CD /* OptionsScene.m in Sources */,
 				12B9470115B8611300CB76CD /* OptionsLayer.m in Sources */,
 				12B9470815B883BE00CB76CD /* Rocket.mm in Sources */,
+				12D289BD15B9E46300DB62B9 /* PlayGroundScene2UILayer.m in Sources */,
 				FA81830915B9BB64003AC851 /* RocketMan.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

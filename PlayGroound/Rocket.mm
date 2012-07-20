@@ -64,31 +64,37 @@
     
     body->CreateFixture(&fixtureDef);
     
-    body->SetAngularDamping(10.0f);
+    //AP: add a little bouncy ball on the end
+    fixtureDef.restitution = 0.60f;
+    b2CircleShape circle;
+    circle.m_radius = 0.15;
+    circle.m_p = b2Vec2(0, SCALE_FACTOR *2.5);
+    fixtureDef.shape = &circle;
+    
+    body->CreateFixture(&fixtureDef);
+    
+    body->SetAngularDamping(8.0f);
     
 }
 
 -(void) fireLeftRocket {
     
     b2Vec2 bodyCenter = body->GetWorldCenter();
-    b2Vec2 impulse = b2Vec2(0,body->GetMass() * 0.5f);
-    b2Vec2 impulseWorld = body->GetWorldPoint(impulse);
-    impulseWorld = impulseWorld - bodyCenter;
+    b2Vec2 impulse = b2Vec2(0,body->GetMass() * 25.0f);
+    b2Vec2 impulseWorld = body->GetWorldVector(impulse);
     b2Vec2 impulsePoint = body->GetWorldPoint(b2Vec2(-1.25 * SCALE_FACTOR,
                                                      /*-1.75*/0.0 * SCALE_FACTOR));
-    body->ApplyLinearImpulse(impulseWorld, impulsePoint);
+    body->ApplyForce(impulseWorld, impulsePoint);
 }
 
 -(void) fireRightRocket {
     
     b2Vec2 bodyCenter = body->GetWorldCenter();
-    b2Vec2 impulse = b2Vec2(0,body->GetMass() * 0.5f);
-    b2Vec2 impulseWorld = body->GetWorldPoint(impulse);
-    impulseWorld = impulseWorld - bodyCenter;
+    b2Vec2 impulse = b2Vec2(0,body->GetMass() * 25.0f);
+    b2Vec2 impulseWorld = body->GetWorldVector(impulse);
     b2Vec2 impulsePoint = body->GetWorldPoint(b2Vec2(1.25 * SCALE_FACTOR,
                                                      /*-1.75*/0.0 * SCALE_FACTOR));
-    body->ApplyLinearImpulse(impulseWorld, impulsePoint);
-    
+    body->ApplyForce(impulseWorld, impulsePoint);
 }
 
 -(id) initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location {

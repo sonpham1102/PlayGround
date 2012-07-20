@@ -10,6 +10,7 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 #import "PlayGround2Layer.h"
+#import "PlayGroundScene2UILayer.h"
 
 @interface PlayGround2Scene : CCScene
 

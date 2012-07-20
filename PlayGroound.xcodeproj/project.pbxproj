@@ -189,6 +189,7 @@
 		12B946FE15B860F600CB76CD /* OptionsScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B946FD15B860F600CB76CD /* OptionsScene.m */; };
 		12B9470115B8611300CB76CD /* OptionsLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B9470015B8611300CB76CD /* OptionsLayer.m */; };
 		12B9470815B883BE00CB76CD /* Rocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B9470715B883BE00CB76CD /* Rocket.mm */; };
+		12D289BD15B9E46300DB62B9 /* PlayGroundScene2UILayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D289BC15B9E46300DB62B9 /* PlayGroundScene2UILayer.m */; };
 		FA1348BD15B7157600E5CDB5 /* GameManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA1348BC15B7157600E5CDB5 /* GameManager.mm */; };
 		FA1348CF15B7516400E5CDB5 /* SoundEffects.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA1348CE15B7516400E5CDB5 /* SoundEffects.plist */; };
 		FA1348D415B7536C00E5CDB5 /* BackgroundMusic.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA1348D315B7536C00E5CDB5 /* BackgroundMusic.plist */; };
@@ -583,6 +584,8 @@
 		12B9470015B8611300CB76CD /* OptionsLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionsLayer.m; sourceTree = "<group>"; };
 		12B9470615B883BE00CB76CD /* Rocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rocket.h; sourceTree = "<group>"; };
 		12B9470715B883BE00CB76CD /* Rocket.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Rocket.mm; sourceTree = "<group>"; };
+		12D289BB15B9E46300DB62B9 /* PlayGroundScene2UILayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGroundScene2UILayer.h; sourceTree = "<group>"; };
+		12D289BC15B9E46300DB62B9 /* PlayGroundScene2UILayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayGroundScene2UILayer.m; sourceTree = "<group>"; };
 		FA1348B915B7133300E5CDB5 /* GlobalConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalConstants.h; sourceTree = "<group>"; };
 		FA1348BB15B7157600E5CDB5 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
 		FA1348BC15B7157600E5CDB5 /* GameManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameManager.mm; sourceTree = "<group>"; };
@@ -1215,6 +1218,8 @@
 				12B946D215B7317900CB76CD /* PlayGround2Scene.mm */,
 				12B946D715B731DF00CB76CD /* PlayGround2Layer.h */,
 				12B946D815B731DF00CB76CD /* PlayGround2Layer.mm */,
+				12D289BB15B9E46300DB62B9 /* PlayGroundScene2UILayer.h */,
+				12D289BC15B9E46300DB62B9 /* PlayGroundScene2UILayer.m */,
 			);
 			name = PlayGround2;
 			sourceTree = "<group>";

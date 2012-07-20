@@ -15,6 +15,8 @@
     self = [super init];
     if (self != nil)
     {
+        PlayGroundScene2UILayer *uiLayer = [PlayGroundScene2UILayer node];
+        [self addChild:uiLayer z:10];
         PlayGround2Layer *playGroundLayer = [PlayGround2Layer node];
         [self addChild:playGroundLayer z:5];
     }

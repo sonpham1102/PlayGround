@@ -54,6 +54,8 @@ enum {
         
         // create the rocket man
         [self createRocketMan:ccp(s.width/2, s.height/5)];
+        
+        cameraTarget = CGPointZero;
 		
 		//Set up sprite
 /*		
@@ -255,11 +257,16 @@ enum {
 
 -(void) followRocketMan
 {
+    // calculate where we would like the camera to be
     CGSize winSize = [CCDirector sharedDirector].winSize;
     float newY = rocketMan.position.y - winSize.height*FIXED_POS_Y;
     newY = MAX(newY, 0);
     newY = MIN(newY, winSize.height * SCREEN_LENGTHS-winSize.height);
     CGPoint newPos = ccp(self.position.x, -newY);
+    
+    // move to the new position gradually
+    
+    
     [self setPosition:newPos];
 }
 

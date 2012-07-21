@@ -23,6 +23,7 @@
 	GLESDebugDraw *m_debugDraw;		// strong ref
     RocketMan* rocketMan;
     b2Body* endZoneSensor;
+    CGPoint cameraTarget;
 }
 
 @end

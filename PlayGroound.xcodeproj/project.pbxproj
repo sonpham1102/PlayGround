@@ -180,10 +180,10 @@
 		128228F215B5EC760030D109 /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128228F115B5EC760030D109 /* GLES-Render.mm */; };
 		128228F515B5EC760030D109 /* PhysicsSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128228F415B5EC760030D109 /* PhysicsSprite.mm */; };
 		128228F715B5EC760030D109 /* blocks.png in Resources */ = {isa = PBXBuildFile; fileRef = 128228F615B5EC760030D109 /* blocks.png */; };
-		12A8A0DE15BB207E009E07B1 /* Space_Background_iPad-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 12A8A0DA15BB207E009E07B1 /* Space_Background_iPad-hd.png */; };
-		12A8A0DF15BB207E009E07B1 /* Space_Background_iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = 12A8A0DB15BB207E009E07B1 /* Space_Background_iPhone.png */; };
-		12A8A0E015BB207E009E07B1 /* Space_Background_iPhone-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 12A8A0DC15BB207E009E07B1 /* Space_Background_iPhone-hd.png */; };
-		12A8A0E215BB2138009E07B1 /* Space_Background_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 12A8A0E115BB2138009E07B1 /* Space_Background_iPad.png */; };
+		12A8A0DE15BB207E009E07B1 /* Space_Background-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = 12A8A0DA15BB207E009E07B1 /* Space_Background-ipadhd.png */; };
+		12A8A0DF15BB207E009E07B1 /* Space_Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 12A8A0DB15BB207E009E07B1 /* Space_Background.png */; };
+		12A8A0E015BB207E009E07B1 /* Space_Background-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 12A8A0DC15BB207E009E07B1 /* Space_Background-hd.png */; };
+		12A8A0E215BB2138009E07B1 /* Space_Background-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 12A8A0E115BB2138009E07B1 /* Space_Background-ipad.png */; };
 		12B946C515B7295600CB76CD /* MainMenuLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B946C215B7295600CB76CD /* MainMenuLayer.m */; };
 		12B946C615B7295600CB76CD /* MainMenuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B946C415B7295600CB76CD /* MainMenuScene.m */; };
 		12B946D015B7316100CB76CD /* PlayGround1Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B946CF15B7316100CB76CD /* PlayGround1Scene.mm */; };
@@ -570,10 +570,10 @@
 		128228F315B5EC760030D109 /* PhysicsSprite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhysicsSprite.h; sourceTree = "<group>"; };
 		128228F415B5EC760030D109 /* PhysicsSprite.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PhysicsSprite.mm; sourceTree = "<group>"; };
 		128228F615B5EC760030D109 /* blocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blocks.png; path = Resources/blocks.png; sourceTree = "<group>"; };
-		12A8A0DA15BB207E009E07B1 /* Space_Background_iPad-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Space_Background_iPad-hd.png"; sourceTree = "<group>"; };
-		12A8A0DB15BB207E009E07B1 /* Space_Background_iPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Space_Background_iPhone.png; sourceTree = "<group>"; };
-		12A8A0DC15BB207E009E07B1 /* Space_Background_iPhone-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Space_Background_iPhone-hd.png"; sourceTree = "<group>"; };
-		12A8A0E115BB2138009E07B1 /* Space_Background_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Space_Background_iPad.png; sourceTree = "<group>"; };
+		12A8A0DA15BB207E009E07B1 /* Space_Background-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Space_Background-ipadhd.png"; sourceTree = "<group>"; };
+		12A8A0DB15BB207E009E07B1 /* Space_Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Space_Background.png; sourceTree = "<group>"; };
+		12A8A0DC15BB207E009E07B1 /* Space_Background-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Space_Background-hd.png"; sourceTree = "<group>"; };
+		12A8A0E115BB2138009E07B1 /* Space_Background-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Space_Background-ipad.png"; sourceTree = "<group>"; };
 		12B946C115B7295600CB76CD /* MainMenuLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuLayer.h; sourceTree = "<group>"; };
 		12B946C215B7295600CB76CD /* MainMenuLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuLayer.m; sourceTree = "<group>"; };
 		12B946C315B7295600CB76CD /* MainMenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuScene.h; sourceTree = "<group>"; };
@@ -1212,10 +1212,10 @@
 		12A8A0D715BB206C009E07B1 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				12A8A0E115BB2138009E07B1 /* Space_Background_iPad.png */,
-				12A8A0DA15BB207E009E07B1 /* Space_Background_iPad-hd.png */,
-				12A8A0DB15BB207E009E07B1 /* Space_Background_iPhone.png */,
-				12A8A0DC15BB207E009E07B1 /* Space_Background_iPhone-hd.png */,
+				12A8A0E115BB2138009E07B1 /* Space_Background-ipad.png */,
+				12A8A0DA15BB207E009E07B1 /* Space_Background-ipadhd.png */,
+				12A8A0DB15BB207E009E07B1 /* Space_Background.png */,
+				12A8A0DC15BB207E009E07B1 /* Space_Background-hd.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -1442,10 +1442,10 @@
 				FA1348DE15B7544700E5CDB5 /* EscapeTheFutureV3.mp3 in Resources */,
 				FA81830015B8B0E5003AC851 /* 22k_cargo_space_freighter_farV1.wav in Resources */,
 				FA81830315B8B1E3003AC851 /* 22k_cargo_space_freighter_closeV2.wav in Resources */,
-				12A8A0DE15BB207E009E07B1 /* Space_Background_iPad-hd.png in Resources */,
-				12A8A0DF15BB207E009E07B1 /* Space_Background_iPhone.png in Resources */,
-				12A8A0E015BB207E009E07B1 /* Space_Background_iPhone-hd.png in Resources */,
-				12A8A0E215BB2138009E07B1 /* Space_Background_iPad.png in Resources */,
+				12A8A0DE15BB207E009E07B1 /* Space_Background-ipadhd.png in Resources */,
+				12A8A0DF15BB207E009E07B1 /* Space_Background.png in Resources */,
+				12A8A0E015BB207E009E07B1 /* Space_Background-hd.png in Resources */,
+				12A8A0E215BB2138009E07B1 /* Space_Background-ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

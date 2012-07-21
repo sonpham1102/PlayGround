@@ -8,7 +8,7 @@
 
 #import "Rocket.h"
 
-#define SCALE_FACTOR 0.5f
+#define SCALE_FACTOR 0.20f
 
 @implementation Rocket
 
@@ -74,6 +74,7 @@
     body->CreateFixture(&fixtureDef);
     
     body->SetAngularDamping(8.0f);
+    body->SetLinearDamping(0.8f);
     
 }
 

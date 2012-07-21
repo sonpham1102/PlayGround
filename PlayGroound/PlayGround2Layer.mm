@@ -85,6 +85,7 @@ enum {
 
 -(void) createBackground {
     CCSprite *backgroundImage;
+/*
     if (IS_IPAD())
     {
         //indicates game is running on an IPAD
@@ -94,6 +95,8 @@ enum {
     {
         backgroundImage = [CCSprite spriteWithFile:@"Space_Background_iPhone.png"];
     }
+ */
+    backgroundImage = [CCSprite spriteWithFile:@"Space_Background.png"];
     
     backgroundImage.scaleX = LEVEL_WIDTH;
     backgroundImage.scaleY = LEVEL_HEIGHT;
@@ -122,6 +125,8 @@ enum {
 	
 	b2Vec2 gravity;
 	gravity.Set(0.0f, -10.0f);
+//	gravity.Set(0.0f, 0.0f);
+    
 	world = new b2World(gravity);
 	
 	

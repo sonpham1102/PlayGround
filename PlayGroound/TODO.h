@@ -19,9 +19,6 @@ AP: Look at a tutorial on NSDictionaries ... I'm not totally sure what's happeni
 
 AP: Write a GetDictionaryFromPlist function for Gamemanager, use it at least twice, probably more 
  
-AP: Make sure PTM is correct for each device
- 
-AP: KIll all sounds on scene change
-AP: Kill all sounds when losing focus
+
 
 END NOTES */

@@ -53,6 +53,7 @@
 //AP: this is different than the lcc2d approach so we can store the music/level in a Plist
 -(void)playBackgroundTrack:(LevelIDs)levelID;
 -(void)stopBackgroundTrack;
-
+//AP: stop all effects (called when switching scenes
+-(void) stopAllEffects;
 
 @end

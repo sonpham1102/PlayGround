@@ -16,7 +16,8 @@
 
 //AP : MOVE to a plist or something
 #define SCREEN_LENGTHS 5.0 //number of screens high for the level 
-#define END_ZONE_SENSOR_SIZE 0.10 //multiple of screen width
+#define END_ZONE_SENSOR_SIZE 0.10 //multiple of screen height
+#define FIXED_POS_Y 0.33f // multiple of screen height
 
 enum {
 	kTagParentNode = 1,
@@ -29,7 +30,7 @@ enum {
 -(void) initPhysics;
 -(void) addNewSpriteAtPosition:(CGPoint)p;
 -(void) createMenu;
--(void) createRocketMan;
+-(void) createRocketMan:(CGPoint) location;
 @end
 
 @implementation PlayGround1Layer
@@ -248,35 +249,22 @@ enum {
     
     CGSize screenSize = [CCDirector sharedDirector].winSize;
     rocketMan.body->SetTransform( b2Vec2(screenSize.width/2/PTM_RATIO, screenSize.height/5/PTM_RATIO), 0.0f);
+    rocketMan.body->SetLinearVelocity(b2Vec2_zero);
+    rocketMan.body->SetAngularVelocity(0.0);
 }
 
 -(void) followRocketMan
 {
     CGSize winSize = [CCDirector sharedDirector].winSize;
-    float fixedPosition = winSize.height/3;
-    float newY = fixedPosition - rocketMan.position.y;
-    newY = MIN(newY, 0);
-    newY = MAX(newY, -(winSize.height * SCREEN_LENGTHS-winSize.height));
-    CGPoint newPos = ccp(self.position.x, newY);
+    float newY = rocketMan.position.y - winSize.height*FIXED_POS_Y;
+    newY = MAX(newY, 0);
+    newY = MIN(newY, winSize.height * SCREEN_LENGTHS-winSize.height);
+    CGPoint newPos = ccp(self.position.x, -newY);
     [self setPosition:newPos];
-    
 }
 
 -(void) update: (ccTime) dt
 {
-/*
-	//It is recommended that a fixed time step is used with Box2D for stability
-	//of the simulation, however, we are using a variable time step here.
-	//You need to make an informed choice, the following URL is useful
-	//http://gafferongames.com/game-physics/fix-your-timestep/
-	
-	int32 velocityIterations = 8;
-	int32 positionIterations = 1;
-	
-	// Instruct the world to perform a single step of simulation. It is
-	// generally best to keep the time step and iterations fixed.
-	world->Step(dt, velocityIterations, positionIterations);
-*/	
     static double UPDATE_INTERVAL = 1.0/60.0f;
     static double MAX_CYCLES_PER_FRAME = 5;
     static double timeAccumulator = 0;

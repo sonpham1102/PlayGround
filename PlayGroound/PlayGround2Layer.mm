@@ -14,6 +14,10 @@
 #import "PhysicsSprite.h"
 #import "GameManager.h"
 #import "Rocket.h"
+#import "GlobalConstants.h"
+
+#define LEVEL_HEIGHT 10
+#define LEVEL_WIDTH 2
 
 enum {
 	kTagParentNode = 1,
@@ -47,7 +51,7 @@ enum {
 		
 		// init physics
 		[self initPhysics];
-		
+		[self createBackground];
 		//Set up sprite
 		
 #if 1
@@ -77,6 +81,26 @@ enum {
 		[self scheduleUpdate];
 	}
 	return self;
+}
+
+-(void) createBackground {
+    CCSprite *backgroundImage;
+    if (IS_IPAD())
+    {
+        //indicates game is running on an IPAD
+        backgroundImage = [CCSprite spriteWithFile:@"Space_Background_iPad.png"];
+    }
+    else
+    {
+        backgroundImage = [CCSprite spriteWithFile:@"Space_Background_iPhone.png"];
+    }
+    
+    backgroundImage.scaleX = LEVEL_WIDTH;
+    backgroundImage.scaleY = LEVEL_HEIGHT;
+    CGSize screenSize = [[CCDirector sharedDirector] winSize];
+    
+    [backgroundImage setPosition:CGPointMake(screenSize.width * LEVEL_WIDTH/2, screenSize.height * LEVEL_HEIGHT/2)];
+    [self addChild:backgroundImage z:-5];
 }
 
 -(void) dealloc
@@ -132,19 +156,19 @@ enum {
 	
 	// bottom
 	
-	groundBox.Set(b2Vec2(0,0), b2Vec2(s.width/PTM_RATIO,0));
+	groundBox.Set(b2Vec2(0,0), b2Vec2(s.width*LEVEL_WIDTH/PTM_RATIO,0));
 	groundBody->CreateFixture(&groundBox,0);
 	
 	// top
-	groundBox.Set(b2Vec2(0,s.height/PTM_RATIO*4), b2Vec2(s.width/PTM_RATIO,s.height/PTM_RATIO*4));
+	groundBox.Set(b2Vec2(0,s.height/PTM_RATIO*LEVEL_HEIGHT), b2Vec2(s.width*LEVEL_WIDTH/PTM_RATIO,s.height * LEVEL_HEIGHT/PTM_RATIO));
 	groundBody->CreateFixture(&groundBox,0);
 	
 	// left
-	groundBox.Set(b2Vec2(0,s.height/PTM_RATIO*4), b2Vec2(0,0));
+	groundBox.Set(b2Vec2(0,s.height * LEVEL_HEIGHT/PTM_RATIO), b2Vec2(0,0));
 	groundBody->CreateFixture(&groundBox,0);
 	
 	// right
-	groundBox.Set(b2Vec2(s.width/PTM_RATIO,s.height/PTM_RATIO*4), b2Vec2(s.width/PTM_RATIO,0));
+	groundBox.Set(b2Vec2(s.width * LEVEL_WIDTH/PTM_RATIO,s.height * LEVEL_HEIGHT/PTM_RATIO), b2Vec2(s.width * LEVEL_WIDTH/ PTM_RATIO,0));
 	groundBody->CreateFixture(&groundBox,0);
 }
 
@@ -168,17 +192,34 @@ enum {
 
 -(void) update: (ccTime) dt
 {
-	//It is recommended that a fixed time step is used with Box2D for stability
-	//of the simulation, however, we are using a variable time step here.
-	//You need to make an informed choice, the following URL is useful
-	//http://gafferongames.com/game-physics/fix-your-timestep/
-	
-	int32 velocityIterations = 8;
-	int32 positionIterations = 1;
-	
-	// Instruct the world to perform a single step of simulation. It is
-	// generally best to keep the time step and iterations fixed.
-	world->Step(dt, velocityIterations, positionIterations);
+    static double UPDATE_INTERVAL = 1.0/60.0f;
+    static double MAX_CYCLES_PER_FRAME = 5;
+    static double timeAccumulator = 0;
+    
+    timeAccumulator += dt;
+    
+    if (timeAccumulator > (MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL))
+    {
+        timeAccumulator = MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL;
+    }
+    
+    int32 velocityIterations = 5;
+    int32 positionIterations = 5;
+    while (timeAccumulator >= UPDATE_INTERVAL)
+    {
+        timeAccumulator -= UPDATE_INTERVAL;
+        world->Step(UPDATE_INTERVAL, velocityIterations, positionIterations);
+    }
+    
+    for (b2Body *b=world->GetBodyList(); b !=  NULL; b=b->GetNext())
+    {
+        if (b->GetUserData() != NULL)
+        {
+            GameCharPhysics *sprite = (GameCharPhysics *) b->GetUserData();
+            sprite.position = ccp(b->GetPosition().x*PTM_RATIO, b->GetPosition().y*PTM_RATIO);
+            sprite.rotation = CC_RADIANS_TO_DEGREES(b->GetAngle() * -1);
+        }
+    }
 	[self followRocket];
 }
 
@@ -188,13 +229,17 @@ enum {
 
     b2Vec2 position = rocket.body->GetPosition();
     
-    float fixtedPostion = winSize.height/2;
-    float newY = fixtedPostion - position.y * PTM_RATIO;
+    float fixtedPositionY = winSize.height/2;
+    float fixtedPositionX = winSize.width/2;
+    float newY = fixtedPositionY - position.y * PTM_RATIO;
+    float newX = fixtedPositionX - position.x * PTM_RATIO;
     
+    newX = MIN(newX,0);
+    newX = MAX(newX,-winSize.width * (LEVEL_WIDTH - 1));
     newY = MIN(newY,0);
-    newY = MAX(newY,-winSize.height * 3);
+    newY = MAX(newY,-winSize.height * (LEVEL_HEIGHT-1));
     
-    CGPoint newPos = ccp(self.position.x, newY);
+    CGPoint newPos = ccp(newX, newY);
     
     [self setPosition:newPos];
 }

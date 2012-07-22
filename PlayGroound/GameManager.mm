@@ -407,6 +407,13 @@ static GameManager* _sharedGameManager = nil;
     return soundID;
 }
 
+-(void) stopAllEffects
+{
+    CDSoundEngine *engine = [CDAudioManager sharedManager].soundEngine;
+    [engine stopAllSounds];
+}
+
+
 //////////////////
 // Level switching
 //////////////////
@@ -452,6 +459,9 @@ static GameManager* _sharedGameManager = nil;
     else 
     {
     }
+    
+    //stop any sounds currently playing
+    [self stopAllEffects];    
     
     // load the sounds for the new scene
     [self performSelectorInBackground: @selector(loadAudioForLevelWithID:)

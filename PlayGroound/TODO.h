@@ -19,6 +19,6 @@ AP: Look at a tutorial on NSDictionaries ... I'm not totally sure what's happeni
 
 AP: Write a GetDictionaryFromPlist function for Gamemanager, use it at least twice, probably more 
  
-AP: Make sure PTM is correct for each device
+
 
 END NOTES */

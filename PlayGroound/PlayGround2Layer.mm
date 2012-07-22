@@ -18,6 +18,11 @@
 
 #define LEVEL_HEIGHT 10
 #define LEVEL_WIDTH 2
+#define MAX_VELOCITY 5
+#define FRICTION_COEFF 0.08
+
+#define USE_MAX_VELOCITY 0
+//#define NO_TEST 0
 
 enum {
 	kTagParentNode = 1,
@@ -32,6 +37,15 @@ enum {
 
 @implementation PlayGround2Layer
 
+-(void) onEnter{
+    [super onEnter];
+    self.isTouchEnabled = YES;
+}
+
+-(void) onExit{
+    [super onExit];
+    self.isTouchEnabled = NO;
+}
 
 -(id) init
 {
@@ -45,7 +59,9 @@ enum {
         
 		// enable events
 		
-		self.isTouchEnabled = YES;
+		// Handle this onEnter and onExit
+        self.isTouchEnabled = NO;
+        
 		self.isAccelerometerEnabled = YES;
 		CGSize s = [CCDirector sharedDirector].winSize;
 		
@@ -223,6 +239,23 @@ enum {
             GameCharPhysics *sprite = (GameCharPhysics *) b->GetUserData();
             sprite.position = ccp(b->GetPosition().x*PTM_RATIO, b->GetPosition().y*PTM_RATIO);
             sprite.rotation = CC_RADIANS_TO_DEGREES(b->GetAngle() * -1);
+            b2Vec2 velocity = b->GetLinearVelocity();
+#if USE_MAX_VELOCITY            
+            if (velocity.LengthSquared() > MAX_VELOCITY*MAX_VELOCITY)
+            {
+                float velocityScale = MAX_VELOCITY/velocity.Length();
+                
+                b2Vec2 newVelocity = b2Vec2(velocity.x * velocityScale, velocity.y *velocityScale);
+                b->SetLinearVelocity(newVelocity);
+
+            }
+#else //use drag
+            b2Vec2 force = velocity;
+            force.Normalize();
+            force=-force;
+            force*=velocity.LengthSquared()*FRICTION_COEFF;
+            b->ApplyForceToCenter(force);
+#endif
         }
     }
 	[self followRocket];
@@ -261,7 +294,17 @@ enum {
     for (UITouch *touch in touches){
         CGPoint location = [touch locationInView:[touch view]];
         location = [[CCDirector sharedDirector] convertToGL:location];
-        
+/*#if NO_TEST
+        if ((touchLeft == nil) && (touchRight == nil))
+        {
+            [self schedule:@selector(fireLeft)];
+            touchLeft = touch;
+            leftRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
+            [self schedule:@selector(fireRight)];
+            touchRight = touch;
+            rightRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
+        }
+#else*/
         if (location.x < [CCDirector sharedDirector].winSize.width/2) {
             if (touchLeft == nil)
             {
@@ -277,13 +320,25 @@ enum {
                 rightRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
             }
         }
-    }    
+//#endif
+    }
 }
 
 - (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     for (UITouch *touch in touches) {
-        
+
+/*#if NO_TEST
+        if (touch == touchLeft)
+        {
+            [self unschedule:@selector(fireLeft)];
+            [self unschedule:@selector(fireRight)];
+            STOPSOUNDEFFECT(leftRocketSoundID);
+            touchLeft = nil;
+            touchRight = nil;
+            STOPSOUNDEFFECT(rightRocketSoundID);            
+        }
+#else*/        
         if (touch == touchLeft) {
             [self unschedule:@selector(fireLeft)];
             touchLeft = nil;
@@ -293,10 +348,13 @@ enum {
             touchRight = nil;
             STOPSOUNDEFFECT(rightRocketSoundID);
         }
+//#endif
     } 
 }
-
-
+-(void) ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{    
+    [self ccTouchesEnded:touches withEvent:event];
+}
 
 #pragma mark GameKit delegate
 

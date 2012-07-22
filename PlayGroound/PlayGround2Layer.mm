@@ -16,8 +16,8 @@
 #import "Rocket.h"
 #import "GlobalConstants.h"
 
-#define LEVEL_HEIGHT 10
-#define LEVEL_WIDTH 2
+#define LEVEL_HEIGHT 5
+#define LEVEL_WIDTH 1.5
 #define MAX_VELOCITY 5
 #define FRICTION_COEFF 0.08
 
@@ -114,8 +114,6 @@ enum {
  */
     backgroundImage = [CCSprite spriteWithFile:@"Space_Background.png"];
     
-    backgroundImage.scaleX = LEVEL_WIDTH;
-    backgroundImage.scaleY = LEVEL_HEIGHT;
     CGSize screenSize = [[CCDirector sharedDirector] winSize];
     
     [backgroundImage setPosition:CGPointMake(screenSize.width * LEVEL_WIDTH/2, screenSize.height * LEVEL_HEIGHT/2)];

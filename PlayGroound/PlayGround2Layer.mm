@@ -15,6 +15,7 @@
 #import "GameManager.h"
 #import "Rocket.h"
 #import "GlobalConstants.h"
+#import "Obstacle.h"
 
 #define LEVEL_HEIGHT 5
 #define LEVEL_WIDTH 1.5
@@ -68,6 +69,7 @@ enum {
 		// init physics
 		[self initPhysics];
 		[self createBackground];
+        [self createObstacle];
 		//Set up sprite
 		
 #if 1
@@ -129,8 +131,14 @@ enum {
 	m_debugDraw = NULL;
 	
 	[super dealloc];
-}	
+}
 
+-(void)createObstacle {
+    //Spikes * spikes;
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    Obstacle * obstacle;
+    obstacle = [[[Obstacle alloc] initWithWorld:world atLoaction:ccp(winSize.width * 1.5 / 2, 0)] autorelease];
+}
 
 -(void) initPhysics
 {
@@ -256,6 +264,13 @@ enum {
 #endif
         }
     }
+    //JP HACK to run the rocket update should use:
+    //  CCArray *listOfGameObjects = [sceneSpriteBatchNode children];
+    //  for (GameCharacter *tempChar in listOfGameObjects) {
+    //     [tempChar updateStateWithDeltaTime:dt
+    //                  andListOfGameObjects:listOfGameObjects];
+    //  }
+    [rocket updateStateWithDeltaTime:dt];
 	[self followRocket];
 }
 

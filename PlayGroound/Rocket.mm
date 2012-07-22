@@ -8,7 +8,7 @@
 
 #import "Rocket.h"
 
-#define SCALE_FACTOR 0.20f
+#define SCALE_FACTOR 0.12f
 
 @implementation Rocket
 
@@ -78,6 +78,12 @@
     body->SetUserData(self);
 }
 
+-(void)updateStateWithDeltaTime:(ccTime)deltaTime {
+    if (isBodyCollidingWithObjectType(body, kObjTypeObstacle)) {
+        CCLOG(@"Collided with Obstacle Handle it");
+    }
+}
+
 -(void) fireLeftRocket {
     
     b2Vec2 bodyCenter = body->GetWorldCenter();
@@ -103,6 +109,7 @@
     if ((self = [super init])) {
 
         world = theWorld;
+        gameObjType = kObjTypeRocket;
         [self createRocketAtLocation:location];
     }
     return self;

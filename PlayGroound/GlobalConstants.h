@@ -32,6 +32,8 @@ typedef enum
 
 // GameObj types
 typedef enum {
+    kObjTypeRocket,
+    kObjTypeObstacle,
     kObjTypeNone
 }GameObjType;
 

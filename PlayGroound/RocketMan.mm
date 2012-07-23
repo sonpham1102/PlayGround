@@ -52,10 +52,11 @@
 
 -(id) initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location {
     
-    if ((self = [super init])) {
+    if ((self = [super initWithFile:@"Default.png"])) {
         
         world = theWorld;
         [self createRocketManAtLocation:location];
+        //[self setScale:0.25];
     }
     return self;
 }

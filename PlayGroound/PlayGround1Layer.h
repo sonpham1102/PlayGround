@@ -16,7 +16,7 @@
 #import "RocketMan.h"
 
 // HelloWorldLayer
-@interface PlayGround1Layer : CCLayer <GKAchievementViewControllerDelegate, GKLeaderboardViewControllerDelegate>
+@interface PlayGround1Layer : CCLayer <GKAchievementViewControllerDelegate, GKLeaderboardViewControllerDelegate,UIGestureRecognizerDelegate>
 {
 	CCTexture2D *spriteTexture_;	// weak ref
 	b2World* world;					// strong ref
@@ -24,6 +24,7 @@
     RocketMan* rocketMan;
     b2Body* endZoneSensor;
     CGPoint cameraTarget;
+    CGPoint panStartPoint;
 }
 
 @end

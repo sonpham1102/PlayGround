@@ -107,24 +107,24 @@ enum {
 
 -(void) createBackground {
     CCSprite *backgroundImage;
-/*
+
     if (IS_IPAD())
     {
-        //indicates game is running on an IPAD
-        backgroundImage = [CCSprite spriteWithFile:@"Space_Background_iPad.png"];
+        tileMapNode = [CCTMXTiledMap
+                       tiledMapWithTMXFile:@"SpaceBackground-ipad.tmx"];
+        [self addChild:tileMapNode z:-5];
+        
+    } else {
+        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGB565];
+        backgroundImage = [CCSprite spriteWithFile:@"Space_Background.png"];
+        
+        CGSize screenSize = [[CCDirector sharedDirector] winSize];
+        
+        [backgroundImage setPosition:CGPointMake(screenSize.width * LEVEL_WIDTH/2, screenSize.height * LEVEL_HEIGHT/2)];
+        [self addChild:backgroundImage z:-5];
+        
     }
-    else
-    {
-        backgroundImage = [CCSprite spriteWithFile:@"Space_Background_iPhone.png"];
-    }
- */
-    [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGB565];
-    backgroundImage = [CCSprite spriteWithFile:@"Space_Background.png"];
     
-    CGSize screenSize = [[CCDirector sharedDirector] winSize];
-    
-    [backgroundImage setPosition:CGPointMake(screenSize.width * LEVEL_WIDTH/2, screenSize.height * LEVEL_HEIGHT/2)];
-    [self addChild:backgroundImage z:-5];
 }
 
 -(void) dealloc
@@ -391,10 +391,7 @@ enum {
     [self ccTouchesEnded:touches withEvent:event];
 }
 
--(void) ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    [self ccTouchesCancelled:touches withEvent:event];
-    [self ccTouchesBegan:touches withEvent:event];
-}
+
 
 #pragma mark GameKit delegate
 

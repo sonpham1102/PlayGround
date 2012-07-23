@@ -56,9 +56,9 @@ enum {
         touchLeft = nil;
         touchMiddle = nil;
         
-        //leftRocketSoundID = 0;
-        //rightRocketSoundID = 0;
-        rocketSoundID = 0;
+        leftRocketSoundID = 0;
+        rightRocketSoundID = 0;
+        middleRocketSoundID = 0;
         
 		// enable events
 		
@@ -106,25 +106,10 @@ enum {
 }
 
 -(void) createBackground {
-    CCSprite *backgroundImage;
-
-    if (IS_IPAD())
-    {
-        tileMapNode = [CCTMXTiledMap
-                       tiledMapWithTMXFile:@"SpaceBackground-ipad.tmx"];
-        [self addChild:tileMapNode z:-5];
-        
-    } else {
-        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGB565];
-        backgroundImage = [CCSprite spriteWithFile:@"Space_Background.png"];
-        
-        CGSize screenSize = [[CCDirector sharedDirector] winSize];
-        
-        [backgroundImage setPosition:CGPointMake(screenSize.width * LEVEL_WIDTH/2, screenSize.height * LEVEL_HEIGHT/2)];
-        [self addChild:backgroundImage z:-5];
-        
-    }
     
+    tileMapNode = [CCTMXTiledMap
+                tiledMapWithTMXFile:@"SpaceBackground.tmx"];
+    [self addChild:tileMapNode z:-5];
 }
 
 -(void) dealloc
@@ -329,14 +314,14 @@ enum {
             {
                 [self schedule:@selector(fireLeft)];
                 touchLeft = touch;
-                rocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
+                leftRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
             }
         } else if (location.x > [CCDirector sharedDirector].winSize.width * 0.6) {
             if (touchRight == nil)
             {
                 [self schedule:@selector(fireRight)];
                 touchRight = touch;
-                rocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
+                rightRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
             }
         } else {
             if (touchMiddle == nil)
@@ -344,9 +329,7 @@ enum {
                 [self schedule:@selector(fireLeft)];
                 [self schedule:@selector(fireRight)];
                 touchMiddle = touch;
-                rocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
-                //leftRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
-                
+                middleRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
             }
         }
 //#endif
@@ -371,16 +354,16 @@ enum {
         if (touch == touchLeft) {
             [self unschedule:@selector(fireLeft)];
             touchLeft = nil;
-            STOPSOUNDEFFECT(rocketSoundID);
+            STOPSOUNDEFFECT(leftRocketSoundID);
         } else  if (touch == touchRight) {
             [self unschedule:@selector(fireRight)];
             touchRight = nil;
-            STOPSOUNDEFFECT(rocketSoundID);
+            STOPSOUNDEFFECT(rightRocketSoundID);
         } else if (touch == touchMiddle) {
             [self unschedule:@selector(fireLeft)];
             [self unschedule:@selector(fireRight)];
             //STOPSOUNDEFFECT(leftRocketSoundID);
-            STOPSOUNDEFFECT(rocketSoundID);
+            STOPSOUNDEFFECT(middleRocketSoundID);
             touchMiddle = nil;
         }
 //#endif

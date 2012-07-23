@@ -12,6 +12,7 @@
 
 @implementation Rocket
 
+
 -(void) createRocketAtLocation:(CGPoint)location {
     
     
@@ -21,6 +22,8 @@
     bodyDef.position = b2Vec2(location.x/PTM_RATIO,
                               location.y/PTM_RATIO);
     body = world->CreateBody(&bodyDef);
+    
+    body->SetUserData(self);
     
     b2FixtureDef fixtureDef;
     fixtureDef.density = 5.0f;
@@ -75,7 +78,7 @@
     
     body->SetAngularDamping(10.0f);
     //body->SetLinearDamping(1.0f);
-    body->SetUserData(self);
+    
 }
 
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime {
@@ -106,10 +109,11 @@
 
 -(id) initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location {
     
-    if ((self = [super init])) {
+    if ((self = [super init])) { //initWithFile:@"rocket.png"])) {
 
         world = theWorld;
         gameObjType = kObjTypeRocket;
+        
         [self createRocketAtLocation:location];
     }
     return self;

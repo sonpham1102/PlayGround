@@ -19,6 +19,7 @@
     bodyDef.position = b2Vec2(location.x/PTM_RATIO,location.y/PTM_RATIO);
     
     body = world->CreateBody(&bodyDef);
+    body->SetUserData(self);
     
     
     b2PolygonShape shape;
@@ -30,8 +31,6 @@
     fixtureDef.density = 1000.0;
     
     body->CreateFixture(&fixtureDef);
-    
-    //body->SetUserData(self);
 }
 
 

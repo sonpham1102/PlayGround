@@ -10,7 +10,6 @@
 #import "Box2DHelpers.h"
 
 @interface Rocket : GameCharPhysics {
-    
     b2World* world;
 }
 

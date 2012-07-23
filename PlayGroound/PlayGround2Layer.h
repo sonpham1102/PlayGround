@@ -29,11 +29,13 @@
     
     UITouch* touchLeft;
     UITouch* touchRight;
+    UITouch* touchMiddle;
     
     //HACK I'm not sure that the rocked sounds should be handled by the layer
     //it would make more sense to be in the Rocket
-    ALuint leftRocketSoundID;
-    ALuint rightRocketSoundID;
+    //ALuint leftRocketSoundID;
+    //ALuint rightRocketSoundID;
+    ALuint rocketSoundID;
 }
 
 @end

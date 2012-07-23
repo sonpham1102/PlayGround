@@ -54,9 +54,11 @@ enum {
 		
         touchRight = nil;
         touchLeft = nil;
+        touchMiddle = nil;
         
-        leftRocketSoundID = 0;
-        rightRocketSoundID = 0;
+        //leftRocketSoundID = 0;
+        //rightRocketSoundID = 0;
+        rocketSoundID = 0;
         
 		// enable events
 		
@@ -95,6 +97,8 @@ enum {
 		[self addChild:label z:0];
 		[label setColor:ccc3(0,0,255)];
 		label.position = ccp( s.width/2, s.height-50);
+        
+        [self addChild:rocket z:100];
 		
 		[self scheduleUpdate];
 	}
@@ -114,6 +118,7 @@ enum {
         backgroundImage = [CCSprite spriteWithFile:@"Space_Background_iPhone.png"];
     }
  */
+    [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGB565];
     backgroundImage = [CCSprite spriteWithFile:@"Space_Background.png"];
     
     CGSize screenSize = [[CCDirector sharedDirector] winSize];
@@ -138,6 +143,7 @@ enum {
     CGSize winSize = [CCDirector sharedDirector].winSize;
     Obstacle * obstacle;
     obstacle = [[[Obstacle alloc] initWithWorld:world atLoaction:ccp(winSize.width * 1.5 / 2, 0)] autorelease];
+    [self addChild:obstacle];
 }
 
 -(void) initPhysics
@@ -318,19 +324,29 @@ enum {
             rightRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
         }
 #else*/
-        if (location.x < [CCDirector sharedDirector].winSize.width/2) {
+        if (location.x < [CCDirector sharedDirector].winSize.width/3) {
             if (touchLeft == nil)
             {
                 [self schedule:@selector(fireLeft)];
                 touchLeft = touch;
-                leftRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
+                rocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
             }
-        } else {
+        } else if (location.x > [CCDirector sharedDirector].winSize.width * 0.6) {
             if (touchRight == nil)
             {
                 [self schedule:@selector(fireRight)];
                 touchRight = touch;
-                rightRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
+                rocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
+            }
+        } else {
+            if (touchMiddle == nil)
+            {
+                [self schedule:@selector(fireLeft)];
+                [self schedule:@selector(fireRight)];
+                touchMiddle = touch;
+                rocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
+                //leftRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
+                
             }
         }
 //#endif
@@ -355,11 +371,17 @@ enum {
         if (touch == touchLeft) {
             [self unschedule:@selector(fireLeft)];
             touchLeft = nil;
-            STOPSOUNDEFFECT(leftRocketSoundID);
+            STOPSOUNDEFFECT(rocketSoundID);
         } else  if (touch == touchRight) {
             [self unschedule:@selector(fireRight)];
             touchRight = nil;
-            STOPSOUNDEFFECT(rightRocketSoundID);
+            STOPSOUNDEFFECT(rocketSoundID);
+        } else if (touch == touchMiddle) {
+            [self unschedule:@selector(fireLeft)];
+            [self unschedule:@selector(fireRight)];
+            //STOPSOUNDEFFECT(leftRocketSoundID);
+            STOPSOUNDEFFECT(rocketSoundID);
+            touchMiddle = nil;
         }
 //#endif
     } 
@@ -367,6 +389,11 @@ enum {
 -(void) ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {    
     [self ccTouchesEnded:touches withEvent:event];
+}
+
+-(void) ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self ccTouchesCancelled:touches withEvent:event];
+    [self ccTouchesBegan:touches withEvent:event];
 }
 
 #pragma mark GameKit delegate

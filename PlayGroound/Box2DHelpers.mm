@@ -19,14 +19,14 @@ bool isBodyCollidingWithObjectType(b2Body *body, GameObjType objectType) {
             b2Fixture* fixtureB = contact->GetFixtureB();
             b2Body *bodyA = fixtureA->GetBody();
             b2Body *bodyB = fixtureB->GetBody();
-       /*     Box2DSprite *spriteA = 
-            (Box2DSprite *) bodyA->GetUserData();
-            Box2DSprite *spriteB = 
-            (Box2DSprite *) bodyB->GetUserData();
+            GameCharPhysics *spriteA = 
+            (GameCharPhysics *) bodyA->GetUserData();
+            GameCharPhysics *spriteB = 
+            (GameCharPhysics *) bodyB->GetUserData();
             if ((spriteA != NULL && 
-                 spriteA.gameObjectType == objectType) ||
+                 spriteA.gameObjType == objectType) ||
                 (spriteB != NULL && 
-                 spriteB.gameObjectType == objectType))*/ {
+                 spriteB.gameObjType == objectType)) {
                     return true;
                 }        
         }

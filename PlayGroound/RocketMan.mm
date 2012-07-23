@@ -19,6 +19,9 @@
 #define RM_LINEAR_DAMP 2.0
 #define RM_ANG_DAMP 2.0
 
+#define RM_PAN_IMPULSE_X 1.0
+#define RM_PAN_IMPULSE_Y 2.0
+
 @implementation RocketMan
 
 -(void) createRocketManAtLocation: (CGPoint) location
@@ -52,13 +55,31 @@
 
 -(id) initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location {
     
-    if ((self = [super initWithFile:@"Default.png"])) {
+    if ((self = [super init/*WithFile:@"Default.png"*/])) {
         
         world = theWorld;
         [self createRocketManAtLocation:location];
         //[self setScale:0.25];
+        panImpulse = b2Vec2_zero;
     }
     return self;
+}
+
+-(void)planPanMove:(CGPoint)startPoint endPoint:(CGPoint)endPoint
+{    
+    if (startPoint.x < endPoint.x)
+    {
+        panImpulse = b2Vec2(body->GetMass()*RM_PAN_IMPULSE_X, body->GetMass()*RM_PAN_IMPULSE_Y);
+    }
+    else 
+    {
+        panImpulse = b2Vec2(-body->GetMass()*RM_PAN_IMPULSE_X, body->GetMass()*RM_PAN_IMPULSE_Y);
+    }        
+}
+
+-(void)executePanMove
+{
+    body->ApplyLinearImpulse(panImpulse, body->GetWorldCenter());
 }
 
 @end

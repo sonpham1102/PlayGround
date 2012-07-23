@@ -631,6 +631,7 @@
 		FA81830815B9BB64003AC851 /* RocketMan.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RocketMan.mm; sourceTree = "<group>"; };
 		FAC2977815BDC874008559AF /* CCNode+SFGestureRecognizers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCNode+SFGestureRecognizers.h"; sourceTree = "<group>"; };
 		FAC2977915BDC874008559AF /* CCNode+SFGestureRecognizers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCNode+SFGestureRecognizers.m"; sourceTree = "<group>"; };
+		FAC2978B15BDEBBC008559AF /* PanRayCastCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanRayCastCallback.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1275,6 +1276,7 @@
 		12B946CD15B730C100CB76CD /* PlayGround1 */ = {
 			isa = PBXGroup;
 			children = (
+				FAC2978B15BDEBBC008559AF /* PanRayCastCallback.h */,
 				12B946CE15B7316100CB76CD /* PlayGround1Scene.h */,
 				12B946CF15B7316100CB76CD /* PlayGround1Scene.mm */,
 				12B946D415B731C700CB76CD /* PlayGround1Layer.h */,

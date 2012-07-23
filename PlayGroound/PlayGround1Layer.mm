@@ -76,6 +76,8 @@ enum {
         // use for 
         panStartPoint = CGPointZero;
         
+        _panRaycastCallback = new PanRayCastCallback();
+        
 		
 		//Set up sprite
 /*		
@@ -128,39 +130,41 @@ enum {
     if (aPanGestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
         // log the start point
-        panStartPoint = [aPanGestureRecognizer locationInView:aPanGestureRecognizer.view];
+        panStartPoint = [aPanGestureRecognizer locationInView:[aPanGestureRecognizer view]];
+        panStartPoint = [[CCDirector sharedDirector] convertToGL:panStartPoint];
+        //AP : Need to subtract any movement of the view
+        panStartPoint.x -= [self position].x;
+        panStartPoint.y -= [self position].y;
     }
     else if (aPanGestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
-        CGPoint endLocation = [aPanGestureRecognizer locationInView:aPanGestureRecognizer.view];
+        panEndPoint = [aPanGestureRecognizer locationInView:aPanGestureRecognizer.view];
+        panEndPoint = [[CCDirector sharedDirector] convertToGL:panEndPoint];
+        //AP : Need to subtract any movement of the view
+        panEndPoint.x -= [self position].x;
+        panEndPoint.y -= [self position].y;
         
+        // give the rocked the parameters for the pan move
+        [rocketMan planPanMove:panStartPoint endPoint:panEndPoint];
+
+        // perform a raycast, if the line hits the rocketman
+        world->RayCast(_panRaycastCallback, b2Vec2(panStartPoint.x/PTM_RATIO, panStartPoint.y/PTM_RATIO),
+                       b2Vec2(panEndPoint.x/PTM_RATIO, panEndPoint.y/PTM_RATIO));
+
+        
+        /*
         //see if the pan actually intersected one of the sides of the rocket man
         CGRect boundingBox = rocketMan.boundingBox;
         
         float left = CGRectGetMinX(boundingBox);        
-        float right = CGRectGetMinX(boundingBox);
+        float right = CGRectGetMaxX(boundingBox);
         float top = CGRectGetMinX(boundingBox);
         float bottom = CGRectGetMinX(boundingBox);
         
-        //check left side
+        float determinant; 
+*/        
         
-        
-    }
-    
-/*    
-    - (void)panGesture:(UIPanGestureRecognizer *)sender {
-        if (sender.state == UIGestureRecognizerStateBegan) {
-            startLocation = [sender locationInView:self.view];
-        }
-        else if (sender.state == UIGestureRecognizerStateEnded) {
-            CGPoint stopLocation = [sender locationInView:self.view];
-            CGFloat dx = stopLocation.x - startLocation.x;
-            CGFloat dy = stopLocation.y - startLocation.y;
-            CGFloat distance = sqrt(dx*dx + dy*dy );
-            NSLog(@"Distance: %f", distance);
-        }
-    }
-*/
+    }    
 }
 
 
@@ -288,6 +292,8 @@ enum {
 	kmGLPushMatrix();
 	
 	world->DrawDebugData();	
+    
+    ccDrawLine(panStartPoint, panEndPoint);
 	
 	kmGLPopMatrix();
 }
@@ -416,7 +422,7 @@ enum {
 
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    rocketMan.body->ApplyLinearImpulse(b2Vec2(0,rocketMan.body->GetMass() * 5.0), rocketMan.body->GetWorldCenter());
+//    rocketMan.body->ApplyLinearImpulse(b2Vec2(0,rocketMan.body->GetMass() * 5.0), rocketMan.body->GetWorldCenter());
 }
 
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event

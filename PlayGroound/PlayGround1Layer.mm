@@ -14,6 +14,15 @@
 #import "GameManager.h"
 #import "RocketMan.h"
 
+/*
+typedef enum {
+    UISwipeGestureRecognizerDirectionRight = 1 << 0,
+    UISwipeGestureRecognizerDirectionLeft  = 1 << 1,
+    UISwipeGestureRecognizerDirectionUp    = 1 << 2,
+    UISwipeGestureRecognizerDirectionDown  = 1 << 3
+} UISwipeGestureRecognizerDirection;
+*/
+
 //AP : MOVE to a plist or something
 #define SCREEN_LENGTHS 5.0 //number of screens high for the level 
 #define END_ZONE_SENSOR_SIZE 0.10 //multiple of screen height
@@ -55,7 +64,20 @@ enum {
         // create the rocket man
         [self createRocketMan:ccp(s.width/2, s.height/5)];
         
+        // add it as a child
+        [self addChild:rocketMan z:0];
+        
+        // make sure touches are enabled for it so gesture recognizer gets it
+        rocketMan.isTouchEnabled = YES;
+        
+        // use to do a smoother camera follow
         cameraTarget = CGPointZero;
+
+        // use for 
+        panStartPoint = CGPointZero;
+        
+        _panRaycastCallback = new PanRayCastCallback();
+        
 		
 		//Set up sprite
 /*		
@@ -73,7 +95,21 @@ enum {
 		
 		[self addNewSpriteAtPosition:ccp(s.width/2, s.height/2)];
 */		
-		CCLabelTTF *label = [CCLabelTTF labelWithString:@"Tap screen" fontName:@"Marker Felt" fontSize:32];
+/* set up a swipe handler - USING PAN INSTEAD
+        UISwipeGestureRecognizer *swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeGestureRecognizer:)];
+        [self addGestureRecognizer:swipeGestureRecognizer];
+        swipeGestureRecognizer.direction = (UISwipeGestureRecognizerDirection)(UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft);
+        swipeGestureRecognizer.delegate = self;
+        [swipeGestureRecognizer release];
+*/        
+        //! pan gesture recognizer
+        UIGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+        panGestureRecognizer.delegate = self;
+        [self addGestureRecognizer:panGestureRecognizer];
+        [panGestureRecognizer release];
+
+        
+        CCLabelTTF *label = [CCLabelTTF labelWithString:@"Tap screen" fontName:@"Marker Felt" fontSize:32];
 		[self addChild:label z:0];
 		[label setColor:ccc3(0,0,255)];
 		label.position = ccp( s.width/2, s.height-50);
@@ -82,6 +118,55 @@ enum {
 	}
 	return self;
 }
+
+- (void)handleSwipeGestureRecognizer:(UISwipeGestureRecognizer*)aGestureRecognizer
+{
+    CCLOG(@"swipe detected");
+
+}
+
+- (void)handlePanGesture:(UIPanGestureRecognizer*)aPanGestureRecognizer
+{
+    if (aPanGestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        // log the start point
+        panStartPoint = [aPanGestureRecognizer locationInView:[aPanGestureRecognizer view]];
+        panStartPoint = [[CCDirector sharedDirector] convertToGL:panStartPoint];
+        //AP : Need to subtract any movement of the view
+        panStartPoint.x -= [self position].x;
+        panStartPoint.y -= [self position].y;
+    }
+    else if (aPanGestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+        panEndPoint = [aPanGestureRecognizer locationInView:aPanGestureRecognizer.view];
+        panEndPoint = [[CCDirector sharedDirector] convertToGL:panEndPoint];
+        //AP : Need to subtract any movement of the view
+        panEndPoint.x -= [self position].x;
+        panEndPoint.y -= [self position].y;
+        
+        // give the rocked the parameters for the pan move
+        [rocketMan planPanMove:panStartPoint endPoint:panEndPoint];
+
+        // perform a raycast, if the line hits the rocketman
+        world->RayCast(_panRaycastCallback, b2Vec2(panStartPoint.x/PTM_RATIO, panStartPoint.y/PTM_RATIO),
+                       b2Vec2(panEndPoint.x/PTM_RATIO, panEndPoint.y/PTM_RATIO));
+
+        
+        /*
+        //see if the pan actually intersected one of the sides of the rocket man
+        CGRect boundingBox = rocketMan.boundingBox;
+        
+        float left = CGRectGetMinX(boundingBox);        
+        float right = CGRectGetMaxX(boundingBox);
+        float top = CGRectGetMinX(boundingBox);
+        float bottom = CGRectGetMinX(boundingBox);
+        
+        float determinant; 
+*/        
+        
+    }    
+}
+
 
 -(void) dealloc
 {
@@ -207,6 +292,8 @@ enum {
 	kmGLPushMatrix();
 	
 	world->DrawDebugData();	
+    
+    ccDrawLine(panStartPoint, panEndPoint);
 	
 	kmGLPopMatrix();
 }
@@ -335,7 +422,7 @@ enum {
 
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    rocketMan.body->ApplyLinearImpulse(b2Vec2(0,rocketMan.body->GetMass() * 5.0), rocketMan.body->GetWorldCenter());
+//    rocketMan.body->ApplyLinearImpulse(b2Vec2(0,rocketMan.body->GetMass() * 5.0), rocketMan.body->GetWorldCenter());
 }
 
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event

@@ -14,9 +14,10 @@
 #import "Box2D.h"
 #import "GLES-Render.h"
 #import "RocketMan.h"
+#import "PanRayCastCallback.h"
 
 // HelloWorldLayer
-@interface PlayGround1Layer : CCLayer <GKAchievementViewControllerDelegate, GKLeaderboardViewControllerDelegate>
+@interface PlayGround1Layer : CCLayer <GKAchievementViewControllerDelegate, GKLeaderboardViewControllerDelegate,UIGestureRecognizerDelegate>
 {
 	CCTexture2D *spriteTexture_;	// weak ref
 	b2World* world;					// strong ref
@@ -24,6 +25,9 @@
     RocketMan* rocketMan;
     b2Body* endZoneSensor;
     CGPoint cameraTarget;
+    CGPoint panStartPoint;
+    CGPoint panEndPoint;
+    PanRayCastCallback *_panRaycastCallback;
 }
 
 @end

@@ -11,8 +11,13 @@
 @interface RocketMan : GameCharPhysics
 {
     b2World* world;
+
+    //variables for pan planning
+    b2Vec2 panImpulse;
 }
 
 -(id) initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location;
+-(void) planPanMove:(CGPoint) startPoint endPoint:(CGPoint) endPoint;
+-(void) executePanMove;
 
 @end

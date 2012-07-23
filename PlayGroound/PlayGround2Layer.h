@@ -26,6 +26,7 @@
 	b2World* world;                 // strong ref
     b2Body* mainBody;
 	GLESDebugDraw *m_debugDraw;		// strong ref
+    CCTMXTiledMap *tileMapNode;
     
     UITouch* touchLeft;
     UITouch* touchRight;

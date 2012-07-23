@@ -36,7 +36,9 @@
     //it would make more sense to be in the Rocket
     //ALuint leftRocketSoundID;
     //ALuint rightRocketSoundID;
-    ALuint rocketSoundID;
+    ALuint leftRocketSoundID;
+    ALuint rightRocketSoundID;
+    ALuint middleRocketSoundID;
 }
 
 @end

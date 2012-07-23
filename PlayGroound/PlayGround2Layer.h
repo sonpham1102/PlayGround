@@ -39,6 +39,8 @@
     ALuint leftRocketSoundID;
     ALuint rightRocketSoundID;
     ALuint middleRocketSoundID;
+    
+    CCParallaxNode *parallaxNode;
 }
 
 @end

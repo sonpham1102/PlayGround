@@ -110,7 +110,7 @@
 -(id) initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location {
     
     if ((self = [super initWithFile:@"rocket.png"])) {
-
+        
         world = theWorld;
         gameObjType = kObjTypeRocket;
         

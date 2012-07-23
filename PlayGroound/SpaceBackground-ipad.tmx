@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="24" height="60" tilewidth="64" tileheight="64">
- <tileset firstgid="1" name="SpaceTextureAtlas_default" tilewidth="64" tileheight="64" spacing="1" margin="1">
-  <image source="SpaceTextureAtlas_default.png" width="1024" height="1024"/>
+ <tileset firstgid="1" name="Cool_Space_Images_default" tilewidth="64" tileheight="64" spacing="1" margin="1">
+  <image source="Cool_Space_Images_default.png" width="1024" height="1024"/>
  </tileset>
- <tileset firstgid="226" name="SpaceTextureAtlas_default" tilewidth="64" tileheight="64" spacing="1" margin="1">
-  <image source="SpaceTextureAtlas_default.png" width="1024" height="1024"/>
- </tileset>
- <layer name="Tile Layer 1" width="24" height="60">
+ <layer name="BackDrop" width="24" height="60">
   <data encoding="base64" compression="zlib">
-   eJztlmsKhDAMhOv9b9l6AXsCEVwoIUknU9dlIT8+dtU0r7GpRynlSJIkSZIkSf6Ofv/WoH0XoOvkf+mL9aOtve7twzVaIxLbiqkxi7uD8aya68RPpG60Js8W1TKqJ0pUZytfxI/Vc5TPenQPrPQF0cfqA7N3IvuaiVeD/WdyeYrV2bPq33u+bZy243UhfMicGhCHpSm+ImfebBbL9zCyv95G02qWF9KrDthbcZD3R/rUdGFmP2Mzflu8qalX39N5sOc4m7/2HWPZR2ZWdXx5z0ZWz/lf42mJ9tKbd9/C0uUEjl5EIw==
+   eJztzqEBwCAQBMHvE5ICgPRvc0U8bsSKdTOqaqYnvWk0/0o7nfRd+G4vPz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz9/z/8JCjKf
+  </data>
+ </layer>
+ <layer name="Planets" width="24" height="60">
+  <data encoding="base64" compression="zlib">
+   eJzt1rduAkEUhWFy6DC5M8FAR4bnAExP6gnuTXhz/xIdWu1w2BXywhzpq0a63Zx7QyGbexJGBFHEHN7jSCCJFNLi/Aw+kEXO4T2PAooooSzO/0QFVdQc3uv4QgNNtMT5bXTQRc/hvY8BhhhhLM7/r5lgihm+Mfd5/gJLrLDGxuf5W+ywxwE/Ps//xREnnHHxeb5NMGP/jXve5d+Y9qrXmPaq15j26m3UO8G0V2/j9U4wxeudYMqr3gnPjO1W97xLt9pco3auupPUzlV3ktq56k5SO1fdSUGI7Uz32M58PGqfqH2l9onaV2qfqH2l9om9EV8nf0ioMCE=
   </data>
  </layer>
 </map>

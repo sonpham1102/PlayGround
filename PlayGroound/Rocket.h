@@ -11,6 +11,7 @@
 
 @interface Rocket : GameCharPhysics {
     b2World* world;
+    CCSprite *sprite;
 }
 
 -(void) updateStateWithDeltaTime:(ccTime)deltaTime;

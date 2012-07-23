@@ -107,9 +107,43 @@ enum {
 
 -(void) createBackground {
     
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    
     tileMapNode = [CCTMXTiledMap
                 tiledMapWithTMXFile:@"SpaceBackground.tmx"];
-    [self addChild:tileMapNode z:-5];
+    //[self addChild:tileMapNode z:-5];
+    
+    CCTMXLayer *backDropLayer = [tileMapNode layerNamed:@"BackDrop"];
+    CCTMXLayer *planetsLayer = [tileMapNode
+                                    layerNamed:@"Planets"];
+    
+    parallaxNode = [CCParallaxNode node];
+    [parallaxNode setPosition:
+     ccp(winSize.width*LEVEL_WIDTH/2,winSize.height*LEVEL_HEIGHT/2)];
+    
+    float xOffset = 0.0f;
+    float yOffset = 0.0f;
+
+    xOffset = (winSize.width*LEVEL_WIDTH/2);
+    yOffset = (winSize.height*LEVEL_HEIGHT/2);
+    [backDropLayer retain];
+    [backDropLayer removeFromParentAndCleanup:NO];
+    [backDropLayer setAnchorPoint:CGPointMake(0.5f, 0.5f)];
+    [parallaxNode addChild:backDropLayer z:15 parallaxRatio:ccp(1,1)
+            positionOffset:ccp(0,0)];
+    [backDropLayer release];
+    
+    xOffset = (winSize.width*LEVEL_WIDTH/2) * 0.9f;
+    yOffset = (winSize.height*LEVEL_HEIGHT/2) * 0.9f;
+    [planetsLayer retain];
+    [planetsLayer removeFromParentAndCleanup:NO];
+    [planetsLayer setAnchorPoint:CGPointMake(0.5f, 0.5f)];
+    [parallaxNode addChild:planetsLayer z:20
+             parallaxRatio:ccp(0.75,0.75)
+            positionOffset:ccp(xOffset, yOffset)];
+    [planetsLayer release];  
+    
+    [self addChild:parallaxNode z:-1];
 }
 
 -(void) dealloc

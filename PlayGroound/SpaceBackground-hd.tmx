@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="22" height="50" tilewidth="64" tileheight="64">
+ <tileset firstgid="1" name="SpaceTextureAtlas_default" tilewidth="64" tileheight="64" spacing="1" margin="1">
+  <image source="SpaceTextureAtlas_default.png" width="1024" height="1024"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="22" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztVkkSAyEINDMf0BfI/1+ZHELFIoC0y5y0qk+ydiMzKZ1zzu+8Dg4ewtW5z0CsrNjTByXoT4F6onX3UDt1WX0j/Wg5d2iE6BOJHdGcJnIifTFnN8jFKNcabucOeR+Su9E5inIf9R3pofUZ7aMHL+6unAxrfuT8lQWcRm1lTVyLNZ8jus7WOAP6grXlflftP6+vmXny6uO4ZHBJQFxL56LE1eDtMSsvqnveoBeizcze97RA+u/xKv+TWl20fVIHdJhBlIcVOqMxpH3LKfPXvjnJWwVzWvMs4/a+VVf6n035HhGNSfh5vvJu5z59Am8Hjgo4
+  </data>
+ </layer>
+</map>

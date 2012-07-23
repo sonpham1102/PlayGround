@@ -106,25 +106,10 @@ enum {
 }
 
 -(void) createBackground {
-    CCSprite *backgroundImage;
-
-    if (IS_IPAD())
-    {
-        tileMapNode = [CCTMXTiledMap
-                       tiledMapWithTMXFile:@"SpaceBackground-ipad.tmx"];
-        [self addChild:tileMapNode z:-5];
-        
-    } else {
-        [CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGB565];
-        backgroundImage = [CCSprite spriteWithFile:@"Space_Background.png"];
-        
-        CGSize screenSize = [[CCDirector sharedDirector] winSize];
-        
-        [backgroundImage setPosition:CGPointMake(screenSize.width * LEVEL_WIDTH/2, screenSize.height * LEVEL_HEIGHT/2)];
-        [self addChild:backgroundImage z:-5];
-        
-    }
     
+    tileMapNode = [CCTMXTiledMap
+                tiledMapWithTMXFile:@"SpaceBackground.tmx"];
+    [self addChild:tileMapNode z:-5];
 }
 
 -(void) dealloc

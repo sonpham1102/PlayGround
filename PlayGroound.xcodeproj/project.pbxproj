@@ -10,6 +10,9 @@
 		127D6CA715BDDFC9009B643E /* SpaceTextureAtlas_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 127D6CA515BDDFC9009B643E /* SpaceTextureAtlas_default.png */; };
 		127D6CAF15BDE7D9009B643E /* SpaceBackground-ipad.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 127D6CAE15BDE7D9009B643E /* SpaceBackground-ipad.tmx */; };
 		127D6CB115BDE8CD009B643E /* rocket.png in Resources */ = {isa = PBXBuildFile; fileRef = 127D6CB015BDE8CD009B643E /* rocket.png */; };
+		1281988A15BDEE2A0021BF4C /* SpaceBackground-ipadhd.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 1281988915BDEE2A0021BF4C /* SpaceBackground-ipadhd.tmx */; };
+		1281988D15BDEFDF0021BF4C /* SpaceBackground-hd.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 1281988B15BDEFDF0021BF4C /* SpaceBackground-hd.tmx */; };
+		1281988E15BDEFDF0021BF4C /* SpaceBackground.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 1281988C15BDEFDF0021BF4C /* SpaceBackground.tmx */; };
 		128226CB15B5EC730030D109 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 128226CA15B5EC730030D109 /* QuartzCore.framework */; };
 		128226CD15B5EC730030D109 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 128226CC15B5EC730030D109 /* OpenGLES.framework */; };
 		128226CF15B5EC730030D109 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 128226CE15B5EC730030D109 /* OpenAL.framework */; };
@@ -183,10 +186,6 @@
 		128228F215B5EC760030D109 /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128228F115B5EC760030D109 /* GLES-Render.mm */; };
 		128228F515B5EC760030D109 /* PhysicsSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128228F415B5EC760030D109 /* PhysicsSprite.mm */; };
 		128228F715B5EC760030D109 /* blocks.png in Resources */ = {isa = PBXBuildFile; fileRef = 128228F615B5EC760030D109 /* blocks.png */; };
-		12A8A10015BC6DC4009E07B1 /* Space_Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 12A8A0FC15BC6DC4009E07B1 /* Space_Background.png */; };
-		12A8A10115BC6DC4009E07B1 /* Space_Background-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 12A8A0FD15BC6DC4009E07B1 /* Space_Background-hd.png */; };
-		12A8A10215BC6DC4009E07B1 /* Space_Background-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 12A8A0FE15BC6DC4009E07B1 /* Space_Background-ipad.png */; };
-		12A8A10315BC6DC4009E07B1 /* Space_Background-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = 12A8A0FF15BC6DC4009E07B1 /* Space_Background-ipadhd.png */; };
 		12A8A10B15BC764C009E07B1 /* Box2DHelpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12A8A10A15BC764C009E07B1 /* Box2DHelpers.mm */; };
 		12A8A10E15BC7715009E07B1 /* Obstacle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12A8A10D15BC7715009E07B1 /* Obstacle.mm */; };
 		12B946C515B7295600CB76CD /* MainMenuLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B946C215B7295600CB76CD /* MainMenuLayer.m */; };
@@ -220,6 +219,9 @@
 		127D6CA515BDDFC9009B643E /* SpaceTextureAtlas_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SpaceTextureAtlas_default.png; sourceTree = "<group>"; };
 		127D6CAE15BDE7D9009B643E /* SpaceBackground-ipad.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "SpaceBackground-ipad.tmx"; sourceTree = "<group>"; };
 		127D6CB015BDE8CD009B643E /* rocket.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rocket.png; sourceTree = "<group>"; };
+		1281988915BDEE2A0021BF4C /* SpaceBackground-ipadhd.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "SpaceBackground-ipadhd.tmx"; sourceTree = "<group>"; };
+		1281988B15BDEFDF0021BF4C /* SpaceBackground-hd.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "SpaceBackground-hd.tmx"; sourceTree = "<group>"; };
+		1281988C15BDEFDF0021BF4C /* SpaceBackground.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SpaceBackground.tmx; sourceTree = "<group>"; };
 		128226C615B5EC730030D109 /* PlayGroound.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayGroound.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		128226CA15B5EC730030D109 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		128226CC15B5EC730030D109 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -579,10 +581,6 @@
 		128228F315B5EC760030D109 /* PhysicsSprite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhysicsSprite.h; sourceTree = "<group>"; };
 		128228F415B5EC760030D109 /* PhysicsSprite.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PhysicsSprite.mm; sourceTree = "<group>"; };
 		128228F615B5EC760030D109 /* blocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blocks.png; path = Resources/blocks.png; sourceTree = "<group>"; };
-		12A8A0FC15BC6DC4009E07B1 /* Space_Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Space_Background.png; sourceTree = "<group>"; };
-		12A8A0FD15BC6DC4009E07B1 /* Space_Background-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Space_Background-hd.png"; sourceTree = "<group>"; };
-		12A8A0FE15BC6DC4009E07B1 /* Space_Background-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Space_Background-ipad.png"; sourceTree = "<group>"; };
-		12A8A0FF15BC6DC4009E07B1 /* Space_Background-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Space_Background-ipadhd.png"; sourceTree = "<group>"; };
 		12A8A10915BC764C009E07B1 /* Box2DHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2DHelpers.h; sourceTree = "<group>"; };
 		12A8A10A15BC764C009E07B1 /* Box2DHelpers.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Box2DHelpers.mm; sourceTree = "<group>"; };
 		12A8A10C15BC7714009E07B1 /* Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Obstacle.h; sourceTree = "<group>"; };
@@ -1228,13 +1226,12 @@
 		12A8A0D715BB206C009E07B1 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				1281988B15BDEFDF0021BF4C /* SpaceBackground-hd.tmx */,
+				1281988C15BDEFDF0021BF4C /* SpaceBackground.tmx */,
+				1281988915BDEE2A0021BF4C /* SpaceBackground-ipadhd.tmx */,
 				127D6CB015BDE8CD009B643E /* rocket.png */,
 				127D6CAE15BDE7D9009B643E /* SpaceBackground-ipad.tmx */,
 				127D6CA515BDDFC9009B643E /* SpaceTextureAtlas_default.png */,
-				12A8A0FC15BC6DC4009E07B1 /* Space_Background.png */,
-				12A8A0FD15BC6DC4009E07B1 /* Space_Background-hd.png */,
-				12A8A0FE15BC6DC4009E07B1 /* Space_Background-ipad.png */,
-				12A8A0FF15BC6DC4009E07B1 /* Space_Background-ipadhd.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -1482,13 +1479,12 @@
 				FA1348DE15B7544700E5CDB5 /* EscapeTheFutureV3.mp3 in Resources */,
 				FA81830015B8B0E5003AC851 /* 22k_cargo_space_freighter_farV1.wav in Resources */,
 				FA81830315B8B1E3003AC851 /* 22k_cargo_space_freighter_closeV2.wav in Resources */,
-				12A8A10015BC6DC4009E07B1 /* Space_Background.png in Resources */,
-				12A8A10115BC6DC4009E07B1 /* Space_Background-hd.png in Resources */,
-				12A8A10215BC6DC4009E07B1 /* Space_Background-ipad.png in Resources */,
-				12A8A10315BC6DC4009E07B1 /* Space_Background-ipadhd.png in Resources */,
 				127D6CA715BDDFC9009B643E /* SpaceTextureAtlas_default.png in Resources */,
 				127D6CAF15BDE7D9009B643E /* SpaceBackground-ipad.tmx in Resources */,
 				127D6CB115BDE8CD009B643E /* rocket.png in Resources */,
+				1281988A15BDEE2A0021BF4C /* SpaceBackground-ipadhd.tmx in Resources */,
+				1281988D15BDEFDF0021BF4C /* SpaceBackground-hd.tmx in Resources */,
+				1281988E15BDEFDF0021BF4C /* SpaceBackground.tmx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

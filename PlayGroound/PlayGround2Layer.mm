@@ -133,13 +133,13 @@ enum {
             positionOffset:ccp(0,0)];
     [backDropLayer release];
     
-    xOffset = (winSize.width*LEVEL_WIDTH/2) * 0.9f;
-    yOffset = (winSize.height*LEVEL_HEIGHT/2) * 0.9f;
+    xOffset = (winSize.width*LEVEL_WIDTH/2) * 0.2f;
+    yOffset = (winSize.height*LEVEL_HEIGHT/2) * 0.2f;
     [planetsLayer retain];
     [planetsLayer removeFromParentAndCleanup:NO];
     [planetsLayer setAnchorPoint:CGPointMake(0.5f, 0.5f)];
     [parallaxNode addChild:planetsLayer z:20
-             parallaxRatio:ccp(0.75,0.75)
+             parallaxRatio:ccp(0.95,0.95)
             positionOffset:ccp(xOffset, yOffset)];
     [planetsLayer release];  
     

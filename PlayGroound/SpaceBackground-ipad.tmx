@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="24" height="60" tilewidth="64" tileheight="64">
- <tileset firstgid="1" name="Cool_Space_Images_default" tilewidth="64" tileheight="64" spacing="1" margin="1">
-  <image source="Cool_Space_Images_default.png" width="1024" height="1024"/>
+ <tileset firstgid="1" name="SpaceBackground_default" tilewidth="64" tileheight="64" spacing="1" margin="1">
+  <image source="SpaceBackground_default.png" width="2048" height="2048"/>
  </tileset>
  <layer name="BackDrop" width="24" height="60">
   <data encoding="base64" compression="zlib">
-   eJztzqEBwCAQBMHvE5ICgPRvc0U8bsSKdTOqaqYnvWk0/0o7nfRd+G4vPz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz9/z/8JCjKf
+   eJztlk1OAkEQRntwrxCRWwAGdQdyAX6CslO5AEoQdqgHQTkdcBDfklTITA1THcLQi5fUJD09Lz1fV/faObeBLaxPsI4i5wpwEfmpLTwv4QqKUPLgX2WeGtTh1tn7d6ALPejHjG/yvRY8QjvSzz+Gd/iAScz6vMArvMHIw/9d8PwF3/CTwl+bzyX8wh+sjpDPayjDDVQ87K8G4+/gHh6U76bxH8ATPMPQg/+U8Z8wg7kH/7z2t+Af/LXnnYV/3Hln4a8577S9dN935XmXpZceurbaXnro2mp7aR7z79Nf5s7aX+bO2l/mztpf5u7Y+ZF3Yuv8yDuxtb+8E1v7yztx3vfvqfsn5Tmrf1Kes/on5Xm3lr1W45+U591a9lrr/Mhea50f2WvPIf/BP/gHf7v6H4T8hLc=
   </data>
  </layer>
  <layer name="Planets" width="24" height="60">
   <data encoding="base64" compression="zlib">
-   eJzt1rduAkEUhWFy6DC5M8FAR4bnAExP6gnuTXhz/xIdWu1w2BXywhzpq0a63Zx7QyGbexJGBFHEHN7jSCCJFNLi/Aw+kEXO4T2PAooooSzO/0QFVdQc3uv4QgNNtMT5bXTQRc/hvY8BhhhhLM7/r5lgihm+Mfd5/gJLrLDGxuf5W+ywxwE/Ps//xREnnHHxeb5NMGP/jXve5d+Y9qrXmPaq15j26m3UO8G0V2/j9U4wxeudYMqr3gnPjO1W97xLt9pco3auupPUzlV3ktq56k5SO1fdSUGI7Uz32M58PGqfqH2l9onaV2qfqH2l9om9EV8nf0ioMCE=
+   eJzt1MlNQmEUhmGQGSwAcaPMSgEqGxQVkSIAxQGLcB6wCBGhGocOGNYgHSgseNkac0luDsSY8ybP6uZ++VfHYtE0TdM0TdM0TfsfueGBFz7MC+/HEMcKVpEQ3s9gD1nsIye8f4wTnKKMM+H9O9zjARU8Cu//lhVzsMEOB5xwCe0vYRlBhBBGBFGh/RQ2sYU0trGDXaH9PAoo4gCHKOFIaP8cF7jEFa5xg1uh/SdU8YwaXlBHY8J/eguM+yu34BVveMeH8BvGddHDJ/pT2HdygFxww2M1t9FEC210fnyLsBlFDHGT+1/4xgBDcxOG+XnXAgJYNPlGo9bYXMcGklPY12bTCLcgK6A=
   </data>
  </layer>
 </map>

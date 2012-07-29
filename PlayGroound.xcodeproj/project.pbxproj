@@ -8,8 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		127D6CB115BDE8CD009B643E /* rocket.png in Resources */ = {isa = PBXBuildFile; fileRef = 127D6CB015BDE8CD009B643E /* rocket.png */; };
+		127EB08415C59E8E002EEA46 /* LandingPad-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 127EB08315C59E8E002EEA46 /* LandingPad-ipad.png */; };
+		127EB08715C5AB84002EEA46 /* SpaceBackground.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 127EB08615C5AB84002EEA46 /* SpaceBackground.tmx */; };
+		127EB08915C5AD6C002EEA46 /* LandingPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 127EB08815C5AD6C002EEA46 /* LandingPad.png */; };
 		1281988D15BDEFDF0021BF4C /* SpaceBackground-hd.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 1281988B15BDEFDF0021BF4C /* SpaceBackground-hd.tmx */; };
-		1281988E15BDEFDF0021BF4C /* SpaceBackground.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 1281988C15BDEFDF0021BF4C /* SpaceBackground.tmx */; };
 		128198BC15BE36EE0021BF4C /* SpaceBackground_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 128198BA15BE36EE0021BF4C /* SpaceBackground_default.png */; };
 		128198BD15BE36EE0021BF4C /* SpaceBackground-ipad.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 128198BB15BE36EE0021BF4C /* SpaceBackground-ipad.tmx */; };
 		128226CB15B5EC730030D109 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 128226CA15B5EC730030D109 /* QuartzCore.framework */; };
@@ -216,8 +218,10 @@
 
 /* Begin PBXFileReference section */
 		127D6CB015BDE8CD009B643E /* rocket.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rocket.png; sourceTree = "<group>"; };
+		127EB08315C59E8E002EEA46 /* LandingPad-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LandingPad-ipad.png"; sourceTree = "<group>"; };
+		127EB08615C5AB84002EEA46 /* SpaceBackground.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SpaceBackground.tmx; sourceTree = "<group>"; };
+		127EB08815C5AD6C002EEA46 /* LandingPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LandingPad.png; sourceTree = "<group>"; };
 		1281988B15BDEFDF0021BF4C /* SpaceBackground-hd.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "SpaceBackground-hd.tmx"; sourceTree = "<group>"; };
-		1281988C15BDEFDF0021BF4C /* SpaceBackground.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SpaceBackground.tmx; sourceTree = "<group>"; };
 		128198BA15BE36EE0021BF4C /* SpaceBackground_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SpaceBackground_default.png; sourceTree = "<group>"; };
 		128198BB15BE36EE0021BF4C /* SpaceBackground-ipad.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "SpaceBackground-ipad.tmx"; sourceTree = "<group>"; };
 		128226C615B5EC730030D109 /* PlayGroound.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayGroound.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1225,10 +1229,12 @@
 		12A8A0D715BB206C009E07B1 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				127EB08815C5AD6C002EEA46 /* LandingPad.png */,
+				127EB08615C5AB84002EEA46 /* SpaceBackground.tmx */,
+				127EB08315C59E8E002EEA46 /* LandingPad-ipad.png */,
 				128198BA15BE36EE0021BF4C /* SpaceBackground_default.png */,
 				128198BB15BE36EE0021BF4C /* SpaceBackground-ipad.tmx */,
 				1281988B15BDEFDF0021BF4C /* SpaceBackground-hd.tmx */,
-				1281988C15BDEFDF0021BF4C /* SpaceBackground.tmx */,
 				127D6CB015BDE8CD009B643E /* rocket.png */,
 			);
 			name = Images;
@@ -1480,9 +1486,11 @@
 				FA81830315B8B1E3003AC851 /* 22k_cargo_space_freighter_closeV2.wav in Resources */,
 				127D6CB115BDE8CD009B643E /* rocket.png in Resources */,
 				1281988D15BDEFDF0021BF4C /* SpaceBackground-hd.tmx in Resources */,
-				1281988E15BDEFDF0021BF4C /* SpaceBackground.tmx in Resources */,
 				128198BC15BE36EE0021BF4C /* SpaceBackground_default.png in Resources */,
 				128198BD15BE36EE0021BF4C /* SpaceBackground-ipad.tmx in Resources */,
+				127EB08415C59E8E002EEA46 /* LandingPad-ipad.png in Resources */,
+				127EB08715C5AB84002EEA46 /* SpaceBackground.tmx in Resources */,
+				127EB08915C5AD6C002EEA46 /* LandingPad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

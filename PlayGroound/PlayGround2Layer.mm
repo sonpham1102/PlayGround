@@ -89,7 +89,7 @@ enum {
         //JP Creating a Ball to play with instead of Box
         //[self createBall];
         
-        rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width/2, s.height/2)];
+        rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
         
         
 		
@@ -161,7 +161,7 @@ enum {
     //Spikes * spikes;
     CGSize winSize = [CCDirector sharedDirector].winSize;
     Obstacle * obstacle;
-    obstacle = [[[Obstacle alloc] initWithWorld:world atLoaction:ccp(winSize.width * 1.5 / 2, 0)] autorelease];
+    obstacle = [[[Obstacle alloc] initWithWorld:world atLoaction:ccp(winSize.width * 0.75, winSize.height * 0.12)] autorelease];
     [self addChild:obstacle];
 }
 
@@ -255,8 +255,8 @@ enum {
         timeAccumulator = MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL;
     }
     
-    int32 velocityIterations = 5;
-    int32 positionIterations = 5;
+    int32 velocityIterations = 25;
+    int32 positionIterations = 25;
     while (timeAccumulator >= UPDATE_INTERVAL)
     {
         timeAccumulator -= UPDATE_INTERVAL;

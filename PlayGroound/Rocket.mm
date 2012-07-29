@@ -42,7 +42,7 @@
     };
     
     shape.Set(vert, 3);
-    fixtureDef.density = 1.0f;
+    //fixtureDef.density = 5.0f;
     body->CreateFixture(&fixtureDef);
     
     b2Vec2 vert1[] = {

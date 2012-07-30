@@ -27,6 +27,8 @@ typedef enum {
 #define SCREEN_LENGTHS 5.0 //number of screens high for the level 
 #define END_ZONE_SENSOR_SIZE 0.10 //multiple of screen height
 #define FIXED_POS_Y 0.33f // multiple of screen height
+#define CAMERA_CORRECTION_FACTOR 3.0 // affects the speed at which the camera will try to follow the rocket
+#define CAMERA_MIN_DELTA 0.001
 
 enum {
 	kTagParentNode = 1,
@@ -38,7 +40,6 @@ enum {
 @interface PlayGround1Layer()
 -(void) initPhysics;
 -(void) addNewSpriteAtPosition:(CGPoint)p;
--(void) createMenu;
 -(void) createRocketMan:(CGPoint) location;
 @end
 
@@ -57,10 +58,7 @@ enum {
 		
 		// init physics
 		[self initPhysics];
-		
-		// create reset button
-		[self createMenu];
-        
+		        
         // create the rocket man
         [self createRocketMan:ccp(s.width/2, s.height/5)];
         
@@ -68,46 +66,15 @@ enum {
         [self addChild:rocketMan z:0];
         
         // make sure touches are enabled for it so gesture recognizer gets it
-        rocketMan.isTouchEnabled = YES;
+        //rocketMan.isTouchEnabled = YES;
         
         // use to do a smoother camera follow
         cameraTarget = CGPointZero;
-
-        // use for 
-        panStartPoint = CGPointZero;
         
-        _panRaycastCallback = new PanRayCastCallback();
+        //_panRaycastCallback = new PanRayCastCallback();
         
-		
-		//Set up sprite
-/*		
-#if 1
-		// Use batch node. Faster
-		CCSpriteBatchNode *parent = [CCSpriteBatchNode batchNodeWithFile:@"blocks.png" capacity:100];
-		spriteTexture_ = [parent texture];
-#else
-		// doesn't use batch node. Slower
-		spriteTexture_ = [[CCTextureCache sharedTextureCache] addImage:@"blocks.png"];
-		CCNode *parent = [CCNode node];
-#endif
-		[self addChild:parent z:0 tag:kTagParentNode];
-		
-		
-		[self addNewSpriteAtPosition:ccp(s.width/2, s.height/2)];
-*/		
-/* set up a swipe handler - USING PAN INSTEAD
-        UISwipeGestureRecognizer *swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeGestureRecognizer:)];
-        [self addGestureRecognizer:swipeGestureRecognizer];
-        swipeGestureRecognizer.direction = (UISwipeGestureRecognizerDirection)(UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft);
-        swipeGestureRecognizer.delegate = self;
-        [swipeGestureRecognizer release];
-*/        
-        //! pan gesture recognizer
-        UIGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
-        panGestureRecognizer.delegate = self;
-        [self addGestureRecognizer:panGestureRecognizer];
-        [panGestureRecognizer release];
-
+        debugLineEndPoint = CGPointZero;
+        debugLineStartPoint = CGPointZero;      
         
         CCLabelTTF *label = [CCLabelTTF labelWithString:@"Tap screen" fontName:@"Marker Felt" fontSize:32];
 		[self addChild:label z:0];
@@ -119,55 +86,6 @@ enum {
 	return self;
 }
 
-- (void)handleSwipeGestureRecognizer:(UISwipeGestureRecognizer*)aGestureRecognizer
-{
-    CCLOG(@"swipe detected");
-
-}
-
-- (void)handlePanGesture:(UIPanGestureRecognizer*)aPanGestureRecognizer
-{
-    if (aPanGestureRecognizer.state == UIGestureRecognizerStateBegan)
-    {
-        // log the start point
-        panStartPoint = [aPanGestureRecognizer locationInView:[aPanGestureRecognizer view]];
-        panStartPoint = [[CCDirector sharedDirector] convertToGL:panStartPoint];
-        //AP : Need to subtract any movement of the view
-        panStartPoint.x -= [self position].x;
-        panStartPoint.y -= [self position].y;
-    }
-    else if (aPanGestureRecognizer.state == UIGestureRecognizerStateEnded)
-    {
-        panEndPoint = [aPanGestureRecognizer locationInView:aPanGestureRecognizer.view];
-        panEndPoint = [[CCDirector sharedDirector] convertToGL:panEndPoint];
-        //AP : Need to subtract any movement of the view
-        panEndPoint.x -= [self position].x;
-        panEndPoint.y -= [self position].y;
-        
-        // give the rocked the parameters for the pan move
-        [rocketMan planPanMove:panStartPoint endPoint:panEndPoint];
-
-        // perform a raycast, if the line hits the rocketman
-        world->RayCast(_panRaycastCallback, b2Vec2(panStartPoint.x/PTM_RATIO, panStartPoint.y/PTM_RATIO),
-                       b2Vec2(panEndPoint.x/PTM_RATIO, panEndPoint.y/PTM_RATIO));
-
-        
-        /*
-        //see if the pan actually intersected one of the sides of the rocket man
-        CGRect boundingBox = rocketMan.boundingBox;
-        
-        float left = CGRectGetMinX(boundingBox);        
-        float right = CGRectGetMaxX(boundingBox);
-        float top = CGRectGetMinX(boundingBox);
-        float bottom = CGRectGetMinX(boundingBox);
-        
-        float determinant; 
-*/        
-        
-    }    
-}
-
-
 -(void) dealloc
 {
 	delete world;
@@ -175,30 +93,9 @@ enum {
 	
 	delete m_debugDraw;
 	m_debugDraw = NULL;
-	
+    
 	[super dealloc];
 }	
-
--(void) createMenu
-{
-	// Default font size will be 22 points.
-	[CCMenuItemFont setFontSize:22];
-	
-	// Reset Button
-	CCMenuItemLabel *reset = [CCMenuItemFont itemWithString:@"Main Menu" block:^(id sender){
-		[[GameManager sharedGameManager] runLevelWithID:kMainMenu];
-	}];
-	
-	CCMenu *menu = [CCMenu menuWithItems: reset, nil];
-	
-	[menu alignItemsVertically];
-	
-	CGSize size = [[CCDirector sharedDirector] winSize];
-	[menu setPosition:ccp( size.width*0.9, size.height*0.9)];
-	
-	
-	[self addChild: menu z:-1];	
-}
 
 -(void) initPhysics
 {
@@ -293,7 +190,7 @@ enum {
 	
 	world->DrawDebugData();	
     
-    ccDrawLine(panStartPoint, panEndPoint);
+    ccDrawLine(debugLineStartPoint, debugLineEndPoint);
 	
 	kmGLPopMatrix();
 }
@@ -342,19 +239,87 @@ enum {
     rocketMan.body->SetAngularVelocity(0.0);
 }
 
--(void) followRocketMan
+-(void) followRocketMan:(float) dt
 {
     // calculate where we would like the camera to be
     CGSize winSize = [CCDirector sharedDirector].winSize;
     float newY = rocketMan.position.y - winSize.height*FIXED_POS_Y;
     newY = MAX(newY, 0);
     newY = MIN(newY, winSize.height * SCREEN_LENGTHS-winSize.height);
-    CGPoint newPos = ccp(self.position.x, -newY);
     
+    
+    cameraTarget = ccp(self.position.x, -newY);
+
     // move to the new position gradually
+    // calculate a "speed" for the catchup that is proportional to how far away the current position is
+    // from the target
+    CGPoint currentPos = [self position];
     
+    CGPoint travelVector = ccp(cameraTarget.x - currentPos.x, cameraTarget.y - currentPos.y);
+    
+    //calculate a new position based on the distance between
+    CGPoint newPos;
+    
+    float totalDistanceSquared = travelVector.x*travelVector.x + travelVector.y*travelVector.y;
+    
+    //if the distance to travel is zero, we're done
+    if (totalDistanceSquared == 0.0f)
+    {
+        return;
+    }
+    float sqrtTD = sqrtf(totalDistanceSquared);    
+
+    float distanceToMove = sqrtTD*CAMERA_CORRECTION_FACTOR*dt;
+    
+    //make sure we don't overshoot, and check if we are close enough
+    if (((distanceToMove * distanceToMove) > totalDistanceSquared) || (distanceToMove < CAMERA_MIN_DELTA))
+    {
+        newPos.x =cameraTarget.x;
+        newPos.y =cameraTarget.y;
+    }
+    else 
+    {
+        newPos.x = currentPos.x + travelVector.x * distanceToMove/sqrtTD;
+        newPos.y = currentPos.y + travelVector.y * distanceToMove/sqrtTD;
+    }
     
     [self setPosition:newPos];
+}
+
+-(void) handlePan:(CGPoint)startPoint endPoint:(CGPoint)endPoint
+{
+    
+    debugLineStartPoint = startPoint;
+    debugLineEndPoint = endPoint;
+    
+    //AP : Need to subtract any movement of the view
+    //panEndPoint.x -= [self position].x;
+    //panEndPoint.y -= [self position].y;
+    
+    // give the rocked the parameters for the pan move
+    [rocketMan planPanMove:startPoint endPoint:endPoint];
+    [rocketMan executePanMove];
+    
+    // perform a raycast, if the line hits the rocketman
+//    world->RayCast(_panRaycastCallback, b2Vec2(panStartPoint.x/PTM_RATIO, panStartPoint.y/PTM_RATIO),
+//                   b2Vec2(panEndPoint.x/PTM_RATIO, panEndPoint.y/PTM_RATIO));
+    
+    
+    /*
+     //see if the pan actually intersected one of the sides of the rocket man
+     CGRect boundingBox = rocketMan.boundingBox;
+     
+     float left = CGRectGetMinX(boundingBox);        
+     float right = CGRectGetMaxX(boundingBox);
+     float top = CGRectGetMinX(boundingBox);
+     float bottom = CGRectGetMinX(boundingBox);
+     
+     float determinant; 
+     */        
+    
+
+    
+    
 }
 
 -(void) update: (ccTime) dt
@@ -417,7 +382,7 @@ enum {
     }
 
     
-    [self followRocketMan];
+    [self followRocketMan:dt];
 }
 
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

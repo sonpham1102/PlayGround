@@ -17,7 +17,7 @@
 #import "PanRayCastCallback.h"
 
 // HelloWorldLayer
-@interface PlayGround1Layer : CCLayer <GKAchievementViewControllerDelegate, GKLeaderboardViewControllerDelegate,UIGestureRecognizerDelegate>
+@interface PlayGround1Layer : CCLayer
 {
 	CCTexture2D *spriteTexture_;	// weak ref
 	b2World* world;					// strong ref
@@ -25,10 +25,15 @@
     RocketMan* rocketMan;
     b2Body* endZoneSensor;
     CGPoint cameraTarget;
-    CGPoint panStartPoint;
-    CGPoint panEndPoint;
-    PanRayCastCallback *_panRaycastCallback;
+    
+    CGPoint debugLineStartPoint;
+    CGPoint debugLineEndPoint;
+
+//    PanRayCastCallback *_panRaycastCallback;
 }
+
+-(void) handlePan:(CGPoint) startPoint endPoint:(CGPoint) endPoint;
+
 
 @end
 

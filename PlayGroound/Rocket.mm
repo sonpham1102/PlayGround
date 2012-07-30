@@ -76,7 +76,7 @@
     
     body->CreateFixture(&fixtureDef);
     
-    body->SetAngularDamping(10.0f);
+    body->SetAngularDamping(30.0f);
     //body->SetLinearDamping(1.0f);
     
 }
@@ -90,7 +90,7 @@
 -(void) fireLeftRocket {
     
     b2Vec2 bodyCenter = body->GetWorldCenter();
-    b2Vec2 impulse = b2Vec2(0,body->GetMass() * 15.0f);
+    b2Vec2 impulse = b2Vec2(0,body->GetMass() * 10.0f);
     b2Vec2 impulseWorld = body->GetWorldVector(impulse);
     b2Vec2 impulsePoint = body->GetWorldPoint(b2Vec2(-1.25 * SCALE_FACTOR,
                                                      /*-1.75*/0.0 * SCALE_FACTOR));
@@ -100,7 +100,7 @@
 -(void) fireRightRocket {
     
     b2Vec2 bodyCenter = body->GetWorldCenter();
-    b2Vec2 impulse = b2Vec2(0,body->GetMass() * 15.0f);
+    b2Vec2 impulse = b2Vec2(0,body->GetMass() * 10.0f);
     b2Vec2 impulseWorld = body->GetWorldVector(impulse);
     b2Vec2 impulsePoint = body->GetWorldPoint(b2Vec2(1.25 * SCALE_FACTOR,
                                                      /*-1.75*/0.0 * SCALE_FACTOR));

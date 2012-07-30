@@ -171,7 +171,7 @@ enum {
 	CGSize s = [[CCDirector sharedDirector] winSize];
 	
 	b2Vec2 gravity;
-	gravity.Set(0.0f, -10.0f);
+	gravity.Set(0.0f, 0.0f);
 //	gravity.Set(0.0f, 0.0f);
     
 	world = new b2World(gravity);

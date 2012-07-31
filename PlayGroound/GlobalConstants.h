@@ -39,7 +39,9 @@ typedef enum {
 
 // GameChar states
 typedef enum {
-    kStateSpawning
+    kStateSpawning,
+    kStateIdle,
+    kStateManeuver
 }CharStates;
 
 // A macro to determine if iPad or not

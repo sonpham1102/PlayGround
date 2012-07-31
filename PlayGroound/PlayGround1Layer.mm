@@ -292,13 +292,18 @@ enum {
     debugLineStartPoint = startPoint;
     debugLineEndPoint = endPoint;
     
+    // give the rocked the parameters for the pan move
+    // AP this is two functions in case I want to use collision detection to see if touch actually hits the 
+    // rocket
+    [rocketMan planPanMove:startPoint endPoint:endPoint];
+    [rocketMan executePanMove];
+    
+    //AP - here's where I would check for a "valid" pan (for now all pans are valid) 
+    
     //AP : Need to subtract any movement of the view
     //panEndPoint.x -= [self position].x;
     //panEndPoint.y -= [self position].y;
     
-    // give the rocked the parameters for the pan move
-    [rocketMan planPanMove:startPoint endPoint:endPoint];
-    [rocketMan executePanMove];
     
     // perform a raycast, if the line hits the rocketman
 //    world->RayCast(_panRaycastCallback, b2Vec2(panStartPoint.x/PTM_RATIO, panStartPoint.y/PTM_RATIO),
@@ -360,6 +365,9 @@ enum {
         [tempChar updateStateWithDeltaTime:dt andListOfGameObjects:listOfGameObjects];
     }
 */
+    //HACK for now just call the update on the rocket manually
+    [rocketMan updateStateWithDeltaTime:dt andListOfGameObjects:nil];
+    
     
     // see if the rocketMan is in the end zone
     b2ContactEdge *edge = rocketMan.body->GetContactList();

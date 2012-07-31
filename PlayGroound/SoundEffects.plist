@@ -13,6 +13,8 @@
 	<dict>
 		<key>PUZZLE_SKULL</key>
 		<string>22k_tap_move_skullV1.wav</string>
+		<key>ROCKET_JET</key>
+		<string>22k_cargo_space_freighter_closeV2.wav</string>
 	</dict>
 	<key>kPlayGround2</key>
 	<dict>

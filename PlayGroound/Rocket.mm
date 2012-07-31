@@ -8,6 +8,7 @@
 
 #import "Rocket.h"
 
+
 #define SCALE_FACTOR 0.12f
 
 @implementation Rocket

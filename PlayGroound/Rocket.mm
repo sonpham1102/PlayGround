@@ -83,8 +83,8 @@
 }
 
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime {
-    if (isBodyCollidingWithObjectType(body, kObjTypeObstacle)) {
-        CCLOG(@"Collided with Obstacle Handle it");
+    if (isBodyCollidingWithObjectType(body, kObjTypeAsteroid)) {
+        CCLOG(@"Collided with Asteroid Handle it");
     }
 }
 

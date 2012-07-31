@@ -41,6 +41,13 @@
     ALuint middleRocketSoundID;
     
     CCParallaxNode *parallaxNode;
+    
+    float32 asteroidTimer;
+    int asteroidsCreated;
+    
+    CCArray *asteroidCache;
 }
+
+@property (nonatomic,retain) CCArray *asteroidCache;
 
 @end

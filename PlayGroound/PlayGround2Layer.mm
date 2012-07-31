@@ -17,10 +17,12 @@
 #import "GlobalConstants.h"
 #import "Obstacle.h"
 
+
 #define LEVEL_HEIGHT 5
 #define LEVEL_WIDTH 1.5
 #define MAX_VELOCITY 5
 #define FRICTION_COEFF 0.08
+#define TURN_SPEED 25.0
 
 #define USE_MAX_VELOCITY 0
 //#define NO_TEST 0
@@ -406,6 +408,12 @@ enum {
 -(void) ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {    
     [self ccTouchesEnded:touches withEvent:event];
+}
+
+-(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration {
+    
+    float32 velocity = acceleration.y * TURN_SPEED;
+    rocket.body->SetAngularVelocity(velocity);
 }
 
 

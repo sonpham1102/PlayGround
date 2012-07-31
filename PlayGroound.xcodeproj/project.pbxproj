@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		12284ABC15C894790008961A /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12284ABB15C894790008961A /* CoreMotion.framework */; };
 		127D6CB115BDE8CD009B643E /* rocket.png in Resources */ = {isa = PBXBuildFile; fileRef = 127D6CB015BDE8CD009B643E /* rocket.png */; };
 		127EB08415C59E8E002EEA46 /* LandingPad-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 127EB08315C59E8E002EEA46 /* LandingPad-ipad.png */; };
 		127EB08715C5AB84002EEA46 /* SpaceBackground.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 127EB08615C5AB84002EEA46 /* SpaceBackground.tmx */; };
@@ -219,6 +220,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		12284ABB15C894790008961A /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		127D6CB015BDE8CD009B643E /* rocket.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rocket.png; sourceTree = "<group>"; };
 		127EB08315C59E8E002EEA46 /* LandingPad-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LandingPad-ipad.png"; sourceTree = "<group>"; };
 		127EB08615C5AB84002EEA46 /* SpaceBackground.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SpaceBackground.tmx; sourceTree = "<group>"; };
@@ -645,6 +647,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12284ABC15C894790008961A /* CoreMotion.framework in Frameworks */,
 				128226CB15B5EC730030D109 /* QuartzCore.framework in Frameworks */,
 				128226CD15B5EC730030D109 /* OpenGLES.framework in Frameworks */,
 				128226CF15B5EC730030D109 /* OpenAL.framework in Frameworks */,
@@ -663,6 +666,7 @@
 		128226BB15B5EC730030D109 = {
 			isa = PBXGroup;
 			children = (
+				12284ABB15C894790008961A /* CoreMotion.framework */,
 				128226DC15B5EC730030D109 /* PlayGroound */,
 				128226C915B5EC730030D109 /* Frameworks */,
 				128226C715B5EC730030D109 /* Products */,

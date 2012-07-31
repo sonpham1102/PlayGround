@@ -16,6 +16,7 @@
 #import "GLES-Render.h"
 #import "Rocket.h"
 #import "SimpleAudioEngine.h"
+#import <CoreMotion/CoreMotion.h>
 
 
 // HelloWorldLayer
@@ -46,8 +47,13 @@
     int asteroidsCreated;
     
     CCArray *asteroidCache;
+    
+    CMMotionManager *motionManager;
+
 }
 
 @property (nonatomic,retain) CCArray *asteroidCache;
+@property (nonatomic,retain) CMMotionManager *motionManager;
+
 
 @end

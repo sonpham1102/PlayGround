@@ -44,6 +44,8 @@ enum {
 @implementation PlayGround2Layer
 
 @synthesize asteroidCache;
+@synthesize motionManager;
+
 
 -(void) onEnter{
     [super onEnter];
@@ -70,6 +72,14 @@ enum {
         asteroidsCreated = 0;
         
 		// enable events
+        
+        //Setup Motion Manager
+        self.motionManager = [[[CMMotionManager alloc] init]autorelease];
+        motionManager.deviceMotionUpdateInterval = 1.0/60.0;
+        if (motionManager.isDeviceMotionAvailable) {
+            [motionManager startDeviceMotionUpdates];
+        }
+        
 		
 		// Handle this onEnter and onExit
         self.isTouchEnabled = NO;
@@ -108,7 +118,7 @@ enum {
 		label.position = ccp( s.width/2, s.height-50);
         
         [self addChild:rocket z:100];
-		
+
 		[self scheduleUpdate];
 	}
 	return self;
@@ -326,6 +336,19 @@ enum {
     [self fireAsteroid:dt];
     [rocket updateStateWithDeltaTime:dt];
 	[self followRocket];
+    
+    // Device Motion Updates
+    CMDeviceMotion *currentDeviceMotion = motionManager.deviceMotion;
+    CMAttitude *currentAttitude = currentDeviceMotion.attitude;
+    
+    float pitch = currentAttitude.pitch;
+    int orientation = 1.0;
+    if ([[UIDevice currentDevice] orientation] == UIInterfaceOrientationLandscapeRight) {
+        orientation = -1.0;
+    }
+    rocket.body->SetAngularVelocity(pitch * TURN_SPEED * orientation);
+    //CCLOG(@"Roll:%2.f Pitch:%2.f Yaw:%2.f",roll,pitch,yaw);
+    
 }
 
 -(void) fireAsteroid:(ccTime)dt {
@@ -460,17 +483,17 @@ enum {
 {    
     [self ccTouchesEnded:touches withEvent:event];
 }
-
+/*
 -(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration {
     
     int orientation = 1.0;
     if ([[UIDevice currentDevice] orientation] == UIInterfaceOrientationLandscapeLeft) {
-        orientation *= -1.0;
+        orientation = -1.0;
     }
     float32 velocity = acceleration.y * TURN_SPEED * orientation;
     rocket.body->SetAngularVelocity(velocity);
 }
-
+*/
 
 
 #pragma mark GameKit delegate

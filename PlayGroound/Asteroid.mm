@@ -28,6 +28,7 @@
     fixtureDef.density = 150.0;
     fixtureDef.shape = &shape;
     fixtureDef.restitution = 1.0;
+    fixtureDef.friction = 0.0;
     
     body->CreateFixture(&fixtureDef);
     
@@ -40,12 +41,10 @@
         direction = 1.0;
     }
     
-    b2Vec2 bodyCenter = body->GetWorldCenter();
+
     b2Vec2 impulse = b2Vec2(body->GetMass() * 100.0f * direction,0);
-    b2Vec2 impulseWorld = body->GetWorldVector(impulse);
-    b2Vec2 impulsePoint = body->GetWorldPoint(bodyCenter);
-    body->ApplyForce(impulseWorld, impulsePoint); 
-    body->SetAngularDamping(100.0);
+    body->ApplyForce(impulse, body->GetWorldCenter()); 
+
 }
 
 -(id) initWithWorld:(b2World *)theWorld atLoaction:(CGPoint)location {

@@ -28,4 +28,6 @@
 // game objects might have animations
 -(CCAnimation*)loadPlistForAnimationWithName:(NSString*)animationName
                                 andClassName:(NSString*)className;
+// game objects might change state.  Note that game objects don't remember their state, used GameChar
+-(void) changeState:(CharStates)newState;
 @end

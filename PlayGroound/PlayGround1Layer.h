@@ -33,6 +33,7 @@
 }
 
 -(void) handlePan:(CGPoint) startPoint endPoint:(CGPoint) endPoint;
+-(void) handleTap:(CGPoint) tapPoint;
 
 
 @end

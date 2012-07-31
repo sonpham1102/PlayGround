@@ -14,16 +14,25 @@
 @implementation PlayGround1UILayer
 
 -(void) setUpPanGesture
-{
-    self.isTouchEnabled = YES;
-    
+{    
     UIPanGestureRecognizer* panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     panGestureRecognizer.delegate = self;
     [self addGestureRecognizer:panGestureRecognizer];
     [panGestureRecognizer release];
-    
     panEndPoint = CGPointZero;
     panStartPoint = CGPointZero;
+    
+    tapPoint = CGPointZero;
+}
+
+-(void) setUpTapGesture
+{
+    UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    tapGestureRecognizer.delegate = self;
+    [self addGestureRecognizer:tapGestureRecognizer];
+    [tapGestureRecognizer release];
+    
+    tapPoint = CGPointZero;  
 }
 
 - (void)handlePanGesture:(UIPanGestureRecognizer*)aPanGestureRecognizer
@@ -47,13 +56,32 @@
     }    
 }
 
+- (void)handleTapGesture:(UITapGestureRecognizer*)aTapGestureRecognizer
+{
+    if (aTapGestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+    }
+    else if (aTapGestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+        tapPoint = [aTapGestureRecognizer locationInView:aTapGestureRecognizer.view];
+        tapPoint = [[CCDirector sharedDirector] convertToGL:tapPoint];
+        
+        //tell the gameplay layer that a tap gesture was completed
+        [gpLayer handleTap: tapPoint];
+    }    
+}
+
+
 -(id) initWithGameplayLayer:(PlayGround1Layer *)gameplayLayer;
 {
     if( (self=[super init]))
     {
         [self createMenu];
         gpLayer = gameplayLayer;
+        self.isTouchEnabled = YES;
+
         [self setUpPanGesture];
+        [self setUpTapGesture];
     }
     return self;
 }

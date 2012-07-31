@@ -16,6 +16,7 @@
     PlayGround1Layer* gpLayer;
     CGPoint panStartPoint;
     CGPoint panEndPoint;
+    CGPoint tapPoint;
 }
 
 -(id) initWithGameplayLayer:(PlayGround1Layer *)gameplayLayer;

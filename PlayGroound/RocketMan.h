@@ -33,6 +33,8 @@
 -(id) initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location;
 -(void) planPanMove:(CGPoint) startPoint endPoint:(CGPoint) endPoint;
 -(void) executePanMove;
+-(void) planTapMove:(CGPoint) tapPoint;
+-(void) executeTapMove;
 -(void) updateStateWithDeltaTime:(ccTime)deltaTime andListOfGameObjects:(CCArray *)listOfGameObjects;
 
 @end

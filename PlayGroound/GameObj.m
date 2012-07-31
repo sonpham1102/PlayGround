@@ -26,6 +26,11 @@
     //OVERRIDE
 }
 
+-(void) changeState:(CharStates)newState
+{
+    //OVERRIDE
+}
+
 -(CGRect) adjustedBoundingBox
 {
     //OVERRIDE as necessary

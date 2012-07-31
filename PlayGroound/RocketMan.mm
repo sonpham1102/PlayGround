@@ -19,7 +19,7 @@
 #define RM_VERT3 b2Vec2(-0.5,-1.0)
 #define RM_VERT4 b2Vec2(0.5,-1.0)
 #define RM_LINEAR_DAMP 0.5
-#define RM_ANG_DAMP 2.0
+#define RM_ANG_DAMP 1.0
 
 //#define RM_PAN_IMPULSE_X 1.0
 //#define RM_PAN_IMPULSE_Y 2.0
@@ -33,7 +33,10 @@
 #define RM_MAX_ROCKET_SLOPE 10.0
 #define RM_MIN_ROCKET_SLOPE 1
 
-#define RM_TAP_MANEUVER_TIME 2.0
+#define RM_TAP_MANEUVER_TIME 1.0
+#define RM_TAP_FORCE    3.0
+#define RM_ANG_OFFSET_TOLERANCE 1.0 //degrees, make sure to convert
+#define RM_TAP_TORQUE  1.25
 
 @implementation RocketMan
 
@@ -244,15 +247,109 @@
     body->ApplyForce(body->GetWorldVector(rsManeuverForce), body->GetWorldCenter());
 }
 
--(void)fireTapDevice
+-(void) planTapMove:(CGPoint)tapPoint
 {
     
 }
 
--(void) planTapMove
+-(void) executeTapMove
 {
-    
+    tapManeuverMSec = 0.0;
+    if (tapSoundID == 0)
+    {
+        tapSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
+    }
+    [self changeState:kStateManeuver];
 }
+
+-(void)fireTapDevice
+{
+    //this device does 2 things - fires the rear rocket but also tries to get the rocket aligned straight up
+    
+ 
+    float angle = body->GetAngle();
+    float angularVelocity = body->GetAngularVelocity();
+    float torque = 0.0f;
+    float force = 0.0f;
+    
+    //first make sure the angle is between -180 and 180
+    //see how many full rotations we have
+    int rotations = angle / (M_PI * 2);
+    //subtract them out
+    angle -= (float) rotations * M_PI * 2;
+    //if the angle is above 180 degress, subtract PI
+    if (angle > M_PI)
+    {
+        angle -= M_PI*2;
+    }
+    else if (angle < -M_PI)
+    {
+        angle += M_PI*2;
+    }
+    
+    float direction = 1.0f;
+    
+    if (angle > 0)
+    {
+        direction = -1.0f;
+    }
+    
+    // see if the angle is zero, but there is angular velocity
+    if (angle == 0.0f)
+    {
+        if (ABS(angularVelocity) > 0)
+        {
+            //kill the velocity
+            body->SetAngularVelocity(0.0f);
+        }
+        force = body->GetMass()*RM_TAP_FORCE;
+    }
+    // see if the angle is close enough to zero
+    else if (ABS(angle) < CC_DEGREES_TO_RADIANS(RM_ANG_OFFSET_TOLERANCE))
+    {
+        // set it to zero and kill any angular velocity
+        body->SetTransform(body->GetWorldCenter(), 0.0f);        
+        body->SetAngularVelocity(0.0f);
+        angle = 0.0f;
+    }
+    else if (ABS(angle) > M_PI_2)
+    {
+        // if the angle is greater than 90 degrees (M_PI_2), then use the max torque
+        torque = body->GetMass() * RM_TAP_TORQUE;
+        force = 0.0f;
+    }
+    else
+    {
+        torque = body->GetMass() * RM_TAP_TORQUE * ABS(angle)/M_PI_2;
+        // only fire the rear rocket if the angle is less that 45 degrees
+        if (ABS(angle) > M_PI_4)
+        {
+            force = 0.0f;
+        }
+        else
+        {
+            force = body->GetMass() * RM_TAP_FORCE * ABS(angle)/M_PI_4;
+        }
+    }
+    
+    //see if the angle and angular velocity are in the same directions and bigger than 45 degrees
+    if ((ABS(angle) > M_PI_4) && (angle * angularVelocity > 0)) 
+    {
+        
+        //normally the impulse should be in the opposite direction of the angle
+        //but if the current velocity is already in the same direction and the angle
+        //flip all the way around at full speed
+//        impulse = body->GetMass() * RM_TAP_IMPULSE*2;
+//        direction *= -1.0;
+//        force = 0.0f;
+//AP: ok being too clever, works fine without and hard to get right with        
+    }
+    
+    body->ApplyForce(body->GetWorldVector(b2Vec2(0, force)), body->GetWorldCenter());
+    
+    body->ApplyTorque(torque * direction);
+}
+
 
 //-(void) executePanMove
 
@@ -297,7 +394,7 @@
         }
         else if (tapSoundID != 0)
         {
-            STOPSOUNDEFFECT(rsSoundID);
+            STOPSOUNDEFFECT(tapSoundID);
             tapSoundID = 0;
         }
     }

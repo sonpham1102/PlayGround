@@ -327,6 +327,12 @@ enum {
     
 }
 
+-(void) handleTap:(CGPoint)tapPoint
+{
+    [rocketMan planTapMove:tapPoint];
+    [rocketMan executeTapMove];
+}
+
 -(void) update: (ccTime) dt
 {
     static double UPDATE_INTERVAL = 1.0/60.0f;

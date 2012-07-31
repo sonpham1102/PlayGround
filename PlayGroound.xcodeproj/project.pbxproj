@@ -213,6 +213,7 @@
 		FA81830015B8B0E5003AC851 /* 22k_cargo_space_freighter_farV1.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA8182FF15B8B0E5003AC851 /* 22k_cargo_space_freighter_farV1.wav */; };
 		FA81830315B8B1E3003AC851 /* 22k_cargo_space_freighter_closeV2.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA81830215B8B1E3003AC851 /* 22k_cargo_space_freighter_closeV2.wav */; };
 		FA81830915B9BB64003AC851 /* RocketMan.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA81830815B9BB64003AC851 /* RocketMan.mm */; };
+		FAA7D17115C6FDFB00C513A2 /* PlayGround1UILayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FAA7D17015C6FDFB00C513A2 /* PlayGround1UILayer.mm */; };
 		FAC2977A15BDC874008559AF /* CCNode+SFGestureRecognizers.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC2977915BDC874008559AF /* CCNode+SFGestureRecognizers.m */; };
 /* End PBXBuildFile section */
 
@@ -629,6 +630,8 @@
 		FA81830215B8B1E3003AC851 /* 22k_cargo_space_freighter_closeV2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 22k_cargo_space_freighter_closeV2.wav; sourceTree = "<group>"; };
 		FA81830715B9BB64003AC851 /* RocketMan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RocketMan.h; sourceTree = "<group>"; };
 		FA81830815B9BB64003AC851 /* RocketMan.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RocketMan.mm; sourceTree = "<group>"; };
+		FAA7D16F15C6FDFB00C513A2 /* PlayGround1UILayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGround1UILayer.h; sourceTree = "<group>"; };
+		FAA7D17015C6FDFB00C513A2 /* PlayGround1UILayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround1UILayer.mm; sourceTree = "<group>"; };
 		FAC2977815BDC874008559AF /* CCNode+SFGestureRecognizers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCNode+SFGestureRecognizers.h"; sourceTree = "<group>"; };
 		FAC2977915BDC874008559AF /* CCNode+SFGestureRecognizers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCNode+SFGestureRecognizers.m"; sourceTree = "<group>"; };
 		FAC2978B15BDEBBC008559AF /* PanRayCastCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanRayCastCallback.h; sourceTree = "<group>"; };
@@ -1281,6 +1284,8 @@
 				12B946CF15B7316100CB76CD /* PlayGround1Scene.mm */,
 				12B946D415B731C700CB76CD /* PlayGround1Layer.h */,
 				12B946D515B731C700CB76CD /* PlayGround1Layer.mm */,
+				FAA7D16F15C6FDFB00C513A2 /* PlayGround1UILayer.h */,
+				FAA7D17015C6FDFB00C513A2 /* PlayGround1UILayer.mm */,
 			);
 			name = PlayGround1;
 			sourceTree = "<group>";
@@ -1669,6 +1674,7 @@
 				12A8A10B15BC764C009E07B1 /* Box2DHelpers.mm in Sources */,
 				12A8A10E15BC7715009E07B1 /* Obstacle.mm in Sources */,
 				FAC2977A15BDC874008559AF /* CCNode+SFGestureRecognizers.m in Sources */,
+				FAA7D17115C6FDFB00C513A2 /* PlayGround1UILayer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

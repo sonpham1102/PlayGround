@@ -129,4 +129,9 @@
     body->ApplyLinearImpulse(body->GetWorldVector(panImpulse), body->GetWorldCenter());
 }
 
+-(void)updateStateWithDeltaTime:(ccTime)deltaTime andListOfGameObjects:(CCArray *)listOfGameObjects
+{
+    [self positionw];
+}
+
 @end

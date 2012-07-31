@@ -198,6 +198,7 @@
 		12B946FE15B860F600CB76CD /* OptionsScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B946FD15B860F600CB76CD /* OptionsScene.m */; };
 		12B9470115B8611300CB76CD /* OptionsLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B9470015B8611300CB76CD /* OptionsLayer.m */; };
 		12B9470815B883BE00CB76CD /* Rocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B9470715B883BE00CB76CD /* Rocket.mm */; };
+		12C7159215C838E900D23701 /* Asteroid.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12C7159115C838E900D23701 /* Asteroid.mm */; };
 		12D289BD15B9E46300DB62B9 /* PlayGroundScene2UILayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D289BC15B9E46300DB62B9 /* PlayGroundScene2UILayer.m */; };
 		FA1348BD15B7157600E5CDB5 /* GameManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA1348BC15B7157600E5CDB5 /* GameManager.mm */; };
 		FA1348CF15B7516400E5CDB5 /* SoundEffects.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA1348CE15B7516400E5CDB5 /* SoundEffects.plist */; };
@@ -606,6 +607,8 @@
 		12B9470015B8611300CB76CD /* OptionsLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionsLayer.m; sourceTree = "<group>"; };
 		12B9470615B883BE00CB76CD /* Rocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rocket.h; sourceTree = "<group>"; };
 		12B9470715B883BE00CB76CD /* Rocket.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Rocket.mm; sourceTree = "<group>"; };
+		12C7159015C838E900D23701 /* Asteroid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Asteroid.h; sourceTree = "<group>"; };
+		12C7159115C838E900D23701 /* Asteroid.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Asteroid.mm; sourceTree = "<group>"; };
 		12D289BB15B9E46300DB62B9 /* PlayGroundScene2UILayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGroundScene2UILayer.h; sourceTree = "<group>"; };
 		12D289BC15B9E46300DB62B9 /* PlayGroundScene2UILayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayGroundScene2UILayer.m; sourceTree = "<group>"; };
 		FA1348B915B7133300E5CDB5 /* GlobalConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalConstants.h; sourceTree = "<group>"; };
@@ -1403,6 +1406,8 @@
 				FA81830815B9BB64003AC851 /* RocketMan.mm */,
 				12A8A10C15BC7714009E07B1 /* Obstacle.h */,
 				12A8A10D15BC7715009E07B1 /* Obstacle.mm */,
+				12C7159015C838E900D23701 /* Asteroid.h */,
+				12C7159115C838E900D23701 /* Asteroid.mm */,
 			);
 			name = GameObjects;
 			sourceTree = "<group>";
@@ -1675,6 +1680,7 @@
 				12A8A10E15BC7715009E07B1 /* Obstacle.mm in Sources */,
 				FAC2977A15BDC874008559AF /* CCNode+SFGestureRecognizers.m in Sources */,
 				FAA7D17115C6FDFB00C513A2 /* PlayGround1UILayer.mm in Sources */,
+				12C7159215C838E900D23701 /* Asteroid.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

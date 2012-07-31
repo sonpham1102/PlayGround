@@ -16,6 +16,7 @@
 #import "Rocket.h"
 #import "GlobalConstants.h"
 #import "Obstacle.h"
+#import "Asteroid.h"
 
 
 #define LEVEL_HEIGHT 5
@@ -23,6 +24,8 @@
 #define MAX_VELOCITY 5
 #define FRICTION_COEFF 0.08
 #define TURN_SPEED 25.0
+#define ASTEROID_TIMER 2.5
+#define ASTEROID_LIMIT 10
 
 #define USE_MAX_VELOCITY 0
 //#define NO_TEST 0
@@ -39,6 +42,8 @@ enum {
 @end
 
 @implementation PlayGround2Layer
+
+@synthesize asteroidCache;
 
 -(void) onEnter{
     [super onEnter];
@@ -61,6 +66,8 @@ enum {
         leftRocketSoundID = 0;
         rightRocketSoundID = 0;
         middleRocketSoundID = 0;
+        asteroidTimer = 0.0;
+        asteroidsCreated = 0;
         
 		// enable events
 		
@@ -71,9 +78,11 @@ enum {
 		CGSize s = [CCDirector sharedDirector].winSize;
 		
 		// init physics
+        
 		[self initPhysics];
 		[self createBackground];
         [self createObstacle];
+        //[self initAsteroids];
 		//Set up sprite
 		
 #if 1
@@ -92,8 +101,6 @@ enum {
         //[self createBall];
         
         rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
-        
-        
 		
 		CCLabelTTF *label = [CCLabelTTF labelWithString:@"This is Level 2" fontName:@"Marker Felt" fontSize:32];
 		[self addChild:label z:0];
@@ -157,6 +164,25 @@ enum {
 	m_debugDraw = NULL;
 	
 	[super dealloc];
+}
+
+-(void) initAsteroids {
+    
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    
+     asteroidCache = [[CCArray alloc] initWithCapacity:25];
+     
+     for (int i = 0; i < 25; i++)
+     {
+     Asteroid *sprite = [[[Asteroid alloc] initWithWorld:world atLoaction:ccp(winSize.width * 0.5 + (5*i), winSize.height * 0.5)] autorelease];
+     sprite.position = ccp(winSize.width/2,winSize.height/2);
+     [self addChild:sprite];
+     [asteroidCache addObject:sprite];
+     }
+     /*
+    Asteroid * asteroid;
+    asteroid = [[[Asteroid alloc] initWithWorld:world atLoaction:ccp(winSize.width * 0.5, winSize.height * 0.5)] autorelease];
+    [self addChild:asteroid];*/
 }
 
 -(void)createObstacle {
@@ -297,8 +323,32 @@ enum {
     //     [tempChar updateStateWithDeltaTime:dt
     //                  andListOfGameObjects:listOfGameObjects];
     //  }
+    [self fireAsteroid:dt];
     [rocket updateStateWithDeltaTime:dt];
 	[self followRocket];
+}
+
+-(void) fireAsteroid:(ccTime)dt {
+    asteroidTimer += dt;
+    if ((asteroidTimer < ASTEROID_TIMER) || (asteroidsCreated >= ASTEROID_LIMIT)) {
+        return;
+    } else {
+        CGSize winSize = [CCDirector sharedDirector].winSize;
+        float32 xLaunchPoint;
+        float32 yLaunchPoint;
+    
+        xLaunchPoint = arc4random()%2;
+        if (xLaunchPoint == 1) {
+            xLaunchPoint -=0.01;
+        }
+        yLaunchPoint = arc4random()%10;
+        yLaunchPoint /= 10;
+        
+        Asteroid *sprite = [[Asteroid alloc] initWithWorld:world atLoaction:ccp(winSize.width * LEVEL_WIDTH * xLaunchPoint, winSize.height * LEVEL_HEIGHT * yLaunchPoint)];
+        [self addChild:sprite];
+        asteroidTimer = 0.0;
+        asteroidsCreated += 1;
+    }
 }
 
 -(void)followRocket {
@@ -321,6 +371,7 @@ enum {
     
     [self setPosition:newPos];
 }
+
 
 -(void) fireLeft {
     [rocket fireLeftRocket];
@@ -412,7 +463,11 @@ enum {
 
 -(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration {
     
-    float32 velocity = acceleration.y * TURN_SPEED;
+    int orientation = 1.0;
+    if ([[UIDevice currentDevice] orientation] == UIInterfaceOrientationLandscapeLeft) {
+        orientation *= -1.0;
+    }
+    float32 velocity = acceleration.y * TURN_SPEED * orientation;
     rocket.body->SetAngularVelocity(velocity);
 }
 

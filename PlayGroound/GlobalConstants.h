@@ -34,7 +34,8 @@ typedef enum
 typedef enum {
     kObjTypeRocket,
     kObjTypeObstacle,
-    kObjTypeNone
+    kObjTypeNone,
+    kObjTypeAsteroid
 }GameObjType;
 
 // GameChar states

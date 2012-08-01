@@ -10,10 +10,8 @@
 		12284ABC15C894790008961A /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12284ABB15C894790008961A /* CoreMotion.framework */; };
 		127D6CB115BDE8CD009B643E /* rocket.png in Resources */ = {isa = PBXBuildFile; fileRef = 127D6CB015BDE8CD009B643E /* rocket.png */; };
 		127EB08415C59E8E002EEA46 /* LandingPad-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 127EB08315C59E8E002EEA46 /* LandingPad-ipad.png */; };
-		127EB08715C5AB84002EEA46 /* SpaceBackground.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 127EB08615C5AB84002EEA46 /* SpaceBackground.tmx */; };
 		127EB08915C5AD6C002EEA46 /* LandingPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 127EB08815C5AD6C002EEA46 /* LandingPad.png */; };
 		1281988D15BDEFDF0021BF4C /* SpaceBackground-hd.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 1281988B15BDEFDF0021BF4C /* SpaceBackground-hd.tmx */; };
-		128198BC15BE36EE0021BF4C /* SpaceBackground_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 128198BA15BE36EE0021BF4C /* SpaceBackground_default.png */; };
 		128198BD15BE36EE0021BF4C /* SpaceBackground-ipad.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 128198BB15BE36EE0021BF4C /* SpaceBackground-ipad.tmx */; };
 		128226CB15B5EC730030D109 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 128226CA15B5EC730030D109 /* QuartzCore.framework */; };
 		128226CD15B5EC730030D109 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 128226CC15B5EC730030D109 /* OpenGLES.framework */; };
@@ -188,6 +186,8 @@
 		128228F215B5EC760030D109 /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128228F115B5EC760030D109 /* GLES-Render.mm */; };
 		128228F515B5EC760030D109 /* PhysicsSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 128228F415B5EC760030D109 /* PhysicsSprite.mm */; };
 		128228F715B5EC760030D109 /* blocks.png in Resources */ = {isa = PBXBuildFile; fileRef = 128228F615B5EC760030D109 /* blocks.png */; };
+		12985AD215C9C6E900614FB8 /* SpaceBackground_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 12985AD015C9C6E900614FB8 /* SpaceBackground_default.png */; };
+		12985AD315C9C6E900614FB8 /* SpaceBackground.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 12985AD115C9C6E900614FB8 /* SpaceBackground.tmx */; };
 		12A8A10B15BC764C009E07B1 /* Box2DHelpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12A8A10A15BC764C009E07B1 /* Box2DHelpers.mm */; };
 		12A8A10E15BC7715009E07B1 /* Obstacle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12A8A10D15BC7715009E07B1 /* Obstacle.mm */; };
 		12B946C515B7295600CB76CD /* MainMenuLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B946C215B7295600CB76CD /* MainMenuLayer.m */; };
@@ -224,10 +224,8 @@
 		12284ABB15C894790008961A /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		127D6CB015BDE8CD009B643E /* rocket.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rocket.png; sourceTree = "<group>"; };
 		127EB08315C59E8E002EEA46 /* LandingPad-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LandingPad-ipad.png"; sourceTree = "<group>"; };
-		127EB08615C5AB84002EEA46 /* SpaceBackground.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SpaceBackground.tmx; sourceTree = "<group>"; };
 		127EB08815C5AD6C002EEA46 /* LandingPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LandingPad.png; sourceTree = "<group>"; };
 		1281988B15BDEFDF0021BF4C /* SpaceBackground-hd.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "SpaceBackground-hd.tmx"; sourceTree = "<group>"; };
-		128198BA15BE36EE0021BF4C /* SpaceBackground_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SpaceBackground_default.png; sourceTree = "<group>"; };
 		128198BB15BE36EE0021BF4C /* SpaceBackground-ipad.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "SpaceBackground-ipad.tmx"; sourceTree = "<group>"; };
 		128226C615B5EC730030D109 /* PlayGroound.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayGroound.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		128226CA15B5EC730030D109 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -588,6 +586,8 @@
 		128228F315B5EC760030D109 /* PhysicsSprite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhysicsSprite.h; sourceTree = "<group>"; };
 		128228F415B5EC760030D109 /* PhysicsSprite.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PhysicsSprite.mm; sourceTree = "<group>"; };
 		128228F615B5EC760030D109 /* blocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blocks.png; path = Resources/blocks.png; sourceTree = "<group>"; };
+		12985AD015C9C6E900614FB8 /* SpaceBackground_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SpaceBackground_default.png; sourceTree = "<group>"; };
+		12985AD115C9C6E900614FB8 /* SpaceBackground.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SpaceBackground.tmx; sourceTree = "<group>"; };
 		12A8A10915BC764C009E07B1 /* Box2DHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2DHelpers.h; sourceTree = "<group>"; };
 		12A8A10A15BC764C009E07B1 /* Box2DHelpers.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Box2DHelpers.mm; sourceTree = "<group>"; };
 		12A8A10C15BC7714009E07B1 /* Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Obstacle.h; sourceTree = "<group>"; };
@@ -1242,10 +1242,10 @@
 		12A8A0D715BB206C009E07B1 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				12985AD015C9C6E900614FB8 /* SpaceBackground_default.png */,
+				12985AD115C9C6E900614FB8 /* SpaceBackground.tmx */,
 				127EB08815C5AD6C002EEA46 /* LandingPad.png */,
-				127EB08615C5AB84002EEA46 /* SpaceBackground.tmx */,
 				127EB08315C59E8E002EEA46 /* LandingPad-ipad.png */,
-				128198BA15BE36EE0021BF4C /* SpaceBackground_default.png */,
 				128198BB15BE36EE0021BF4C /* SpaceBackground-ipad.tmx */,
 				1281988B15BDEFDF0021BF4C /* SpaceBackground-hd.tmx */,
 				127D6CB015BDE8CD009B643E /* rocket.png */,
@@ -1505,11 +1505,11 @@
 				FA81830315B8B1E3003AC851 /* 22k_cargo_space_freighter_closeV2.wav in Resources */,
 				127D6CB115BDE8CD009B643E /* rocket.png in Resources */,
 				1281988D15BDEFDF0021BF4C /* SpaceBackground-hd.tmx in Resources */,
-				128198BC15BE36EE0021BF4C /* SpaceBackground_default.png in Resources */,
 				128198BD15BE36EE0021BF4C /* SpaceBackground-ipad.tmx in Resources */,
 				127EB08415C59E8E002EEA46 /* LandingPad-ipad.png in Resources */,
-				127EB08715C5AB84002EEA46 /* SpaceBackground.tmx in Resources */,
 				127EB08915C5AD6C002EEA46 /* LandingPad.png in Resources */,
+				12985AD215C9C6E900614FB8 /* SpaceBackground_default.png in Resources */,
+				12985AD315C9C6E900614FB8 /* SpaceBackground.tmx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

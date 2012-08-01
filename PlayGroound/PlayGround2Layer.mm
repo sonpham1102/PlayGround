@@ -45,11 +45,15 @@ enum {
 
 @synthesize asteroidCache;
 @synthesize motionManager;
+@synthesize debugLabel;
 
 
 -(void) onEnter{
     [super onEnter];
     self.isTouchEnabled = YES;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didRotate:)
+                                                 name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 }
 
 -(void) onExit{
@@ -71,6 +75,11 @@ enum {
         asteroidTimer = 0.0;
         asteroidsCreated = 0;
         
+        if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft){
+            turn = -1;
+        } else {
+            turn = 1;
+        }
 		// enable events
         
         //Setup Motion Manager
@@ -111,11 +120,16 @@ enum {
         //[self createBall];
         
         rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
-		
+		/*
 		CCLabelTTF *label = [CCLabelTTF labelWithString:@"This is Level 2" fontName:@"Marker Felt" fontSize:32];
 		[self addChild:label z:0];
 		[label setColor:ccc3(0,0,255)];
 		label.position = ccp( s.width/2, s.height-50);
+        */
+        debugLabel = [CCLabelTTF labelWithString:@"test" fontName:@"Marker Felt" fontSize:12];
+        [self addChild:debugLabel z:100];
+        [debugLabel setColor:ccc3(0, 0, 255)];
+        debugLabel.position = ccp(s.width*0.8, s.height/2);
         
         [self addChild:rocket z:100];
 
@@ -189,10 +203,7 @@ enum {
      [self addChild:sprite];
      [asteroidCache addObject:sprite];
      }
-     /*
-    Asteroid * asteroid;
-    asteroid = [[[Asteroid alloc] initWithWorld:world atLoaction:ccp(winSize.width * 0.5, winSize.height * 0.5)] autorelease];
-    [self addChild:asteroid];*/
+     
 }
 
 -(void)createObstacle {
@@ -344,16 +355,19 @@ enum {
     float pitch = currentAttitude.pitch;
     float roll = currentAttitude.roll;
     float yaw = currentAttitude.yaw;
+    float turnPower = pitch * TURN_SPEED * turn;
     
-    int orientation = 1.0;
-    if ([[UIDevice currentDevice] orientation] == UIInterfaceOrientationLandscapeRight) {
-        orientation = -1.0;
-    }
-    rocket.body->SetAngularVelocity(pitch * TURN_SPEED * orientation);
-    CCLOG(@"Roll:%.4f Pitch:%.4f Yaw:%.4f",roll,pitch,yaw);
+    rocket.body->SetAngularVelocity(turnPower);
+
+    NSString *labelString = 
+    [NSString stringWithFormat:@"Roll:%.4f \n Pitch:%.4f \n Yaw:%.4f \n Turn:%.4f",roll,pitch,yaw,turnPower];
+    [debugLabel setString:labelString];
     
 }
 
+- (void) didRotate:(NSNotification *)notification{ 
+    turn *= -1;
+} 
 -(void) fireAsteroid:(ccTime)dt {
     asteroidTimer += dt;
     if ((asteroidTimer < ASTEROID_TIMER) || (asteroidsCreated >= ASTEROID_LIMIT)) {
@@ -396,6 +410,8 @@ enum {
     CGPoint newPos = ccp(newX, newY);
     
     [self setPosition:newPos];
+    newPos = ccp(-newX + winSize.width*0.75, -newY + winSize.height/2);
+    [debugLabel setPosition:newPos];
 }
 
 
@@ -486,6 +502,7 @@ enum {
 {    
     [self ccTouchesEnded:touches withEvent:event];
 }
+
 /*
 -(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration {
     

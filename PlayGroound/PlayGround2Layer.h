@@ -49,11 +49,15 @@
     CCArray *asteroidCache;
     
     CMMotionManager *motionManager;
+    CCLabelBMFont *debugLabel;
+    
+    int turn;
 
 }
 
 @property (nonatomic,retain) CCArray *asteroidCache;
 @property (nonatomic,retain) CMMotionManager *motionManager;
+@property (nonatomic,assign) CCLabelBMFont *debugLabel;
 
 
 @end

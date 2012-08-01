@@ -25,7 +25,7 @@
     shape.m_p = b2Vec2(0,0);
     
     b2FixtureDef fixtureDef;
-    fixtureDef.density = 150.0;
+    fixtureDef.density = 1500.0;
     fixtureDef.shape = &shape;
     fixtureDef.restitution = 1.0;
     fixtureDef.friction = 0.0;
@@ -42,7 +42,7 @@
     }
     
 
-    b2Vec2 impulse = b2Vec2(body->GetMass() * 100.0f * direction,0);
+    b2Vec2 impulse = b2Vec2(body->GetMass() * 200.0f * direction,0);
     body->ApplyForce(impulse, body->GetWorldCenter()); 
 
 }

@@ -19,13 +19,13 @@
 #import "Asteroid.h"
 
 
-#define LEVEL_HEIGHT 5
-#define LEVEL_WIDTH 1.5
+#define LEVEL_HEIGHT 25
+#define LEVEL_WIDTH 10
 #define MAX_VELOCITY 5
 #define FRICTION_COEFF 0.08
 #define TURN_SPEED 25.0
-#define ASTEROID_TIMER 2.5
-#define ASTEROID_LIMIT 10
+#define ASTEROID_TIMER 0.5
+#define ASTEROID_LIMIT 15
 
 #define USE_MAX_VELOCITY 0
 //#define NO_TEST 0
@@ -52,7 +52,7 @@ enum {
     [super onEnter];
     self.isTouchEnabled = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didRotate:)
+                                             selector:@selector(didFlipScreen:)
                                                  name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 }
 
@@ -144,7 +144,6 @@ enum {
     
     tileMapNode = [CCTMXTiledMap
                 tiledMapWithTMXFile:@"SpaceBackground.tmx"];
-    //[self addChild:tileMapNode z:-5];
     
     CCTMXLayer *backDropLayer = [tileMapNode layerNamed:@"BackDrop"];
     CCTMXLayer *planetsLayer = [tileMapNode
@@ -176,7 +175,7 @@ enum {
             positionOffset:ccp(xOffset, yOffset)];
     [planetsLayer release];  
     
-    [self addChild:parallaxNode z:-1];
+    [self addChild:parallaxNode z:-1]; 
 }
 
 -(void) dealloc
@@ -352,6 +351,8 @@ enum {
     CMDeviceMotion *currentDeviceMotion = motionManager.deviceMotion;
     CMAttitude *currentAttitude = currentDeviceMotion.attitude;
     
+    
+    
     float pitch = currentAttitude.pitch;
     float roll = currentAttitude.roll;
     float yaw = currentAttitude.yaw;
@@ -365,9 +366,11 @@ enum {
     
 }
 
-- (void) didRotate:(NSNotification *)notification{ 
+- (void) didFlipScreen:(NSNotification *)notification{ 
     turn *= -1;
 } 
+
+
 -(void) fireAsteroid:(ccTime)dt {
     asteroidTimer += dt;
     if ((asteroidTimer < ASTEROID_TIMER) || (asteroidsCreated >= ASTEROID_LIMIT)) {

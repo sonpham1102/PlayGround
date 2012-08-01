@@ -16,6 +16,8 @@
 #import "RocketMan.h"
 #import "PanRayCastCallback.h"
 
+#define PTM_RATIO (IS_IPAD() ? (16.0*1024.0/480.0) : 16.0)
+
 // HelloWorldLayer
 @interface PlayGround1Layer : CCLayer
 {

@@ -7,7 +7,7 @@
 //
 
 #import "Rocket.h"
-
+#define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
 #define SCALE_FACTOR 0.12f
 

@@ -12,6 +12,7 @@
 // Needed PTM_RATIO
 //#import "HelloWorldLayer.h"
 #import "GlobalConstants.h"
+#define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
 #pragma mark - PhysicsSprite
 @implementation PhysicsSprite

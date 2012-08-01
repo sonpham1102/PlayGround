@@ -18,6 +18,7 @@
 #import "Obstacle.h"
 #import "Asteroid.h"
 
+#define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
 #define LEVEL_HEIGHT 25
 #define LEVEL_WIDTH 10

@@ -10,6 +10,8 @@
 #import "GameManager.h"
 #import "GlobalConstants.h"
 
+#import "PlayGround1Layer.h" //mainly for the PTM_RATIO
+
 //MOVE TO A pLIST
 #define RM_DENSITY 5.0f
 #define RM_FRICTION 0.5f

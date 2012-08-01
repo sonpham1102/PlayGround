@@ -191,7 +191,7 @@ enum {
 	
 	world->DrawDebugData();	
     
-    ccDrawLine(debugLineStartPoint, debugLineEndPoint);
+    //ccDrawLine(debugLineStartPoint, debugLineEndPoint);
 	
 	kmGLPopMatrix();
 }

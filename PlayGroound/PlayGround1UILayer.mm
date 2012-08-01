@@ -257,7 +257,7 @@
 	
 	kmGLPushMatrix();
 	    
-    ccDrawLine(panStartPoint, panEndPoint);
+    //ccDrawLine(panStartPoint, panEndPoint);
 	
 	kmGLPopMatrix();
 }

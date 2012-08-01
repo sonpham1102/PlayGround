@@ -342,12 +342,15 @@ enum {
     CMAttitude *currentAttitude = currentDeviceMotion.attitude;
     
     float pitch = currentAttitude.pitch;
+    float roll = currentAttitude.roll;
+    float yaw = currentAttitude.yaw;
+    
     int orientation = 1.0;
     if ([[UIDevice currentDevice] orientation] == UIInterfaceOrientationLandscapeRight) {
         orientation = -1.0;
     }
     rocket.body->SetAngularVelocity(pitch * TURN_SPEED * orientation);
-    //CCLOG(@"Roll:%2.f Pitch:%2.f Yaw:%2.f",roll,pitch,yaw);
+    CCLOG(@"Roll:%.4f Pitch:%.4f Yaw:%.4f",roll,pitch,yaw);
     
 }
 

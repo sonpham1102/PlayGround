@@ -19,7 +19,7 @@
 #define RM_VERT3 b2Vec2(-0.5,-1.0)
 #define RM_VERT4 b2Vec2(0.5,-1.0)
 #define RM_LINEAR_DAMP 0.5
-#define RM_ANG_DAMP 1.0
+#define RM_ANG_DAMP 0.5
 
 //#define RM_PAN_IMPULSE_X 1.0
 //#define RM_PAN_IMPULSE_Y 2.0
@@ -35,8 +35,11 @@
 
 #define RM_TAP_MANEUVER_TIME 1.0
 #define RM_TAP_FORCE    3.0
-#define RM_ANG_OFFSET_TOLERANCE 1.0 //degrees, make sure to convert
-#define RM_TAP_TORQUE  1.25
+//#define RM_ANG_OFFSET_TOLERANCE 1.0 //degrees, make sure to convert
+//#define RM_TAP_TORQUE  1.25
+#define RM_TAP_TORQUE 5.0
+
+#define RM_ROT_FACTOR 40.0
 
 @implementation RocketMan
 
@@ -65,6 +68,7 @@
     
     body->SetAngularDamping(RM_ANG_DAMP);
     body->SetLinearDamping(RM_LINEAR_DAMP);
+    body->SetLinearVelocity(b2Vec2_zero);
     
     body->SetUserData(self);
 }
@@ -87,12 +91,14 @@
         lsManeuverMSec = 0.0f;
         rsManeuverMSec = 0.0f;
         
-        tapManeuverMSec = 0.0f;
+        tapManeuverMSec = RM_TAP_MANEUVER_TIME + 1.0f;
 
         //sound ID's for the maneuvers
         lsSoundID = 0;
         rsSoundID = 0;
         tapSoundID = 0;
+        
+        rotationAngleDelta = 0.0f;
         
         [self changeState:kStateIdle];
     }
@@ -161,6 +167,10 @@
     //make sure it's in meters so that everything that comes after should work for each device
     panVector = b2Vec2((endPoint.x - startPoint.x)/PTM_RATIO, (endPoint.y - startPoint.y)/PTM_RATIO);
     
+    //convert the vector to the rocket's local coordinate system
+    //this way when the rocketman changes orientation, slashes still match up with
+    //device geometry
+    panVector = body->GetLocalVector(panVector);    
 }
 
 -(void)executePanMove
@@ -254,14 +264,14 @@
 
 -(void) executeTapMove
 {
-    tapManeuverMSec = 0.0;
+    tapManeuverMSec = 0.0f;
     if (tapSoundID == 0)
     {
         tapSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
     }
     [self changeState:kStateManeuver];
 }
-
+/*
 -(void)fireTapDevice
 {
     //this device does 2 things - fires the rear rocket but also tries to get the rocket aligned straight up
@@ -308,7 +318,7 @@
     else if (ABS(angle) < CC_DEGREES_TO_RADIANS(RM_ANG_OFFSET_TOLERANCE))
     {
         // set it to zero and kill any angular velocity
-        body->SetTransform(body->GetWorldCenter(), 0.0f);        
+        body->SetTransform(body->GetPosition(), 0.0f);        
         body->SetAngularVelocity(0.0f);
         angle = 0.0f;
     }
@@ -349,9 +359,38 @@
     
     body->ApplyTorque(torque * direction);
 }
+*/
 
+-(void)fireTapDevice
+{
+    float force = body->GetMass()*RM_TAP_FORCE;
+    
+    body->ApplyForce(body->GetWorldVector(b2Vec2(0, force)), body->GetWorldCenter());
+    
+    // apply a torque in the opposite direction of angular velocity to help straigten it
+    body->ApplyTorque(-body->GetMass() * body->GetAngularVelocity() *RM_TAP_TORQUE);
+}
 
-//-(void) executePanMove
+-(void) planRotationMove:(float)angleDelta
+{
+    rotationAngleDelta = angleDelta;
+}
+
+-(void) executeRotationMove
+{
+    [self changeState:kStateManeuver];
+}
+
+-(void) fireRotationDevice
+{
+/*
+    body->SetTransform(body->GetPosition(), body->GetAngle()-rotationAngleDelta);    
+    body->SetAngularVelocity(0.0f);
+*/ 
+    
+    //for now just apply a torque porportional to the delta if necessary
+    body->ApplyTorque(-body->GetMass()*RM_ROT_FACTOR*rotationAngleDelta);
+}
 
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime andListOfGameObjects:(CCArray *)listOfGameObjects
 {
@@ -396,6 +435,13 @@
         {
             STOPSOUNDEFFECT(tapSoundID);
             tapSoundID = 0;
+        }
+                
+        //continue firing rotation device
+        if (rotationAngleDelta != 0)
+        {
+            [self fireRotationDevice];
+            isManeuvering = TRUE;
         }
     }
     

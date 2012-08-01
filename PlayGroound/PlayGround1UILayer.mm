@@ -10,15 +10,16 @@
 #import "PlayGround1Layer.h"
 #import "GameManager.h"
 
-
 @implementation PlayGround1UILayer
 
+// GESTURE SETUP FUNCTIONS
 -(void) setUpPanGesture
 {    
-    UIPanGestureRecognizer* panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+    panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     panGestureRecognizer.delegate = self;
     [self addGestureRecognizer:panGestureRecognizer];
-    [panGestureRecognizer release];
+    //[panGestureRecognizer release];
+
     panEndPoint = CGPointZero;
     panStartPoint = CGPointZero;
     
@@ -27,14 +28,94 @@
 
 -(void) setUpTapGesture
 {
-    UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     tapGestureRecognizer.delegate = self;
+    tapGestureRecognizer.cancelsTouchesInView = FALSE;
     [self addGestureRecognizer:tapGestureRecognizer];
-    [tapGestureRecognizer release];
+    //[tapGestureRecognizer release];
     
     tapPoint = CGPointZero;  
 }
 
+-(void) setUpLongPressGesture
+{
+    longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
+    longPressGestureRecognizer.delegate = self;
+    [self addGestureRecognizer:longPressGestureRecognizer];
+    //[longPressGestureRecognizer release];    
+}
+
+-(void) setUpRotationGesture
+{
+    rotationsGestureRecognizer = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotationGesture:)];
+    rotationsGestureRecognizer.delegate = self;
+    [self addGestureRecognizer:rotationsGestureRecognizer];
+    //[rotationsGestureRecognizer release];    
+}
+
+// DELEGATE FUNCTIONS - allow finer control of touch behaviour
+-(BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    //if this is the pan gesture recognizer, don't send it touches if the long Press is handling it
+    if (gestureRecognizer == panGestureRecognizer)
+    {
+        if ((longPressGestureRecognizer.state != UIGestureRecognizerStateBegan) &&
+            (longPressGestureRecognizer.state != UIGestureRecognizerStateChanged) &&
+            (rotationsGestureRecognizer.state != UIGestureRecognizerStateBegan) &&
+            (rotationsGestureRecognizer.state != UIGestureRecognizerStateChanged))
+        {
+            return TRUE;
+        }
+        else
+        {
+            return FALSE;
+        }
+    }
+    return TRUE;
+}
+
+-(BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{    
+    return TRUE;
+}
+
+-(BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{    
+    //see if we are talking about the tap recognizer and the pan recognizer
+    if ((gestureRecognizer == tapGestureRecognizer) || (otherGestureRecognizer == tapGestureRecognizer))
+    {
+        if ((gestureRecognizer == panGestureRecognizer) || (otherGestureRecognizer == panGestureRecognizer))
+        {
+            if ((panGestureRecognizer.state == UIGestureRecognizerStateCancelled) ||
+                (panGestureRecognizer.state == UIGestureRecognizerStateEnded) ||
+                (panGestureRecognizer.state == UIGestureRecognizerStateFailed))
+            {
+                return TRUE;
+            }
+            else
+            {
+                return FALSE;
+            }            
+        }
+        else if ((gestureRecognizer == longPressGestureRecognizer) || (otherGestureRecognizer == longPressGestureRecognizer))
+        {
+            if ((longPressGestureRecognizer.state == UIGestureRecognizerStateCancelled) ||
+                (longPressGestureRecognizer.state == UIGestureRecognizerStateEnded) ||
+                (longPressGestureRecognizer.state == UIGestureRecognizerStateFailed))
+            {
+                return TRUE;
+            }
+            else
+            {
+                return FALSE;
+            }            
+            
+        }
+    }
+    return TRUE;
+}
+
+// GESTURE HANDLERS
 - (void)handlePanGesture:(UIPanGestureRecognizer*)aPanGestureRecognizer
 {
     if (aPanGestureRecognizer.state == UIGestureRecognizerStateBegan)
@@ -45,21 +126,28 @@
         //AP : Need to subtract any movement of the view
         //panStartPoint.x -= [self position].x;
         //panStartPoint.y -= [self position].y;
+        CCLOG(@"Pan started");
+    }
+    else if (aPanGestureRecognizer.state == UIGestureRecognizerStateChanged)
+    {
+        CCLOG(@"Pan gesture moved");
     }
     else if (aPanGestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
         panEndPoint = [aPanGestureRecognizer locationInView:aPanGestureRecognizer.view];
         panEndPoint = [[CCDirector sharedDirector] convertToGL:panEndPoint];
-
+        
         //tell the gameplay layer that a pan gesture was completed
         [gpLayer handlePan: panStartPoint endPoint:panEndPoint];
-    }    
+        CCLOG(@"Pan ended");
+    }  
 }
 
 - (void)handleTapGesture:(UITapGestureRecognizer*)aTapGestureRecognizer
 {
     if (aTapGestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
+        CCLOG(@"Tap started");
     }
     else if (aTapGestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
@@ -68,9 +156,55 @@
         
         //tell the gameplay layer that a tap gesture was completed
         [gpLayer handleTap: tapPoint];
+        CCLOG(@"Tap ended");
     }    
 }
 
+- (void)handleLongPressGesture:(UILongPressGestureRecognizer*)aLongPressGestureRecognizer
+{
+    if (aLongPressGestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        CCLOG(@"Long Press started");
+    }
+    else if (aLongPressGestureRecognizer.state == UIGestureRecognizerStateChanged)
+    {
+        CCLOG(@"Long Press moved");
+    }
+    else if (aLongPressGestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+        CCLOG(@"Long Press ended");
+    }    
+}
+
+- (void)handleRotationGesture:(UIRotationGestureRecognizer*)aRotationGestureRecognizer
+{
+    if (aRotationGestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        //if a panGesture is in progress, kill it
+        if ((panGestureRecognizer.state == UIGestureRecognizerStateBegan) ||
+            (panGestureRecognizer.state == UIGestureRecognizerStateChanged))
+        {
+            panGestureRecognizer.enabled = NO;
+            panGestureRecognizer.enabled = YES;
+        }
+        
+        CCLOG(@"Rotation started");
+        //store the angle that we started at
+        rotStartingAngle = aRotationGestureRecognizer.rotation;
+    }
+    else if (aRotationGestureRecognizer.state == UIGestureRecognizerStateChanged)
+    {
+        CCLOG(@"Rotation moved");
+        float rotationDelta = aRotationGestureRecognizer.rotation - rotStartingAngle;
+        [gpLayer handleRotation:rotationDelta];
+        rotStartingAngle = aRotationGestureRecognizer.rotation;
+    }
+    else if (aRotationGestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+        [gpLayer handleRotation:0.0f];
+        CCLOG(@"Rotation ended");
+    }    
+}
 
 -(id) initWithGameplayLayer:(PlayGround1Layer *)gameplayLayer;
 {
@@ -82,6 +216,8 @@
 
         [self setUpPanGesture];
         [self setUpTapGesture];
+        [self setUpLongPressGesture];
+        [self setUpRotationGesture];
     }
     return self;
 }
@@ -124,6 +260,16 @@
     ccDrawLine(panStartPoint, panEndPoint);
 	
 	kmGLPopMatrix();
+}
+
+-(void) dealloc
+{
+    [tapGestureRecognizer release];
+    [panGestureRecognizer release];
+    [longPressGestureRecognizer release];
+    [rotationsGestureRecognizer release];
+    
+    [super dealloc];
 }
 
 

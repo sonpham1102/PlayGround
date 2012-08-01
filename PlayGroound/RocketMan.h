@@ -28,6 +28,8 @@
     ALuint lsSoundID;
     ALuint rsSoundID;
     ALuint tapSoundID;
+    //for rotation maneuver
+    float rotationAngleDelta;
 }
 
 -(id) initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location;
@@ -35,6 +37,8 @@
 -(void) executePanMove;
 -(void) planTapMove:(CGPoint) tapPoint;
 -(void) executeTapMove;
+-(void) planRotationMove:(float) angleDelta;
+-(void) executeRotationMove;
 -(void) updateStateWithDeltaTime:(ccTime)deltaTime andListOfGameObjects:(CCArray *)listOfGameObjects;
 
 @end

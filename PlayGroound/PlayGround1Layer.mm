@@ -29,6 +29,7 @@ typedef enum {
 #define FIXED_POS_Y 0.33f // multiple of screen height
 #define CAMERA_CORRECTION_FACTOR 3.0 // affects the speed at which the camera will try to follow the rocket
 #define CAMERA_MIN_DELTA 0.001
+#define MIN_PAN_LENGTH_SQ 0.20 //in meters, squared
 
 enum {
 	kTagParentNode = 1,
@@ -289,6 +290,18 @@ enum {
 -(void) handlePan:(CGPoint)startPoint endPoint:(CGPoint)endPoint
 {
     
+    //make sure the length is big enough, otherwise ignore
+    b2Vec2 slashVector = b2Vec2((endPoint.x - startPoint.x)/PTM_RATIO, (endPoint.y - startPoint.y)/PTM_RATIO);
+    if (slashVector.LengthSquared() < MIN_PAN_LENGTH_SQ)
+    {
+        CCLOG(@"Pan too short %.2f vs %.2f", slashVector.LengthSquared(), MIN_PAN_LENGTH_SQ);         
+        return;
+    }
+    else
+    {
+        CCLOG(@"Pan good %.2f", slashVector.LengthSquared());
+    }
+    
     debugLineStartPoint = startPoint;
     debugLineEndPoint = endPoint;
     
@@ -331,6 +344,12 @@ enum {
 {
     [rocketMan planTapMove:tapPoint];
     [rocketMan executeTapMove];
+}
+
+-(void) handleRotation:(float)angleDelta
+{
+    [rocketMan planRotationMove:angleDelta];
+    [rocketMan executeRotationMove];
 }
 
 -(void) update: (ccTime) dt

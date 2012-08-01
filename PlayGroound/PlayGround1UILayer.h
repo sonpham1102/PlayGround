@@ -17,6 +17,14 @@
     CGPoint panStartPoint;
     CGPoint panEndPoint;
     CGPoint tapPoint;
+    
+    float rotStartingAngle;
+    
+    //pointers to gesture recognizers.  Used in delegate functions
+    UIPanGestureRecognizer* panGestureRecognizer;   
+    UITapGestureRecognizer* tapGestureRecognizer;
+    UILongPressGestureRecognizer* longPressGestureRecognizer;
+    UIRotationGestureRecognizer* rotationsGestureRecognizer;                                                     
 }
 
 -(id) initWithGameplayLayer:(PlayGround1Layer *)gameplayLayer;

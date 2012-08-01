@@ -34,6 +34,7 @@
 
 -(void) handlePan:(CGPoint) startPoint endPoint:(CGPoint) endPoint;
 -(void) handleTap:(CGPoint) tapPoint;
+-(void) handleRotation:(float) angleDelta;
 
 
 @end

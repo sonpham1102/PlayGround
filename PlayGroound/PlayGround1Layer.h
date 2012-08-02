@@ -32,6 +32,8 @@
     CGPoint debugLineEndPoint;
 
 //    PanRayCastCallback *_panRaycastCallback;
+    
+    CCTMXTiledMap *tileMapNode;
 }
 
 -(void) handlePan:(CGPoint) startPoint endPoint:(CGPoint) endPoint;

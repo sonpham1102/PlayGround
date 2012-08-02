@@ -28,8 +28,12 @@
     ALuint lsSoundID;
     ALuint rsSoundID;
     ALuint tapSoundID;
+    ALuint lpSoundID;
     //for rotation maneuver
     float rotationAngleDelta;
+    //for longpress maneuver
+    float lpManeuverMSec;
+    BOOL lpContinueFiring;
 }
 
 -(id) initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location;
@@ -39,6 +43,8 @@
 -(void) executeTapMove;
 -(void) planRotationMove:(float) angleDelta;
 -(void) executeRotationMove;
+-(void) planLongPressMove:(BOOL) continueFiring;
+-(void) executeLongPressMove;
 -(void) updateStateWithDeltaTime:(ccTime)deltaTime andListOfGameObjects:(CCArray *)listOfGameObjects;
 
 @end

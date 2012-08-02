@@ -35,13 +35,17 @@
 #define RM_MAX_ROCKET_SLOPE 10.0
 #define RM_MIN_ROCKET_SLOPE 1
 
-#define RM_TAP_MANEUVER_TIME 2.0
+#define RM_TAP_MANEUVER_TIME 1.0
 #define RM_TAP_FORCE    4.0
 //#define RM_ANG_OFFSET_TOLERANCE 1.0 //degrees, make sure to convert
 //#define RM_TAP_TORQUE  1.25
-#define RM_TAP_TORQUE 8.0
+//#define RM_TAP_TORQUE 8.0
 
 #define RM_ROT_FACTOR 40.0
+
+#define RM_HOLD_MANEUVER_TIME 1.0
+#define RM_HOLD_FORCE 8.0
+#define RM_HOLD_TORQUE 8.0
 
 @implementation RocketMan
 
@@ -95,10 +99,15 @@
         
         tapManeuverMSec = RM_TAP_MANEUVER_TIME + 1.0f;
 
+        lpManeuverMSec = RM_HOLD_MANEUVER_TIME + 1.0f;
+        
+        lpContinueFiring = FALSE;
+        
         //sound ID's for the maneuvers
         lsSoundID = 0;
         rsSoundID = 0;
         tapSoundID = 0;
+        lpSoundID = 0;
         
         rotationAngleDelta = 0.0f;
         
@@ -273,6 +282,21 @@
     }
     [self changeState:kStateManeuver];
 }
+
+-(void) planLongPressMove:(BOOL) continueFiring
+{
+    lpContinueFiring = continueFiring;
+}
+
+-(void) executeLongPressMove
+{
+    lpManeuverMSec = 0.0f;
+    if (lpSoundID == 0)
+    {
+        lpSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
+    }
+    [self changeState:kStateManeuver];
+}
 /*
 -(void)fireTapDevice
 {
@@ -370,7 +394,7 @@
     body->ApplyForce(body->GetWorldVector(b2Vec2(0, force)), body->GetWorldCenter());
     
     // apply a torque in the opposite direction of angular velocity to help straigten it
-    body->ApplyTorque(-body->GetMass() * body->GetAngularVelocity() *RM_TAP_TORQUE);
+    //body->ApplyTorque(-body->GetMass() * body->GetAngularVelocity() *RM_TAP_TORQUE);
 }
 
 -(void) planRotationMove:(float)angleDelta
@@ -385,13 +409,19 @@
 
 -(void) fireRotationDevice
 {
-/*
-    body->SetTransform(body->GetPosition(), body->GetAngle()-rotationAngleDelta);    
-    body->SetAngularVelocity(0.0f);
-*/ 
-    
     //for now just apply a torque porportional to the delta if necessary
     body->ApplyTorque(-body->GetMass()*RM_ROT_FACTOR*rotationAngleDelta);
+}
+
+-(void) fireLPDevice
+{
+    float force = body->GetMass()*RM_HOLD_FORCE;
+    
+    body->ApplyForce(body->GetWorldVector(b2Vec2(0, force)), body->GetWorldCenter());
+    
+    // apply a torque in the opposite direction of angular velocity to help straigten it
+    body->ApplyTorque(-body->GetMass() * body->GetAngularVelocity() *RM_HOLD_TORQUE);
+    
 }
 
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime andListOfGameObjects:(CCArray *)listOfGameObjects
@@ -438,7 +468,19 @@
             STOPSOUNDEFFECT(tapSoundID);
             tapSoundID = 0;
         }
-                
+
+        lpManeuverMSec += deltaTime;
+        if ((lpManeuverMSec < RM_HOLD_MANEUVER_TIME) || lpContinueFiring)
+        {
+            [self fireLPDevice];
+            isManeuvering = TRUE;
+        }
+        else if (lpSoundID != 0)
+        {
+            STOPSOUNDEFFECT(lpSoundID);
+            lpSoundID = 0;
+        }
+
         //continue firing rotation device
         if (rotationAngleDelta != 0)
         {

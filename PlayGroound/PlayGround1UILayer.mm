@@ -165,6 +165,7 @@
     if (aLongPressGestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
         CCLOG(@"Long Press started");
+        [gpLayer handleLongPress:TRUE];
     }
     else if (aLongPressGestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
@@ -173,6 +174,7 @@
     else if (aLongPressGestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
         CCLOG(@"Long Press ended");
+        [gpLayer handleLongPress:FALSE];
     }    
 }
 

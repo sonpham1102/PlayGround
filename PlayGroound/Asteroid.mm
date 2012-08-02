@@ -14,7 +14,8 @@
 -(void)createBodyAtLocation:(CGPoint)location {
     
     //CGSize winSize = [CCDirector sharedDirector].winSize;
-    float32 size = arc4random()%50;
+    float32 size = arc4random()%30;
+    size += 10.0f;
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position = b2Vec2(location.x/PTM_RATIO,location.y/PTM_RATIO);
@@ -26,7 +27,7 @@
     shape.m_p = b2Vec2(0,0);
     
     b2FixtureDef fixtureDef;
-    fixtureDef.density = 1500.0;
+    fixtureDef.density = 15.0;
     fixtureDef.shape = &shape;
     fixtureDef.restitution = 1.0;
     fixtureDef.friction = 0.0;
@@ -43,7 +44,7 @@
     }
     
 
-    b2Vec2 impulse = b2Vec2(body->GetMass() * 200.0f * direction,0);
+    b2Vec2 impulse = b2Vec2(body->GetMass() * 20.0f * direction,0);
     body->ApplyForce(impulse, body->GetWorldCenter()); 
 
 }

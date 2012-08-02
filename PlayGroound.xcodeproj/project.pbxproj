@@ -188,6 +188,7 @@
 		128228F715B5EC760030D109 /* blocks.png in Resources */ = {isa = PBXBuildFile; fileRef = 128228F615B5EC760030D109 /* blocks.png */; };
 		12985AD215C9C6E900614FB8 /* SpaceBackground_default.png in Resources */ = {isa = PBXBuildFile; fileRef = 12985AD015C9C6E900614FB8 /* SpaceBackground_default.png */; };
 		12985AD315C9C6E900614FB8 /* SpaceBackground.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 12985AD115C9C6E900614FB8 /* SpaceBackground.tmx */; };
+		12985ADD15CB095700614FB8 /* Playground1Background.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 12985ADC15CB095700614FB8 /* Playground1Background.tmx */; };
 		12A8A10B15BC764C009E07B1 /* Box2DHelpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12A8A10A15BC764C009E07B1 /* Box2DHelpers.mm */; };
 		12A8A10E15BC7715009E07B1 /* Obstacle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12A8A10D15BC7715009E07B1 /* Obstacle.mm */; };
 		12B946C515B7295600CB76CD /* MainMenuLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B946C215B7295600CB76CD /* MainMenuLayer.m */; };
@@ -588,6 +589,7 @@
 		128228F615B5EC760030D109 /* blocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blocks.png; path = Resources/blocks.png; sourceTree = "<group>"; };
 		12985AD015C9C6E900614FB8 /* SpaceBackground_default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SpaceBackground_default.png; sourceTree = "<group>"; };
 		12985AD115C9C6E900614FB8 /* SpaceBackground.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SpaceBackground.tmx; sourceTree = "<group>"; };
+		12985ADC15CB095700614FB8 /* Playground1Background.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Playground1Background.tmx; sourceTree = "<group>"; };
 		12A8A10915BC764C009E07B1 /* Box2DHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2DHelpers.h; sourceTree = "<group>"; };
 		12A8A10A15BC764C009E07B1 /* Box2DHelpers.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Box2DHelpers.mm; sourceTree = "<group>"; };
 		12A8A10C15BC7714009E07B1 /* Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Obstacle.h; sourceTree = "<group>"; };
@@ -1242,6 +1244,7 @@
 		12A8A0D715BB206C009E07B1 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				12985ADC15CB095700614FB8 /* Playground1Background.tmx */,
 				12985AD015C9C6E900614FB8 /* SpaceBackground_default.png */,
 				12985AD115C9C6E900614FB8 /* SpaceBackground.tmx */,
 				127EB08815C5AD6C002EEA46 /* LandingPad.png */,
@@ -1510,6 +1513,7 @@
 				127EB08915C5AD6C002EEA46 /* LandingPad.png in Resources */,
 				12985AD215C9C6E900614FB8 /* SpaceBackground_default.png in Resources */,
 				12985AD315C9C6E900614FB8 /* SpaceBackground.tmx in Resources */,
+				12985ADD15CB095700614FB8 /* Playground1Background.tmx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

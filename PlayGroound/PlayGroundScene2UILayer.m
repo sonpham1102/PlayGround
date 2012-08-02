@@ -73,4 +73,8 @@
 	
 	[self addChild: menu z:-1];	
 }
+
+-(void) dealloc {
+    [super dealloc];
+}
 @end

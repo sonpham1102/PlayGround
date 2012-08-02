@@ -20,13 +20,13 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
-#define LEVEL_HEIGHT 25
-#define LEVEL_WIDTH 10
+#define LEVEL_HEIGHT 15
+#define LEVEL_WIDTH 7
 #define MAX_VELOCITY 5
 #define FRICTION_COEFF 0.08
 #define TURN_SPEED 25.0
 #define ASTEROID_TIMER 0.5
-#define ASTEROID_LIMIT 30
+#define ASTEROID_LIMIT 15
 
 #define USE_MAX_VELOCITY 0
 //#define NO_TEST 0
@@ -60,6 +60,8 @@ enum {
 -(void) onExit{
     [super onExit];
     self.isTouchEnabled = NO;
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 }
 
 -(id) init
@@ -84,11 +86,16 @@ enum {
 		// enable events
         
         //Setup Motion Manager
-        self.motionManager = [[[CMMotionManager alloc] init]autorelease];
+        self.motionManager = [[[CMMotionManager alloc] init] autorelease];
         motionManager.deviceMotionUpdateInterval = 1.0/60.0;
         if (motionManager.isDeviceMotionAvailable) {
             [motionManager startDeviceMotionUpdates];
+            
+            
+            //[motionManager startGyroUpdates];
         }
+        
+        referenceAttitude = nil;
         
 		
 		// Handle this onEnter and onExit
@@ -127,11 +134,12 @@ enum {
 		[label setColor:ccc3(0,0,255)];
 		label.position = ccp( s.width/2, s.height-50);
         */
+        /*
         debugLabel = [CCLabelTTF labelWithString:@"test" fontName:@"Marker Felt" fontSize:12];
         [self addChild:debugLabel z:100];
         [debugLabel setColor:ccc3(0, 0, 255)];
         debugLabel.position = ccp(s.width*0.8, s.height/2);
-        
+        */
         [self addChild:rocket z:100];
 
 		[self scheduleUpdate];
@@ -348,11 +356,20 @@ enum {
     [rocket updateStateWithDeltaTime:dt];
 	[self followRocket];
     
-    // Device Motion Updates
+    
     CMDeviceMotion *currentDeviceMotion = motionManager.deviceMotion;
+    
+    if (referenceAttitude == nil) {
+        //CMDeviceMotion *deviceMotion = motionManager.deviceMotion;
+        CMAttitude *attitude = currentDeviceMotion.attitude;
+        referenceAttitude = [attitude retain];        
+    }
+    
+    // Device Motion Updates
+    //CMDeviceMotion *currentDeviceMotion = motionManager.deviceMotion;
     CMAttitude *currentAttitude = currentDeviceMotion.attitude;
     
-    
+    [currentAttitude multiplyByInverseOfAttitude:referenceAttitude];
     
     float pitch = currentAttitude.pitch;
     float roll = currentAttitude.roll;
@@ -364,6 +381,7 @@ enum {
     NSString *labelString = 
     [NSString stringWithFormat:@"Roll:%.4f \n Pitch:%.4f \n Yaw:%.4f \n Turn:%.4f",roll,pitch,yaw,turnPower];
     [debugLabel setString:labelString];
+ 
     
 }
 
@@ -415,7 +433,7 @@ enum {
     
     [self setPosition:newPos];
     newPos = ccp(-newX + winSize.width*0.75, -newY + winSize.height/2);
-    [debugLabel setPosition:newPos];
+    //[debugLabel setPosition:newPos];
 }
 
 
@@ -533,5 +551,7 @@ enum {
 	AppController *app = (AppController*) [[UIApplication sharedApplication] delegate];
 	[[app navController] dismissModalViewControllerAnimated:YES];
 }
+
+
 
 @end

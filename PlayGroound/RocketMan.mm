@@ -20,8 +20,8 @@
 #define RM_VERT2 b2Vec2(-0.3,1.0)
 #define RM_VERT3 b2Vec2(-0.5,-1.0)
 #define RM_VERT4 b2Vec2(0.5,-1.0)
-#define RM_LINEAR_DAMP 0.5
-#define RM_ANG_DAMP 0.5
+#define RM_LINEAR_DAMP 0.25
+#define RM_ANG_DAMP 0.25
 
 //#define RM_PAN_IMPULSE_X 1.0
 //#define RM_PAN_IMPULSE_Y 2.0
@@ -31,7 +31,7 @@
 #define RM_PAN_TIME_MIN 0.2
 //#define RM_MAX_ROCKET_IMPULSE 3.0
 //#define RM_MIN_ROCKET_IMPULSE 1.0
-#define RM_PAN_ROCKET_FORCE 2.0
+#define RM_PAN_ROCKET_FORCE 3.0
 #define RM_MAX_ROCKET_SLOPE 10.0
 #define RM_MIN_ROCKET_SLOPE 1
 
@@ -41,7 +41,7 @@
 //#define RM_TAP_TORQUE  1.25
 //#define RM_TAP_TORQUE 8.0
 
-#define RM_ROT_FACTOR 40.0
+#define RM_ROT_FACTOR 50.0 //controls the torque spinning with rotation touch.
 
 #define RM_HOLD_MANEUVER_TIME 1.0
 #define RM_HOLD_FORCE 8.0

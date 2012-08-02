@@ -7,6 +7,7 @@
 //
 
 #import "CCLayer.h"
+#import "CustomPanGesureRecognizer.h"
 
 @class PlayGround1Layer;
 
@@ -21,7 +22,8 @@
     float rotStartingAngle;
     
     //pointers to gesture recognizers.  Used in delegate functions
-    UIPanGestureRecognizer* panGestureRecognizer;   
+//    UIPanGestureRecognizer* panGestureRecognizer;   
+    CustomPanGesureRecognizer* panGestureRecognizer;   
     UITapGestureRecognizer* tapGestureRecognizer;
     UILongPressGestureRecognizer* longPressGestureRecognizer;
     UIRotationGestureRecognizer* rotationsGestureRecognizer;                                                     

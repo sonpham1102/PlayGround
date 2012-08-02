@@ -7,16 +7,39 @@
 //
 
 #import "CustomPanGesureRecognizer.h"
+#define pan_Timeout 1.0
 
 @implementation CustomPanGesureRecognizer
 
--(id) initWithTarget:(id)target action:(SEL)action
+-(BOOL)canBePreventedByGestureRecognizer:(UIGestureRecognizer *)preventingGestureRecognizer
 {
-    if( (self=[super init]))
+    if (([preventingGestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])||
+        ([preventingGestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]))
     {
+        return YES;
     }
-    return self;
+    else
+    {
+        return [super canBePreventedByGestureRecognizer:preventingGestureRecognizer];
+    }
 }
 
+/*
+-(void)gesture_Fail
+{
+    self.state = UIGestureRecognizerStateFailed;
+    //self.state = UIGestureRecognizerStateCancelled;
+    //self.enabled = FALSE;
+    //self.enabled = TRUE;
+}
+
+-(void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event
+{
+    [super touchesBegan:touches withEvent:event];
+    
+    
+    [self performSelector:@selector(gesture_Fail) withObject:nil afterDelay:pan_Timeout];
+}
+*/
 
 @end

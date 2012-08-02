@@ -15,7 +15,7 @@
 // GESTURE SETUP FUNCTIONS
 -(void) setUpPanGesture
 {    
-    panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+    panGestureRecognizer = [[CustomPanGesureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     panGestureRecognizer.delegate = self;
     [self addGestureRecognizer:panGestureRecognizer];
     //[panGestureRecognizer release];
@@ -64,19 +64,35 @@
             (rotationsGestureRecognizer.state != UIGestureRecognizerStateBegan) &&
             (rotationsGestureRecognizer.state != UIGestureRecognizerStateChanged))
         {
-            return TRUE;
+            return YES;
         }
         else
         {
-            return FALSE;
+            return NO;
         }
     }
-    return TRUE;
+    return YES;
 }
 
 -(BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {    
-    return TRUE;
+    if (gestureRecognizer == panGestureRecognizer)
+    {
+/*
+        if ((longPressGestureRecognizer.state != UIGestureRecognizerStateFailed) &&
+            (longPressGestureRecognizer.state != UIGestureRecognizerStateEnded) &&
+            (longPressGestureRecognizer.state != UIGestureRecognizerStateRecognized) &&
+            (longPressGestureRecognizer.state != UIGestureRecognizerStateCancelled))
+        {
+            return NO;
+        }
+        else
+        {
+            return YES;
+        }
+*/
+    }
+    return YES;
 }
 
 -(BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
@@ -90,11 +106,11 @@
                 (panGestureRecognizer.state == UIGestureRecognizerStateEnded) ||
                 (panGestureRecognizer.state == UIGestureRecognizerStateFailed))
             {
-                return TRUE;
+                return YES;
             }
             else
             {
-                return FALSE;
+                return NO;
             }            
         }
         else if ((gestureRecognizer == longPressGestureRecognizer) || (otherGestureRecognizer == longPressGestureRecognizer))
@@ -103,16 +119,16 @@
                 (longPressGestureRecognizer.state == UIGestureRecognizerStateEnded) ||
                 (longPressGestureRecognizer.state == UIGestureRecognizerStateFailed))
             {
-                return TRUE;
+                return YES;
             }
             else
             {
-                return FALSE;
+                return NO;
             }            
             
         }
     }
-    return TRUE;
+    return YES;
 }
 
 // GESTURE HANDLERS
@@ -220,6 +236,9 @@
         [self setUpTapGesture];
         [self setUpLongPressGesture];
         [self setUpRotationGesture];
+        
+        // this should give the tap the best chance of being recognized before the pan
+        [panGestureRecognizer requireGestureRecognizerToFail:tapGestureRecognizer];
     }
     return self;
 }

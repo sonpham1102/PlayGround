@@ -128,6 +128,23 @@
             
         }
     }
+    if ((gestureRecognizer == rotationsGestureRecognizer) || (otherGestureRecognizer == rotationsGestureRecognizer))
+    {
+        if ((gestureRecognizer == longPressGestureRecognizer) || (otherGestureRecognizer == longPressGestureRecognizer))
+        {
+            if ((longPressGestureRecognizer.state == UIGestureRecognizerStateCancelled) ||
+                (longPressGestureRecognizer.state == UIGestureRecognizerStateEnded) ||
+                (longPressGestureRecognizer.state == UIGestureRecognizerStateFailed))
+            {
+                return YES;
+            }
+            else
+            {
+                return NO;
+            }            
+            
+        }
+    }
     return YES;
 }
 

@@ -50,6 +50,7 @@
     
     CMMotionManager *motionManager;
     CCLabelBMFont *debugLabel;
+    CMAttitude *referenceAttitude;
     
     int turn;
 

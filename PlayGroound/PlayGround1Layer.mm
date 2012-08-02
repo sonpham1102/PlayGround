@@ -46,6 +46,18 @@ enum {
 
 @implementation PlayGround1Layer
 
+-(void) createBackground {
+    
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    
+    tileMapNode = [CCTMXTiledMap
+                   tiledMapWithTMXFile:@"Playground1Background.tmx"];
+    [tileMapNode setPosition:ccp(winSize.width, winSize.height*SCREEN_LENGTHS/2.0)];
+    [tileMapNode setPosition:ccp(0.0, 0.0)];
+    [tileMapNode setScaleY:SCREEN_LENGTHS];
+    [self addChild:tileMapNode z:-10];
+
+}
 
 -(id) init
 {
@@ -81,6 +93,8 @@ enum {
 		[self addChild:label z:0];
 		[label setColor:ccc3(0,0,255)];
 		label.position = ccp( s.width/2, s.height-50);
+        
+        [self createBackground];
 		
 		[self scheduleUpdate];
 	}

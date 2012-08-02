@@ -28,6 +28,10 @@
 #define ASTEROID_TIMER 0.5
 #define ASTEROID_LIMIT 15
 
+#define CAMERA_CORRECTION_FACTOR 6.0 // affects the speed at which the camera will try to follow the rocket
+#define CAMERA_MIN_DELTA 0.001
+
+
 #define USE_MAX_VELOCITY 0
 //#define NO_TEST 0
 
@@ -97,7 +101,8 @@ enum {
         
         referenceAttitude = nil;
         
-		
+        cameraTarget = CGPointZero;
+        
 		// Handle this onEnter and onExit
         self.isTouchEnabled = NO;
         
@@ -293,7 +298,7 @@ enum {
 	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position );
 	
 	kmGLPushMatrix();
-	
+    	
 	world->DrawDebugData();	
 	
 	kmGLPopMatrix();
@@ -354,7 +359,7 @@ enum {
     //  }
     [self fireAsteroid:dt];
     [rocket updateStateWithDeltaTime:dt];
-	[self followRocket];
+	[self followRocket:dt];
     
     
     CMDeviceMotion *currentDeviceMotion = motionManager.deviceMotion;
@@ -413,27 +418,70 @@ enum {
     }
 }
 
--(void)followRocket {
+-(void)followRocket:(float) dt {
     
     CGSize winSize = [CCDirector sharedDirector].winSize;
 
-    b2Vec2 position = rocket.body->GetPosition();
+
+    b2Vec2 cTarget = rocket.body->GetWorldPoint(b2Vec2(0, 4.0));
+                                            
     
     float fixtedPositionY = winSize.height/2;
     float fixtedPositionX = winSize.width/2;
-    float newY = fixtedPositionY - position.y * PTM_RATIO;
-    float newX = fixtedPositionX - position.x * PTM_RATIO;
+    float newY = fixtedPositionY - cTarget.y * PTM_RATIO;
+    float newX = fixtedPositionX - cTarget.x * PTM_RATIO;
     
     newX = MIN(newX,0);
     newX = MAX(newX,-winSize.width * (LEVEL_WIDTH - 1));
     newY = MIN(newY,0);
     newY = MAX(newY,-winSize.height * (LEVEL_HEIGHT-1));
     
-    CGPoint newPos = ccp(newX, newY);
+//    CGPoint newPos = ccp(newX, newY);
+    
+//    [self setPosition:newPos];
+//    newPos = ccp(-newX + winSize.width*0.75, -newY + winSize.height/2);
+    //[debugLabel setPosition:newPos];
+    
+    
+    cameraTarget = ccp(newX, newY);
+    
+    CGPoint currentPos = [self position];
+    
+    CGPoint travelVector = ccp(cameraTarget.x - currentPos.x, cameraTarget.y - currentPos.y);
+    
+    //calculate a new position based on the distance between
+    CGPoint newPos;
+    
+    float totalDistanceSquared = travelVector.x*travelVector.x + travelVector.y*travelVector.y;
+    
+    //if the distance to travel is zero, we're done
+    if (totalDistanceSquared == 0.0f)
+    {
+        return;
+    }
+    float sqrtTD = sqrtf(totalDistanceSquared);    
+    
+    float distanceToMove = sqrtTD*CAMERA_CORRECTION_FACTOR*dt;
+    
+    //make sure we don't overshoot, and check if we are close enough
+    if (((distanceToMove * distanceToMove) > totalDistanceSquared) || (distanceToMove < CAMERA_MIN_DELTA))
+    {
+        newPos.x =cameraTarget.x;
+        newPos.y =cameraTarget.y;
+    }
+    else 
+    {
+        newPos.x = currentPos.x + travelVector.x * distanceToMove/sqrtTD;
+        newPos.y = currentPos.y + travelVector.y * distanceToMove/sqrtTD;
+    }
     
     [self setPosition:newPos];
-    newPos = ccp(-newX + winSize.width*0.75, -newY + winSize.height/2);
-    //[debugLabel setPosition:newPos];
+
+    
+    
+    
+    
+    
 }
 
 

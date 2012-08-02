@@ -20,8 +20,8 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
-#define LEVEL_HEIGHT 15
-#define LEVEL_WIDTH 7
+#define LEVEL_HEIGHT 25
+#define LEVEL_WIDTH 10
 #define MAX_VELOCITY 5
 #define FRICTION_COEFF 0.08
 #define TURN_SPEED 25.0
@@ -127,7 +127,8 @@ enum {
         //JP Creating a Ball to play with instead of Box
         //[self createBall];
         
-        rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
+        //rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
+        rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * LEVEL_WIDTH/2, s.height*LEVEL_HEIGHT/2)];
 		/*
 		CCLabelTTF *label = [CCLabelTTF labelWithString:@"This is Level 2" fontName:@"Marker Felt" fontSize:32];
 		[self addChild:label z:0];
@@ -154,6 +155,7 @@ enum {
     tileMapNode = [CCTMXTiledMap
                 tiledMapWithTMXFile:@"SpaceBackground.tmx"];
     
+    /*
     CCTMXLayer *backDropLayer = [tileMapNode layerNamed:@"BackDrop"];
     CCTMXLayer *planetsLayer = [tileMapNode
                                     layerNamed:@"Planets"];
@@ -165,8 +167,6 @@ enum {
     float xOffset = 0.0f;
     float yOffset = 0.0f;
 
-    xOffset = (winSize.width*LEVEL_WIDTH/2);
-    yOffset = (winSize.height*LEVEL_HEIGHT/2);
     [backDropLayer retain];
     [backDropLayer removeFromParentAndCleanup:NO];
     [backDropLayer setAnchorPoint:CGPointMake(0.5f, 0.5f)];
@@ -174,8 +174,8 @@ enum {
             positionOffset:ccp(0,0)];
     [backDropLayer release];
     
-    xOffset = (winSize.width*LEVEL_WIDTH/2) * 0.2f;
-    yOffset = (winSize.height*LEVEL_HEIGHT/2) * 0.2f;
+    xOffset = (winSize.width*LEVEL_WIDTH/2) * 0.005f;
+    yOffset = (winSize.height*LEVEL_HEIGHT/2) * 0.005f;
     [planetsLayer retain];
     [planetsLayer removeFromParentAndCleanup:NO];
     [planetsLayer setAnchorPoint:CGPointMake(0.5f, 0.5f)];
@@ -183,7 +183,35 @@ enum {
              parallaxRatio:ccp(0.95,0.95)
             positionOffset:ccp(xOffset, yOffset)];
     [planetsLayer release];  
+    */
     
+    CCTMXLayer *backDropLayer = [tileMapNode layerNamed:@"BackDrop"];
+    CCTMXLayer *planetsLayer = [tileMapNode
+                                layerNamed:@"Planets"];
+    
+    parallaxNode = [CCParallaxNode node];
+    [parallaxNode setPosition:
+     ccp(winSize.width*LEVEL_WIDTH/2,winSize.height*LEVEL_HEIGHT/2)];
+    
+    float xOffset = 0.0f;
+    float yOffset = 0.0f;
+    
+    [backDropLayer retain];
+    [backDropLayer removeFromParentAndCleanup:NO];
+    [backDropLayer setAnchorPoint:CGPointMake(0.5f, 0.5f)];
+    [parallaxNode addChild:backDropLayer z:15 parallaxRatio:ccp(0.3,0.3)
+            positionOffset:ccp(xOffset,yOffset)];
+    [backDropLayer release];
+    
+    [planetsLayer retain];
+    [planetsLayer removeFromParentAndCleanup:NO];
+    [planetsLayer setAnchorPoint:CGPointMake(0.5f, 0.5f)];
+    [parallaxNode addChild:planetsLayer z:20
+             parallaxRatio:ccp(1,1)
+            positionOffset:ccp(xOffset, yOffset)];
+    [planetsLayer release]; 
+     
+     
     [self addChild:parallaxNode z:-1]; 
 }
 

@@ -26,7 +26,7 @@
 #define FRICTION_COEFF 0.08
 #define TURN_SPEED 25.0
 #define ASTEROID_TIMER 0.5
-#define ASTEROID_LIMIT 15
+#define ASTEROID_LIMIT 30
 
 #define USE_MAX_VELOCITY 0
 //#define NO_TEST 0
@@ -304,8 +304,8 @@ enum {
         timeAccumulator = MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL;
     }
     
-    int32 velocityIterations = 25;
-    int32 positionIterations = 25;
+    int32 velocityIterations = 5;
+    int32 positionIterations = 5;
     while (timeAccumulator >= UPDATE_INTERVAL)
     {
         timeAccumulator -= UPDATE_INTERVAL;

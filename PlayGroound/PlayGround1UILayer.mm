@@ -15,7 +15,7 @@
 // GESTURE SETUP FUNCTIONS
 -(void) setUpPanGesture
 {    
-    panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+    panGestureRecognizer = [[CustomPanGesureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     panGestureRecognizer.delegate = self;
     [self addGestureRecognizer:panGestureRecognizer];
     //[panGestureRecognizer release];
@@ -220,6 +220,7 @@
         [self setUpTapGesture];
         [self setUpLongPressGesture];
         [self setUpRotationGesture];
+                
     }
     return self;
 }

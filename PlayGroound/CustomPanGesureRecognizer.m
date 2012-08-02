@@ -10,13 +10,16 @@
 
 @implementation CustomPanGesureRecognizer
 
--(id) initWithTarget:(id)target action:(SEL)action
+-(BOOL)canBePreventedByGestureRecognizer:(UIGestureRecognizer *)preventingGestureRecognizer
 {
-    if( (self=[super init]))
+    if (([preventingGestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])||
+        ([preventingGestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]))
     {
+        return FALSE;
     }
-    return self;
+    else
+    {
+        return [super canBePreventedByGestureRecognizer:preventingGestureRecognizer];
+    }
 }
-
-
 @end

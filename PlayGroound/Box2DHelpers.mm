@@ -23,14 +23,44 @@ bool isBodyCollidingWithObjectType(b2Body *body, GameObjType objectType) {
             (GameCharPhysics *) bodyA->GetUserData();
             GameCharPhysics *spriteB = 
             (GameCharPhysics *) bodyB->GetUserData();
+            if ((fixtureA->IsSensor()) || (fixtureB->IsSensor())) {
+                return false;
+                break;
+            } 
             if ((spriteA != NULL && 
-                 spriteA.gameObjType == objectType) ||
-                (spriteB != NULL && 
-                 spriteB.gameObjType == objectType)) {
-                    return true;
-                }        
+                        spriteA.gameObjType == objectType) ||
+                       (spriteB != NULL && 
+                        spriteB.gameObjType == objectType))  {
+                           return true;
+            }        
         }
         edge = edge->next;
     }    
     return false;
+}
+
+bool isSensorCollidingWithObjectType(b2Body *body, GameObjType objectType,b2Fixture* fixture) {
+    b2ContactEdge* edge = body->GetContactList();
+    b2Body *bodyHit;
+    while (edge)
+    {
+        b2Contact* contact = edge->contact;
+        if (contact->IsTouching()) {
+            b2Fixture* fixtureA = contact->GetFixtureA();
+            b2Fixture* fixtureB = contact->GetFixtureB();
+            if ((fixtureA == fixture) || (fixtureB == fixture)) {
+                if (fixtureA == fixture) {
+                    bodyHit = fixtureB->GetBody(); 
+                } else {
+                    bodyHit = fixtureB->GetBody();
+                }
+                GameCharPhysics *sprite = (GameCharPhysics *)bodyHit->GetUserData();
+                if (sprite.gameObjType == objectType) {
+                    return true;
+                }
+            }
+        }
+        edge = edge->next;
+    }    
+    return false;  
 }

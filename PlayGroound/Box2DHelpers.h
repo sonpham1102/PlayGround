@@ -11,3 +11,6 @@
 
 bool isBodyCollidingWithObjectType(b2Body *body, 
                                    GameObjType objectType);
+bool isSensorCollidingWithObjectType(b2Body *body, 
+                                     GameObjType objectType,
+                                     b2Fixture* fixture);

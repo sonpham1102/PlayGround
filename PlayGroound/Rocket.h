@@ -12,7 +12,14 @@
 
 @interface Rocket : GameCharPhysics {
     b2World* world;
+    float32 pitchTurn;
+    int turnDirection;
+    b2Fixture *sensorFixture;
 }
+
+@property (nonatomic, readonly) b2Fixture *sensorFixture;
+@property (nonatomic, readwrite) float32 pitchTurn;
+@property (nonatomic, readwrite) int turnDirection;
 
 -(void) updateStateWithDeltaTime:(ccTime)deltaTime;
 -(id) initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location;

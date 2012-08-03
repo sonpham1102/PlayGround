@@ -53,7 +53,6 @@
     CMAttitude *referenceAttitude;
     
     int turn;
-    
     CGPoint cameraTarget;
 
 }

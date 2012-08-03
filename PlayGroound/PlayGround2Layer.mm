@@ -28,7 +28,7 @@
 #define ASTEROID_TIMER 0.5
 #define ASTEROID_LIMIT 30
 
-#define CAMERA_CORRECTION_FACTOR 200.1 // affects the speed at which the camera will try to follow the rocket
+#define CAMERA_CORRECTION_FACTOR 0.1 // affects the speed at which the camera will try to follow the rocket
 #define CAMERA_MIN_DELTA 0.01
 
 #define CAMERA_VELOCITY_FACTOR 0.9
@@ -129,20 +129,21 @@ enum {
         //JP Creating a Ball to play with instead of Box
         //[self createBall];
         
-        rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
-        //rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * LEVEL_WIDTH/2, s.height*LEVEL_HEIGHT/2)];
+        //rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
+        rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * LEVEL_WIDTH/2, s.height*LEVEL_HEIGHT/2)];
+        [rocket setTurnDirection:1];
 		/*
 		CCLabelTTF *label = [CCLabelTTF labelWithString:@"This is Level 2" fontName:@"Marker Felt" fontSize:32];
 		[self addChild:label z:0];
 		[label setColor:ccc3(0,0,255)];
 		label.position = ccp( s.width/2, s.height-50);
         */
-/*        
+        /*
         debugLabel = [CCLabelTTF labelWithString:@"test" fontName:@"Marker Felt" fontSize:12];
         [self addChild:debugLabel z:100];
         [debugLabel setColor:ccc3(0, 0, 255)];
         debugLabel.position = ccp(s.width*0.8, s.height/2);
-*/        
+        */
         [self addChild:rocket z:100];
 
 		[self scheduleUpdate];
@@ -383,9 +384,6 @@ enum {
     //                  andListOfGameObjects:listOfGameObjects];
     //  }
     [self fireAsteroid:dt];
-    [rocket updateStateWithDeltaTime:dt];
-	//[self followRocket:dt];
-    [self followRocket2:dt];
     
     CMDeviceMotion *currentDeviceMotion = motionManager.deviceMotion;
     
@@ -405,7 +403,7 @@ enum {
     
     [rocket setPitchTurn:pitch];
     [rocket updateStateWithDeltaTime:dt];
-	[self followRocket:dt];
+	[self followRocket2:dt];
     /*
     float roll = currentAttitude.roll;
     float yaw = currentAttitude.yaw;
@@ -414,10 +412,10 @@ enum {
     //rocket.body->ApplyTorque(rocket.body->GetMass()*pitch * TURN_SPEED * turn);
     //rocket.body->SetAngularVelocity(turnPower);
 
-//    NSString *labelString = 
-//    [NSString stringWithFormat:@"Roll:%.4f \n Pitch:%.4f \n Yaw:%.4f \n Turn:%.4f",roll,pitch,yaw,turnPower];
-//    [debugLabel setString:labelString];
- 
+    NSString *labelString = 
+    [NSString stringWithFormat:@"Roll:%.4f \n Pitch:%.4f \n Yaw:%.4f \n Turn:%.4f",roll,pitch,yaw,turnPower];
+    [debugLabel setString:labelString];
+ */
     
 }
 
@@ -454,7 +452,7 @@ enum {
     CGSize winSize = [CCDirector sharedDirector].winSize;
 
 
-    b2Vec2 cTarget = rocket.body->GetWorldPoint(b2Vec2(0, 2.5));
+    b2Vec2 cTarget = rocket.body->GetWorldPoint(b2Vec2(0, 4.5));
                                             
     
     float fixtedPositionY = winSize.height/2;
@@ -496,11 +494,12 @@ enum {
     }
     
     [self setPosition:newPos];
+/*
     NSString *labelString = 
     [NSString stringWithFormat:@"Total: %.2f\nMove: %.2f",totalDistance, distanceToMove];
     [debugLabel setString:labelString];
     [debugLabel setPosition:ccp(-newPos.x+100, -newPos.y+100)];
-
+*/
 
 }
 

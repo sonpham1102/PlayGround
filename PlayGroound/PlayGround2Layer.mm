@@ -59,6 +59,7 @@ enum {
 @synthesize debugLabel;
 
 
+
 -(void) onEnter{
     [super onEnter];
     self.isTouchEnabled = YES;
@@ -87,6 +88,8 @@ enum {
         middleRocketSoundID = 0;
         asteroidTimer = 0.0;
         asteroidsCreated = 0;
+        bulletfired = nil;
+        bulletTime = 0.0;
         
 		// enable events
         
@@ -136,6 +139,7 @@ enum {
         //rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
         rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * LEVEL_WIDTH/2, s.height*LEVEL_HEIGHT/2)];
         [rocket setTurnDirection:1];
+        [rocket setDelegate:self];
 		/*
 		CCLabelTTF *label = [CCLabelTTF labelWithString:@"This is Level 2" fontName:@"Marker Felt" fontSize:32];
 		[self addChild:label z:0];
@@ -422,6 +426,30 @@ enum {
     [debugLabel setString:labelString];
  */
     
+}
+
+-(void) createBullet:(ccTime)deltaTime {
+    //CCLOG(@"Fire Bullet");
+    if (bulletfired == nil) {
+        bulletfired = [[bullet alloc]  initWithWorld:world atLoaction:rocket.position];
+        [self addChild:bulletfired];
+        
+        b2Vec2 bodyCenter = rocket.body->GetWorldCenter();
+        b2Vec2 impulse = b2Vec2(0,500);
+        b2Vec2 impulseWorld = rocket.body->GetWorldVector(impulse);
+        b2Vec2 impulsePoint = rocket.body->GetWorldPoint(b2Vec2(0,40));
+        bulletfired.body->ApplyForce(impulseWorld, impulsePoint);
+        
+    } else {
+        bulletTime += deltaTime;
+        if (bulletTime > BULLET_TIME) {
+            [bulletfired removeFromParentAndCleanup:YES];
+            world->DestroyBody(bulletfired.body);
+            bulletTime = 0.0;
+            bulletfired = nil;
+        }
+    }
+   
 }
 
 - (void) didFlipScreen:(NSNotification *)notification{ 

@@ -7,17 +7,25 @@
 //
 
 #import "Rocket.h"
+#import "bullet.h"
+
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
 #define SCALE_FACTOR 0.12f
 #define TURN_SPEED 20.0
+
 
 @implementation Rocket
 
 @synthesize pitchTurn;
 @synthesize turnDirection;
 @synthesize sensorFixture;
+@synthesize delegate;
 
+
+-(void) fireBullet:(ccTime)deltaTime {
+    [delegate createBullet:deltaTime];
+}
 
 -(void) createWeaponSensor {
     b2FixtureDef fixtureDef;
@@ -129,7 +137,7 @@
     [self turnRocket];
     //check to see if sensor detects asteroid
     if (isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture)) {
-        CCLOG(@"Fire Bullets");
+        [self fireBullet:deltaTime];
     } 
     if (isBodyCollidingWithObjectType(body, kObjTypeAsteroid)) {
         CCLOG(@"Collided with Asteroid Handle it");
@@ -166,6 +174,11 @@
         [self createRocketAtLocation:location];
     }
     return self;
+}
+
+-(void) dealloc {
+    [super dealloc];
+    delegate = nil;
 }
 
 @end

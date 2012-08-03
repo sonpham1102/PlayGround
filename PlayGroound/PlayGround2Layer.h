@@ -9,7 +9,7 @@
 
 
 #import <GameKit/GameKit.h>
-
+#import "GlobalConstants.h"
 // When you import this file, you import all the cocos2d classes
 #import "cocos2d.h"
 #import "Box2D.h"
@@ -17,10 +17,11 @@
 #import "Rocket.h"
 #import "SimpleAudioEngine.h"
 #import <CoreMotion/CoreMotion.h>
+#import "bullet.h"
 
 
 // HelloWorldLayer
-@interface PlayGround2Layer : CCLayer <GKAchievementViewControllerDelegate, GKLeaderboardViewControllerDelegate>
+@interface PlayGround2Layer : CCLayer <PlayGround2LayerDelegate>
 {
     Rocket *rocket;
 	CCTexture2D *spriteTexture_;	// weak ref
@@ -63,6 +64,5 @@
 @property (nonatomic,retain) CCArray *asteroidCache;
 @property (nonatomic,retain) CMMotionManager *motionManager;
 @property (nonatomic,assign) CCLabelBMFont *debugLabel;
-
 
 @end

@@ -8,6 +8,7 @@
 
 #import "Box2DHelpers.h"
 #import "GameCharPhysics.h"
+#import "Rocket.h"
 
 bool isBodyCollidingWithObjectType(b2Body *body, GameObjType objectType) {
     b2ContactEdge* edge = body->GetContactList();
@@ -23,10 +24,12 @@ bool isBodyCollidingWithObjectType(b2Body *body, GameObjType objectType) {
             (GameCharPhysics *) bodyA->GetUserData();
             GameCharPhysics *spriteB = 
             (GameCharPhysics *) bodyB->GetUserData();
+            
             if ((fixtureA->IsSensor()) || (fixtureB->IsSensor())) {
                 return false;
                 break;
-            } 
+            }
+            
             if ((spriteA != NULL && 
                         spriteA.gameObjType == objectType) ||
                        (spriteB != NULL && 
@@ -52,10 +55,11 @@ bool isSensorCollidingWithObjectType(b2Body *body, GameObjType objectType,b2Fixt
                 if (fixtureA == fixture) {
                     bodyHit = fixtureB->GetBody(); 
                 } else {
-                    bodyHit = fixtureB->GetBody();
+                    bodyHit = fixtureA->GetBody();
                 }
                 GameCharPhysics *sprite = (GameCharPhysics *)bodyHit->GetUserData();
                 if (sprite.gameObjType == objectType) {
+                    
                     return true;
                 }
             }

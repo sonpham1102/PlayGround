@@ -55,6 +55,8 @@
     
     int turn;
     CGPoint cameraTarget;
+    bullet *bulletfired;
+    float bulletTime;
     b2Vec2 cameraMoveVector;
     float cameraDistanceToTarget;
     float cameraDistanceTravelled;

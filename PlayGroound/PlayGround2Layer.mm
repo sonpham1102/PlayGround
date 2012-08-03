@@ -37,6 +37,7 @@
 #define CAMERA_CATCHUP_TIME 1.0 //1 second
 #define MAX_CAMERA_SPEED 1.0 //(in M/s)
 
+#define BULLET_TIME 1.5
 
 #define USE_MAX_VELOCITY 0
 //#define NO_TEST 0
@@ -413,6 +414,9 @@ enum {
     [rocket updateStateWithDeltaTime:dt];
 	[self followRocket2:dt];
 //	[self followRocket:dt];
+    if (bulletfired) {
+        [bulletfired updateStateWithDeltaTime:dt];
+    }
     /*
     float roll = currentAttitude.roll;
     float yaw = currentAttitude.yaw;

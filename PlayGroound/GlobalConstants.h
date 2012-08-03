@@ -35,7 +35,8 @@ typedef enum {
     kObjTypeRocket,
     kObjTypeObstacle,
     kObjTypeNone,
-    kObjTypeAsteroid
+    kObjTypeAsteroid,
+    kobjTypeBullet
 }GameObjType;
 
 // GameChar states
@@ -44,6 +45,12 @@ typedef enum {
     kStateIdle,
     kStateManeuver
 }CharStates;
+
+@protocol PlayGround2LayerDelegate
+
+-(void) createBullet:(ccTime)deltaTime;
+
+@end
 
 // A macro to determine if iPad or not
 #ifdef UI_USER_INTERFACE_IDIOM//()

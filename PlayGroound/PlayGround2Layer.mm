@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+
 #import "PlayGround2Scene.h"
 #import "PlayGround2Layer.h"
 // Needed to obtain the Navigation Controller
@@ -20,17 +21,18 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
-#define LEVEL_HEIGHT 25
-#define LEVEL_WIDTH 10
+#define LEVEL_HEIGHT 1  //25
+#define LEVEL_WIDTH 1   //10
 #define MAX_VELOCITY 5
 #define FRICTION_COEFF 0.08
 
 #define ASTEROID_TIMER 0.5
-#define ASTEROID_LIMIT 30
+#define ASTEROID_LIMIT 1
 
 #define CAMERA_CORRECTION_FACTOR 0.1 // affects the speed at which the camera will try to follow the rocket
 #define CAMERA_MIN_DELTA 0.01
 
+#define BULLET_TIME 1.5
 
 #define USE_MAX_VELOCITY 0
 //#define NO_TEST 0
@@ -51,6 +53,7 @@ enum {
 @synthesize asteroidCache;
 @synthesize motionManager;
 @synthesize debugLabel;
+
 
 
 -(void) onEnter{
@@ -81,6 +84,8 @@ enum {
         middleRocketSoundID = 0;
         asteroidTimer = 0.0;
         asteroidsCreated = 0;
+        bulletfired = nil;
+        bulletTime = 0.0;
         
 		// enable events
         
@@ -130,6 +135,7 @@ enum {
         //rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
         rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * LEVEL_WIDTH/2, s.height*LEVEL_HEIGHT/2)];
         [rocket setTurnDirection:1];
+        [rocket setDelegate:self];
 		/*
 		CCLabelTTF *label = [CCLabelTTF labelWithString:@"This is Level 2" fontName:@"Marker Felt" fontSize:32];
 		[self addChild:label z:0];
@@ -402,6 +408,8 @@ enum {
     [rocket setPitchTurn:pitch];
     [rocket updateStateWithDeltaTime:dt];
 	[self followRocket:dt];
+   
+    
     /*
     float roll = currentAttitude.roll;
     float yaw = currentAttitude.yaw;
@@ -415,6 +423,30 @@ enum {
     [debugLabel setString:labelString];
  */
     
+}
+
+-(void) createBullet:(ccTime)deltaTime {
+    CCLOG(@"Fire Bullet");
+    if (bulletfired == nil) {
+        bulletfired = [[bullet alloc]  initWithWorld:world atLoaction:rocket.position];
+        [self addChild:bulletfired];
+        
+        b2Vec2 bodyCenter = rocket.body->GetWorldCenter();
+        b2Vec2 impulse = b2Vec2(0,500);
+        b2Vec2 impulseWorld = rocket.body->GetWorldVector(impulse);
+        b2Vec2 impulsePoint = rocket.body->GetWorldPoint(b2Vec2(0,40));
+        bulletfired.body->ApplyForce(impulseWorld, impulsePoint);
+        
+    } else {
+        bulletTime += deltaTime;
+        if (bulletTime > BULLET_TIME) {
+            [bulletfired removeFromParentAndCleanup:YES];
+            world->DestroyBody(bulletfired.body);
+            bulletTime = 0.0;
+            bulletfired = nil;
+        }
+    }
+   
 }
 
 - (void) didFlipScreen:(NSNotification *)notification{ 

@@ -54,6 +54,9 @@
     
     int turn;
     CGPoint cameraTarget;
+    b2Vec2 cameraMoveVector;
+    float cameraDistanceToTarget;
+    float cameraDistanceTravelled;
 
 }
 

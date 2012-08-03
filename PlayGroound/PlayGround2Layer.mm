@@ -24,12 +24,12 @@
 #define LEVEL_WIDTH 10
 #define MAX_VELOCITY 5
 #define FRICTION_COEFF 0.08
-#define TURN_SPEED 25.0
+#define TURN_SPEED 20.0
 #define ASTEROID_TIMER 0.5
-#define ASTEROID_LIMIT 15
+#define ASTEROID_LIMIT 30
 
-#define CAMERA_CORRECTION_FACTOR 6.0 // affects the speed at which the camera will try to follow the rocket
-#define CAMERA_MIN_DELTA 0.001
+#define CAMERA_CORRECTION_FACTOR 0.1 // affects the speed at which the camera will try to follow the rocket
+#define CAMERA_MIN_DELTA 0.01
 
 
 #define USE_MAX_VELOCITY 0
@@ -335,7 +335,7 @@ enum {
 -(void) update: (ccTime) dt
 {
     static double UPDATE_INTERVAL = 1.0/60.0f;
-    static double MAX_CYCLES_PER_FRAME = 5;
+    static double MAX_CYCLES_PER_FRAME = 4;
     static double timeAccumulator = 0;
     
     timeAccumulator += dt;
@@ -345,8 +345,8 @@ enum {
         timeAccumulator = MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL;
     }
     
-    int32 velocityIterations = 5;
-    int32 positionIterations = 5;
+    int32 velocityIterations = 3;
+    int32 positionIterations = 2;
     while (timeAccumulator >= UPDATE_INTERVAL)
     {
         timeAccumulator -= UPDATE_INTERVAL;
@@ -409,7 +409,8 @@ enum {
     float yaw = currentAttitude.yaw;
     float turnPower = pitch * TURN_SPEED * turn;
     
-    rocket.body->SetAngularVelocity(turnPower);
+    rocket.body->ApplyTorque(rocket.body->GetMass()*pitch * TURN_SPEED * turn);
+    //rocket.body->SetAngularVelocity(turnPower);
 
     NSString *labelString = 
     [NSString stringWithFormat:@"Roll:%.4f \n Pitch:%.4f \n Yaw:%.4f \n Turn:%.4f",roll,pitch,yaw,turnPower];
@@ -451,7 +452,7 @@ enum {
     CGSize winSize = [CCDirector sharedDirector].winSize;
 
 
-    b2Vec2 cTarget = rocket.body->GetWorldPoint(b2Vec2(0, 4.0));
+    b2Vec2 cTarget = rocket.body->GetWorldPoint(b2Vec2(0, 4.5));
                                             
     
     float fixtedPositionY = winSize.height/2;
@@ -464,12 +465,9 @@ enum {
     newY = MIN(newY,0);
     newY = MAX(newY,-winSize.height * (LEVEL_HEIGHT-1));
     
-//    CGPoint newPos = ccp(newX, newY);
+    //CGPoint newPos = ccp(newX, newY);
     
-//    [self setPosition:newPos];
-//    newPos = ccp(-newX + winSize.width*0.75, -newY + winSize.height/2);
-    //[debugLabel setPosition:newPos];
-    
+    //[self setPosition:newPos];
     
     cameraTarget = ccp(newX, newY);
     
@@ -480,36 +478,30 @@ enum {
     //calculate a new position based on the distance between
     CGPoint newPos;
     
-    float totalDistanceSquared = travelVector.x*travelVector.x + travelVector.y*travelVector.y;
+    float totalDistance = sqrt(travelVector.x*travelVector.x + travelVector.y*travelVector.y);
     
     //if the distance to travel is zero, we're done
-    if (totalDistanceSquared == 0.0f)
+    if (totalDistance == 0.0f)
     {
         return;
     }
-    float sqrtTD = sqrtf(totalDistanceSquared);    
     
-    float distanceToMove = sqrtTD*CAMERA_CORRECTION_FACTOR*dt;
+    float distanceToMove = totalDistance*CAMERA_CORRECTION_FACTOR;
     
     //make sure we don't overshoot, and check if we are close enough
-    if (((distanceToMove * distanceToMove) > totalDistanceSquared) || (distanceToMove < CAMERA_MIN_DELTA))
+    if ((distanceToMove > totalDistance) || (distanceToMove < CAMERA_MIN_DELTA))
     {
         newPos.x =cameraTarget.x;
         newPos.y =cameraTarget.y;
     }
     else 
     {
-        newPos.x = currentPos.x + travelVector.x * distanceToMove/sqrtTD;
-        newPos.y = currentPos.y + travelVector.y * distanceToMove/sqrtTD;
+        newPos.x = currentPos.x + travelVector.x * distanceToMove/totalDistance;
+        newPos.y = currentPos.y + travelVector.y * distanceToMove/totalDistance;
     }
     
     [self setPosition:newPos];
 
-    
-    
-    
-    
-    
 }
 
 

@@ -28,8 +28,10 @@
 #define ASTEROID_TIMER 0.5
 #define ASTEROID_LIMIT 30
 
-#define CAMERA_CORRECTION_FACTOR 0.1 // affects the speed at which the camera will try to follow the rocket
+#define CAMERA_CORRECTION_FACTOR 200.1 // affects the speed at which the camera will try to follow the rocket
 #define CAMERA_MIN_DELTA 0.01
+
+#define CAMERA_VELOCITY_FACTOR 0.9
 
 
 #define USE_MAX_VELOCITY 0
@@ -132,20 +134,20 @@ enum {
         //JP Creating a Ball to play with instead of Box
         //[self createBall];
         
-        //rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
-        rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * LEVEL_WIDTH/2, s.height*LEVEL_HEIGHT/2)];
+        rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
+        //rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * LEVEL_WIDTH/2, s.height*LEVEL_HEIGHT/2)];
 		/*
 		CCLabelTTF *label = [CCLabelTTF labelWithString:@"This is Level 2" fontName:@"Marker Felt" fontSize:32];
 		[self addChild:label z:0];
 		[label setColor:ccc3(0,0,255)];
 		label.position = ccp( s.width/2, s.height-50);
         */
-        /*
+/*        
         debugLabel = [CCLabelTTF labelWithString:@"test" fontName:@"Marker Felt" fontSize:12];
         [self addChild:debugLabel z:100];
         [debugLabel setColor:ccc3(0, 0, 255)];
         debugLabel.position = ccp(s.width*0.8, s.height/2);
-        */
+*/        
         [self addChild:rocket z:100];
 
 		[self scheduleUpdate];
@@ -387,8 +389,8 @@ enum {
     //  }
     [self fireAsteroid:dt];
     [rocket updateStateWithDeltaTime:dt];
-	[self followRocket:dt];
-    
+	//[self followRocket:dt];
+    [self followRocket2:dt];
     
     CMDeviceMotion *currentDeviceMotion = motionManager.deviceMotion;
     
@@ -412,9 +414,9 @@ enum {
     rocket.body->ApplyTorque(rocket.body->GetMass()*pitch * TURN_SPEED * turn);
     //rocket.body->SetAngularVelocity(turnPower);
 
-    NSString *labelString = 
-    [NSString stringWithFormat:@"Roll:%.4f \n Pitch:%.4f \n Yaw:%.4f \n Turn:%.4f",roll,pitch,yaw,turnPower];
-    [debugLabel setString:labelString];
+//    NSString *labelString = 
+//    [NSString stringWithFormat:@"Roll:%.4f \n Pitch:%.4f \n Yaw:%.4f \n Turn:%.4f",roll,pitch,yaw,turnPower];
+//    [debugLabel setString:labelString];
  
     
 }
@@ -452,7 +454,7 @@ enum {
     CGSize winSize = [CCDirector sharedDirector].winSize;
 
 
-    b2Vec2 cTarget = rocket.body->GetWorldPoint(b2Vec2(0, 4.5));
+    b2Vec2 cTarget = rocket.body->GetWorldPoint(b2Vec2(0, 2.5));
                                             
     
     float fixtedPositionY = winSize.height/2;
@@ -479,30 +481,121 @@ enum {
     CGPoint newPos;
     
     float totalDistance = sqrt(travelVector.x*travelVector.x + travelVector.y*travelVector.y);
-    
-    //if the distance to travel is zero, we're done
-    if (totalDistance == 0.0f)
-    {
-        return;
-    }
-    
     float distanceToMove = totalDistance*CAMERA_CORRECTION_FACTOR;
     
-    //make sure we don't overshoot, and check if we are close enough
-    if ((distanceToMove > totalDistance) || (distanceToMove < CAMERA_MIN_DELTA))
+    //if the distance to travel is zero or below a minimum, we're done
+    if ((totalDistance == 0.0f) || (totalDistance < CAMERA_MIN_DELTA) || (distanceToMove >= totalDistance))
     {
         newPos.x =cameraTarget.x;
         newPos.y =cameraTarget.y;
     }
-    else 
+    else
     {
         newPos.x = currentPos.x + travelVector.x * distanceToMove/totalDistance;
         newPos.y = currentPos.y + travelVector.y * distanceToMove/totalDistance;
     }
     
     [self setPosition:newPos];
+    NSString *labelString = 
+    [NSString stringWithFormat:@"Total: %.2f\nMove: %.2f",totalDistance, distanceToMove];
+    [debugLabel setString:labelString];
+    [debugLabel setPosition:ccp(-newPos.x+100, -newPos.y+100)];
+
 
 }
+
+-(void)followRocket2:(float) dt {
+    
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    
+    
+    b2Vec2 rocketVelocity = rocket.body->GetLinearVelocity();
+    b2Vec2 rocketPosition = rocket.body->GetPosition();
+    
+    //we want the camera to be ahead of the rocket's movement
+    float speed = rocketVelocity.Normalize() * PTM_RATIO;
+    
+    //rocketVelocity = rocket.body->GetLocalVector(b2Vec2(0,1.0));
+    
+    // the camera target location starts on the rocket (it would be bottom left)
+    b2Vec2 cameraPosition;
+    cameraPosition.x = rocketPosition.x * PTM_RATIO;
+    cameraPosition.y = rocketPosition.y * PTM_RATIO;
+ /*   
+    // calculate the vector to push the camera out from the rocket in the direction of it's velocity
+    float velocityOffsetY = ABS(rocketVelocity.y) * CAMERA_VELOCITY_FACTOR * speed;
+    float velocityOffsetX = ABS(rocketVelocity.x) * CAMERA_VELOCITY_FACTOR * speed * winSize.width/winSize.height;
+        
+    // make sure the velocity offsets are within the bounds of the screen
+    if (velocityOffsetX > winSize.width/2.0*0.9)
+    {
+        velocityOffsetX = winSize.width/2.0*0.9;
+        // set the Y so that we keep the same direction
+        velocityOffsetY = ABS(rocketVelocity.y/rocketVelocity.x) * velocityOffsetX;
+    }
+    if (velocityOffsetY > winSize.height/2.0*.9)
+    {
+        velocityOffsetY = winSize.height/2.0*0.9;
+        velocityOffsetX = ABS(rocketVelocity.x/rocketVelocity.y) * velocityOffsetY;        
+    }
+
+    rocketVelocity.x = rocketVelocity.x * velocityOffsetX;
+    rocketVelocity.y = rocketVelocity.y * velocityOffsetY;
+*/
+/*    
+    float velocityOffset = CAMERA_VELOCITY_FACTOR*speed;
+    if (velocityOffset > winSize.height/2.0*0.9)
+    {
+        velocityOffset = winSize.height/2.0*0.9;
+    }
+    
+    rocketVelocity.x = rocketVelocity.x * velocityOffset;
+    rocketVelocity.y = rocketVelocity.y * velocityOffset;
+*/    
+    float velocityOffset = CAMERA_VELOCITY_FACTOR*speed;
+    
+    float theta = atanf(rocketVelocity.y/rocketVelocity.x);
+    float a = winSize.width/2.0*0.9;
+    float b = winSize.height/2.0*0.9;
+    float maximumOffset = a*b/sqrt(b*cosf(theta)*b*cosf(theta) + a*sinf(theta)*a*sinf(theta));
+    
+    if (velocityOffset >= maximumOffset)
+    {
+        velocityOffset = maximumOffset;
+    }
+    rocketVelocity.x = rocketVelocity.x * velocityOffset;
+    rocketVelocity.y = rocketVelocity.y * velocityOffset; 
+    
+    
+    // add the velocity offset vector to the camera position
+    cameraPosition = cameraPosition + rocketVelocity;
+    
+    // take 1/2 a screen off the camera location
+    // (this would put the rocket center screen)
+    cameraPosition.x = cameraPosition.x - winSize.width/2.0;
+    cameraPosition.y = cameraPosition.y - winSize.height/2.0;
+    
+    //now make sure the camera doesn't go outside the level bounds
+    float newX = -cameraPosition.x;
+    float newY = -cameraPosition.y;
+
+    newX = MIN(0, newX);
+    newX = MAX(newX,-winSize.width * (LEVEL_WIDTH - 1));
+    newY = MIN(newY,0);
+    newY = MAX(newY,-winSize.height * (LEVEL_HEIGHT-1));
+    
+    CGPoint newPos = ccp(newX, newY);
+    [self setPosition:newPos];
+/*
+    NSString *labelString = 
+    [NSString stringWithFormat:@"newX: %.2f\nnewY: %.2f",newX, newY];
+    [debugLabel setString:labelString];
+    [debugLabel setPosition:ccp(-newPos.x+100, -newPos.y+100)];
+*/    
+    
+}
+
+
 
 
 -(void) fireLeft {

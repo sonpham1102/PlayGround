@@ -24,7 +24,7 @@
 #define LEVEL_WIDTH 10
 #define MAX_VELOCITY 5
 #define FRICTION_COEFF 0.08
-#define TURN_SPEED 20.0
+
 #define ASTEROID_TIMER 0.5
 #define ASTEROID_LIMIT 30
 
@@ -82,11 +82,6 @@ enum {
         asteroidTimer = 0.0;
         asteroidsCreated = 0;
         
-        if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft){
-            turn = -1;
-        } else {
-            turn = 1;
-        }
 		// enable events
         
         //Setup Motion Manager
@@ -134,6 +129,7 @@ enum {
         
         //rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
         rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * LEVEL_WIDTH/2, s.height*LEVEL_HEIGHT/2)];
+        [rocket setTurnDirection:1];
 		/*
 		CCLabelTTF *label = [CCLabelTTF labelWithString:@"This is Level 2" fontName:@"Marker Felt" fontSize:32];
 		[self addChild:label z:0];
@@ -386,9 +382,6 @@ enum {
     //                  andListOfGameObjects:listOfGameObjects];
     //  }
     [self fireAsteroid:dt];
-    [rocket updateStateWithDeltaTime:dt];
-	[self followRocket:dt];
-    
     
     CMDeviceMotion *currentDeviceMotion = motionManager.deviceMotion;
     
@@ -405,22 +398,27 @@ enum {
     [currentAttitude multiplyByInverseOfAttitude:referenceAttitude];
     
     float pitch = currentAttitude.pitch;
+    
+    [rocket setPitchTurn:pitch];
+    [rocket updateStateWithDeltaTime:dt];
+	[self followRocket:dt];
+    /*
     float roll = currentAttitude.roll;
     float yaw = currentAttitude.yaw;
-    float turnPower = pitch * TURN_SPEED * turn;
+    //float turnPower = pitch * TURN_SPEED * turn;
     
-    rocket.body->ApplyTorque(rocket.body->GetMass()*pitch * TURN_SPEED * turn);
+    //rocket.body->ApplyTorque(rocket.body->GetMass()*pitch * TURN_SPEED * turn);
     //rocket.body->SetAngularVelocity(turnPower);
 
     NSString *labelString = 
     [NSString stringWithFormat:@"Roll:%.4f \n Pitch:%.4f \n Yaw:%.4f \n Turn:%.4f",roll,pitch,yaw,turnPower];
     [debugLabel setString:labelString];
- 
+ */
     
 }
 
 - (void) didFlipScreen:(NSNotification *)notification{ 
-    turn *= -1;
+    [rocket setTurnDirection:[rocket turnDirection]];
 } 
 
 

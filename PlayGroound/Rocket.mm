@@ -10,13 +10,55 @@
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
 #define SCALE_FACTOR 0.12f
+#define TURN_SPEED 20.0
 
 @implementation Rocket
 
+@synthesize pitchTurn;
+@synthesize turnDirection;
+@synthesize sensorFixture;
+
+
+-(void) createWeaponSensor {
+    b2FixtureDef fixtureDef;
+    fixtureDef.isSensor = YES;
+    b2PolygonShape shape;
+    fixtureDef.shape = &shape;
+    
+    int num = 6;
+    b2Vec2 vert[] = {
+        b2Vec2(SCALE_FACTOR * 3.0 , SCALE_FACTOR * 5.0),
+        b2Vec2(SCALE_FACTOR * 25.0, SCALE_FACTOR * 55.0),
+        b2Vec2(SCALE_FACTOR * 10.0 , SCALE_FACTOR * 70.0),
+        b2Vec2(SCALE_FACTOR * -10.0, SCALE_FACTOR * 70.0),
+        b2Vec2(SCALE_FACTOR * -25.0, SCALE_FACTOR * 55.0),
+        b2Vec2(SCALE_FACTOR * -3.0, SCALE_FACTOR * 5.0)
+    };
+    shape.Set(vert, num);
+    body->CreateFixture(&fixtureDef);
+    b2Fixture *fixture = body->GetFixtureList();
+    while (fixture) {
+        if (fixture->IsSensor()) {
+            sensorFixture = fixture;
+            break;
+        }
+        fixture = fixture->GetNext();    
+    }
+}
+
+-(void) setTurnDirection:(int)turn{
+    turnDirection = turn;
+    if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft){
+        turnDirection *= -turn;
+    } else {
+        turnDirection *= turn;
+    }
+}
+-(void) turnRocket {
+    body->ApplyTorque(body->GetMass()*pitchTurn * TURN_SPEED * turnDirection);
+}
 
 -(void) createRocketAtLocation:(CGPoint)location {
-    
-    
     
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
@@ -79,10 +121,16 @@
     
     body->SetAngularDamping(30.0f);
     //body->SetLinearDamping(1.0f);
+    [self createWeaponSensor];
     
 }
 
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime {
+    [self turnRocket];
+    //check to see if sensor detects asteroid
+    if (isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture)) {
+        CCLOG(@"Fire Bullets");
+    } 
     if (isBodyCollidingWithObjectType(body, kObjTypeAsteroid)) {
         CCLOG(@"Collided with Asteroid Handle it");
     }

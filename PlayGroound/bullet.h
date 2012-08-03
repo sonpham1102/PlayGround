@@ -10,10 +10,13 @@
 
 @interface bullet : GameCharPhysics {
     b2World *world;
+    b2Fixture *sensorFixture;
     float timeTravelled;
 }
 
+@property (nonatomic,readonly) b2Fixture *sensorFixture;
+
 -(id)initWithWorld:(b2World *)theWorld atLoaction:(CGPoint)location;
-//-(void)updateStateWithDeltaTime:(ccTime)deltaTime;
+-(void)updateStateWithDeltaTime:(ccTime)deltaTime;
 
 @end

@@ -7,11 +7,14 @@
 //
 
 #import "bullet.h"
+#import "Box2DHelpers.h"
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
 
 @implementation bullet
+
+@synthesize sensorFixture;
 
 -(void)createBodyAtLocation:(CGPoint)location {
     
@@ -35,16 +38,23 @@
     body->CreateFixture(&fixtureDef);
     
     body->SetUserData(self);
+    b2Fixture *fixture = body->GetFixtureList();
+    while (fixture) {
+        if (fixture->IsSensor()) {
+            sensorFixture = fixture;
+            break;
+        }
+        fixture = fixture->GetNext();    
+    }
 }
-/*
+
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime{
-    timeTravelled += deltaTime;
-    if (timeTravelled > BULLET_TIME) {
-        [self removeFromParentAndCleanup:YES];
-        timeTravelled = 0.0;
+    
+    if (isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture)) {
+        CCLOG(@"Asteroid Hit with Bullet");
     }
    
-}*/
+}
 
 -(id) initWithWorld:(b2World *)theWorld atLoaction:(CGPoint)location {
     if ((self = [super init])) {

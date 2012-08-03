@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-
 #import "PlayGround2Scene.h"
 #import "PlayGround2Layer.h"
 // Needed to obtain the Navigation Controller
@@ -21,18 +20,20 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
-#define LEVEL_HEIGHT 1  //25
-#define LEVEL_WIDTH 1   //10
+#define LEVEL_HEIGHT 25
+#define LEVEL_WIDTH 10
 #define MAX_VELOCITY 5
 #define FRICTION_COEFF 0.08
 
 #define ASTEROID_TIMER 0.5
-#define ASTEROID_LIMIT 1
+#define ASTEROID_LIMIT 30
 
 #define CAMERA_CORRECTION_FACTOR 0.1 // affects the speed at which the camera will try to follow the rocket
 #define CAMERA_MIN_DELTA 0.01
 
+#define CAMERA_VELOCITY_FACTOR 0.9
 #define BULLET_TIME 1.5
+
 
 #define USE_MAX_VELOCITY 0
 //#define NO_TEST 0
@@ -407,9 +408,10 @@ enum {
     
     [rocket setPitchTurn:pitch];
     [rocket updateStateWithDeltaTime:dt];
-	[self followRocket:dt];
-   
-    
+	[self followRocket2:dt];
+    if (bulletfired) {
+        [bulletfired updateStateWithDeltaTime:dt];
+    }
     /*
     float roll = currentAttitude.roll;
     float yaw = currentAttitude.yaw;
@@ -426,7 +428,7 @@ enum {
 }
 
 -(void) createBullet:(ccTime)deltaTime {
-    CCLOG(@"Fire Bullet");
+    //CCLOG(@"Fire Bullet");
     if (bulletfired == nil) {
         bulletfired = [[bullet alloc]  initWithWorld:world atLoaction:rocket.position];
         [self addChild:bulletfired];

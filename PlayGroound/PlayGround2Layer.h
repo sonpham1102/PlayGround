@@ -47,12 +47,11 @@
     float32 asteroidTimer;
     int asteroidsCreated;
     
-    CCArray *asteroidCache;
-    
     CMMotionManager *motionManager;
     CCLabelBMFont *debugLabel;
     CMAttitude *referenceAttitude;
     
+    int bulletCount;
     int turn;
     CGPoint cameraTarget;
     bullet *bulletfired;
@@ -60,10 +59,10 @@
     b2Vec2 cameraMoveVector;
     float cameraDistanceToTarget;
     float cameraDistanceTravelled;
+    CCSpriteBatchNode *sceneSpriteBatchNode;
 
 }
 
-@property (nonatomic,retain) CCArray *asteroidCache;
 @property (nonatomic,retain) CMMotionManager *motionManager;
 @property (nonatomic,assign) CCLabelBMFont *debugLabel;
 

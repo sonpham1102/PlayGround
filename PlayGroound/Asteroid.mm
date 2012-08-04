@@ -8,6 +8,7 @@
 
 #import "Asteroid.h"
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
+#define SCALE (IS_IPAD() ? 1.1 : 0.55)
 
 @implementation Asteroid
 
@@ -35,22 +36,26 @@
     body->CreateFixture(&fixtureDef);
     
     body->SetUserData(self);
-    
+    [self setScale:SCALE * size / PTM_RATIO];
     float32 direction = body->GetPosition().x;
-    if (direction > 40) {
+    if (direction > 10) {
         direction = -1.0;
     } else {
         direction = 1.0;
     }
     
 
-    b2Vec2 impulse = b2Vec2(body->GetMass() * 20.0f * direction,0);
+    b2Vec2 impulse = b2Vec2(body->GetMass() * 70.0f * direction,0);
     body->ApplyForce(impulse, body->GetWorldCenter()); 
 
 }
 
+-(void) updateStateWithDeltaTime:(ccTime)dt {
+    
+}
+
 -(id) initWithWorld:(b2World *)theWorld atLoaction:(CGPoint)location {
-    if ((self = [super init])) {
+    if ((self = [super initWithSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:@"asteroid.png"]])) {
         world = theWorld;
         gameObjType = kObjTypeAsteroid;
         [self createBodyAtLocation:location];

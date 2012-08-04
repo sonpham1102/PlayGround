@@ -49,6 +49,7 @@ typedef enum {
 @protocol PlayGround2LayerDelegate
 
 -(void) createBullet:(ccTime)deltaTime;
+-(void) decrementBulletCount;
 
 @end
 

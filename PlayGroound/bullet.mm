@@ -50,7 +50,7 @@
 
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime{
     
-    if (isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture)) {
+    if (isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture,world)) {
         CCLOG(@"Asteroid Hit with Bullet");
     }
    

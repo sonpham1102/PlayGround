@@ -10,7 +10,8 @@
 #import "GlobalConstants.h"
 
 bool isBodyCollidingWithObjectType(b2Body *body, 
-                                   GameObjType objectType);
+                                   GameObjType objectTyp);
 bool isSensorCollidingWithObjectType(b2Body *body, 
                                      GameObjType objectType,
-                                     b2Fixture* fixture);
+                                     b2Fixture* fixturee,
+                                     b2World *world);

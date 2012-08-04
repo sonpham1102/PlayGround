@@ -136,7 +136,7 @@
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime {
     [self turnRocket];
     //check to see if sensor detects asteroid
-    if (isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture)) {
+    if (isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture,world)) {
         [self fireBullet:deltaTime];
     } 
     if (isBodyCollidingWithObjectType(body, kObjTypeAsteroid)) {

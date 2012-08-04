@@ -28,12 +28,16 @@
 #define ASTEROID_TIMER 0.5
 #define ASTEROID_LIMIT 30
 
+// used in FollowRocket2
+#define CAMERA_VELOCITY_FACTOR 0.6
+
+// AP: clean this shit up once I get a smooth camera follow
 #define CAMERA_CORRECTION_FACTOR 0.1 // affects the speed at which the camera will try to follow the rocket
-#define CAMERA_MIN_DELTA 0.01
+#define CAMERA_MIN_DELTA 0.5
+#define CAMERA_CATCHUP_TIME 1.0 //1 second
+#define MAX_CAMERA_SPEED 1.0 //(in M/s)
 
-#define CAMERA_VELOCITY_FACTOR 0.9
 #define BULLET_TIME 1.5
-
 
 #define USE_MAX_VELOCITY 0
 //#define NO_TEST 0
@@ -409,6 +413,7 @@ enum {
     [rocket setPitchTurn:pitch];
     [rocket updateStateWithDeltaTime:dt];
 	[self followRocket2:dt];
+//	[self followRocket:dt];
     if (bulletfired) {
         [bulletfired updateStateWithDeltaTime:dt];
     }
@@ -479,12 +484,125 @@ enum {
     }
 }
 
+-(void) moveCameraToTarget:(CGPoint) newTarget withDeltaTime:(float) dt;
+{
+//    [self setPosition:newTarget];
+
+/*
+    cameraTarget = ccp(newX, newY);
+    
+    CGPoint currentPos = [self position];
+    
+    CGPoint travelVector = ccp(cameraTarget.x - currentPos.x, cameraTarget.y - currentPos.y);
+    
+    //calculate a new position based on the distance between
+    CGPoint newPos;
+    
+    // calculate the total distance in meters
+    float totalDistance = sqrt(travelVector.x*travelVector.x + travelVector.y*travelVector.y) /PTM_RATIO;
+    float distanceToMove = totalDistance*CAMERA_CORRECTION_FACTOR;
+    
+    //if distance to move is greater than the total distance, set the camera to the target point
+    if (distanceToMove >totalDistance)
+    {
+        distanceToMove = totalDistance;
+    }
+    else if (distanceToMove < CAMERA_MIN_DELTA)
+    {
+        distanceToMove = 0.0f;
+    }
+    
+    if (totalDistance > 0)
+    {
+        newPos.x = currentPos.x + travelVector.x * distanceToMove/totalDistance;
+        newPos.y = currentPos.y + travelVector.y * distanceToMove/totalDistance;        
+    }
+    else
+    {
+        newPos = currentPos;
+    }
+*/    
+    /*    
+     //if the distance to travel is zero or below a minimum, we're done
+     if ((totalDistance == 0.0f) || (totalDistance < CAMERA_MIN_DELTA) || (distanceToMove >= totalDistance))
+     {
+     newPos.x =cameraTarget.x;
+     newPos.y =cameraTarget.y;
+     }
+     else
+     {
+     newPos.x = currentPos.x + travelVector.x * distanceToMove/totalDistance;
+     newPos.y = currentPos.y + travelVector.y * distanceToMove/totalDistance;
+     }
+     */    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    CGPoint currentPos = [self position];
+    
+    // if the new target is far enough from the old target, reset follow parameters
+    if ((ABS(cameraTarget.x - newTarget.x)/PTM_RATIO > CAMERA_MIN_DELTA) || (ABS(cameraTarget.y - newTarget.y)/PTM_RATIO > CAMERA_MIN_DELTA))
+    {
+        cameraTarget = newTarget;
+        //figure out the distance in meters from the current position to the new target
+        
+        cameraMoveVector = b2Vec2((cameraTarget.x - currentPos.x)/PTM_RATIO, (cameraTarget.y - currentPos.y)/PTM_RATIO);
+        
+        cameraDistanceToTarget = cameraMoveVector.Normalize();
+        cameraDistanceTravelled = 0.0f;
+    }
+
+    //we want the camera to reach it's target within CAMERA_CATCHUP_TIME
+    //accumulatedDT+=dt;
+    float cameraSpeed = cameraDistanceToTarget/CAMERA_CATCHUP_TIME;
+    
+    float distanceToMove = cameraSpeed * dt;
+    
+    //figure out how far we've gone already
+    float distanceToTarget = cameraDistanceToTarget - cameraDistanceTravelled;
+    
+    if (cameraDistanceTravelled >= cameraDistanceToTarget)
+    {
+        distanceToMove = 0.0f;
+        cameraDistanceToTarget = 0.0f;
+    }
+    else if (distanceToMove > distanceToTarget)
+    {
+        distanceToMove = distanceToTarget;
+        cameraDistanceToTarget = 0.0f;
+    }
+    else if (distanceToMove < CAMERA_MIN_DELTA)
+    {
+        distanceToMove = 0;
+        cameraDistanceToTarget = 0.0f;
+    }
+    
+    //convert distance to move back to points
+    distanceToMove *= PTM_RATIO;  
+    
+    //add the distance we are moving to the distancetravelled
+    cameraDistanceTravelled += distanceToMove;
+    
+    CGPoint newCameraPosition = ccp(currentPos.x + cameraMoveVector.x * distanceToMove, currentPos.y + cameraMoveVector.y * distanceToMove);
+    
+    [self setPosition:newCameraPosition];
+
+}
+
 -(void)followRocket:(float) dt {
     
     CGSize winSize = [CCDirector sharedDirector].winSize;
 
 
-    b2Vec2 cTarget = rocket.body->GetWorldPoint(b2Vec2(0, 4.5));
+    b2Vec2 cTarget = rocket.body->GetWorldPoint(b2Vec2(0, 3.5));
                                             
     
     float fixtedPositionY = winSize.height/2;
@@ -497,35 +615,10 @@ enum {
     newY = MIN(newY,0);
     newY = MAX(newY,-winSize.height * (LEVEL_HEIGHT-1));
     
-    //CGPoint newPos = ccp(newX, newY);
-    
-    //[self setPosition:newPos];
-    
-    cameraTarget = ccp(newX, newY);
-    
-    CGPoint currentPos = [self position];
-    
-    CGPoint travelVector = ccp(cameraTarget.x - currentPos.x, cameraTarget.y - currentPos.y);
-    
-    //calculate a new position based on the distance between
-    CGPoint newPos;
-    
-    float totalDistance = sqrt(travelVector.x*travelVector.x + travelVector.y*travelVector.y);
-    float distanceToMove = totalDistance*CAMERA_CORRECTION_FACTOR;
-    
-    //if the distance to travel is zero or below a minimum, we're done
-    if ((totalDistance == 0.0f) || (totalDistance < CAMERA_MIN_DELTA) || (distanceToMove >= totalDistance))
-    {
-        newPos.x =cameraTarget.x;
-        newPos.y =cameraTarget.y;
-    }
-    else
-    {
-        newPos.x = currentPos.x + travelVector.x * distanceToMove/totalDistance;
-        newPos.y = currentPos.y + travelVector.y * distanceToMove/totalDistance;
-    }
+    CGPoint newPos = ccp(newX, newY);
     
     [self setPosition:newPos];
+    //[self moveCameraToTarget:newPos withDeltaTime:dt];
 /*
     NSString *labelString = 
     [NSString stringWithFormat:@"Total: %.2f\nMove: %.2f",totalDistance, distanceToMove];
@@ -552,37 +645,8 @@ enum {
     b2Vec2 cameraPosition;
     cameraPosition.x = rocketPosition.x * PTM_RATIO;
     cameraPosition.y = rocketPosition.y * PTM_RATIO;
- /*   
-    // calculate the vector to push the camera out from the rocket in the direction of it's velocity
-    float velocityOffsetY = ABS(rocketVelocity.y) * CAMERA_VELOCITY_FACTOR * speed;
-    float velocityOffsetX = ABS(rocketVelocity.x) * CAMERA_VELOCITY_FACTOR * speed * winSize.width/winSize.height;
-        
-    // make sure the velocity offsets are within the bounds of the screen
-    if (velocityOffsetX > winSize.width/2.0*0.9)
-    {
-        velocityOffsetX = winSize.width/2.0*0.9;
-        // set the Y so that we keep the same direction
-        velocityOffsetY = ABS(rocketVelocity.y/rocketVelocity.x) * velocityOffsetX;
-    }
-    if (velocityOffsetY > winSize.height/2.0*.9)
-    {
-        velocityOffsetY = winSize.height/2.0*0.9;
-        velocityOffsetX = ABS(rocketVelocity.x/rocketVelocity.y) * velocityOffsetY;        
-    }
 
-    rocketVelocity.x = rocketVelocity.x * velocityOffsetX;
-    rocketVelocity.y = rocketVelocity.y * velocityOffsetY;
-*/
-/*    
-    float velocityOffset = CAMERA_VELOCITY_FACTOR*speed;
-    if (velocityOffset > winSize.height/2.0*0.9)
-    {
-        velocityOffset = winSize.height/2.0*0.9;
-    }
-    
-    rocketVelocity.x = rocketVelocity.x * velocityOffset;
-    rocketVelocity.y = rocketVelocity.y * velocityOffset;
-*/    
+
     float velocityOffset = CAMERA_VELOCITY_FACTOR*speed;
     
     float theta = atanf(rocketVelocity.y/rocketVelocity.x);
@@ -616,6 +680,7 @@ enum {
     newY = MAX(newY,-winSize.height * (LEVEL_HEIGHT-1));
     
     CGPoint newPos = ccp(newX, newY);
+        
     [self setPosition:newPos];
 /*
     NSString *labelString = 

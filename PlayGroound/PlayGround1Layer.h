@@ -27,13 +27,18 @@
     RocketMan* rocketMan;
     b2Body* endZoneSensor;
     CGPoint cameraTarget;
-    
+        
     CGPoint debugLineStartPoint;
     CGPoint debugLineEndPoint;
+    
+    b2Vec2 lastCameraPos;
+    b2Vec2 lastCameraVel;
 
 //    PanRayCastCallback *_panRaycastCallback;
     
     CCTMXTiledMap *tileMapNode;
+    
+    b2Body* cameraBody;
 }
 
 -(void) handlePan:(CGPoint) startPoint endPoint:(CGPoint) endPoint;

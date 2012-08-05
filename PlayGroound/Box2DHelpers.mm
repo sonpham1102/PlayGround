@@ -65,6 +65,7 @@ bool isSensorCollidingWithObjectType(b2Body *body, GameObjType objectType,b2Fixt
                 GameCharPhysics *spriteB = (GameCharPhysics *)initBody->GetUserData();
                 if (spriteA.gameObjType == objectType) {
                     if ((spriteA.gameObjType == kObjTypeAsteroid) && (spriteB.gameObjType == kobjTypeBullet)){
+                        //spriteA.destroyMe = true;
                         [spriteA removeFromParentAndCleanup:YES];
                         world->DestroyBody(bodyHit);
                     }

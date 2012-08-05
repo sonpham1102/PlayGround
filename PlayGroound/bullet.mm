@@ -10,7 +10,7 @@
 #import "Box2DHelpers.h"
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
-#define BULLET_LIFE 1.5
+#define BULLET_LIFE 0.5
 
 @implementation bullet
 
@@ -43,40 +43,48 @@
     fixtureDef.shape = &shape;
     fixtureDef.isSensor = true;
     
-    body->CreateFixture(&fixtureDef);
-    
+    sensorFixture = body->CreateFixture(&fixtureDef);
     body->SetUserData(self);
-    b2Fixture *fixture = body->GetFixtureList();
-    while (fixture) {
-        if (fixture->IsSensor()) {
-            sensorFixture = fixture;
-            break;
-        }
-        fixture = fixture->GetNext();    
-    }
 }
 
--(void) destroy {
+-(void) destroy:(id)sender{
     [self removeFromParentAndCleanup:YES];
-    world->DestroyBody(body);
 }
 
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime{
-    if (self.destroyMe == true) {
-        [self destroy];
-        return;
-    }
+    
+    //if (destroyMe)
+    //    return;
     
     timeTravelled += deltaTime;
     if (timeTravelled >= BULLET_LIFE) {
-        //[delegate decrementBulletCount];
-        destroyMe = true;
+        //[delegate decrementBulletCount];\
+        body->DestroyFixture(sensorFixture);
+        sensorFixture = NULL;
+        world->DestroyBody(body);
+        body = NULL;
+        [self destroy:self];
         
-    } else if (isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture,world)) {
+    } else if (isBodyCollidingWithObjectType(body, kObjTypeAsteroid)) {
+        /*
+        CCScaleTo *growAction = [CCScaleTo actionWithDuration:0.1 scale:1.2];
+        CCScaleTo *shrinkAction = [CCScaleTo actionWithDuration:0.1 scale:0.5];
+        CCCallFuncN *doneAction = [CCCallFuncN actionWithTarget:self selector:@selector(destroy:)];
+        CCSequence *sequence = [CCSpawn actions:growAction,shrinkAction,doneAction, nil];
+        [self runAction:sequence];
+         */
+        sensorFixture = NULL;
+        world->DestroyBody(body);
+        body = NULL;
+        [self destroy:self];
+    }
+    
+    /*
+    else if (isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture,world)) {
         //[delegate decrementBulletCount];
         destroyMe = true;
         CCLOG(@"Asteroid Hit with Bullet");
-    }
+    }*/
    
 }
 

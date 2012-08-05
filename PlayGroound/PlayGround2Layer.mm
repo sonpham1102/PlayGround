@@ -21,12 +21,12 @@
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
 #define LEVEL_HEIGHT 1 //25
-#define LEVEL_WIDTH 10 //10
+#define LEVEL_WIDTH 1 //10
 #define MAX_VELOCITY 5
-#define FRICTION_COEFF 0.08
+//#define FRICTION_COEFF 0.08
 
 #define ASTEROID_TIMER 0.5
-#define ASTEROID_LIMIT 50
+#define ASTEROID_LIMIT 100
 
 // used in FollowRocket2
 #define CAMERA_VELOCITY_FACTOR 0.6
@@ -354,12 +354,6 @@ enum {
         world->Step(UPDATE_INTERVAL, velocityIterations, positionIterations);
     }
     
-    CCArray *listOfGameObjects = [sceneSpriteBatchNode children];
-    for (GameCharPhysics *tempChar in listOfGameObjects) {
-        [tempChar updateStateWithDeltaTime:dt];
-    }
-    loopCount ++;
-    
     for (b2Body *b=world->GetBodyList(); b !=  NULL; b=b->GetNext())
     {
         if (b->GetUserData() != NULL)
@@ -367,7 +361,7 @@ enum {
             GameCharPhysics *sprite = (GameCharPhysics *) b->GetUserData();
             sprite.position = ccp(b->GetPosition().x*PTM_RATIO, b->GetPosition().y*PTM_RATIO);
             sprite.rotation = CC_RADIANS_TO_DEGREES(b->GetAngle() * -1);
-            b2Vec2 velocity = b->GetLinearVelocity();
+/*            b2Vec2 velocity = b->GetLinearVelocity();
 #if USE_MAX_VELOCITY            
             if (velocity.LengthSquared() > MAX_VELOCITY*MAX_VELOCITY)
             {
@@ -377,15 +371,22 @@ enum {
                 b->SetLinearVelocity(newVelocity);
 
             }
-#else //use drag
+#else use drag
             b2Vec2 force = velocity;
             force.Normalize();
             force=-force;
             force*=velocity.LengthSquared()*FRICTION_COEFF;
             b->ApplyForceToCenter(force);
-#endif
+#endif*/
         }
     }
+    
+    CCArray *listOfGameObjects = [sceneSpriteBatchNode children];
+    for (GameCharPhysics *tempChar in listOfGameObjects) {
+        [tempChar updateStateWithDeltaTime:dt];
+    }
+    loopCount ++;
+    
     [self fireAsteroid:dt];
     
     CMDeviceMotion *currentDeviceMotion = motionManager.deviceMotion;

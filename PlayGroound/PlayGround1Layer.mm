@@ -71,28 +71,79 @@ enum {
 
 #define HORIZONTAL_MIN_SPACE 10.0
 #define HORIZONTAL_MAX_SPACE 20.0
-#define VERTICAL_MAX_SPACE 20.0
-#define VERTICAL_MIN_SPACE 100.0
-#define MIN_OBSTACLE_WIDTH 20.0
-#define MAX_OBSTACLE_WIDTH 100.0
-#define MIN_OBSTACLE HEIGHT 30.0
-#define MAX_OBSTACLE_HEIGHT 60.0
-/*
--(float) createObstacleAtLocation
+#define VERTICAL_MAX_SPACE 10.0
+#define VERTICAL_MIN_SPACE 5.0
+#define MIN_OBSTACLE_WIDTH 2.0
+#define MAX_OBSTACLE_WIDTH 5.0
+#define MIN_OBSTACLE_HEIGHT 15.0
+#define MAX_OBSTACLE_HEIGHT 25.0
+
+-(void) createObstacleAtLocation: (b2Vec2) location withWidth: (float) width withHeight: (float) height
 {
+    b2BodyDef obstacleDef;
+    obstacleDef.type = b2_staticBody;
+        
+    obstacleDef.position.Set(location.x + width/2.0, location.y + height/2.0);
+    
+    b2Body *body = world->CreateBody(&obstacleDef);
+    
+    b2PolygonShape shape;
+    
+    shape.SetAsBox(width/2.0, height/2.0);
+    
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &shape;
+    fixtureDef.isSensor = true;
+    fixtureDef.density = 0.0;
+    
+    body->CreateFixture(&fixtureDef);
     
 }
-*/
--(void) createObstacleRow: (CGPoint) atLocation:(float) widthInPoints
+
+-(void) createObstacleRow: (float) atX withWidth: (float) width
 {
+    float maxY = [CCDirector sharedDirector].winSize.height * SCREEN_LENGTHS/PTM_RATIO; //in meters
+    float yLocation = 0.0f; // in meters
     
+    while (yLocation < maxY)
+    {
+        //determine a random height for the obstacle row
+        float height = (float)arc4random()/(float)0x100000000;
+        height = MIN_OBSTACLE_HEIGHT + height * (MAX_OBSTACLE_HEIGHT - MIN_OBSTACLE_HEIGHT);
+        [self createObstacleAtLocation:b2Vec2(atX, yLocation) withWidth:width withHeight:height];
+        
+        yLocation += height;
+        
+        //determine a random spacing for the next object
+        height = (float)arc4random()/(float)0x100000000;
+        height = VERTICAL_MIN_SPACE + height * (VERTICAL_MAX_SPACE - VERTICAL_MIN_SPACE);
+        
+        yLocation += height;
+    }
 }
 
 -(void) createObstacles
 {
-    CGPoint newX;
-    float widthInPoints;
-    [self createObstacleRow:newX :widthInPoints];
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    float xLocation = 0.7*winSize.width / PTM_RATIO; // in meters
+    
+    float lastXLocation = winSize.width * (SCREEN_WIDTHS - 0.75) / PTM_RATIO; //in meters
+    
+    while (xLocation < lastXLocation)
+    {
+        //determine a random height for the obstacle row
+        float width = (float)arc4random()/(float)0x100000000;
+        width = MIN_OBSTACLE_WIDTH + width * (MAX_OBSTACLE_WIDTH - MIN_OBSTACLE_WIDTH);
+        [self createObstacleRow:xLocation withWidth:width];
+        
+        xLocation += width;
+        
+        //determine a random spacing for the next row
+        width = (float)arc4random()/(float)0x100000000;
+        width = HORIZONTAL_MIN_SPACE + width*(HORIZONTAL_MAX_SPACE - HORIZONTAL_MIN_SPACE);
+        
+        xLocation += width;
+    }
 }
 
 -(id) init
@@ -113,6 +164,8 @@ enum {
         
         // add it as a child
         [self addChild:rocketMan z:0];
+        
+        [self createObstacles];
         
         // make sure touches are enabled for it so gesture recognizer gets it
         //rocketMan.isTouchEnabled = YES;

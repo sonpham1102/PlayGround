@@ -15,12 +15,12 @@
 @implementation bullet
 
 //@synthesize delegate;
-@synthesize sensorFixture;
+//@synthesize sensorFixture;
 
 -(void)dealloc{
     //world = nil;
     //delegate = nil;
-    sensorFixture = nil;
+    //sensorFixture = nil;
     [super dealloc];
 }
 
@@ -43,7 +43,7 @@
     fixtureDef.shape = &shape;
     fixtureDef.isSensor = true;
     
-    sensorFixture = body->CreateFixture(&fixtureDef);
+    /*sensorFixture =*/ body->CreateFixture(&fixtureDef);
     body->SetUserData(self);
 }
 
@@ -53,18 +53,21 @@
 
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime{
     
-    //if (destroyMe)
-    //    return;
+    if (destroyMe)
+    {
+        [self removeFromParentAndCleanup:YES];
+        return;
+    }
     
     timeTravelled += deltaTime;
     if (timeTravelled >= BULLET_LIFE) {
         //[delegate decrementBulletCount];\
         body->DestroyFixture(sensorFixture);
-        sensorFixture = NULL;
+        //sensorFixture = NULL;
         world->DestroyBody(body);
         body = NULL;
-        [self destroy:self];
-        
+        //[self destroy:self];
+        destroyMe = true;        
     } else if (isBodyCollidingWithObjectType(body, kObjTypeAsteroid)) {
         /*
         CCScaleTo *growAction = [CCScaleTo actionWithDuration:0.1 scale:1.2];
@@ -73,10 +76,11 @@
         CCSequence *sequence = [CCSpawn actions:growAction,shrinkAction,doneAction, nil];
         [self runAction:sequence];
          */
-        sensorFixture = NULL;
+        //sensorFixture = NULL;
         world->DestroyBody(body);
         body = NULL;
-        [self destroy:self];
+        //[self destroy:self];
+        destroyMe = true;
     }
     
     /*

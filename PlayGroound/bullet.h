@@ -10,12 +10,12 @@
 
 @interface bullet : GameCharPhysics {
     b2World *world;
-    b2Fixture *sensorFixture;
+//    b2Fixture *sensorFixture;
     float timeTravelled;
     //id <PlayGround2LayerDelegate> delegate;
 }
 
-@property (nonatomic,readonly) b2Fixture *sensorFixture;
+//@property (nonatomic,readonly) b2Fixture *sensorFixture;
 //@property (nonatomic, assign) id <PlayGround2LayerDelegate> delegate;
 
 -(id)initWithWorld:(b2World *)theWorld atLoaction:(CGPoint)location;

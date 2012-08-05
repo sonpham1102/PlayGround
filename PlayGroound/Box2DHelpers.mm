@@ -79,3 +79,36 @@ bool isSensorCollidingWithObjectType(b2Body *body, GameObjType objectType,b2Fixt
     }    
     return false;  
 }
+
+bool isSensorCollidingWithObjectType(b2Body *body, GameObjType objectType,b2Fixture* fixture) {
+    b2ContactEdge* edge = body->GetContactList();
+    while (edge)
+    {
+        b2Contact* contact = edge->contact;
+        if (contact->IsTouching()) {        
+            b2Fixture* fixtureA = contact->GetFixtureA();
+            b2Fixture* fixtureB = contact->GetFixtureB();
+            b2Body *bodyA = fixtureA->GetBody();
+            b2Body *bodyB = fixtureB->GetBody();
+            GameCharPhysics *spriteA = 
+            (GameCharPhysics *) bodyA->GetUserData();
+            GameCharPhysics *spriteB = 
+            (GameCharPhysics *) bodyB->GetUserData();
+
+            if ((fixtureA == fixture) || (fixtureB == fixture))
+            {
+                if ((spriteA != NULL && spriteA.gameObjType == objectType) ||
+                    (spriteB != NULL && spriteB.gameObjType == objectType))
+                {
+                    return true;
+                }
+            }
+        }
+        edge = edge->next;
+    }    
+    return false;
+}
+
+
+
+

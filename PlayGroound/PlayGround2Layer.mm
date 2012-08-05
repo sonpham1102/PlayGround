@@ -128,7 +128,7 @@ enum {
 		//Set up sprite
         
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Playground2Atlas.plist"];
-        sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"Playground2Atlas.png"];
+        sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"Playground2Atlas.png" capacity:100];
         [self addChild:sceneSpriteBatchNode z:0];
 
         rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
@@ -477,6 +477,7 @@ enum {
             bulletShot.body->ApplyForce(impulseWorld, impulsePoint);
             //[bulletShot setDelegate:self];
             bulletCount ++;
+            [bulletShot release];
         }
         bulletTime = 0.0;
     }

@@ -10,12 +10,19 @@
 #import "Box2DHelpers.h"
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
-#define BULLET_LIFE 5
+#define BULLET_LIFE 1.5
 
 @implementation bullet
 
-@synthesize delegate;
+//@synthesize delegate;
 @synthesize sensorFixture;
+
+-(void)dealloc{
+    //world = nil;
+    //delegate = nil;
+    sensorFixture = nil;
+    [super dealloc];
+}
 
 -(void)createBodyAtLocation:(CGPoint)location {
     
@@ -49,19 +56,26 @@
     }
 }
 
+-(void) destroy {
+    [self removeFromParentAndCleanup:YES];
+    world->DestroyBody(body);
+}
+
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime{
+    if (self.destroyMe == true) {
+        [self destroy];
+        return;
+    }
     
     timeTravelled += deltaTime;
     if (timeTravelled >= BULLET_LIFE) {
-        [self removeFromParentAndCleanup:YES];
-        world->DestroyBody(body);
-        [delegate decrementBulletCount];
-    }
-    if (isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture,world)) {
-        [self removeFromParentAndCleanup:YES];
-        world->DestroyBody(body);
+        //[delegate decrementBulletCount];
+        destroyMe = true;
+        
+    } else if (isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture,world)) {
+        //[delegate decrementBulletCount];
+        destroyMe = true;
         CCLOG(@"Asteroid Hit with Bullet");
-        [delegate decrementBulletCount];
     }
    
 }
@@ -72,6 +86,7 @@
         gameObjType = kobjTypeBullet;
         timeTravelled = 0.0;
         [self createBodyAtLocation:location];
+        destroyMe = false;
     }
     return self;
 }

@@ -20,13 +20,13 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
-#define LEVEL_HEIGHT 25 //25
+#define LEVEL_HEIGHT 1 //25
 #define LEVEL_WIDTH 10 //10
 #define MAX_VELOCITY 5
 #define FRICTION_COEFF 0.08
 
 #define ASTEROID_TIMER 0.5
-#define ASTEROID_LIMIT 30
+#define ASTEROID_LIMIT 50
 
 // used in FollowRocket2
 #define CAMERA_VELOCITY_FACTOR 0.6
@@ -38,7 +38,7 @@
 #define MAX_CAMERA_SPEED 1.0 //(in M/s)
 
 #define BULLET_TIME 0.5
-#define TOTAL_BULLETS 10
+#define TOTAL_BULLETS 10000
 
 #define USE_MAX_VELOCITY 0
 //#define NO_TEST 0
@@ -93,9 +93,9 @@ enum {
         middleRocketSoundID = 0;
         asteroidTimer = 0.0;
         asteroidsCreated = 0;
-        bulletfired = nil;
         bulletTime = 0.0;
         bulletCount = 0;
+        loopCount = 0;
         
 		// enable events
         
@@ -346,13 +346,19 @@ enum {
         timeAccumulator = MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL;
     }
     
-    int32 velocityIterations = 3;
-    int32 positionIterations = 2;
+    int32 velocityIterations = 5;
+    int32 positionIterations = 5;
     while (timeAccumulator >= UPDATE_INTERVAL)
     {
         timeAccumulator -= UPDATE_INTERVAL;
         world->Step(UPDATE_INTERVAL, velocityIterations, positionIterations);
     }
+    
+    CCArray *listOfGameObjects = [sceneSpriteBatchNode children];
+    for (GameCharPhysics *tempChar in listOfGameObjects) {
+        [tempChar updateStateWithDeltaTime:dt];
+    }
+    loopCount ++;
     
     for (b2Body *b=world->GetBodyList(); b !=  NULL; b=b->GetNext())
     {
@@ -380,13 +386,6 @@ enum {
 #endif
         }
     }
-    //JP HACK to run the rocket update should use:
-      CCArray *listOfGameObjects = [sceneSpriteBatchNode children];
-      for (GameCharPhysics *tempChar in listOfGameObjects) {
-          if (tempChar) {
-              [tempChar updateStateWithDeltaTime:dt];
-          }
-      }
     [self fireAsteroid:dt];
     
     CMDeviceMotion *currentDeviceMotion = motionManager.deviceMotion;
@@ -409,9 +408,9 @@ enum {
     //[rocket updateStateWithDeltaTime:dt];
 	[self followRocket2:dt];
 //	[self followRocket:dt];
-    if (bulletfired) {
-        [bulletfired updateStateWithDeltaTime:dt];
-    }
+   // if (bulletfired) {
+   //     [bulletfired updateStateWithDeltaTime:dt];
+   // }
     /*
     float roll = currentAttitude.roll;
     float yaw = currentAttitude.yaw;
@@ -456,12 +455,26 @@ enum {
             bullet *bulletShot = [[bullet alloc] initWithWorld:world atLoaction:rocket.position];
             [sceneSpriteBatchNode addChild:bulletShot];
             b2Vec2 bodyCenter = rocket.body->GetWorldCenter();
-            b2Vec2 impulse = b2Vec2(0,800);
+            b2Vec2 linVelo = rocket.body->GetLinearVelocity();
+            float32 bulletPower;
+            if (linVelo.x < 0) {
+                bulletPower += -linVelo.x; 
+            } else {
+                bulletPower += linVelo.x;
+            }
+            if (linVelo.y < 0) {
+                bulletPower += -linVelo.y;
+            } else {
+                bulletPower += linVelo.y;
+            }
+            bulletPower *= 200;
+            bulletPower = MAX(1000, bulletPower);
+            bulletPower = MIN(1700, bulletPower);
+            b2Vec2 impulse = b2Vec2(0,bulletPower);
             b2Vec2 impulseWorld = rocket.body->GetWorldVector(impulse);
             b2Vec2 impulsePoint = rocket.body->GetWorldPoint(b2Vec2(0,40));
             bulletShot.body->ApplyForce(impulseWorld, impulsePoint);
-            [bulletShot setDelegate:self];
-            [bulletShot release];
+            //[bulletShot setDelegate:self];
             bulletCount ++;
         }
         bulletTime = 0.0;

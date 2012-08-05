@@ -10,6 +10,7 @@
 
 @implementation GameCharPhysics
 @synthesize body;
+@synthesize destroyMe;
 
 //OVERRIDE if necessary
 -(BOOL)mouseJointAccept

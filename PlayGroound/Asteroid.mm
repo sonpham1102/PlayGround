@@ -12,6 +12,7 @@
 
 @implementation Asteroid
 
+
 -(void)createBodyAtLocation:(CGPoint)location {
     
     //CGSize winSize = [CCDirector sharedDirector].winSize;
@@ -44,14 +45,13 @@
         direction = 1.0;
     }
     
-
-    b2Vec2 impulse = b2Vec2(body->GetMass() * 70.0f * direction,0);
+    b2Vec2 impulse = b2Vec2(body->GetMass() * 300.0f * direction,0);
     body->ApplyForce(impulse, body->GetWorldCenter()); 
 
 }
 
 -(void) updateStateWithDeltaTime:(ccTime)dt {
-    
+
 }
 
 -(id) initWithWorld:(b2World *)theWorld atLoaction:(CGPoint)location {
@@ -59,6 +59,7 @@
         world = theWorld;
         gameObjType = kObjTypeAsteroid;
         [self createBodyAtLocation:location];
+
     }
     return self;
 }

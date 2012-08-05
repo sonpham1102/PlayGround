@@ -12,9 +12,11 @@
 @interface GameCharPhysics : GameChar
 {
     b2Body *body;
+    bool destroyMe;
 }
 
 @property (assign) b2Body *body;
+@property (readwrite) bool destroyMe;
 
 
 //return true to accept the mouse joint

@@ -10,7 +10,7 @@
 #import "Box2DHelpers.h"
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
-#define BULLET_LIFE 5
+#define BULLET_LIFE 1.5
 
 @implementation bullet
 

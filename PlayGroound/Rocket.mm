@@ -12,7 +12,7 @@
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
 #define SCALE_FACTOR 0.12f
-#define TURN_SPEED 20.0
+#define TURN_SPEED 12.0
 
 
 @implementation Rocket
@@ -140,7 +140,7 @@
         [self fireBullet:deltaTime];
     } 
     if (isBodyCollidingWithObjectType(body, kObjTypeAsteroid)) {
-        //CCLOG(@"Collided with Asteroid Handle it");
+        CCLOG(@"Collided with Asteroid Handle it");
     }
 }
 

@@ -456,7 +456,22 @@ enum {
             bullet *bulletShot = [[bullet alloc] initWithWorld:world atLoaction:rocket.position];
             [sceneSpriteBatchNode addChild:bulletShot];
             b2Vec2 bodyCenter = rocket.body->GetWorldCenter();
-            b2Vec2 impulse = b2Vec2(0,800);
+            b2Vec2 linVelo = rocket.body->GetLinearVelocity();
+            float32 bulletPower;
+            if (linVelo.x < 0) {
+                bulletPower += -linVelo.x; 
+            } else {
+                bulletPower += linVelo.x;
+            }
+            if (linVelo.y < 0) {
+                bulletPower += -linVelo.y;
+            } else {
+                bulletPower += linVelo.y;
+            }
+            bulletPower *= 200;
+            bulletPower = MAX(1000, bulletPower);
+            bulletPower = MIN(1700, bulletPower);
+            b2Vec2 impulse = b2Vec2(0,bulletPower);
             b2Vec2 impulseWorld = rocket.body->GetWorldVector(impulse);
             b2Vec2 impulsePoint = rocket.body->GetWorldPoint(b2Vec2(0,40));
             bulletShot.body->ApplyForce(impulseWorld, impulsePoint);

@@ -20,8 +20,8 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
-#define LEVEL_HEIGHT 25
-#define LEVEL_WIDTH 10
+#define LEVEL_HEIGHT 25 //25
+#define LEVEL_WIDTH 10 //10
 #define MAX_VELOCITY 5
 #define FRICTION_COEFF 0.08
 
@@ -37,7 +37,8 @@
 #define CAMERA_CATCHUP_TIME 1.0 //1 second
 #define MAX_CAMERA_SPEED 1.0 //(in M/s)
 
-#define BULLET_TIME 1.5
+#define BULLET_TIME 0.5
+#define TOTAL_BULLETS 10
 
 #define USE_MAX_VELOCITY 0
 //#define NO_TEST 0
@@ -55,7 +56,6 @@ enum {
 
 @implementation PlayGround2Layer
 
-@synthesize asteroidCache;
 @synthesize motionManager;
 @synthesize debugLabel;
 
@@ -76,6 +76,10 @@ enum {
                                                     name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 }
 
+-(void)decrementBulletCount{
+    bulletCount --;
+}
+
 -(id) init
 {
 	if( (self=[super init])) {
@@ -91,6 +95,7 @@ enum {
         asteroidsCreated = 0;
         bulletfired = nil;
         bulletTime = 0.0;
+        bulletCount = 0;
         
 		// enable events
         
@@ -121,24 +126,15 @@ enum {
         [self createObstacle];
         //[self initAsteroids];
 		//Set up sprite
-		
-#if 1
-		// Use batch node. Faster
-		CCSpriteBatchNode *parent = [CCSpriteBatchNode batchNodeWithFile:@"blocks.png" capacity:100];
-		spriteTexture_ = [parent texture];
-#else
-		// doesn't use batch node. Slower
-		spriteTexture_ = [[CCTextureCache sharedTextureCache] addImage:@"blocks.png"];
-		CCNode *parent = [CCNode node];
-#endif
-		[self addChild:parent z:0 tag:kTagParentNode];
-		
-		//[self addNewSpriteAtPosition:ccp(s.width/2, s.height/2)];
-        //JP Creating a Ball to play with instead of Box
-        //[self createBall];
         
-        //rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
-        rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * LEVEL_WIDTH/2, s.height*LEVEL_HEIGHT/2)];
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Playground2Atlas.plist"];
+        sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"Playground2Atlas.png"];
+        [self addChild:sceneSpriteBatchNode z:0];
+
+        rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
+        [sceneSpriteBatchNode addChild:rocket];
+        [rocket release];
+        //rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * LEVEL_WIDTH/2, s.height*LEVEL_HEIGHT/2)];
         [rocket setTurnDirection:1];
         [rocket setDelegate:self];
 		/*
@@ -153,7 +149,7 @@ enum {
         [debugLabel setColor:ccc3(0, 0, 255)];
         debugLabel.position = ccp(s.width*0.8, s.height/2);
         */
-        [self addChild:rocket z:100];
+        //[self addChild:rocket z:100];
 
 		[self scheduleUpdate];
 	}
@@ -241,15 +237,13 @@ enum {
 -(void) initAsteroids {
     
     CGSize winSize = [CCDirector sharedDirector].winSize;
-    
-     asteroidCache = [[CCArray alloc] initWithCapacity:25];
      
      for (int i = 0; i < 25; i++)
      {
-     Asteroid *sprite = [[[Asteroid alloc] initWithWorld:world atLoaction:ccp(winSize.width * 0.5 + (5*i), winSize.height * 0.5)] autorelease];
-     sprite.position = ccp(winSize.width/2,winSize.height/2);
-     [self addChild:sprite];
-     [asteroidCache addObject:sprite];
+         Asteroid *sprite = [[Asteroid alloc] initWithWorld:world atLoaction:ccp(winSize.width * 0.5 + (5*i), winSize.height * 0.5)];
+         sprite.position = ccp(winSize.width/2,winSize.height/2);
+         [sceneSpriteBatchNode addChild:sprite];
+         [sprite release];
      }
      
 }
@@ -320,7 +314,7 @@ enum {
 	groundBox.Set(b2Vec2(s.width * LEVEL_WIDTH/PTM_RATIO,s.height * LEVEL_HEIGHT/PTM_RATIO), b2Vec2(s.width * LEVEL_WIDTH/ PTM_RATIO,0));
 	groundBody->CreateFixture(&groundBox,0);
 }
-
+/*
 -(void) draw
 {
 	//
@@ -338,7 +332,7 @@ enum {
 	
 	kmGLPopMatrix();
 }
-
+*/
 -(void) update: (ccTime) dt
 {
     static double UPDATE_INTERVAL = 1.0/60.0f;
@@ -387,11 +381,12 @@ enum {
         }
     }
     //JP HACK to run the rocket update should use:
-    //  CCArray *listOfGameObjects = [sceneSpriteBatchNode children];
-    //  for (GameCharacter *tempChar in listOfGameObjects) {
-    //     [tempChar updateStateWithDeltaTime:dt
-    //                  andListOfGameObjects:listOfGameObjects];
-    //  }
+      CCArray *listOfGameObjects = [sceneSpriteBatchNode children];
+      for (GameCharPhysics *tempChar in listOfGameObjects) {
+          if (tempChar) {
+              [tempChar updateStateWithDeltaTime:dt];
+          }
+      }
     [self fireAsteroid:dt];
     
     CMDeviceMotion *currentDeviceMotion = motionManager.deviceMotion;
@@ -411,7 +406,7 @@ enum {
     float pitch = currentAttitude.pitch;
     
     [rocket setPitchTurn:pitch];
-    [rocket updateStateWithDeltaTime:dt];
+    //[rocket updateStateWithDeltaTime:dt];
 	[self followRocket2:dt];
 //	[self followRocket:dt];
     if (bulletfired) {
@@ -434,12 +429,14 @@ enum {
 
 -(void) createBullet:(ccTime)deltaTime {
     //CCLOG(@"Fire Bullet");
+    
+    /* Old Bullet Fire Method
     if (bulletfired == nil) {
         bulletfired = [[bullet alloc]  initWithWorld:world atLoaction:rocket.position];
         [self addChild:bulletfired];
         
         b2Vec2 bodyCenter = rocket.body->GetWorldCenter();
-        b2Vec2 impulse = b2Vec2(0,500);
+        b2Vec2 impulse = b2Vec2(0,800);
         b2Vec2 impulseWorld = rocket.body->GetWorldVector(impulse);
         b2Vec2 impulsePoint = rocket.body->GetWorldPoint(b2Vec2(0,40));
         bulletfired.body->ApplyForce(impulseWorld, impulsePoint);
@@ -452,8 +449,24 @@ enum {
             bulletTime = 0.0;
             bulletfired = nil;
         }
+    }*/
+    
+    if ((bulletTime >= BULLET_TIME) || (bulletCount == 0)){
+        if (bulletCount <= TOTAL_BULLETS) {
+            bullet *bulletShot = [[bullet alloc] initWithWorld:world atLoaction:rocket.position];
+            [sceneSpriteBatchNode addChild:bulletShot];
+            b2Vec2 bodyCenter = rocket.body->GetWorldCenter();
+            b2Vec2 impulse = b2Vec2(0,800);
+            b2Vec2 impulseWorld = rocket.body->GetWorldVector(impulse);
+            b2Vec2 impulsePoint = rocket.body->GetWorldPoint(b2Vec2(0,40));
+            bulletShot.body->ApplyForce(impulseWorld, impulsePoint);
+            [bulletShot setDelegate:self];
+            [bulletShot release];
+            bulletCount ++;
+        }
+        bulletTime = 0.0;
     }
-   
+    bulletTime += deltaTime;
 }
 
 - (void) didFlipScreen:(NSNotification *)notification{ 
@@ -478,7 +491,8 @@ enum {
         yLaunchPoint /= 10;
         
         Asteroid *sprite = [[Asteroid alloc] initWithWorld:world atLoaction:ccp(winSize.width * LEVEL_WIDTH * xLaunchPoint, winSize.height * LEVEL_HEIGHT * yLaunchPoint)];
-        [self addChild:sprite];
+        [sceneSpriteBatchNode addChild:sprite];
+        [sprite release];
         asteroidTimer = 0.0;
         asteroidsCreated += 1;
     }

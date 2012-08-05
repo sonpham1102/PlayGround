@@ -21,8 +21,8 @@
 @property (readwrite) GameObjType gameObjType;
 
 // game objects might need to update themselves each frame
--(void) updateStateWithDeltaTime:(ccTime)deltaTime
-            andListOfGameObjects:(CCArray*)listOfGameObjects;
+-(void) updateStateWithDeltaTime:(ccTime)dt;
+          //  andListOfGameObjects:(CCArray*)listOfGameObjects;
 // game objects might want to use bounding boxes different from their graphics sizes
 -(CGRect) adjustedBoundingBox;
 // game objects might have animations

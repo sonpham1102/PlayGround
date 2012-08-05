@@ -10,10 +10,11 @@
 #import "Box2DHelpers.h"
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
-
+#define BULLET_LIFE 5
 
 @implementation bullet
 
+@synthesize delegate;
 @synthesize sensorFixture;
 
 -(void)createBodyAtLocation:(CGPoint)location {
@@ -50,14 +51,23 @@
 
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime{
     
-    if (isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture)) {
+    timeTravelled += deltaTime;
+    if (timeTravelled >= BULLET_LIFE) {
+        [self removeFromParentAndCleanup:YES];
+        world->DestroyBody(body);
+        [delegate decrementBulletCount];
+    }
+    if (isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture,world)) {
+        [self removeFromParentAndCleanup:YES];
+        world->DestroyBody(body);
         CCLOG(@"Asteroid Hit with Bullet");
+        [delegate decrementBulletCount];
     }
    
 }
 
 -(id) initWithWorld:(b2World *)theWorld atLoaction:(CGPoint)location {
-    if ((self = [super init])) {
+    if ((self = [super initWithSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:@"bullet.png"]])) {
         world = theWorld;
         gameObjType = kobjTypeBullet;
         timeTravelled = 0.0;

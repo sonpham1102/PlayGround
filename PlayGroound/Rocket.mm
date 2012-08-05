@@ -136,11 +136,11 @@
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime {
     [self turnRocket];
     //check to see if sensor detects asteroid
-    if (isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture)) {
+    if (isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture,world)) {
         [self fireBullet:deltaTime];
     } 
     if (isBodyCollidingWithObjectType(body, kObjTypeAsteroid)) {
-        CCLOG(@"Collided with Asteroid Handle it");
+        //CCLOG(@"Collided with Asteroid Handle it");
     }
 }
 
@@ -166,7 +166,7 @@
 
 -(id) initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location {
     
-    if ((self = [super initWithFile:@"rocket.png"])) {
+    if ((self = [super initWithSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:@"rocket1.png"]] )) {
         
         world = theWorld;
         gameObjType = kObjTypeRocket;

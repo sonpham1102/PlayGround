@@ -21,7 +21,7 @@
     return self;
 }
 
--(void)updateStateWithDeltaTime:(ccTime)deltaTime andListOfGameObjects:(CCArray *)listOfGameObjects
+-(void)updateStateWithDeltaTime:(ccTime)dt
 {
     //OVERRIDE
 }

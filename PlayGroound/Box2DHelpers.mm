@@ -10,6 +10,7 @@
 #import "GameCharPhysics.h"
 #import "Rocket.h"
 
+
 bool isBodyCollidingWithObjectType(b2Body *body, GameObjType objectType) {
     b2ContactEdge* edge = body->GetContactList();
     while (edge)
@@ -42,7 +43,7 @@ bool isBodyCollidingWithObjectType(b2Body *body, GameObjType objectType) {
     return false;
 }
 
-bool isSensorCollidingWithObjectType(b2Body *body, GameObjType objectType,b2Fixture* fixture) {
+bool isSensorCollidingWithObjectType(b2Body *body, GameObjType objectType,b2Fixture* fixture,b2World *world) {
     b2ContactEdge* edge = body->GetContactList();
     b2Body *bodyHit;
     while (edge)
@@ -51,15 +52,23 @@ bool isSensorCollidingWithObjectType(b2Body *body, GameObjType objectType,b2Fixt
         if (contact->IsTouching()) {
             b2Fixture* fixtureA = contact->GetFixtureA();
             b2Fixture* fixtureB = contact->GetFixtureB();
+            b2Body *initBody;
             if ((fixtureA == fixture) || (fixtureB == fixture)) {
                 if (fixtureA == fixture) {
-                    bodyHit = fixtureB->GetBody(); 
+                    bodyHit = fixtureB->GetBody();
+                    initBody = fixtureA->GetBody();
                 } else {
                     bodyHit = fixtureA->GetBody();
+                    initBody = fixtureB->GetBody();
                 }
-                GameCharPhysics *sprite = (GameCharPhysics *)bodyHit->GetUserData();
-                if (sprite.gameObjType == objectType) {
+                GameCharPhysics *spriteA = (GameCharPhysics *)bodyHit->GetUserData();
+                GameCharPhysics *spriteB = (GameCharPhysics *)initBody->GetUserData();
+                if (spriteA.gameObjType == objectType) {
+                    if ((spriteA.gameObjType == kObjTypeAsteroid) && (spriteB.gameObjType == kobjTypeBullet)){
+                        world->DestroyBody(bodyHit);
+                        [spriteA removeFromParentAndCleanup:YES];
                     
+                    }
                     return true;
                 }
             }

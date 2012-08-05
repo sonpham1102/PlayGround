@@ -24,8 +24,8 @@ typedef enum {
 */
 
 //AP : MOVE to a plist or something
-#define SCREEN_LENGTHS 5.0 //number of screens high for the level 
-#define SCREEN_WIDTHS 2.0
+#define SCREEN_LENGTHS 3.0 //number of screens high for the level 
+#define SCREEN_WIDTHS 5.0
 #define END_ZONE_SENSOR_SIZE 0.10 //multiple of screen height
 #define FIXED_POS_Y 0.33f // multiple of screen height
 #define FIXED_POS_X 0.33f // multiple of screen width
@@ -35,9 +35,10 @@ typedef enum {
 
 #define CAMERA_DENSITY 1.0
 #define CAMERA_LINEAR_DAMP 15.0
-#define CAMERA_SPRING 100.0
 
-#define CAMERA_VELOCITY_FACTOR 0.6
+#define CAMERA_SPRING 10.0
+
+#define CAMERA_VELOCITY_FACTOR 0.9
 
 enum {
 	kTagParentNode = 1,
@@ -66,6 +67,32 @@ enum {
     [tileMapNode setScaleX:SCREEN_WIDTHS];
     [self addChild:tileMapNode z:-10];
 
+}
+
+#define HORIZONTAL_MIN_SPACE 10.0
+#define HORIZONTAL_MAX_SPACE 20.0
+#define VERTICAL_MAX_SPACE 20.0
+#define VERTICAL_MIN_SPACE 100.0
+#define MIN_OBSTACLE_WIDTH 20.0
+#define MAX_OBSTACLE_WIDTH 100.0
+#define MIN_OBSTACLE HEIGHT 30.0
+#define MAX_OBSTACLE_HEIGHT 60.0
+/*
+-(float) createObstacleAtLocation
+{
+    
+}
+*/
+-(void) createObstacleRow: (CGPoint) atLocation:(float) widthInPoints
+{
+    
+}
+
+-(void) createObstacles
+{
+    CGPoint newX;
+    float widthInPoints;
+    [self createObstacleRow:newX :widthInPoints];
 }
 
 -(id) init

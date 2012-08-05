@@ -31,9 +31,9 @@
 #define RM_PAN_TIME_MIN 0.2
 //#define RM_MAX_ROCKET_IMPULSE 3.0
 //#define RM_MIN_ROCKET_IMPULSE 1.0
-#define RM_PAN_ROCKET_FORCE 3.0
-#define RM_MAX_ROCKET_SLOPE 10.0
-#define RM_MIN_ROCKET_SLOPE 1
+#define RM_PAN_ROCKET_FORCE 6.0
+#define RM_MAX_ROCKET_SLOPE 100.0
+#define RM_MIN_ROCKET_SLOPE 0.1
 
 #define RM_TAP_MANEUVER_TIME 1.0
 #define RM_TAP_FORCE    4.0
@@ -41,7 +41,7 @@
 //#define RM_TAP_TORQUE  1.25
 //#define RM_TAP_TORQUE 8.0
 
-#define RM_ROT_FACTOR 70.0 //controls the torque spinning with rotation touch.
+#define RM_ROT_FACTOR 100.0 //controls the torque spinning with rotation touch.
 #define RM_ROT_COUNTER_SPIN M_PI_2
 
 #define RM_HOLD_MANEUVER_TIME 1.0

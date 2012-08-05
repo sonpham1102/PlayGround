@@ -25,11 +25,19 @@ typedef enum {
 
 //AP : MOVE to a plist or something
 #define SCREEN_LENGTHS 5.0 //number of screens high for the level 
+#define SCREEN_WIDTHS 2.0
 #define END_ZONE_SENSOR_SIZE 0.10 //multiple of screen height
 #define FIXED_POS_Y 0.33f // multiple of screen height
+#define FIXED_POS_X 0.33f // multiple of screen width
 #define CAMERA_CORRECTION_FACTOR 3.0 // affects the speed at which the camera will try to follow the rocket
 #define CAMERA_MIN_DELTA 0.001
 #define MIN_PAN_LENGTH_SQ 0.20 //in meters, squared
+
+#define CAMERA_DENSITY 1.0
+#define CAMERA_LINEAR_DAMP 15.0
+#define CAMERA_SPRING 100.0
+
+#define CAMERA_VELOCITY_FACTOR 0.6
 
 enum {
 	kTagParentNode = 1,
@@ -52,9 +60,10 @@ enum {
     
     tileMapNode = [CCTMXTiledMap
                    tiledMapWithTMXFile:@"Playground1Background.tmx"];
-    [tileMapNode setPosition:ccp(winSize.width, winSize.height*SCREEN_LENGTHS/2.0)];
+    [tileMapNode setPosition:ccp(winSize.width*SCREEN_WIDTHS/2.0, winSize.height*SCREEN_LENGTHS/2.0)];
     [tileMapNode setPosition:ccp(0.0, 0.0)];
     [tileMapNode setScaleY:SCREEN_LENGTHS];
+    [tileMapNode setScaleX:SCREEN_WIDTHS];
     [self addChild:tileMapNode z:-10];
 
 }
@@ -83,6 +92,8 @@ enum {
         
         // use to do a smoother camera follow
         cameraTarget = CGPointZero;
+        lastCameraPos = b2Vec2_zero;
+        lastCameraVel = b2Vec2_zero;
         
         //_panRaycastCallback = new PanRayCastCallback();
         
@@ -153,11 +164,11 @@ enum {
 	
 	// bottom
 	
-	groundBox.Set(b2Vec2(0,0), b2Vec2(s.width/PTM_RATIO,0));
+	groundBox.Set(b2Vec2(0,0), b2Vec2(s.width/PTM_RATIO*SCREEN_WIDTHS,0));
 	groundBody->CreateFixture(&groundBox,0);
 	
 	// top
-	groundBox.Set(b2Vec2(0,s.height/PTM_RATIO*SCREEN_LENGTHS), b2Vec2(s.width/PTM_RATIO,s.height/PTM_RATIO*SCREEN_LENGTHS));
+	groundBox.Set(b2Vec2(0,s.height/PTM_RATIO*SCREEN_LENGTHS), b2Vec2(s.width/PTM_RATIO*SCREEN_WIDTHS,s.height/PTM_RATIO*SCREEN_LENGTHS));
 	groundBody->CreateFixture(&groundBox,0);
 	
 	// left
@@ -165,7 +176,7 @@ enum {
 	groundBody->CreateFixture(&groundBox,0);
 	
 	// right
-	groundBox.Set(b2Vec2(s.width/PTM_RATIO,s.height/PTM_RATIO*SCREEN_LENGTHS), b2Vec2(s.width/PTM_RATIO,0));
+	groundBox.Set(b2Vec2(s.width/PTM_RATIO*SCREEN_WIDTHS,s.height/PTM_RATIO*SCREEN_LENGTHS), b2Vec2(s.width/PTM_RATIO*SCREEN_WIDTHS,0));
 	groundBody->CreateFixture(&groundBox,0);
     
     b2BodyDef endZoneSensorDef;
@@ -175,7 +186,7 @@ enum {
     endZoneSensor = world->CreateBody(&endZoneSensorDef);
     
     b2PolygonShape shape;
-    shape.SetAsBox(s.width/PTM_RATIO, s.height/PTM_RATIO * END_ZONE_SENSOR_SIZE);
+    shape.SetAsBox(s.width/PTM_RATIO * SCREEN_WIDTHS, s.height/PTM_RATIO * END_ZONE_SENSOR_SIZE);
     
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &shape;
@@ -183,6 +194,21 @@ enum {
     fixtureDef.density = 0.0;
     
     endZoneSensor->CreateFixture(&fixtureDef);
+    
+    b2BodyDef cameraBodyDef;
+    cameraBodyDef.type = b2_dynamicBody;
+    cameraBodyDef.position = b2Vec2(0.0f,0.0f);
+    cameraBody = world->CreateBody(&cameraBodyDef);
+    
+    b2CircleShape circle;
+    circle.m_radius = 0.5;
+    circle.m_p = b2Vec2(0.0f, 0.0f);
+    
+    fixtureDef.shape = &circle;
+    fixtureDef.density = CAMERA_DENSITY;
+    
+    cameraBody->SetLinearDamping(CAMERA_LINEAR_DAMP);
+    cameraBody->CreateFixture(&fixtureDef);
 }
 
 -(void) createRocketMan:(CGPoint) location
@@ -254,51 +280,259 @@ enum {
     rocketMan.body->SetAngularVelocity(0.0);
 }
 
+-(void) moveCameraToTarget2:(CGPoint) newTarget withDeltaTime:(float) dt;
+{
+    cameraTarget = newTarget;
+    
+    b2Vec2 currentPos = b2Vec2([self position].x/PTM_RATIO, [self position].y/PTM_RATIO);
+    b2Vec2 nextPos = b2Vec2(cameraTarget.x/PTM_RATIO, cameraTarget.y/PTM_RATIO);
+        
+    // current velocity is the distance travelled during the current dt
+    b2Vec2 currentVel = currentPos - lastCameraPos;
+    currentVel.x /= dt;
+    currentVel.y /= dt;
+        
+    //ma = Fspring - Fdrag
+    //ma = kSpring*x - kDrag*vel
+//    float kSpring = 1500.0f;
+//    float kDrag = 250.0f;
+//    float mass = 15.0f;
+    float kSpring = 1200.0f;
+    float kDrag = 300.0f;
+    float mass = 15.0f;
+
+    float FSpringX = (nextPos.x - currentPos.x)*kSpring;
+    float FSpringY = (nextPos.y - currentPos.y)*kSpring;
+    float FDragX = currentVel.x*kDrag;
+    float FDragY = currentVel.y*kDrag;
+    
+    float xAcc = (FSpringX - FDragX)/mass;
+    float yAcc = (FSpringY - FDragY)/mass;
+    
+    // the new velocity assumes the dt will be the same
+    b2Vec2 nextVel = b2Vec2(currentVel.x + xAcc*dt, currentVel.y + yAcc*dt);
+    
+    // calculate the new position assuming the dt will be the same
+    nextPos.x = currentPos.x + nextVel.x*dt;
+    nextPos.y = currentPos.y + nextVel.y*dt;
+        
+    [self setPosition:ccp(nextPos.x*PTM_RATIO, nextPos.y*PTM_RATIO)];
+    
+    float xError = nextPos.x*PTM_RATIO-newTarget.x;
+    float yError = nextPos.y*PTM_RATIO-newTarget.y;
+    
+    if ((xError != 0.0) || (yError != 0.0))
+    {
+        CCLOG(@"x error: %.2f\ny error: %.2f",xError, yError);
+    }
+    
+    lastCameraPos = currentPos;
+    lastCameraVel = currentVel;
+}
+
+#define CAMERA_MAX_VELOCITY 40.0
+#define CAMERA_MAX_ACCELERATION 5000.0
+
+-(void) moveCameraToTarget:(CGPoint) newTarget withDeltaTime:(float) dt;
+{
+    cameraTarget = newTarget;
+    
+    b2Vec2 currentPos = b2Vec2([self position].x/PTM_RATIO, [self position].y/PTM_RATIO);
+    b2Vec2 nextPos = b2Vec2(cameraTarget.x/PTM_RATIO, cameraTarget.y/PTM_RATIO);
+    
+    //calculate the velocity and acceleration we are being asked to execute for next frame
+    //(assume this frame's dt will be the same as the current dt)
+    
+    // current velocity is the distance travelled during the current dt
+    b2Vec2 currentVel = currentPos - lastCameraPos;
+    currentVel.x /= dt;
+    currentVel.y /= dt;
+    
+    // the new velocity assumes the dt will be the same
+    b2Vec2 nextVel = nextPos - currentPos;
+    nextVel.x /= dt;
+    nextVel.y /= dt;
+    
+    // calculate the new acceleration assuming the dt will be the same
+    b2Vec2 nextAcc = nextVel - currentVel;
+    nextAcc.x /= dt;
+    nextAcc.y /= dt;
+    
+    BOOL recalcVel = FALSE;
+    BOOL recalcPos = FALSE;
+    
+    double newAccMag = nextAcc.Normalize();
+    
+    // limit the acceleration if it's positive
+    if ((nextAcc.x > 0) || (nextAcc.y > 0))
+    {
+        if (newAccMag > CAMERA_MAX_ACCELERATION)
+        {
+            recalcVel = TRUE;
+            recalcPos = TRUE;
+            CCLOG(@"Acc Limited: %.2f (%.2f)", newAccMag, CAMERA_MAX_ACCELERATION);
+            newAccMag = CAMERA_MAX_ACCELERATION;
+        }
+    }
+        
+    nextAcc.x *= newAccMag;
+    nextAcc.y *= newAccMag;
+        
+    if (recalcVel)
+    {
+        nextVel.x = currentVel.x + dt*nextAcc.x;
+        nextVel.y = currentVel.y + dt*nextAcc.y;
+    }
+    
+    double nextVelMag = nextVel.Normalize();
+    if (nextVelMag > CAMERA_MAX_VELOCITY)
+    {
+        recalcPos = TRUE;
+        CCLOG(@"Vel Limited: %.2f (%.2f)", nextVelMag, CAMERA_MAX_VELOCITY);
+        nextVelMag = CAMERA_MAX_VELOCITY;
+    }
+
+    nextVel.x *= nextVelMag;
+    nextVel.y *= nextVelMag;
+    
+    if (recalcPos)
+    {
+        nextPos.x = currentPos.x + dt*nextVel.x;
+        nextPos.y = currentPos.y + dt*nextVel.y;
+    }
+/*    
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    nextPos.x = MIN(0, nextPos.x);
+    nextPos.x = MAX(nextPos.x,-winSize.width * (SCREEN_WIDTHS - 1));
+    nextPos.y = MIN(nextPos.y,0);
+    nextPos.y = MAX(nextPos.y,-winSize.height * (SCREEN_LENGTHS -1));
+*/
+        
+    [self setPosition:ccp(nextPos.x*PTM_RATIO, nextPos.y*PTM_RATIO)];
+
+    float xError = nextPos.x*PTM_RATIO-newTarget.x;
+    float yError = nextPos.y*PTM_RATIO-newTarget.y;
+    
+    if ((xError != 0.0) || (yError != 0.0))
+    {
+        CCLOG(@"x error: %.2f\ny error: %.2f",xError, yError);
+    }
+    
+    lastCameraPos = currentPos;
+}
+
+-(void) updateCameraPosition:(CGPoint) newTarget
+{
+    b2Vec2 currentPos = b2Vec2([self position].x/PTM_RATIO, [self position].y/PTM_RATIO);
+    b2Vec2 nextPos = b2Vec2(newTarget.x/PTM_RATIO, newTarget.y/PTM_RATIO);
+    
+    b2Vec2 forceVector = nextPos - currentPos;
+    
+    float forceMag = forceVector.Normalize();
+
+    forceMag *= forceMag * CAMERA_SPRING * cameraBody->GetMass();
+    
+    forceVector.x *= forceMag;
+    forceVector.y *= forceMag;
+    
+    cameraBody->ApplyForce(forceVector, cameraBody->GetPosition());
+    
+    [self setPosition:ccp(cameraBody->GetPosition().x * PTM_RATIO, cameraBody->GetPosition().y * PTM_RATIO)];
+}
+
 -(void) followRocketMan:(float) dt
 {
     // calculate where we would like the camera to be
     CGSize winSize = [CCDirector sharedDirector].winSize;
     float newY = rocketMan.position.y - winSize.height*FIXED_POS_Y;
+    float newX = rocketMan.position.x - winSize.width*FIXED_POS_X;
     newY = MAX(newY, 0);
     newY = MIN(newY, winSize.height * SCREEN_LENGTHS-winSize.height);
-    
-    
-    cameraTarget = ccp(self.position.x, -newY);
 
-    // move to the new position gradually
-    // calculate a "speed" for the catchup that is proportional to how far away the current position is
-    // from the target
-    CGPoint currentPos = [self position];
-    
-    CGPoint travelVector = ccp(cameraTarget.x - currentPos.x, cameraTarget.y - currentPos.y);
-    
-    //calculate a new position based on the distance between
-    CGPoint newPos;
-    
-    float totalDistanceSquared = travelVector.x*travelVector.x + travelVector.y*travelVector.y;
-    
-    //if the distance to travel is zero, we're done
-    if (totalDistanceSquared == 0.0f)
-    {
-        return;
-    }
-    float sqrtTD = sqrtf(totalDistanceSquared);    
+    newX = MAX(newX, 0);
+    newX = MIN(newX, winSize.width * SCREEN_WIDTHS-winSize.width);
+   
+    CGPoint newPos = ccp(-newX, -newY);
 
-    float distanceToMove = sqrtTD*CAMERA_CORRECTION_FACTOR*dt;
+//    [self moveCameraToTarget:newPos withDeltaTime:dt];
+    [self moveCameraToTarget2:newPos withDeltaTime:dt];
+    //[self moveCameraToTarget2:newPos withDeltaTime:dt];
+    //[self updateCameraPosition:newPos];
+}
+
+-(void) followRocketMan2:(float) dt
+{
+    CGSize winSize = [CCDirector sharedDirector].winSize;
     
-    //make sure we don't overshoot, and check if we are close enough
-    if (((distanceToMove * distanceToMove) > totalDistanceSquared) || (distanceToMove < CAMERA_MIN_DELTA))
-    {
-        newPos.x =cameraTarget.x;
-        newPos.y =cameraTarget.y;
-    }
-    else 
-    {
-        newPos.x = currentPos.x + travelVector.x * distanceToMove/sqrtTD;
-        newPos.y = currentPos.y + travelVector.y * distanceToMove/sqrtTD;
-    }
     
-    [self setPosition:newPos];
+    b2Vec2 rocketVelocity = rocketMan.body->GetLinearVelocity();
+    b2Vec2 rocketPosition = rocketMan.body->GetPosition();
+    b2Vec2 forwardVector = rocketMan.body->GetWorldVector(b2Vec2(0.0f, 1.0f));
+        
+    //we want the camera to be ahead of the rocket's movement
+    float speed = rocketVelocity.Normalize() * PTM_RATIO;;
+/*
+    float dotProduct = rocketVelocity.x * forwardVector.x + rocketVelocity.y * forwardVector.y;
+    
+    if (dotProduct > 0)
+    {
+        speed *= dotProduct;
+    }
+    else
+    {
+        speed = 0;
+    }
+*/    
+    // the camera target location starts on the rocket (it would be bottom left)
+    b2Vec2 cameraPosition;
+    cameraPosition.x = rocketPosition.x * PTM_RATIO;
+    cameraPosition.y = rocketPosition.y * PTM_RATIO;
+    
+    
+    float velocityOffset = CAMERA_VELOCITY_FACTOR*speed;
+    
+    float theta = atanf(rocketVelocity.y/rocketVelocity.x);
+    float a = winSize.width/2.0*0.9;
+    float b = winSize.height/2.0*0.9;
+    float maximumOffset = a*b/sqrt(b*cosf(theta)*b*cosf(theta) + a*sinf(theta)*a*sinf(theta));
+    
+    if (velocityOffset >= maximumOffset)
+    {
+        velocityOffset = maximumOffset;
+    }
+    rocketVelocity.x = rocketVelocity.x * velocityOffset;
+    rocketVelocity.y = rocketVelocity.y * velocityOffset; 
+    
+    
+    // add the velocity offset vector to the camera position
+    cameraPosition = cameraPosition + rocketVelocity;
+    
+    // take 1/2 a screen off the camera location
+    // (this would put the rocket center screen)
+    cameraPosition.x = cameraPosition.x - winSize.width/2.0;
+    cameraPosition.y = cameraPosition.y - winSize.height/2.0;
+    
+    //now make sure the camera doesn't go outside the level bounds
+    float newX = -cameraPosition.x;
+    float newY = -cameraPosition.y;
+    
+    newX = MIN(0, newX);
+    newX = MAX(newX,-winSize.width * (SCREEN_WIDTHS - 1));
+    newY = MIN(newY,0);
+    newY = MAX(newY,-winSize.height * (SCREEN_LENGTHS -1));
+    
+    CGPoint newPos = ccp(newX, newY);
+    // limit velocity/acc
+    //[self moveCameraToTarget:newPos withDeltaTime:dt];
+    // do a force calculation
+    //[self moveCameraToTarget2:newPos withDeltaTime:dt];
+    // use a physics object for the camera
+    [self updateCameraPosition:newPos];
+    //try averagin the point
+    //newPos.x = (newPos.x + [self position].x)/2.0f;
+    //newPos.y = (newPos.y + [self position].y)/2.0f;
+    //[self setPosition:newPos];
+    
 }
 
 -(void) handlePan:(CGPoint)startPoint endPoint:(CGPoint)endPoint
@@ -435,7 +669,7 @@ enum {
     }
 
     
-    [self followRocketMan:dt];
+    [self followRocketMan2:dt];
 }
 
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

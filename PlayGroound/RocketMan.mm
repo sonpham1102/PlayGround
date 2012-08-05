@@ -41,7 +41,8 @@
 //#define RM_TAP_TORQUE  1.25
 //#define RM_TAP_TORQUE 8.0
 
-#define RM_ROT_FACTOR 50.0 //controls the torque spinning with rotation touch.
+#define RM_ROT_FACTOR 70.0 //controls the torque spinning with rotation touch.
+#define RM_ROT_COUNTER_SPIN M_PI_2
 
 #define RM_HOLD_MANEUVER_TIME 1.0
 #define RM_HOLD_FORCE 8.0
@@ -410,7 +411,17 @@
 -(void) fireRotationDevice
 {
     //for now just apply a torque porportional to the delta if necessary
-    body->ApplyTorque(-body->GetMass()*RM_ROT_FACTOR*rotationAngleDelta);
+    float spinTorque = -body->GetMass()*RM_ROT_FACTOR*rotationAngleDelta;
+    
+    //check if the torque is opposite the current spin velocity
+    float direction = spinTorque*body->GetAngularVelocity();
+    if (direction < 0)
+    {
+        float increaseFactor = MIN(ABS(body->GetAngularVelocity()/RM_ROT_COUNTER_SPIN), 1.0f);
+        spinTorque *= (1.0f + increaseFactor);
+    }
+    
+    body->ApplyTorque(spinTorque);
 }
 
 -(void) fireLPDevice

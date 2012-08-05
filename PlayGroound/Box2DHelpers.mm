@@ -25,12 +25,12 @@ bool isBodyCollidingWithObjectType(b2Body *body, GameObjType objectType) {
             (GameCharPhysics *) bodyA->GetUserData();
             GameCharPhysics *spriteB = 
             (GameCharPhysics *) bodyB->GetUserData();
-            
+            /*
             if ((fixtureA->IsSensor()) || (fixtureB->IsSensor())) {
                 return false;
                 break;
             }
-            
+            */
             if ((spriteA != NULL && 
                         spriteA.gameObjType == objectType) ||
                        (spriteB != NULL && 
@@ -46,6 +46,7 @@ bool isBodyCollidingWithObjectType(b2Body *body, GameObjType objectType) {
 bool isSensorCollidingWithObjectType(b2Body *body, GameObjType objectType,b2Fixture* fixture,b2World *world) {
     b2ContactEdge* edge = body->GetContactList();
     b2Body *bodyHit;
+
     while (edge)
     {
         b2Contact* contact = edge->contact;
@@ -66,8 +67,9 @@ bool isSensorCollidingWithObjectType(b2Body *body, GameObjType objectType,b2Fixt
                 if (spriteA.gameObjType == objectType) {
                     if ((spriteA.gameObjType == kObjTypeAsteroid) && (spriteB.gameObjType == kobjTypeBullet)){
                         //spriteA.destroyMe = true;
-                        [spriteA removeFromParentAndCleanup:YES];
                         world->DestroyBody(bodyHit);
+                        spriteA.body = NULL;
+                        [spriteA removeFromParentAndCleanup:YES];
                     }
                     return true;
                 }

@@ -7,6 +7,7 @@
 //
 
 #import "Asteroid.h"
+#import "Box2DHelpers.h"
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 #define SCALE (IS_IPAD() ? 1.1 : 0.55)
 
@@ -50,7 +51,26 @@
 
 }
 
+-(void) destroy:(id)sender {
+    [self removeFromParentAndCleanup:YES];
+}
+
 -(void) updateStateWithDeltaTime:(ccTime)dt {
+   
+    if (destroyMe) {
+        return;
+    }
+    
+    if (isBodyCollidingWithObjectType(body, kobjTypeBullet)) {
+        world->DestroyBody(body);
+        body = NULL;
+        CCScaleTo *growAction = [CCScaleTo actionWithDuration:0.3 scale:1.2];
+        CCScaleTo *shrinkAction = [CCScaleTo actionWithDuration:0.3 scale:0.5];
+        CCCallFuncN *doneAction = [CCCallFuncN actionWithTarget:self selector:@selector(destroy:)];
+        CCSequence *sequence = [CCSpawn actions:growAction,shrinkAction,doneAction, nil];
+        [self runAction:sequence];
+        destroyMe = true;
+    }
 
 }
 
@@ -59,6 +79,7 @@
         world = theWorld;
         gameObjType = kObjTypeAsteroid;
         [self createBodyAtLocation:location];
+        destroyMe = false;
 
     }
     return self;

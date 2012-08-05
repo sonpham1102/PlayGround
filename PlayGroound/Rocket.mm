@@ -11,6 +11,7 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
+#define FRICTION_COEFF 0.08
 #define SCALE_FACTOR 0.12f
 #define TURN_SPEED 12.0
 
@@ -140,8 +141,14 @@
         [self fireBullet:deltaTime];
     } 
     if (isBodyCollidingWithObjectType(body, kObjTypeAsteroid)) {
-        CCLOG(@"Collided with Asteroid Handle it");
+        //CCLOG(@"Collided with Asteroid Handle it");
     }
+    b2Vec2 velocity = body->GetLinearVelocity();
+    b2Vec2 force = velocity;
+    force.Normalize();
+    force=-force;
+    force*=velocity.LengthSquared()*FRICTION_COEFF;
+    body->ApplyForceToCenter(force);
 }
 
 -(void) fireLeftRocket {

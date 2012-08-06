@@ -41,7 +41,7 @@
 //#define RM_TAP_TORQUE  1.25
 //#define RM_TAP_TORQUE 8.0
 
-#define RM_ROT_FACTOR 120.0 //controls the torque spinning with rotation touch.
+#define RM_ROT_FACTOR 150.0 //controls the torque spinning with rotation touch.
 #define RM_ROT_COUNTER_SPIN M_PI_2
 
 #define RM_HOLD_MANEUVER_TIME 1.0

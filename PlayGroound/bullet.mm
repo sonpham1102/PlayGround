@@ -10,7 +10,7 @@
 #import "Box2DHelpers.h"
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
-#define BULLET_LIFE 0.5
+#define BULLET_LIFE 1.5
 
 @implementation bullet
 
@@ -47,8 +47,11 @@
     body->SetUserData(self);
 }
 
--(void) destroy:(id)sender{
-    [self removeFromParentAndCleanup:YES];
+-(void) removeMe {
+    world->DestroyBody(body);
+    body = NULL;
+    destroyMe = true;
+    [self setVisible:NO];
 }
 
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime{
@@ -59,16 +62,12 @@
         return;
     }
     
+    //GameCharPhysics *asteroid = isBodyCollidingWithObjectType(body, kObjTypeAsteroid);
+    
     timeTravelled += deltaTime;
     if (timeTravelled >= BULLET_LIFE) {
-        //[delegate decrementBulletCount];\
-        body->DestroyFixture(sensorFixture);
-        //sensorFixture = NULL;
-        world->DestroyBody(body);
-        body = NULL;
-        //[self destroy:self];
-        destroyMe = true;        
-    } else if (isBodyCollidingWithObjectType(body, kObjTypeAsteroid)) {
+        [self removeMe];
+    } //else if (asteroid) {
         /*
         CCScaleTo *growAction = [CCScaleTo actionWithDuration:0.1 scale:1.2];
         CCScaleTo *shrinkAction = [CCScaleTo actionWithDuration:0.1 scale:0.5];
@@ -77,11 +76,11 @@
         [self runAction:sequence];
          */
         //sensorFixture = NULL;
-        world->DestroyBody(body);
-        body = NULL;
+        //world->DestroyBody(body);
+        //body = NULL;
         //[self destroy:self];
-        destroyMe = true;
-    }
+        //destroyMe = true;
+    //}
     
     /*
     else if (isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture,world)) {

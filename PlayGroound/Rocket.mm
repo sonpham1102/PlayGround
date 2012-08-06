@@ -139,10 +139,11 @@
     //check to see if sensor detects asteroid
     if (isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture,world)) {
         [self fireBullet:deltaTime];
-    } 
+    }
+    /*
     if (isBodyCollidingWithObjectType(body, kObjTypeAsteroid)) {
         //CCLOG(@"Collided with Asteroid Handle it");
-    }
+    }*/
     b2Vec2 velocity = body->GetLinearVelocity();
     b2Vec2 force = velocity;
     force.Normalize();

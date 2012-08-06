@@ -7,9 +7,10 @@
 //
 
 #import "Box2D.h"
+#import "GameCharPhysics.h"
 #import "GlobalConstants.h"
 
-bool isBodyCollidingWithObjectType(b2Body *body, 
+GameCharPhysics* isBodyCollidingWithObjectType(b2Body *body, 
                                    GameObjType objectTyp);
 bool isSensorCollidingWithObjectType(b2Body *body, 
                                      GameObjType objectType,

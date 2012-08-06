@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#import "bullet.h"
 #import "Asteroid.h"
 #import "Box2DHelpers.h"
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
@@ -49,13 +50,14 @@
         direction = 1.0;
     }
     
-    b2Vec2 impulse = b2Vec2(body->GetMass() * 300.0f * direction,0);
+    b2Vec2 impulse = b2Vec2(body->GetMass() * 50.0f/*300.0*/ * direction,0);
     body->ApplyForce(impulse, body->GetWorldCenter()); 
 
 }
 
 -(void) destroy:(id)sender {
     [self removeFromParentAndCleanup:YES];
+    CCLOG(@"Asteroid destroyed");
 }
 
 -(void) updateStateWithDeltaTime:(ccTime)dt {
@@ -64,6 +66,22 @@
         return;
     }
     
+    bullet *bullettemp = (bullet*)isBodyCollidingWithObjectType(body, kobjTypeBullet);
+    if (bullettemp) {
+        if (bullettemp.destroyMe == true) {
+            return;
+        }
+        world->DestroyBody(body);
+        body = NULL;
+        CCScaleTo *growAction = [CCScaleTo actionWithDuration:0.25 scale:1.25];
+        CCScaleTo *shrinkAction = [CCScaleTo actionWithDuration:0.25 scale:0.75];
+        CCCallFuncN *doneAction = [CCCallFuncN actionWithTarget:self selector:@selector(destroy:)];
+        CCSequence *sequence = [CCSequence actions:growAction,shrinkAction,doneAction, nil];
+        [self runAction:sequence];
+        destroyMe = true;
+        [bullettemp removeMe];
+    }
+    /*
     if (isBodyCollidingWithObjectType(body, kobjTypeBullet)) {
         world->DestroyBody(body);
         body = NULL;
@@ -74,7 +92,7 @@
         [self runAction:sequence];
         destroyMe = true;
     }
-
+    */
 }
 
 -(id) initWithWorld:(b2World *)theWorld atLoaction:(CGPoint)location {

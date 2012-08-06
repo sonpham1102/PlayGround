@@ -20,13 +20,13 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
-#define LEVEL_HEIGHT 25 //25
-#define LEVEL_WIDTH 10 //10
+#define LEVEL_HEIGHT 1 //25
+#define LEVEL_WIDTH 1 //10
 #define MAX_VELOCITY 5
 //#define FRICTION_COEFF 0.08
 
 #define ASTEROID_TIMER 0.5
-#define ASTEROID_LIMIT 100
+#define ASTEROID_LIMIT 10
 
 // used in FollowRocket2
 #define CAMERA_VELOCITY_FACTOR 0.6
@@ -37,7 +37,7 @@
 #define CAMERA_CATCHUP_TIME 1.0 //1 second
 #define MAX_CAMERA_SPEED 1.0 //(in M/s)
 
-#define BULLET_TIME 0.5
+#define BULLET_TIME 1.5
 #define TOTAL_BULLETS 10000
 
 #define USE_MAX_VELOCITY 0

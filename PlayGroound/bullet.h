@@ -20,5 +20,6 @@
 
 -(id)initWithWorld:(b2World *)theWorld atLoaction:(CGPoint)location;
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime;
+-(void)removeMe;
 
 @end

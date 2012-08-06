@@ -67,8 +67,8 @@
     if (isBodyCollidingWithObjectType(body, kobjTypeBullet)) {
         world->DestroyBody(body);
         body = NULL;
-        CCScaleTo *growAction = [CCScaleTo actionWithDuration:0.50 scale:1.25];
-        CCScaleTo *shrinkAction = [CCScaleTo actionWithDuration:0.50 scale:0.5];
+        CCScaleTo *growAction = [CCScaleTo actionWithDuration:0.25 scale:1.25];
+        CCScaleTo *shrinkAction = [CCScaleTo actionWithDuration:0.25 scale:0.75];
         CCCallFuncN *doneAction = [CCCallFuncN actionWithTarget:self selector:@selector(destroy:)];
         CCSequence *sequence = [CCSequence actions:growAction,shrinkAction,doneAction, nil];
         [self runAction:sequence];

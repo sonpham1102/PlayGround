@@ -33,12 +33,11 @@ typedef enum {
 #define CAMERA_MIN_DELTA 0.001
 #define MIN_PAN_LENGTH_SQ 0.20 //in meters, squared
 
-#define CAMERA_DENSITY 1.0
-#define CAMERA_LINEAR_DAMP 15.0
+#define CAMERA_DENSITY 3.0 //weight of the camera body
+#define CAMERA_LINEAR_DAMP 20.0 //the linear dampening for the camera, causes it to drag behind
+#define CAMERA_SPRING 10.0 //the spring force that pulls the camera towards its target
 
-#define CAMERA_SPRING 10.0
-
-#define CAMERA_VELOCITY_FACTOR 0.9
+#define CAMERA_VELOCITY_FACTOR 1.5 //multiplied by rocket velocity to push camera back
 
 enum {
 	kTagParentNode = 1,
@@ -69,13 +68,13 @@ enum {
 
 }
 
-#define HORIZONTAL_MIN_SPACE 10.0
-#define HORIZONTAL_MAX_SPACE 20.0
-#define VERTICAL_MAX_SPACE 10.0
+#define HORIZONTAL_MIN_SPACE 20.0
+#define HORIZONTAL_MAX_SPACE 30.0
+#define VERTICAL_MAX_SPACE 15.0
 #define VERTICAL_MIN_SPACE 5.0
 #define MIN_OBSTACLE_WIDTH 2.0
-#define MAX_OBSTACLE_WIDTH 5.0
-#define MIN_OBSTACLE_HEIGHT 15.0
+#define MAX_OBSTACLE_WIDTH 6.0
+#define MIN_OBSTACLE_HEIGHT 1.0
 #define MAX_OBSTACLE_HEIGHT 25.0
 
 -(void) createObstacleAtLocation: (b2Vec2) location withWidth: (float) width withHeight: (float) height
@@ -93,8 +92,9 @@ enum {
     
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &shape;
-    fixtureDef.isSensor = true;
+    //fixtureDef.isSensor = true;
     fixtureDef.density = 0.0;
+    fixtureDef.restitution = 2.0f;
     
     body->CreateFixture(&fixtureDef);
     

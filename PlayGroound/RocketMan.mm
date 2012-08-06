@@ -20,32 +20,32 @@
 #define RM_VERT2 b2Vec2(-0.3,1.0)
 #define RM_VERT3 b2Vec2(-0.5,-1.0)
 #define RM_VERT4 b2Vec2(0.5,-1.0)
-#define RM_LINEAR_DAMP 0.25
-#define RM_ANG_DAMP 0.25
+#define RM_LINEAR_DAMP 0.65
+#define RM_ANG_DAMP 0.85
 
 //#define RM_PAN_IMPULSE_X 1.0
 //#define RM_PAN_IMPULSE_Y 2.0
 //#define RM_ROCKET_IMPULSE_FACTOR 0.5
 #define RM_PAN_TIME_FACTOR 0.5
-#define RM_PAN_TIME_MAX 1.5
-#define RM_PAN_TIME_MIN 0.2
+#define RM_PAN_TIME_MAX 1.0
+#define RM_PAN_TIME_MIN 0.1
 //#define RM_MAX_ROCKET_IMPULSE 3.0
 //#define RM_MIN_ROCKET_IMPULSE 1.0
 #define RM_PAN_ROCKET_FORCE 6.0
-#define RM_MAX_ROCKET_SLOPE 100.0
-#define RM_MIN_ROCKET_SLOPE 0.1
+#define RM_MAX_ROCKET_SLOPE 0.1
+#define RM_MIN_ROCKET_SLOPE 0.0
 
 #define RM_TAP_MANEUVER_TIME 1.0
-#define RM_TAP_FORCE    4.0
+#define RM_TAP_FORCE    6.0
 //#define RM_ANG_OFFSET_TOLERANCE 1.0 //degrees, make sure to convert
 //#define RM_TAP_TORQUE  1.25
 //#define RM_TAP_TORQUE 8.0
 
-#define RM_ROT_FACTOR 100.0 //controls the torque spinning with rotation touch.
+#define RM_ROT_FACTOR 120.0 //controls the torque spinning with rotation touch.
 #define RM_ROT_COUNTER_SPIN M_PI_2
 
 #define RM_HOLD_MANEUVER_TIME 1.0
-#define RM_HOLD_FORCE 8.0
+#define RM_HOLD_FORCE 12.0
 #define RM_HOLD_TORQUE 8.0
 
 @implementation RocketMan

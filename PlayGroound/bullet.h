@@ -13,13 +13,14 @@
 //    b2Fixture *sensorFixture;
     float timeTravelled;
     //id <PlayGround2LayerDelegate> delegate;
+    BOOL isDead;
 }
 
 //@property (nonatomic,readonly) b2Fixture *sensorFixture;
 //@property (nonatomic, assign) id <PlayGround2LayerDelegate> delegate;
 
--(id)initWithWorld:(b2World *)theWorld atLoaction:(CGPoint)location;
+-(id)initWithWorld:(b2World *)theWorld atLoaction:(b2Vec2)location;
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime;
--(void)removeMe;
+
 
 @end

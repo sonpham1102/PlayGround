@@ -10,7 +10,9 @@
 
 @interface Asteroid : GameCharPhysics {
     b2World *world;
+    BOOL isDead;
 }
+
 
 -(id)initWithWorld:(b2World *)theWorld atLoaction:(CGPoint)location;
 

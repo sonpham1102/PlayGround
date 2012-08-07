@@ -20,7 +20,6 @@
 
 -(void)createBodyAtLocation:(CGPoint)location {
     
-    //CGSize winSize = [CCDirector sharedDirector].winSize;
     float32 size = arc4random()%30;
     size += 10.0f;
     b2BodyDef bodyDef;
@@ -40,6 +39,7 @@
     fixtureDef.friction = 0.0;
     
     body->CreateFixture(&fixtureDef);
+    body->SetAngularDamping(15.0f);
     
     body->SetUserData(self);
     [self setScale:SCALE * size / PTM_RATIO];
@@ -50,27 +50,22 @@
         direction = 1.0;
     }
     
-    b2Vec2 impulse = b2Vec2(body->GetMass() * 50.0f/*300.0*/ * direction,0);
+    b2Vec2 impulse = b2Vec2(body->GetMass() * 50.0f * direction,0);
     body->ApplyForce(impulse, body->GetWorldCenter()); 
 
 }
 
--(void) destroy:(id)sender {
+-(void)destroy:(id)sender {
     [self removeFromParentAndCleanup:YES];
-    CCLOG(@"Asteroid destroyed");
 }
 
 -(void) updateStateWithDeltaTime:(ccTime)dt {
    
-    if (destroyMe) {
+    if (isDead) {
         return;
     }
     
-    bullet *bullettemp = (bullet*)isBodyCollidingWithObjectType(body, kobjTypeBullet);
-    if (bullettemp) {
-        if (bullettemp.destroyMe == true) {
-            return;
-        }
+    if (destroyMe) {
         world->DestroyBody(body);
         body = NULL;
         CCScaleTo *growAction = [CCScaleTo actionWithDuration:0.25 scale:1.25];
@@ -78,21 +73,8 @@
         CCCallFuncN *doneAction = [CCCallFuncN actionWithTarget:self selector:@selector(destroy:)];
         CCSequence *sequence = [CCSequence actions:growAction,shrinkAction,doneAction, nil];
         [self runAction:sequence];
-        destroyMe = true;
-        [bullettemp removeMe];
+        isDead = true;
     }
-    /*
-    if (isBodyCollidingWithObjectType(body, kobjTypeBullet)) {
-        world->DestroyBody(body);
-        body = NULL;
-        CCScaleTo *growAction = [CCScaleTo actionWithDuration:0.25 scale:1.25];
-        CCScaleTo *shrinkAction = [CCScaleTo actionWithDuration:0.25 scale:0.75];
-        CCCallFuncN *doneAction = [CCCallFuncN actionWithTarget:self selector:@selector(destroy:)];
-        CCSequence *sequence = [CCSequence actions:growAction,shrinkAction,doneAction, nil];
-        [self runAction:sequence];
-        destroyMe = true;
-    }
-    */
 }
 
 -(id) initWithWorld:(b2World *)theWorld atLoaction:(CGPoint)location {
@@ -101,6 +83,8 @@
         gameObjType = kObjTypeAsteroid;
         [self createBodyAtLocation:location];
         destroyMe = false;
+        characterHealth = 100;
+        isDead = NO;
     }
     return self;
 }

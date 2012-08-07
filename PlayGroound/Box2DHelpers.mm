@@ -16,7 +16,8 @@ GameCharPhysics* isBodyCollidingWithObjectType(b2Body *body, GameObjType objectT
     while (edge)
     {
         b2Contact* contact = edge->contact;
-        if (contact->IsTouching()) {        
+        if (contact->IsTouching()) {
+            
             b2Fixture* fixtureA = contact->GetFixtureA();
             b2Fixture* fixtureB = contact->GetFixtureB();
             b2Body *bodyA = fixtureA->GetBody();

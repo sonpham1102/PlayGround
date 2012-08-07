@@ -160,7 +160,7 @@ enum {
 		[self initPhysics];
 		        
         // create the rocket man
-        [self createRocketMan:ccp(s.width/2, s.height/5)];
+        [self createRocketMan:ccp(s.width/2.0/PTM_RATIO, s.height/5.0/PTM_RATIO)];
         
         // add it as a child
         [self addChild:rocketMan z:0];
@@ -638,6 +638,9 @@ enum {
     // give the rocked the parameters for the pan move
     // AP this is two functions in case I want to use collision detection to see if touch actually hits the 
     // rocket
+    // CONVERT the points to meters before sending them to rocket 
+    startPoint = ccpMult(startPoint, 1.0/PTM_RATIO);
+    endPoint = ccpMult(endPoint, 1.0/PTM_RATIO);
     [rocketMan planPanMove:startPoint endPoint:endPoint];
     [rocketMan executePanMove];
     

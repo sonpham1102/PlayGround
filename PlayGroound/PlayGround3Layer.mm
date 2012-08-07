@@ -12,7 +12,7 @@
 
 #import "PhysicsSprite.h"
 #import "GameManager.h"
-#import "RocketMan.h"
+#import "RocketMan3.h"
 
 /*
 typedef enum {
@@ -73,7 +73,7 @@ enum {
 #define VERTICAL_MAX_SPACE 15.0
 #define VERTICAL_MIN_SPACE 5.0
 #define MIN_OBSTACLE_WIDTH 2.0
-#define MAX_OBSTACLE_WIDTH 12.0
+#define MAX_OBSTACLE_WIDTH 6.0
 #define MIN_OBSTACLE_HEIGHT 10.0
 #define MAX_OBSTACLE_HEIGHT 35.0
 
@@ -160,7 +160,7 @@ enum {
 		[self initPhysics];
 		        
         // create the rocket man
-        [self createRocketMan:ccp(s.width/2, s.height/5)];
+        [self createRocketMan:ccp(s.width/2.0/PTM_RATIO, s.height/5.0/PTM_RATIO)];
         
         // add it as a child
         [self addChild:rocketMan z:0];
@@ -295,7 +295,7 @@ enum {
 
 -(void) createRocketMan:(CGPoint) location
 {
-    rocketMan = [[RocketMan alloc] initWithWorld:world atLocation:location];
+    rocketMan = [[RocketMan3 alloc] initWithWorld:world atLocation:location];
 }
 
 -(void) draw
@@ -357,7 +357,7 @@ enum {
 {
     
     CGSize screenSize = [CCDirector sharedDirector].winSize;
-    rocketMan.body->SetTransform( b2Vec2(screenSize.width/2/PTM_RATIO, screenSize.height/5/PTM_RATIO), 0.0f);
+    rocketMan.body->SetTransform( b2Vec2(screenSize.width/2/PTM_RATIO, screenSize.height/5/PTM_RATIO), -M_PI_2);
     rocketMan.body->SetLinearVelocity(b2Vec2_zero);
     rocketMan.body->SetAngularVelocity(0.0);
 }
@@ -638,35 +638,11 @@ enum {
     // give the rocked the parameters for the pan move
     // AP this is two functions in case I want to use collision detection to see if touch actually hits the 
     // rocket
+    // CONVERT the points to meters before sending them to rocket 
+    startPoint = ccpMult(startPoint, 1.0/PTM_RATIO);
+    endPoint = ccpMult(endPoint, 1.0/PTM_RATIO);
     [rocketMan planPanMove:startPoint endPoint:endPoint];
     [rocketMan executePanMove];
-    
-    //AP - here's where I would check for a "valid" pan (for now all pans are valid) 
-    
-    //AP : Need to subtract any movement of the view
-    //panEndPoint.x -= [self position].x;
-    //panEndPoint.y -= [self position].y;
-    
-    
-    // perform a raycast, if the line hits the rocketman
-//    world->RayCast(_panRaycastCallback, b2Vec2(panStartPoint.x/PTM_RATIO, panStartPoint.y/PTM_RATIO),
-//                   b2Vec2(panEndPoint.x/PTM_RATIO, panEndPoint.y/PTM_RATIO));
-    
-    
-    /*
-     //see if the pan actually intersected one of the sides of the rocket man
-     CGRect boundingBox = rocketMan.boundingBox;
-     
-     float left = CGRectGetMinX(boundingBox);        
-     float right = CGRectGetMaxX(boundingBox);
-     float top = CGRectGetMinX(boundingBox);
-     float bottom = CGRectGetMinX(boundingBox);
-     
-     float determinant; 
-     */        
-    
-
-    
     
 }
 

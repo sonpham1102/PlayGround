@@ -216,6 +216,7 @@
 		FA65B50A15D1844A005A1044 /* PlayGround3Layer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA65B50515D1844A005A1044 /* PlayGround3Layer.mm */; };
 		FA65B50B15D1844A005A1044 /* PlayGround3Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA65B50715D1844A005A1044 /* PlayGround3Scene.mm */; };
 		FA65B50C15D1844A005A1044 /* PlayGround3UILayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA65B50915D1844A005A1044 /* PlayGround3UILayer.mm */; };
+		FA65B50F15D197CA005A1044 /* RocketMan3.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA65B50E15D197CA005A1044 /* RocketMan3.mm */; };
 		FA8182ED15B866D8003AC851 /* GameObj.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8182EC15B866D8003AC851 /* GameObj.m */; };
 		FA8182F315B87426003AC851 /* GameChar.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8182F215B87426003AC851 /* GameChar.m */; };
 		FA8182F615B87709003AC851 /* GameCharPhysics.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA8182F515B87709003AC851 /* GameCharPhysics.mm */; };
@@ -645,6 +646,8 @@
 		FA65B50715D1844A005A1044 /* PlayGround3Scene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround3Scene.mm; sourceTree = "<group>"; };
 		FA65B50815D1844A005A1044 /* PlayGround3UILayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGround3UILayer.h; sourceTree = "<group>"; };
 		FA65B50915D1844A005A1044 /* PlayGround3UILayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround3UILayer.mm; sourceTree = "<group>"; };
+		FA65B50D15D197C9005A1044 /* RocketMan3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RocketMan3.h; sourceTree = "<group>"; };
+		FA65B50E15D197CA005A1044 /* RocketMan3.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RocketMan3.mm; sourceTree = "<group>"; };
 		FA8182EB15B866D8003AC851 /* GameObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObj.h; sourceTree = "<group>"; };
 		FA8182EC15B866D8003AC851 /* GameObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObj.m; sourceTree = "<group>"; };
 		FA8182F115B87426003AC851 /* GameChar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameChar.h; sourceTree = "<group>"; };
@@ -1440,6 +1443,8 @@
 		FA8182E915B865CF003AC851 /* GameObjects */ = {
 			isa = PBXGroup;
 			children = (
+				FA65B50D15D197C9005A1044 /* RocketMan3.h */,
+				FA65B50E15D197CA005A1044 /* RocketMan3.mm */,
 				FA8182EB15B866D8003AC851 /* GameObj.h */,
 				FA8182EC15B866D8003AC851 /* GameObj.m */,
 				FA8182F115B87426003AC851 /* GameChar.h */,
@@ -1737,6 +1742,7 @@
 				FA65B50A15D1844A005A1044 /* PlayGround3Layer.mm in Sources */,
 				FA65B50B15D1844A005A1044 /* PlayGround3Scene.mm in Sources */,
 				FA65B50C15D1844A005A1044 /* PlayGround3UILayer.mm in Sources */,
+				FA65B50F15D197CA005A1044 /* RocketMan3.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

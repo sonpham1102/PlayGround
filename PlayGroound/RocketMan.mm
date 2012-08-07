@@ -10,8 +10,6 @@
 #import "GameManager.h"
 #import "GlobalConstants.h"
 
-#import "PlayGround1Layer.h" //mainly for the PTM_RATIO
-
 //MOVE TO A pLIST
 #define RM_DENSITY 5.0f
 #define RM_FRICTION 0.5f
@@ -41,7 +39,7 @@
 //#define RM_TAP_TORQUE  1.25
 //#define RM_TAP_TORQUE 8.0
 
-#define RM_ROT_FACTOR 150.0 //controls the torque spinning with rotation touch.
+#define RM_ROT_FACTOR 180.0 //controls the torque spinning with rotation touch.
 #define RM_ROT_COUNTER_SPIN M_PI_2
 
 #define RM_HOLD_MANEUVER_TIME 1.0
@@ -54,8 +52,7 @@
 {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
-    bodyDef.position = b2Vec2(location.x/PTM_RATIO,
-                              location.y/PTM_RATIO);
+    bodyDef.position = b2Vec2(location.x, location.y);
     body = world->CreateBody(&bodyDef);
     
     b2FixtureDef fixtureDef;
@@ -121,7 +118,8 @@
 {    
     //calculate the pan vector
     //make sure it's in meters so that everything that comes after should work for each device
-    panVector = b2Vec2((endPoint.x - startPoint.x)/PTM_RATIO, (endPoint.y - startPoint.y)/PTM_RATIO);
+    //AP - NO make sure the layer sends in meters, don't want the rocket to have to know about the PTM
+    panVector = b2Vec2(endPoint.x - startPoint.x, endPoint.y - startPoint.y);
     
     //convert the vector to the rocket's local coordinate system
     //this way when the rocketman changes orientation, slashes still match up with
@@ -260,11 +258,20 @@
 
 -(void) executeRotationMove
 {
-    [self changeState:kStateManeuver];
+    if (rotationAngleDelta != 0.0)
+    {        
+        [self changeState:kStateManeuver];
+    }
+    else
+    {
+        //kill any angular velocity
+        body->SetAngularVelocity(0.0);
+    }
 }
 
 -(void) fireRotationDevice
 {
+
     //for now just apply a torque porportional to the delta if necessary
     float spinTorque = -body->GetMass()*RM_ROT_FACTOR*rotationAngleDelta;
     
@@ -272,11 +279,17 @@
     float direction = spinTorque*body->GetAngularVelocity();
     if (direction < 0)
     {
-        float increaseFactor = MIN(ABS(body->GetAngularVelocity()/RM_ROT_COUNTER_SPIN), 1.0f);
+        float increaseFactor = MIN(ABS(body->GetAngularVelocity())/RM_ROT_COUNTER_SPIN, 1.0f);
         spinTorque *= (1.0f + increaseFactor);
+        CCLOG(@"Torque: %.2f, increaseFactor: %.1f", spinTorque, increaseFactor);
     }
     
     body->ApplyTorque(spinTorque);
+
+/*
+    body->SetTransform(body->GetPosition(), body->GetAngle() - rotationAngleDelta*2.0);
+    body->SetAngularVelocity(0.0f);
+*/
 }
 
 -(void) fireLPDevice
@@ -353,6 +366,7 @@
             [self fireRotationDevice];
             isManeuvering = TRUE;
         }
+
     }
     
     body->ApplyForce(body->GetWorldVector(b2Vec2(0.0,body->GetMass()*5.0)), body->GetPosition());

@@ -181,12 +181,6 @@ enum {
     CCCallFuncN *action1 = [CCCallFuncN actionWithTarget:self selector:@selector(setString1:)];
     CCCallFuncN *actionGO = [CCCallFuncN actionWithTarget:self selector:@selector(setStringGo:)];
     CCSequence *actionList = [CCSequence actions:action3, delay, action2, delay, action1, delay, actionGO, nil];
-
-    
-    
-    CCCallFuncN *doneAction = [CCCallFuncN actionWithTarget:self selector:@selector(destroy:)];
- 
-    
     
     [self runAction:actionList];
 }

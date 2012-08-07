@@ -117,62 +117,6 @@
     return self;
 }
 
-/* AP: IMPULSE VERSION, replaced by Force version below
--(void)planPanMove:(CGPoint)startPoint endPoint:(CGPoint)endPoint
-{    
-    //calculate the impluse vector
-    b2Vec2 impulseVector = b2Vec2((endPoint.x - startPoint.x)/PTM_RATIO, (endPoint.y - startPoint.y)/PTM_RATIO);
-    
-    //For now, make the magnitude proportional to the square of the pan length
-    float impulseMag = impulseVector.LengthSquared()*RM_ROCKET_IMPULSE_FACTOR;
-    
-    if (impulseMag > RM_MAX_ROCKET_IMPULSE)
-    {
-        CCLOG(@"MAX: %.2f (%.2f)", impulseMag, impulseVector.LengthSquared());
-        impulseMag = RM_MAX_ROCKET_IMPULSE;
-    }
-    else if (impulseMag < RM_MIN_ROCKET_IMPULSE)
-    {
-        CCLOG(@"MIN: %.2f (%.2f)", impulseMag, impulseVector.LengthSquared());
-        impulseMag = RM_MIN_ROCKET_IMPULSE;
-    }
-    
-    //limit the angle of the impulse
-    float slopeAbs;
-    if (impulseVector.x !=0)
-    {
-        slopeAbs = ABS(impulseVector.y/impulseVector.x);
-        if (slopeAbs < RM_MIN_ROCKET_SLOPE)
-        {
-            slopeAbs = RM_MIN_ROCKET_SLOPE;
-        }
-        else if (slopeAbs > RM_MAX_ROCKET_SLOPE)
-        {
-            slopeAbs = RM_MAX_ROCKET_SLOPE;
-        }
-    }
-    else
-    {
-        slopeAbs = RM_MAX_ROCKET_SLOPE;
-    }
-
-    //rebuild the implulseVector based on the magnitude and the slope
-    if (startPoint.x < endPoint.x)
-    {           
-        // moving from left to right
-        panImpulse.x = 1.0f;
-    }
-    else 
-    {
-        panImpulse.x = -1.0f;
-    }
-    panImpulse.y = slopeAbs;
-    panImpulse.Normalize();
-    panImpulse.x *= body->GetMass()*impulseMag;
-    panImpulse.y *= body->GetMass()*impulseMag;    
-}
-*/
-
 -(void)planPanMove:(CGPoint)startPoint endPoint:(CGPoint)endPoint
 {    
     //calculate the pan vector
@@ -298,95 +242,6 @@
     }
     [self changeState:kStateManeuver];
 }
-/*
--(void)fireTapDevice
-{
-    //this device does 2 things - fires the rear rocket but also tries to get the rocket aligned straight up
-    
- 
-    float angle = body->GetAngle();
-    float angularVelocity = body->GetAngularVelocity();
-    float torque = 0.0f;
-    float force = 0.0f;
-    
-    //first make sure the angle is between -180 and 180
-    //see how many full rotations we have
-    int rotations = angle / (M_PI * 2);
-    //subtract them out
-    angle -= (float) rotations * M_PI * 2;
-    //if the angle is above 180 degress, subtract PI
-    if (angle > M_PI)
-    {
-        angle -= M_PI*2;
-    }
-    else if (angle < -M_PI)
-    {
-        angle += M_PI*2;
-    }
-    
-    float direction = 1.0f;
-    
-    if (angle > 0)
-    {
-        direction = -1.0f;
-    }
-    
-    // see if the angle is zero, but there is angular velocity
-    if (angle == 0.0f)
-    {
-        if (ABS(angularVelocity) > 0)
-        {
-            //kill the velocity
-            body->SetAngularVelocity(0.0f);
-        }
-        force = body->GetMass()*RM_TAP_FORCE;
-    }
-    // see if the angle is close enough to zero
-    else if (ABS(angle) < CC_DEGREES_TO_RADIANS(RM_ANG_OFFSET_TOLERANCE))
-    {
-        // set it to zero and kill any angular velocity
-        body->SetTransform(body->GetPosition(), 0.0f);        
-        body->SetAngularVelocity(0.0f);
-        angle = 0.0f;
-    }
-    else if (ABS(angle) > M_PI_2)
-    {
-        // if the angle is greater than 90 degrees (M_PI_2), then use the max torque
-        torque = body->GetMass() * RM_TAP_TORQUE;
-        force = 0.0f;
-    }
-    else
-    {
-        torque = body->GetMass() * RM_TAP_TORQUE * ABS(angle)/M_PI_2;
-        // only fire the rear rocket if the angle is less that 45 degrees
-        if (ABS(angle) > M_PI_4)
-        {
-            force = 0.0f;
-        }
-        else
-        {
-            force = body->GetMass() * RM_TAP_FORCE * ABS(angle)/M_PI_4;
-        }
-    }
-    
-    //see if the angle and angular velocity are in the same directions and bigger than 45 degrees
-    if ((ABS(angle) > M_PI_4) && (angle * angularVelocity > 0)) 
-    {
-        
-        //normally the impulse should be in the opposite direction of the angle
-        //but if the current velocity is already in the same direction and the angle
-        //flip all the way around at full speed
-//        impulse = body->GetMass() * RM_TAP_IMPULSE*2;
-//        direction *= -1.0;
-//        force = 0.0f;
-//AP: ok being too clever, works fine without and hard to get right with        
-    }
-    
-    body->ApplyForce(body->GetWorldVector(b2Vec2(0, force)), body->GetWorldCenter());
-    
-    body->ApplyTorque(torque * direction);
-}
-*/
 
 -(void)fireTapDevice
 {
@@ -499,6 +354,8 @@
             isManeuvering = TRUE;
         }
     }
+    
+    body->ApplyForce(body->GetWorldVector(b2Vec2(0.0,body->GetMass()*5.0)), body->GetPosition());
     
     if(!isManeuvering)
     {

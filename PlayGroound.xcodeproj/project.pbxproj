@@ -213,6 +213,9 @@
 		FA1348DA15B7540300E5CDB5 /* 22k_tap_move_skullV1.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA1348D915B7540300E5CDB5 /* 22k_tap_move_skullV1.wav */; };
 		FA1348DC15B7542C00E5CDB5 /* SpaceDesertV2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = FA1348DB15B7542C00E5CDB5 /* SpaceDesertV2.mp3 */; };
 		FA1348DE15B7544700E5CDB5 /* EscapeTheFutureV3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = FA1348DD15B7544700E5CDB5 /* EscapeTheFutureV3.mp3 */; };
+		FA65B50A15D1844A005A1044 /* PlayGround3Layer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA65B50515D1844A005A1044 /* PlayGround3Layer.mm */; };
+		FA65B50B15D1844A005A1044 /* PlayGround3Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA65B50715D1844A005A1044 /* PlayGround3Scene.mm */; };
+		FA65B50C15D1844A005A1044 /* PlayGround3UILayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA65B50915D1844A005A1044 /* PlayGround3UILayer.mm */; };
 		FA8182ED15B866D8003AC851 /* GameObj.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8182EC15B866D8003AC851 /* GameObj.m */; };
 		FA8182F315B87426003AC851 /* GameChar.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8182F215B87426003AC851 /* GameChar.m */; };
 		FA8182F615B87709003AC851 /* GameCharPhysics.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA8182F515B87709003AC851 /* GameCharPhysics.mm */; };
@@ -636,6 +639,12 @@
 		FA1348D915B7540300E5CDB5 /* 22k_tap_move_skullV1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 22k_tap_move_skullV1.wav; sourceTree = "<group>"; };
 		FA1348DB15B7542C00E5CDB5 /* SpaceDesertV2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = SpaceDesertV2.mp3; sourceTree = "<group>"; };
 		FA1348DD15B7544700E5CDB5 /* EscapeTheFutureV3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = EscapeTheFutureV3.mp3; sourceTree = "<group>"; };
+		FA65B50415D1844A005A1044 /* PlayGround3Layer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGround3Layer.h; sourceTree = "<group>"; };
+		FA65B50515D1844A005A1044 /* PlayGround3Layer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround3Layer.mm; sourceTree = "<group>"; };
+		FA65B50615D1844A005A1044 /* PlayGround3Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGround3Scene.h; sourceTree = "<group>"; };
+		FA65B50715D1844A005A1044 /* PlayGround3Scene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround3Scene.mm; sourceTree = "<group>"; };
+		FA65B50815D1844A005A1044 /* PlayGround3UILayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGround3UILayer.h; sourceTree = "<group>"; };
+		FA65B50915D1844A005A1044 /* PlayGround3UILayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround3UILayer.mm; sourceTree = "<group>"; };
 		FA8182EB15B866D8003AC851 /* GameObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObj.h; sourceTree = "<group>"; };
 		FA8182EC15B866D8003AC851 /* GameObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObj.m; sourceTree = "<group>"; };
 		FA8182F115B87426003AC851 /* GameChar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameChar.h; sourceTree = "<group>"; };
@@ -1374,6 +1383,7 @@
 		FA1348BA15B714E200E5CDB5 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				FA65B50115D182DE005A1044 /* Playground3 */,
 				12B946FA15B8609C00CB76CD /* Options */,
 				12B946CD15B730C100CB76CD /* PlayGround1 */,
 				12B946CB15B730B600CB76CD /* PlayGround2 */,
@@ -1412,6 +1422,19 @@
 				FA1348D515B753C100E5CDB5 /* VikingPreludeV1.mp3 */,
 			);
 			name = Music;
+			sourceTree = "<group>";
+		};
+		FA65B50115D182DE005A1044 /* Playground3 */ = {
+			isa = PBXGroup;
+			children = (
+				FA65B50415D1844A005A1044 /* PlayGround3Layer.h */,
+				FA65B50515D1844A005A1044 /* PlayGround3Layer.mm */,
+				FA65B50615D1844A005A1044 /* PlayGround3Scene.h */,
+				FA65B50715D1844A005A1044 /* PlayGround3Scene.mm */,
+				FA65B50815D1844A005A1044 /* PlayGround3UILayer.h */,
+				FA65B50915D1844A005A1044 /* PlayGround3UILayer.mm */,
+			);
+			name = Playground3;
 			sourceTree = "<group>";
 		};
 		FA8182E915B865CF003AC851 /* GameObjects */ = {
@@ -1711,6 +1734,9 @@
 				FAA7D17D15C9E15E00C513A2 /* CustomPanGesureRecognizer.m in Sources */,
 				12985AE115CC556200614FB8 /* bullet.mm in Sources */,
 				121DD2E915D0BFAD0098A1AF /* Level1ContactListener.mm in Sources */,
+				FA65B50A15D1844A005A1044 /* PlayGround3Layer.mm in Sources */,
+				FA65B50B15D1844A005A1044 /* PlayGround3Scene.mm in Sources */,
+				FA65B50C15D1844A005A1044 /* PlayGround3UILayer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

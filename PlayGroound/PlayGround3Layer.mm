@@ -1,12 +1,12 @@
 //
-//  PlayGround1Layer.mm
+//  PlayGround3Layer.mm
 //  PlayGroound
 //
 //  Created by Jason Parlour on 12-07-18.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
-#import "PlayGround1Scene.h"
-#import "PlayGround1Layer.h"
+#import "PlayGround3Scene.h"
+#import "PlayGround3Layer.h"
 // Needed to obtain the Navigation Controller
 #import "AppDelegate.h"
 
@@ -46,13 +46,13 @@ enum {
 
 #pragma mark - HelloWorldLayer
 
-@interface PlayGround1Layer()
+@interface PlayGround3Layer()
 -(void) initPhysics;
 -(void) addNewSpriteAtPosition:(CGPoint)p;
 -(void) createRocketMan:(CGPoint) location;
 @end
 
-@implementation PlayGround1Layer
+@implementation PlayGround3Layer
 
 -(void) createBackground {
     

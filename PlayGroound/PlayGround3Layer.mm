@@ -65,7 +65,11 @@ enum {
     [tileMapNode setScaleY:SCREEN_LENGTHS];
     [tileMapNode setScaleX:SCREEN_WIDTHS];
     [self addChild:tileMapNode z:-10];
+}
 
+-(NSString *)getTimerString;
+{
+    return timerString;
 }
 
 #define HORIZONTAL_MIN_SPACE 20.0
@@ -94,7 +98,7 @@ enum {
     fixtureDef.shape = &shape;
     //fixtureDef.isSensor = true;
     fixtureDef.density = 0.0;
-    fixtureDef.restitution = 2.0f;
+    fixtureDef.restitution = 1.0f;
     
     body->CreateFixture(&fixtureDef);
     
@@ -146,6 +150,53 @@ enum {
     }
 }
 
+-(void) setString3:(id)sender
+{
+    timerString = @"3";
+}
+
+-(void) setString2:(id)sender
+{
+    timerString = @"2";
+}
+
+-(void) setString1:(id)sender
+{
+    timerString = @"1";
+}
+
+-(void) setStringGo:(id)sender
+{
+    timerString = @"GO!";
+    acceptingInput = true;
+    raceTimer = 0.0;
+}
+
+-(void) startStartSequence
+{
+    acceptingInput = false;
+    CCDelayTime *delay = [CCDelayTime actionWithDuration:1.0];
+    CCCallFuncN *action3 = [CCCallFuncN actionWithTarget:self selector:@selector(setString3:)];
+    CCCallFuncN *action2 = [CCCallFuncN actionWithTarget:self selector:@selector(setString2:)];
+    CCCallFuncN *action1 = [CCCallFuncN actionWithTarget:self selector:@selector(setString1:)];
+    CCCallFuncN *actionGO = [CCCallFuncN actionWithTarget:self selector:@selector(setStringGo:)];
+    CCSequence *actionList = [CCSequence actions:action3, delay, action2, delay, action1, delay, actionGO, nil];
+
+    
+    
+    CCCallFuncN *doneAction = [CCCallFuncN actionWithTarget:self selector:@selector(destroy:)];
+ 
+    
+    
+    [self runAction:actionList];
+}
+
+-(void) onEnter
+{
+    [self startStartSequence];
+    [super onEnter];
+}
+
 -(id) init
 {
 	if( (self=[super init])) {
@@ -178,14 +229,14 @@ enum {
         //_panRaycastCallback = new PanRayCastCallback();
         
         debugLineEndPoint = CGPointZero;
-        debugLineStartPoint = CGPointZero;      
+        debugLineStartPoint = CGPointZero;
         
-        CCLabelTTF *label = [CCLabelTTF labelWithString:@"Tap screen" fontName:@"Marker Felt" fontSize:32];
-		[self addChild:label z:0];
-		[label setColor:ccc3(0,0,255)];
-		label.position = ccp( s.width/2, s.height-50);
-        
+        raceTimer = 0.0f;
+        acceptingInput = false;
+                
         [self createBackground];
+        
+        [self startStartSequence];
 		
 		[self scheduleUpdate];
 	}
@@ -355,6 +406,7 @@ enum {
 
 -(void) resetRocketManPosition
 {
+    [self startStartSequence];
     
     CGSize screenSize = [CCDirector sharedDirector].winSize;
     rocketMan.body->SetTransform( b2Vec2(screenSize.width/2/PTM_RATIO, screenSize.height/5/PTM_RATIO), -M_PI_2);
@@ -550,7 +602,13 @@ enum {
     b2Vec2 rocketVelocity = rocketMan.body->GetLinearVelocity();
     b2Vec2 rocketPosition = rocketMan.body->GetPosition();
     b2Vec2 forwardVector = rocketMan.body->GetWorldVector(b2Vec2(0.0f, 1.0f));
-        
+
+    //zero out the rocket velocity if it's not in +ve x
+    if (rocketVelocity.x < 0.0f)
+    {
+        rocketVelocity.x = 0.0f;
+    }
+    
     //we want the camera to be ahead of the rocket's movement
     float speed = rocketVelocity.Normalize() * PTM_RATIO;;
 /*
@@ -582,6 +640,7 @@ enum {
     {
         velocityOffset = maximumOffset;
     }
+
     rocketVelocity.x = rocketVelocity.x * velocityOffset;
     rocketVelocity.y = rocketVelocity.y * velocityOffset; 
     
@@ -726,6 +785,12 @@ enum {
         edge = edge->next;
     }
 
+    // this means the race is on
+    if(acceptingInput)
+    {
+        raceTimer+=dt;
+        timerString = [NSString stringWithFormat:@"%.2f", raceTimer];
+    }
     
     [self followRocketMan2:dt];
 }
@@ -744,6 +809,8 @@ enum {
 {
 
 }
+
+-(bool) isAcceptingInput {return acceptingInput;}
 
 #pragma mark GameKit delegate
 

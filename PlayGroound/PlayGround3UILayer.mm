@@ -208,7 +208,12 @@
     {
         CCLOG(@"Long Press ended");
         [gpLayer handleLongPress:FALSE];
-    }    
+    }
+    else if (aLongPressGestureRecognizer.state == UIGestureRecognizerStateCancelled)
+    {
+        CCLOG(@"Long Press cancelled");
+        [gpLayer handleLongPress:FALSE];        
+    }
 }
 
 - (void)handleRotationGesture:(UIRotationGestureRecognizer*)aRotationGestureRecognizer
@@ -254,10 +259,46 @@
         [self setUpLongPressGesture];
         [self setUpRotationGesture];
         
+        timerLabel = [CCLabelTTF labelWithString:@"Tap screen" fontName:@"Marker Felt" fontSize:32];
+		[self addChild:timerLabel z:0];
+		[timerLabel setColor:ccc3(0,0,255)];
+
+        CGSize s = [CCDirector sharedDirector].winSize;
+		timerLabel.position = ccp(s.width-50, s.height/2);
+        timerLabel.rotation = 90.0;
+
         // this should give the tap the best chance of being recognized before the pan
         [panGestureRecognizer requireGestureRecognizerToFail:tapGestureRecognizer];
+        
+        isGPLayerAcceptingInput = false;
+        
+        [self scheduleUpdate];
     }
     return self;
+}
+
+-(void) update: (ccTime) dt
+{
+    //see if the gpLayer has stopped/started accepting input
+    if (isGPLayerAcceptingInput && ![gpLayer isAcceptingInput])
+    {
+       //disable the gesture recognizers
+        panGestureRecognizer.enabled = false;
+        tapGestureRecognizer.enabled = false;
+        longPressGestureRecognizer.enabled = false;
+        rotationsGestureRecognizer.enabled = false;
+        isGPLayerAcceptingInput = false;
+    }
+    else if (!isGPLayerAcceptingInput && [gpLayer isAcceptingInput])
+    {
+        panGestureRecognizer.enabled = true;
+        tapGestureRecognizer.enabled = true;
+        longPressGestureRecognizer.enabled = true;
+        rotationsGestureRecognizer.enabled = true; 
+        isGPLayerAcceptingInput = true;
+    }
+    //get the string for the timer label from the gp layer
+    [timerLabel setString:[gpLayer getTimerString]];
 }
 
 -(void) createMenu

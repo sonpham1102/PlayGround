@@ -26,7 +26,11 @@
     CustomPanGesureRecognizer* panGestureRecognizer;   
     UITapGestureRecognizer* tapGestureRecognizer;
     UILongPressGestureRecognizer* longPressGestureRecognizer;
-    UIRotationGestureRecognizer* rotationsGestureRecognizer;                                                     
+    UIRotationGestureRecognizer* rotationsGestureRecognizer;
+    
+    CCLabelTTF* timerLabel;
+    
+    bool isGPLayerAcceptingInput;
 }
 
 -(id) initWithGameplayLayer:(PlayGround3Layer *)gameplayLayer;

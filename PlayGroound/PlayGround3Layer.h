@@ -39,13 +39,20 @@
     CCTMXTiledMap *tileMapNode;
     
     b2Body* cameraBody;
+    
+    float raceTimer;
+    
+    bool acceptingInput;
+    
+    NSString* timerString;
 }
 
 -(void) handlePan:(CGPoint) startPoint endPoint:(CGPoint) endPoint;
 -(void) handleTap:(CGPoint) tapPoint;
 -(void) handleRotation:(float) angleDelta;
 -(void) handleLongPress:(BOOL) continueFiring;
-
+-(bool) isAcceptingInput;
+-(NSString *)getTimerString;
 
 @end
 

@@ -38,6 +38,7 @@
 -(void) onEnter
 {
 	[super onEnter];
+    
 
 	// ask director for the window size
 	CGSize size = [[CCDirector sharedDirector] winSize];

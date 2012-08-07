@@ -20,13 +20,13 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
-#define LEVEL_HEIGHT 1 //25
-#define LEVEL_WIDTH 1 //10
+#define LEVEL_HEIGHT 5 //25
+#define LEVEL_WIDTH 2 //10
 #define MAX_VELOCITY 5
 //#define FRICTION_COEFF 0.08
 
 #define ASTEROID_TIMER 0.5
-#define ASTEROID_LIMIT 100
+#define ASTEROID_LIMIT 150
 
 // used in FollowRocket2
 #define CAMERA_VELOCITY_FACTOR 0.6
@@ -37,7 +37,7 @@
 #define CAMERA_CATCHUP_TIME 1.0 //1 second
 #define MAX_CAMERA_SPEED 1.0 //(in M/s)
 
-#define BULLET_TIME 0.5
+#define BULLET_TIME 0.1
 #define TOTAL_BULLETS 10000
 
 #define USE_MAX_VELOCITY 0
@@ -96,6 +96,7 @@ enum {
         bulletTime = 0.0;
         bulletCount = 0;
         loopCount = 0;
+        fireSide = 10;
         
 		// enable events
         
@@ -122,13 +123,17 @@ enum {
 		// init physics
         
 		[self initPhysics];
+        // init contact listener
+        contactListener = new Level1ContactListener();
+        world->SetContactListener(contactListener);
+        
 		[self createBackground];
         [self createObstacle];
         //[self initAsteroids];
 		//Set up sprite
         
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Playground2Atlas.plist"];
-        sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"Playground2Atlas.png" capacity:100];
+        sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"Playground2Atlas.png" capacity:250];
         [self addChild:sceneSpriteBatchNode z:0];
 
         rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
@@ -225,7 +230,9 @@ enum {
 
 -(void) dealloc
 {
+    
 	delete world;
+    delete contactListener;
 	world = NULL;
 	
 	delete m_debugDraw;
@@ -453,7 +460,8 @@ enum {
     
     if ((bulletTime >= BULLET_TIME) || (bulletCount == 0)){
         if (bulletCount <= TOTAL_BULLETS) {
-            bullet *bulletShot = [[bullet alloc] initWithWorld:world atLoaction:rocket.position];
+            b2Vec2 firePoint = rocket.body->GetWorldPoint(b2Vec2(fireSide/PTM_RATIO,25/PTM_RATIO));
+            bullet *bulletShot = [[bullet alloc] initWithWorld:world atLoaction:firePoint];
             [sceneSpriteBatchNode addChild:bulletShot];
             b2Vec2 bodyCenter = rocket.body->GetWorldCenter();
             b2Vec2 linVelo = rocket.body->GetLinearVelocity();
@@ -478,6 +486,7 @@ enum {
             //[bulletShot setDelegate:self];
             bulletCount ++;
             [bulletShot release];
+            fireSide *= -1;
         }
         bulletTime = 0.0;
     }

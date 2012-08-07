@@ -18,6 +18,7 @@
 #import "SimpleAudioEngine.h"
 #import <CoreMotion/CoreMotion.h>
 #import "bullet.h"
+#import "Level1ContactListener.h"
 
 
 // HelloWorldLayer
@@ -60,6 +61,8 @@
     float cameraDistanceTravelled;
     CCSpriteBatchNode *sceneSpriteBatchNode;
     int loopCount;
+    Level1ContactListener *contactListener;
+    int fireSide;
 
 }
 

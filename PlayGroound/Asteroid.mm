@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#import "bullet.h"
 #import "Asteroid.h"
 #import "Box2DHelpers.h"
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
@@ -19,7 +20,6 @@
 
 -(void)createBodyAtLocation:(CGPoint)location {
     
-    //CGSize winSize = [CCDirector sharedDirector].winSize;
     float32 size = arc4random()%30;
     size += 10.0f;
     b2BodyDef bodyDef;
@@ -39,6 +39,7 @@
     fixtureDef.friction = 0.0;
     
     body->CreateFixture(&fixtureDef);
+    body->SetAngularDamping(15.0f);
     
     body->SetUserData(self);
     [self setScale:SCALE * size / PTM_RATIO];
@@ -49,22 +50,22 @@
         direction = 1.0;
     }
     
-    b2Vec2 impulse = b2Vec2(body->GetMass() * 300.0f * direction,0);
+    b2Vec2 impulse = b2Vec2(body->GetMass() * 50.0f * direction,0);
     body->ApplyForce(impulse, body->GetWorldCenter()); 
 
 }
 
--(void) destroy:(id)sender {
+-(void)destroy:(id)sender {
     [self removeFromParentAndCleanup:YES];
 }
 
 -(void) updateStateWithDeltaTime:(ccTime)dt {
    
-    if (destroyMe) {
+    if (isDead) {
         return;
     }
     
-    if (isBodyCollidingWithObjectType(body, kobjTypeBullet)) {
+    if (destroyMe) {
         world->DestroyBody(body);
         body = NULL;
         CCScaleTo *growAction = [CCScaleTo actionWithDuration:0.25 scale:1.25];
@@ -72,9 +73,8 @@
         CCCallFuncN *doneAction = [CCCallFuncN actionWithTarget:self selector:@selector(destroy:)];
         CCSequence *sequence = [CCSequence actions:growAction,shrinkAction,doneAction, nil];
         [self runAction:sequence];
-        destroyMe = true;
+        isDead = true;
     }
-
 }
 
 -(id) initWithWorld:(b2World *)theWorld atLoaction:(CGPoint)location {
@@ -83,6 +83,8 @@
         gameObjType = kObjTypeAsteroid;
         [self createBodyAtLocation:location];
         destroyMe = false;
+        characterHealth = 100;
+        isDead = NO;
     }
     return self;
 }

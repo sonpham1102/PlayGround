@@ -11,12 +11,13 @@
 #import "Rocket.h"
 
 
-bool isBodyCollidingWithObjectType(b2Body *body, GameObjType objectType) {
+GameCharPhysics* isBodyCollidingWithObjectType(b2Body *body, GameObjType objectType) {
     b2ContactEdge* edge = body->GetContactList();
     while (edge)
     {
         b2Contact* contact = edge->contact;
-        if (contact->IsTouching()) {        
+        if (contact->IsTouching()) {
+            
             b2Fixture* fixtureA = contact->GetFixtureA();
             b2Fixture* fixtureB = contact->GetFixtureB();
             b2Body *bodyA = fixtureA->GetBody();
@@ -25,22 +26,15 @@ bool isBodyCollidingWithObjectType(b2Body *body, GameObjType objectType) {
             (GameCharPhysics *) bodyA->GetUserData();
             GameCharPhysics *spriteB = 
             (GameCharPhysics *) bodyB->GetUserData();
-            /*
-            if ((fixtureA->IsSensor()) || (fixtureB->IsSensor())) {
-                return false;
-                break;
-            }
-            */
-            if ((spriteA != NULL && 
-                        spriteA.gameObjType == objectType) ||
-                       (spriteB != NULL && 
-                        spriteB.gameObjType == objectType))  {
-                           return true;
-            }        
+        
+            if ((spriteA != NULL) && (spriteA.gameObjType == objectType))
+                return spriteA;
+            if ((spriteB != NULL) && (spriteB.gameObjType == objectType))  
+                return spriteB;
         }
         edge = edge->next;
     }    
-    return false;
+    return NULL;
 }
 
 bool isSensorCollidingWithObjectType(b2Body *body, GameObjType objectType,b2Fixture* fixture,b2World *world) {

@@ -73,9 +73,9 @@ enum {
 #define VERTICAL_MAX_SPACE 15.0
 #define VERTICAL_MIN_SPACE 5.0
 #define MIN_OBSTACLE_WIDTH 2.0
-#define MAX_OBSTACLE_WIDTH 6.0
-#define MIN_OBSTACLE_HEIGHT 1.0
-#define MAX_OBSTACLE_HEIGHT 25.0
+#define MAX_OBSTACLE_WIDTH 12.0
+#define MIN_OBSTACLE_HEIGHT 10.0
+#define MAX_OBSTACLE_HEIGHT 35.0
 
 -(void) createObstacleAtLocation: (b2Vec2) location withWidth: (float) width withHeight: (float) height
 {
@@ -261,12 +261,14 @@ enum {
     
     b2BodyDef endZoneSensorDef;
     endZoneSensorDef.type = b2_staticBody;
-    endZoneSensorDef.position.Set(0, s.height/PTM_RATIO*SCREEN_LENGTHS - s.height/PTM_RATIO*END_ZONE_SENSOR_SIZE);
-    
+    //endZoneSensorDef.position.Set(0, s.height/PTM_RATIO*SCREEN_LENGTHS - s.height/PTM_RATIO*END_ZONE_SENSOR_SIZE);
+    endZoneSensorDef.position.Set(s.width/PTM_RATIO*SCREEN_WIDTHS - s.width/PTM_RATIO*END_ZONE_SENSOR_SIZE/2.0,s.height/2.0);
+
     endZoneSensor = world->CreateBody(&endZoneSensorDef);
     
     b2PolygonShape shape;
-    shape.SetAsBox(s.width/PTM_RATIO * SCREEN_WIDTHS, s.height/PTM_RATIO * END_ZONE_SENSOR_SIZE);
+    //shape.SetAsBox(s.width/PTM_RATIO * SCREEN_WIDTHS, s.height/PTM_RATIO * END_ZONE_SENSOR_SIZE);
+    shape.SetAsBox(s.width/PTM_RATIO*END_ZONE_SENSOR_SIZE/2.0, s.height/2.0);
     
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &shape;

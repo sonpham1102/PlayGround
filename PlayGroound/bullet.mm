@@ -41,6 +41,8 @@
     
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &shape;
+    //fixtureDef.isSensor = true;
+    //fixtureDef.density = 0.5;
     body->CreateFixture(&fixtureDef);
     
     body->SetUserData(self);

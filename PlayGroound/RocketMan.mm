@@ -271,7 +271,7 @@
 
 -(void) fireRotationDevice
 {
-
+/*
     //for now just apply a torque porportional to the delta if necessary
     float spinTorque = -body->GetMass()*RM_ROT_FACTOR*rotationAngleDelta;
     
@@ -285,11 +285,11 @@
     }
     
     body->ApplyTorque(spinTorque);
+*/
 
-/*
     body->SetTransform(body->GetPosition(), body->GetAngle() - rotationAngleDelta*2.0);
     body->SetAngularVelocity(0.0f);
-*/
+
 }
 
 -(void) fireLPDevice

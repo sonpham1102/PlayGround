@@ -12,6 +12,7 @@
 #import "IntroLayer.h"
 #import "PlayGround1Scene.h"
 #import "PlayGround2Scene.h"
+#import "PlayGround3Scene.h"
 #import "OptionsScene.h"
 
 
@@ -151,7 +152,10 @@ static GameManager* _sharedGameManager = nil;
         case kPlayGround2:
             result = @"kPlayGround2";
             break;
-        case kOptionsMenu:
+        case kPlayGround3:
+            result = @"kPlayGround3";
+            break;
+       case kOptionsMenu:
             result = @"kOptionsMenu";
             break;
         default:
@@ -433,6 +437,9 @@ static GameManager* _sharedGameManager = nil;
             break;
         case kPlayGround2:
             sceneToRun = [PlayGround2Scene node];
+            break;
+        case kPlayGround3:
+            sceneToRun = [PlayGround3Scene node];
             break;
         case kOptionsMenu:
             sceneToRun = [OptionsScene node];

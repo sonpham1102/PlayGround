@@ -39,7 +39,7 @@
     fixtureDef.friction = 0.0;
     
     body->CreateFixture(&fixtureDef);
-    body->SetAngularDamping(15.0f);
+    body->SetAngularDamping(10.0f);
     
     body->SetUserData(self);
     [self setScale:SCALE * size / PTM_RATIO];

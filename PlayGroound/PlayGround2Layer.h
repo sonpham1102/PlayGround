@@ -31,6 +31,12 @@
 	GLESDebugDraw *m_debugDraw;		// strong ref
     CCTMXTiledMap *tileMapNode;
     
+    //Camera Controls
+    b2Vec2 lastCameraPos;
+    b2Vec2 lastCameraVel;
+    b2Body* cameraBody;
+    
+    
     UITouch* touchLeft;
     UITouch* touchRight;
     UITouch* touchMiddle;

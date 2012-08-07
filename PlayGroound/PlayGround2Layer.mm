@@ -26,10 +26,14 @@
 //#define FRICTION_COEFF 0.08
 
 #define ASTEROID_TIMER 0.5
-#define ASTEROID_LIMIT 150
+#define ASTEROID_LIMIT 75
 
 // used in FollowRocket2
 #define CAMERA_VELOCITY_FACTOR 0.6
+
+#define CAMERA_DENSITY 3.0 //weight of the camera body
+#define CAMERA_LINEAR_DAMP 20.0 //the linear dampening for the camera, causes it to drag behind
+#define CAMERA_SPRING 10.0 //the spring force that pulls the camera towards its target
 
 // AP: clean this shit up once I get a smooth camera follow
 #define CAMERA_CORRECTION_FACTOR 0.1 // affects the speed at which the camera will try to follow the rocket
@@ -38,7 +42,7 @@
 #define MAX_CAMERA_SPEED 1.0 //(in M/s)
 
 #define BULLET_TIME 0.1
-#define TOTAL_BULLETS 10000
+#define TOTAL_BULLETS 100000
 
 #define USE_MAX_VELOCITY 0
 //#define NO_TEST 0
@@ -112,7 +116,10 @@ enum {
         
         referenceAttitude = nil;
         
+
         cameraTarget = CGPointZero;
+        lastCameraPos = b2Vec2_zero;
+        lastCameraVel = b2Vec2_zero;
         
 		// Handle this onEnter and onExit
         self.isTouchEnabled = NO;
@@ -167,36 +174,6 @@ enum {
     
     tileMapNode = [CCTMXTiledMap
                 tiledMapWithTMXFile:@"SpaceBackground.tmx"];
-    
-    /*
-    CCTMXLayer *backDropLayer = [tileMapNode layerNamed:@"BackDrop"];
-    CCTMXLayer *planetsLayer = [tileMapNode
-                                    layerNamed:@"Planets"];
-    
-    parallaxNode = [CCParallaxNode node];
-    [parallaxNode setPosition:
-     ccp(winSize.width*LEVEL_WIDTH/2,winSize.height*LEVEL_HEIGHT/2)];
-    
-    float xOffset = 0.0f;
-    float yOffset = 0.0f;
-
-    [backDropLayer retain];
-    [backDropLayer removeFromParentAndCleanup:NO];
-    [backDropLayer setAnchorPoint:CGPointMake(0.5f, 0.5f)];
-    [parallaxNode addChild:backDropLayer z:15 parallaxRatio:ccp(1,1)
-            positionOffset:ccp(0,0)];
-    [backDropLayer release];
-    
-    xOffset = (winSize.width*LEVEL_WIDTH/2) * 0.005f;
-    yOffset = (winSize.height*LEVEL_HEIGHT/2) * 0.005f;
-    [planetsLayer retain];
-    [planetsLayer removeFromParentAndCleanup:NO];
-    [planetsLayer setAnchorPoint:CGPointMake(0.5f, 0.5f)];
-    [parallaxNode addChild:planetsLayer z:20
-             parallaxRatio:ccp(0.95,0.95)
-            positionOffset:ccp(xOffset, yOffset)];
-    [planetsLayer release];  
-    */
     
     CCTMXLayer *backDropLayer = [tileMapNode layerNamed:@"BackDrop"];
     CCTMXLayer *planetsLayer = [tileMapNode
@@ -320,6 +297,25 @@ enum {
 	// right
 	groundBox.Set(b2Vec2(s.width * LEVEL_WIDTH/PTM_RATIO,s.height * LEVEL_HEIGHT/PTM_RATIO), b2Vec2(s.width * LEVEL_WIDTH/ PTM_RATIO,0));
 	groundBody->CreateFixture(&groundBox,0);
+    
+    b2FixtureDef fixtureDef;
+    fixtureDef.isSensor = true;
+    fixtureDef.density = 0.0;
+    
+    b2BodyDef cameraBodyDef;
+    cameraBodyDef.type = b2_dynamicBody;
+    cameraBodyDef.position = b2Vec2(0.0f,0.0f);
+    cameraBody = world->CreateBody(&cameraBodyDef);
+    
+    b2CircleShape circle;
+    circle.m_radius = 0.5;
+    circle.m_p = b2Vec2(0.0f, 0.0f);
+    
+    fixtureDef.shape = &circle;
+    fixtureDef.density = CAMERA_DENSITY;
+    
+    cameraBody->SetLinearDamping(CAMERA_LINEAR_DAMP);
+    cameraBody->CreateFixture(&fixtureDef);
 }
 /*
 -(void) draw
@@ -368,23 +364,6 @@ enum {
             GameCharPhysics *sprite = (GameCharPhysics *) b->GetUserData();
             sprite.position = ccp(b->GetPosition().x*PTM_RATIO, b->GetPosition().y*PTM_RATIO);
             sprite.rotation = CC_RADIANS_TO_DEGREES(b->GetAngle() * -1);
-/*            b2Vec2 velocity = b->GetLinearVelocity();
-#if USE_MAX_VELOCITY            
-            if (velocity.LengthSquared() > MAX_VELOCITY*MAX_VELOCITY)
-            {
-                float velocityScale = MAX_VELOCITY/velocity.Length();
-                
-                b2Vec2 newVelocity = b2Vec2(velocity.x * velocityScale, velocity.y *velocityScale);
-                b->SetLinearVelocity(newVelocity);
-
-            }
-#else use drag
-            b2Vec2 force = velocity;
-            force.Normalize();
-            force=-force;
-            force*=velocity.LengthSquared()*FRICTION_COEFF;
-            b->ApplyForceToCenter(force);
-#endif*/
         }
     }
     
@@ -399,7 +378,6 @@ enum {
     CMDeviceMotion *currentDeviceMotion = motionManager.deviceMotion;
     
     if (referenceAttitude == nil) {
-        //CMDeviceMotion *deviceMotion = motionManager.deviceMotion;
         CMAttitude *attitude = currentDeviceMotion.attitude;
         referenceAttitude = [attitude retain];        
     }
@@ -415,48 +393,10 @@ enum {
     [rocket setPitchTurn:pitch];
     //[rocket updateStateWithDeltaTime:dt];
 	[self followRocket2:dt];
-//	[self followRocket:dt];
-   // if (bulletfired) {
-   //     [bulletfired updateStateWithDeltaTime:dt];
-   // }
-    /*
-    float roll = currentAttitude.roll;
-    float yaw = currentAttitude.yaw;
-    //float turnPower = pitch * TURN_SPEED * turn;
-    
-    //rocket.body->ApplyTorque(rocket.body->GetMass()*pitch * TURN_SPEED * turn);
-    //rocket.body->SetAngularVelocity(turnPower);
-
-    NSString *labelString = 
-    [NSString stringWithFormat:@"Roll:%.4f \n Pitch:%.4f \n Yaw:%.4f \n Turn:%.4f",roll,pitch,yaw,turnPower];
-    [debugLabel setString:labelString];
- */
     
 }
 
 -(void) createBullet:(ccTime)deltaTime {
-    //CCLOG(@"Fire Bullet");
-    
-    /* Old Bullet Fire Method
-    if (bulletfired == nil) {
-        bulletfired = [[bullet alloc]  initWithWorld:world atLoaction:rocket.position];
-        [self addChild:bulletfired];
-        
-        b2Vec2 bodyCenter = rocket.body->GetWorldCenter();
-        b2Vec2 impulse = b2Vec2(0,800);
-        b2Vec2 impulseWorld = rocket.body->GetWorldVector(impulse);
-        b2Vec2 impulsePoint = rocket.body->GetWorldPoint(b2Vec2(0,40));
-        bulletfired.body->ApplyForce(impulseWorld, impulsePoint);
-        
-    } else {
-        bulletTime += deltaTime;
-        if (bulletTime > BULLET_TIME) {
-            [bulletfired removeFromParentAndCleanup:YES];
-            world->DestroyBody(bulletfired.body);
-            bulletTime = 0.0;
-            bulletfired = nil;
-        }
-    }*/
     
     if ((bulletTime >= BULLET_TIME) || (bulletCount == 0)){
         if (bulletCount <= TOTAL_BULLETS) {
@@ -522,127 +462,14 @@ enum {
     }
 }
 
--(void) moveCameraToTarget:(CGPoint) newTarget withDeltaTime:(float) dt;
-{
-//    [self setPosition:newTarget];
 
-/*
-    cameraTarget = ccp(newX, newY);
-    
-    CGPoint currentPos = [self position];
-    
-    CGPoint travelVector = ccp(cameraTarget.x - currentPos.x, cameraTarget.y - currentPos.y);
-    
-    //calculate a new position based on the distance between
-    CGPoint newPos;
-    
-    // calculate the total distance in meters
-    float totalDistance = sqrt(travelVector.x*travelVector.x + travelVector.y*travelVector.y) /PTM_RATIO;
-    float distanceToMove = totalDistance*CAMERA_CORRECTION_FACTOR;
-    
-    //if distance to move is greater than the total distance, set the camera to the target point
-    if (distanceToMove >totalDistance)
-    {
-        distanceToMove = totalDistance;
-    }
-    else if (distanceToMove < CAMERA_MIN_DELTA)
-    {
-        distanceToMove = 0.0f;
-    }
-    
-    if (totalDistance > 0)
-    {
-        newPos.x = currentPos.x + travelVector.x * distanceToMove/totalDistance;
-        newPos.y = currentPos.y + travelVector.y * distanceToMove/totalDistance;        
-    }
-    else
-    {
-        newPos = currentPos;
-    }
-*/    
-    /*    
-     //if the distance to travel is zero or below a minimum, we're done
-     if ((totalDistance == 0.0f) || (totalDistance < CAMERA_MIN_DELTA) || (distanceToMove >= totalDistance))
-     {
-     newPos.x =cameraTarget.x;
-     newPos.y =cameraTarget.y;
-     }
-     else
-     {
-     newPos.x = currentPos.x + travelVector.x * distanceToMove/totalDistance;
-     newPos.y = currentPos.y + travelVector.y * distanceToMove/totalDistance;
-     }
-     */    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    CGPoint currentPos = [self position];
-    
-    // if the new target is far enough from the old target, reset follow parameters
-    if ((ABS(cameraTarget.x - newTarget.x)/PTM_RATIO > CAMERA_MIN_DELTA) || (ABS(cameraTarget.y - newTarget.y)/PTM_RATIO > CAMERA_MIN_DELTA))
-    {
-        cameraTarget = newTarget;
-        //figure out the distance in meters from the current position to the new target
-        
-        cameraMoveVector = b2Vec2((cameraTarget.x - currentPos.x)/PTM_RATIO, (cameraTarget.y - currentPos.y)/PTM_RATIO);
-        
-        cameraDistanceToTarget = cameraMoveVector.Normalize();
-        cameraDistanceTravelled = 0.0f;
-    }
-
-    //we want the camera to reach it's target within CAMERA_CATCHUP_TIME
-    //accumulatedDT+=dt;
-    float cameraSpeed = cameraDistanceToTarget/CAMERA_CATCHUP_TIME;
-    
-    float distanceToMove = cameraSpeed * dt;
-    
-    //figure out how far we've gone already
-    float distanceToTarget = cameraDistanceToTarget - cameraDistanceTravelled;
-    
-    if (cameraDistanceTravelled >= cameraDistanceToTarget)
-    {
-        distanceToMove = 0.0f;
-        cameraDistanceToTarget = 0.0f;
-    }
-    else if (distanceToMove > distanceToTarget)
-    {
-        distanceToMove = distanceToTarget;
-        cameraDistanceToTarget = 0.0f;
-    }
-    else if (distanceToMove < CAMERA_MIN_DELTA)
-    {
-        distanceToMove = 0;
-        cameraDistanceToTarget = 0.0f;
-    }
-    
-    //convert distance to move back to points
-    distanceToMove *= PTM_RATIO;  
-    
-    //add the distance we are moving to the distancetravelled
-    cameraDistanceTravelled += distanceToMove;
-    
-    CGPoint newCameraPosition = ccp(currentPos.x + cameraMoveVector.x * distanceToMove, currentPos.y + cameraMoveVector.y * distanceToMove);
-    
-    [self setPosition:newCameraPosition];
-
-}
 
 -(void)followRocket:(float) dt {
     
     CGSize winSize = [CCDirector sharedDirector].winSize;
 
-
     b2Vec2 cTarget = rocket.body->GetWorldPoint(b2Vec2(0, 3.5));
                                             
-    
     float fixtedPositionY = winSize.height/2;
     float fixtedPositionX = winSize.width/2;
     float newY = fixtedPositionY - cTarget.y * PTM_RATIO;
@@ -655,15 +482,27 @@ enum {
     
     CGPoint newPos = ccp(newX, newY);
     
-    [self setPosition:newPos];
-    //[self moveCameraToTarget:newPos withDeltaTime:dt];
-/*
-    NSString *labelString = 
-    [NSString stringWithFormat:@"Total: %.2f\nMove: %.2f",totalDistance, distanceToMove];
-    [debugLabel setString:labelString];
-    [debugLabel setPosition:ccp(-newPos.x+100, -newPos.y+100)];
-*/
+    [self updateCameraPosition:newPos];
 
+}
+
+-(void) updateCameraPosition:(CGPoint) newTarget
+{
+    b2Vec2 currentPos = b2Vec2([self position].x/PTM_RATIO, [self position].y/PTM_RATIO);
+    b2Vec2 nextPos = b2Vec2(newTarget.x/PTM_RATIO, newTarget.y/PTM_RATIO);
+    
+    b2Vec2 forceVector = nextPos - currentPos;
+    
+    float forceMag = forceVector.Normalize();
+    
+    forceMag *= forceMag * CAMERA_SPRING * cameraBody->GetMass();
+    
+    forceVector.x *= forceMag;
+    forceVector.y *= forceMag;
+    
+    cameraBody->ApplyForce(forceVector, cameraBody->GetPosition());
+    
+    [self setPosition:ccp(cameraBody->GetPosition().x * PTM_RATIO, cameraBody->GetPosition().y * PTM_RATIO)];
 }
 
 -(void)followRocket2:(float) dt {
@@ -683,7 +522,6 @@ enum {
     b2Vec2 cameraPosition;
     cameraPosition.x = rocketPosition.x * PTM_RATIO;
     cameraPosition.y = rocketPosition.y * PTM_RATIO;
-
 
     float velocityOffset = CAMERA_VELOCITY_FACTOR*speed;
     
@@ -719,13 +557,7 @@ enum {
     
     CGPoint newPos = ccp(newX, newY);
         
-    [self setPosition:newPos];
-/*
-    NSString *labelString = 
-    [NSString stringWithFormat:@"newX: %.2f\nnewY: %.2f",newX, newY];
-    [debugLabel setString:labelString];
-    [debugLabel setPosition:ccp(-newPos.x+100, -newPos.y+100)];
-*/    
+    [self updateCameraPosition:newPos];   
     
 }
 

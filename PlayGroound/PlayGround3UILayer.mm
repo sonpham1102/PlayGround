@@ -159,11 +159,11 @@
         //AP : Need to subtract any movement of the view
         //panStartPoint.x -= [self position].x;
         //panStartPoint.y -= [self position].y;
-        CCLOG(@"Pan started");
+        //CCLOG(@"Pan started");
     }
     else if (aPanGestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
-        CCLOG(@"Pan gesture moved");
+        //CCLOG(@"Pan gesture moved");
     }
     else if (aPanGestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
@@ -172,7 +172,7 @@
         
         //tell the gameplay layer that a pan gesture was completed
         [gpLayer handlePan: panStartPoint endPoint:panEndPoint];
-        CCLOG(@"Pan ended");
+        //CCLOG(@"Pan ended");
     }  
 }
 
@@ -180,7 +180,7 @@
 {
     if (aTapGestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
-        CCLOG(@"Tap started");
+        //CCLOG(@"Tap started");
     }
     else if (aTapGestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
@@ -189,7 +189,7 @@
         
         //tell the gameplay layer that a tap gesture was completed
         [gpLayer handleTap: tapPoint];
-        CCLOG(@"Tap ended");
+        //CCLOG(@"Tap ended");
     }    
 }
 
@@ -197,21 +197,21 @@
 {
     if (aLongPressGestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
-        CCLOG(@"Long Press started");
+        //CCLOG(@"Long Press started");
         [gpLayer handleLongPress:TRUE];
     }
     else if (aLongPressGestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
-        CCLOG(@"Long Press moved");
+        //CCLOG(@"Long Press moved");
     }
     else if (aLongPressGestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
-        CCLOG(@"Long Press ended");
+        //CCLOG(@"Long Press ended");
         [gpLayer handleLongPress:FALSE];
     }
     else if (aLongPressGestureRecognizer.state == UIGestureRecognizerStateCancelled)
     {
-        CCLOG(@"Long Press cancelled");
+        //CCLOG(@"Long Press cancelled");
         [gpLayer handleLongPress:FALSE];        
     }
 }
@@ -228,13 +228,13 @@
             panGestureRecognizer.enabled = YES;
         }
         
-        CCLOG(@"Rotation started");
+        //CCLOG(@"Rotation started");
         //store the angle that we started at
         rotStartingAngle = aRotationGestureRecognizer.rotation;
     }
     else if (aRotationGestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
-        CCLOG(@"Rotation moved");
+        //CCLOG(@"Rotation moved");
         float rotationDelta = aRotationGestureRecognizer.rotation - rotStartingAngle;
         [gpLayer handleRotation:rotationDelta];
         rotStartingAngle = aRotationGestureRecognizer.rotation;
@@ -242,7 +242,7 @@
     else if (aRotationGestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
         [gpLayer handleRotation:0.0f];
-        CCLOG(@"Rotation ended");
+        //CCLOG(@"Rotation ended");
     }    
 }
 

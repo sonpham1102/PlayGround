@@ -78,8 +78,8 @@ enum {
 #define VERTICAL_MIN_SPACE 5.0
 #define MIN_OBSTACLE_WIDTH 2.0
 #define MAX_OBSTACLE_WIDTH 6.0
-#define MIN_OBSTACLE_HEIGHT 10.0
-#define MAX_OBSTACLE_HEIGHT 35.0
+#define MIN_OBSTACLE_HEIGHT 20.0
+#define MAX_OBSTACLE_HEIGHT 40.0
 
 -(void) createObstacleAtLocation: (b2Vec2) location withWidth: (float) width withHeight: (float) height
 {
@@ -677,12 +677,12 @@ enum {
     b2Vec2 slashVector = b2Vec2((endPoint.x - startPoint.x)/PTM_RATIO, (endPoint.y - startPoint.y)/PTM_RATIO);
     if (slashVector.LengthSquared() < MIN_PAN_LENGTH_SQ)
     {
-        CCLOG(@"Pan too short %.2f vs %.2f", slashVector.LengthSquared(), MIN_PAN_LENGTH_SQ);         
+        //CCLOG(@"Pan too short %.2f vs %.2f", slashVector.LengthSquared(), MIN_PAN_LENGTH_SQ);         
         return;
     }
     else
     {
-        CCLOG(@"Pan good %.2f", slashVector.LengthSquared());
+        //CCLOG(@"Pan good %.2f", slashVector.LengthSquared());
     }
     
     debugLineStartPoint = startPoint;

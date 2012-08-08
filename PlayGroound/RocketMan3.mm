@@ -12,7 +12,7 @@
 
 //MOVE TO A pLIST
 #define RM_DENSITY 5.0f
-#define RM_FRICTION 0.5f
+#define RM_FRICTION 0.1f
 #define RM_RESTITUTION 0.5f
 
 #define RM_RADIUS 1.0
@@ -131,7 +131,7 @@
             if (slopeAbs > RM_PAN_SLOPE_ALLOWANCE)
             {
                 //abort
-                CCLOG(@"Illegal Pan");
+                //CCLOG(@"Illegal Pan");
                 return;
             }
             else
@@ -184,7 +184,7 @@
     increaseFactor = 1.0 + (increaseFactor - RM_PAN_LENGTH_MIN)/(RM_PAN_LENGTH_MAX - RM_PAN_LENGTH_MIN);
     
     //determine if it's the left or right device and set up accordingly
-    CCLOG(@"pan factor: %.1f", increaseFactor);
+    //CCLOG(@"pan factor: %.1f", increaseFactor);
     if (panVector.x >= 0)
     {
         lsManeuverForce.x = panVector.x * body->GetMass()*RM_PAN_ROCKET_IMPULSE * increaseFactor;

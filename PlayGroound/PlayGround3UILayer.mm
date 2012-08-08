@@ -272,6 +272,12 @@
         
         isGPLayerAcceptingInput = false;
         
+        //start gesture disabled
+        panGestureRecognizer.enabled = false;
+        tapGestureRecognizer.enabled = false;
+        longPressGestureRecognizer.enabled = false;
+        rotationsGestureRecognizer.enabled = false;
+        
         [self scheduleUpdate];
     }
     return self;

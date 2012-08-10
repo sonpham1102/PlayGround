@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="38" height="50" tilewidth="64" tileheight="64">
+ <tileset firstgid="1" name="SpaceBackground_default" tilewidth="64" tileheight="64" spacing="1" margin="1">
+  <image source="SpaceBackground_default.png" width="2048" height="2048"/>
+ </tileset>
+ <layer name="Planets" width="38" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt2MdNA0EUgOE1BgegAMLFBhyAAggXciyCHIsgxyLI1RA6IJwJHRAO/COEj6ud2QlGzC99xx2/w1p6s0Hg++/d4wGPeFI84xo3uMWdprne8YFPfCme8YwXvOJN01xNiSBoRgtaE2pnpHgujQyyIWdkkEU9GtAYcmYP5/SiD/2KcxV4rogSyiFnlFBGJ7rQrfZz2hvHBCYxhWm341RaxgpWsYZ1t+NU2scBDnGEY7fj+Cwn/uI1SKIWdUgh7XIoyiGPNrSjAwUUHc4kGsAghjCMEYxizOFMohnMYg7zWMAilhzOJNrAJrawjR3sYs/hTKITnOIM57jAJa4czuSr3kzstzoysd/qKOp+a7uo+61Ix73IRDruRSbScS8ykY57UTXk30e5/Pvo+8vJfPuxmf/281PUu3Pcbz+yu2cuiHZ3jvvtR3b3tHV3lt09bd2dZXZPUdy7s6l9Ie7d2e8Lcvl9wffbN+W1Ygc=
+  </data>
+ </layer>
+</map>

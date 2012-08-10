@@ -20,8 +20,8 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
-#define LEVEL_HEIGHT 5 //25
-#define LEVEL_WIDTH 2 //10
+#define LEVEL_HEIGHT 10 //25
+#define LEVEL_WIDTH 4 //10
 #define MAX_VELOCITY 5
 //#define FRICTION_COEFF 0.08
 
@@ -143,7 +143,10 @@ enum {
         sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"Playground2Atlas.png" capacity:250];
         [self addChild:sceneSpriteBatchNode z:0];
 
-        rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
+        rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * LEVEL_WIDTH /2, 
+                                                                    s.height*LEVEL_HEIGHT/2)];
+        
+        //rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
         [sceneSpriteBatchNode addChild:rocket];
         [rocket release];
         //rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * LEVEL_WIDTH/2, s.height*LEVEL_HEIGHT/2)];
@@ -171,25 +174,28 @@ enum {
 -(void) createBackground {
     
     CGSize winSize = [CCDirector sharedDirector].winSize;
-    
-    tileMapNode = [CCTMXTiledMap
-                tiledMapWithTMXFile:@"SpaceBackground.tmx"];
-    
-    CCTMXLayer *backDropLayer = [tileMapNode layerNamed:@"BackDrop"];
-    CCTMXLayer *planetsLayer = [tileMapNode
-                                layerNamed:@"Planets"];
+
+    //tileMapNode = [CCTMXTiledMap
+                //tiledMapWithTMXFile:@"SpaceBackground.tmx"];
+
+    CCTMXLayer *backDropLayer = [[CCTMXTiledMap tiledMapWithTMXFile:@"BackDropLayer.tmx"] layerNamed:@"BackDrop"];
+    CCTMXLayer *planetsLayer = [[CCTMXTiledMap tiledMapWithTMXFile:@"PlanetLayer.tmx"] layerNamed:@"Planets"];
     
     parallaxNode = [CCParallaxNode node];
     [parallaxNode setPosition:
      ccp(winSize.width*LEVEL_WIDTH/2,winSize.height*LEVEL_HEIGHT/2)];
     
-    float xOffset = 0.0f;
-    float yOffset = 0.0f;
+    //float xOffset = 0.0f;
+    //float yOffset = 0.0f;
+    
+    float xOffset = (winSize.width / 2) * 0.8f;
+    float yOffset = (winSize.height / 2) * 0.8f;
     
     [backDropLayer retain];
     [backDropLayer removeFromParentAndCleanup:NO];
     [backDropLayer setAnchorPoint:CGPointMake(0.5f, 0.5f)];
-    [parallaxNode addChild:backDropLayer z:15 parallaxRatio:ccp(0.3,0.3)
+    [parallaxNode addChild:backDropLayer z:15 
+             parallaxRatio:ccp(0.2f,0.2f)
             positionOffset:ccp(xOffset,yOffset)];
     [backDropLayer release];
     
@@ -198,7 +204,7 @@ enum {
     [planetsLayer setAnchorPoint:CGPointMake(0.5f, 0.5f)];
     [parallaxNode addChild:planetsLayer z:20
              parallaxRatio:ccp(1,1)
-            positionOffset:ccp(xOffset, yOffset)];
+            positionOffset:ccp(0.0f, 0.0f)];
     [planetsLayer release]; 
      
      

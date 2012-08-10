@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="13" height="17" tilewidth="64" tileheight="64">
+ <tileset firstgid="1" name="SpaceBackground_default" tilewidth="64" tileheight="64" spacing="1" margin="1">
+  <image source="SpaceBackground_default.png" width="2048" height="2048"/>
+ </tileset>
+ <layer name="BackDrop" width="13" height="17">
+  <data encoding="base64" compression="zlib">
+   eJyV0kcKQjEUheFcnVuw7MKCZWbZgAXLzLIBC5aZZSGW1T1diP/jDdRLkOvgIyEJ50I4gXPugScCwz4k4lyGNYsc8ohLdB5DA0200JboLsyooIoa6ip7wpspZpjLO2/A3RAjjNWcA4444SzvvA222GGv5lx4d8UNd/nOs+6tf/W59+UlOE8ihbTnjS+vgCJKKBvndDjvooe+cc4CS6ywNs6x/Jvuhv4rX690N3S2r1e6G3qOr1e6G3rOr17904MX/vJeFQ==
+  </data>
+ </layer>
+</map>

@@ -118,14 +118,14 @@ enum {
         rocketSmokeLeft = [[CCParticleSmoke alloc] init];
         [self addChild:rocketSmokeLeft z:200];
         [rocketSmokeLeft setGravity:ccp(0, 0)];
-        rocketSmokeLeft.duration = 0.5;
+        rocketSmokeLeft.duration = -1;
         rocketSmokeLeft.scale = 0.2;
         
         
         rocketSmokeRight = [[CCParticleSmoke alloc] init];
         [self addChild:rocketSmokeRight z:200];
         [rocketSmokeRight setGravity:ccp(0, 0)];
-        rocketSmokeRight.duration = 0.5;
+        rocketSmokeRight.duration = -1;
         rocketSmokeRight.scale = 0.2;
         
         referenceAttitude = nil;
@@ -614,8 +614,7 @@ enum {
     position.x = xPos * PTM_RATIO;
     position.y = yPos * PTM_RATIO;
     rocketSmokeLeft.position = position;
-    [rocketSmokeLeft resetSystem];
-    [rocketSmokeLeft setVisible:YES];
+    //[rocketSmokeLeft setVisible:YES];
 }
 
 -(void) fireRight {
@@ -626,8 +625,7 @@ enum {
     position.x = xPos * PTM_RATIO;
     position.y = yPos * PTM_RATIO;
     rocketSmokeRight.position = position;
-    [rocketSmokeRight resetSystem];
-    [rocketSmokeRight setVisible:YES];
+    //[rocketSmokeRight setVisible:YES];
 }
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -651,7 +649,14 @@ enum {
                 [self schedule:@selector(fireLeft)];
                 touchLeft = touch;
                 leftRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
+                CGPoint position;
+                float xPos = rocket.body->GetWorldPoint(b2Vec2(-12/PTM_RATIO  ,-27/PTM_RATIO)).x;
+                float yPos = rocket.body->GetWorldPoint(b2Vec2(-12/PTM_RATIO  ,-27/PTM_RATIO)).y;
+                position.x = xPos * PTM_RATIO;
+                position.y = yPos * PTM_RATIO;
+                rocketSmokeLeft.position = position;
                 [rocketSmokeLeft resetSystem];
+                //[rocketSmokeLeft setVisible:YES];
             }
         } else if (location.x > [CCDirector sharedDirector].winSize.width * 0.6) {
             if (touchRight == nil)
@@ -659,7 +664,14 @@ enum {
                 [self schedule:@selector(fireRight)];
                 touchRight = touch;
                 rightRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
+                CGPoint position;
+                float xPos = rocket.body->GetWorldPoint(b2Vec2(12/PTM_RATIO  ,-27/PTM_RATIO)).x;
+                float yPos = rocket.body->GetWorldPoint(b2Vec2(12/PTM_RATIO  ,-27/PTM_RATIO)).y;
+                position.x = xPos * PTM_RATIO;
+                position.y = yPos * PTM_RATIO;
+                rocketSmokeRight.position = position;
                 [rocketSmokeRight resetSystem];
+                //[rocketSmokeRight setVisible:YES];
             }
         } else {
             if (touchMiddle == nil)
@@ -691,13 +703,11 @@ enum {
 #else*/        
         if (touch == touchLeft) {
             [self unschedule:@selector(fireLeft)];
-            [rocketSmokeLeft setVisible:NO];
             [rocketSmokeLeft stopSystem];
             touchLeft = nil;
             STOPSOUNDEFFECT(leftRocketSoundID);
         } else  if (touch == touchRight) {
             [self unschedule:@selector(fireRight)];
-            [rocketSmokeRight setVisible:NO];
             [rocketSmokeRight stopSystem];
             touchRight = nil;
             STOPSOUNDEFFECT(rightRocketSoundID);

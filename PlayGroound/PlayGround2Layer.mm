@@ -20,8 +20,8 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
-#define LEVEL_HEIGHT 5 //25
-#define LEVEL_WIDTH 2 //10
+#define LEVEL_HEIGHT 10 //25
+#define LEVEL_WIDTH 4 //10
 #define MAX_VELOCITY 5
 //#define FRICTION_COEFF 0.08
 
@@ -114,6 +114,20 @@ enum {
             //[motionManager startGyroUpdates];
         }
         
+        //Particle Effect
+        rocketSmokeLeft = [[CCParticleSmoke alloc] init];
+        [self addChild:rocketSmokeLeft z:200];
+        [rocketSmokeLeft setGravity:ccp(0, 0)];
+        rocketSmokeLeft.duration = 0.5;
+        rocketSmokeLeft.scale = 0.2;
+        
+        
+        rocketSmokeRight = [[CCParticleSmoke alloc] init];
+        [self addChild:rocketSmokeRight z:200];
+        [rocketSmokeRight setGravity:ccp(0, 0)];
+        rocketSmokeRight.duration = 0.5;
+        rocketSmokeRight.scale = 0.2;
+        
         referenceAttitude = nil;
         
 
@@ -143,7 +157,10 @@ enum {
         sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"Playground2Atlas.png" capacity:250];
         [self addChild:sceneSpriteBatchNode z:0];
 
-        rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
+        rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * LEVEL_WIDTH /2, 
+                                                                    s.height*LEVEL_HEIGHT/2)];
+        
+        //rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
         [sceneSpriteBatchNode addChild:rocket];
         [rocket release];
         //rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * LEVEL_WIDTH/2, s.height*LEVEL_HEIGHT/2)];
@@ -171,25 +188,28 @@ enum {
 -(void) createBackground {
     
     CGSize winSize = [CCDirector sharedDirector].winSize;
-    
-    tileMapNode = [CCTMXTiledMap
-                tiledMapWithTMXFile:@"SpaceBackground.tmx"];
-    
-    CCTMXLayer *backDropLayer = [tileMapNode layerNamed:@"BackDrop"];
-    CCTMXLayer *planetsLayer = [tileMapNode
-                                layerNamed:@"Planets"];
+
+    //tileMapNode = [CCTMXTiledMap
+                //tiledMapWithTMXFile:@"SpaceBackground.tmx"];
+
+    CCTMXLayer *backDropLayer = [[CCTMXTiledMap tiledMapWithTMXFile:@"BackDropLayer.tmx"] layerNamed:@"BackDrop"];
+    CCTMXLayer *planetsLayer = [[CCTMXTiledMap tiledMapWithTMXFile:@"PlanetLayer.tmx"] layerNamed:@"Planets"];
     
     parallaxNode = [CCParallaxNode node];
     [parallaxNode setPosition:
      ccp(winSize.width*LEVEL_WIDTH/2,winSize.height*LEVEL_HEIGHT/2)];
     
-    float xOffset = 0.0f;
-    float yOffset = 0.0f;
+    //float xOffset = 0.0f;
+    //float yOffset = 0.0f;
+    
+    float xOffset = (winSize.width / 2) * 0.8f;
+    float yOffset = (winSize.height / 2) * 0.8f;
     
     [backDropLayer retain];
     [backDropLayer removeFromParentAndCleanup:NO];
     [backDropLayer setAnchorPoint:CGPointMake(0.5f, 0.5f)];
-    [parallaxNode addChild:backDropLayer z:15 parallaxRatio:ccp(0.3,0.3)
+    [parallaxNode addChild:backDropLayer z:15 
+             parallaxRatio:ccp(0.2f,0.2f)
             positionOffset:ccp(xOffset,yOffset)];
     [backDropLayer release];
     
@@ -198,7 +218,7 @@ enum {
     [planetsLayer setAnchorPoint:CGPointMake(0.5f, 0.5f)];
     [parallaxNode addChild:planetsLayer z:20
              parallaxRatio:ccp(1,1)
-            positionOffset:ccp(xOffset, yOffset)];
+            positionOffset:ccp(0.0f, 0.0f)];
     [planetsLayer release]; 
      
      
@@ -230,6 +250,10 @@ enum {
          [sprite release];
      }
      
+}
+
+-(void) addParticleEffect:(CCParticleSystemQuad*)effect{
+    [self addChild:effect z:100];
 }
 
 -(void)createObstacle {
@@ -423,8 +447,26 @@ enum {
             b2Vec2 impulseWorld = rocket.body->GetWorldVector(impulse);
             b2Vec2 impulsePoint = rocket.body->GetWorldPoint(b2Vec2(0,40));
             bulletShot.body->ApplyForce(impulseWorld, impulsePoint);
-            //[bulletShot setDelegate:self];
+            [bulletShot setDelegate:self];
             bulletCount ++;
+            
+            
+            bulletFire = [CCParticleFire node];
+            bulletFire.scale = 0.1;
+            CGPoint position;
+            float xPos = bulletShot.body->GetWorldPoint(b2Vec2(0,0)).x;
+            float yPos = bulletShot.body->GetWorldPoint(b2Vec2(0,0)).y;
+            position.x = xPos * PTM_RATIO;
+            position.y = yPos * PTM_RATIO;
+            bulletFire.position = position;
+            bulletFire.duration = 0.03;
+            
+            [bulletFire setGravity:ccp(0, 0)];
+            
+            bulletFire.autoRemoveOnFinish = YES;
+            [self addChild:bulletFire z:200];
+            
+            
             [bulletShot release];
             fireSide *= -1;
         }
@@ -566,10 +608,26 @@ enum {
 
 -(void) fireLeft {
     [rocket fireLeftRocket];
+    CGPoint position;
+    float xPos = rocket.body->GetWorldPoint(b2Vec2(-12/PTM_RATIO  ,-27/PTM_RATIO)).x;
+    float yPos = rocket.body->GetWorldPoint(b2Vec2(-12/PTM_RATIO  ,-27/PTM_RATIO)).y;
+    position.x = xPos * PTM_RATIO;
+    position.y = yPos * PTM_RATIO;
+    rocketSmokeLeft.position = position;
+    [rocketSmokeLeft resetSystem];
+    [rocketSmokeLeft setVisible:YES];
 }
 
 -(void) fireRight {
     [rocket fireRightRocket];
+    CGPoint position;
+    float xPos = rocket.body->GetWorldPoint(b2Vec2(12/PTM_RATIO  ,-27/PTM_RATIO)).x;
+    float yPos = rocket.body->GetWorldPoint(b2Vec2(12/PTM_RATIO  ,-27/PTM_RATIO)).y;
+    position.x = xPos * PTM_RATIO;
+    position.y = yPos * PTM_RATIO;
+    rocketSmokeRight.position = position;
+    [rocketSmokeRight resetSystem];
+    [rocketSmokeRight setVisible:YES];
 }
 
 -(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -593,6 +651,7 @@ enum {
                 [self schedule:@selector(fireLeft)];
                 touchLeft = touch;
                 leftRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
+                [rocketSmokeLeft resetSystem];
             }
         } else if (location.x > [CCDirector sharedDirector].winSize.width * 0.6) {
             if (touchRight == nil)
@@ -600,6 +659,7 @@ enum {
                 [self schedule:@selector(fireRight)];
                 touchRight = touch;
                 rightRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
+                [rocketSmokeRight resetSystem];
             }
         } else {
             if (touchMiddle == nil)
@@ -631,10 +691,14 @@ enum {
 #else*/        
         if (touch == touchLeft) {
             [self unschedule:@selector(fireLeft)];
+            [rocketSmokeLeft setVisible:NO];
+            [rocketSmokeLeft stopSystem];
             touchLeft = nil;
             STOPSOUNDEFFECT(leftRocketSoundID);
         } else  if (touch == touchRight) {
             [self unschedule:@selector(fireRight)];
+            [rocketSmokeRight setVisible:NO];
+            [rocketSmokeRight stopSystem];
             touchRight = nil;
             STOPSOUNDEFFECT(rightRocketSoundID);
         } else if (touch == touchMiddle) {

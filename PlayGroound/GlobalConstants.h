@@ -54,6 +54,7 @@ typedef enum {
 
 -(void) createBullet:(ccTime)deltaTime;
 -(void) decrementBulletCount;
+-(void) addParticleEffect:(CCParticleSystemQuad*)effect;
 
 @end
 

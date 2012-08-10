@@ -37,6 +37,6 @@
 -(void) executeRotationMove;
 -(void) planLongPressMove:(BOOL) continueFiring;
 -(void) executeLongPressMove;
--(void) updateStateWithDeltaTime:(ccTime)deltaTime andListOfGameObjects:(CCArray *)listOfGameObjects;
+//-(void) updateStateWithDeltaTime:(ccTime)deltaTime andListOfGameObjects:(CCArray *)listOfGameObjects;
 
 @end

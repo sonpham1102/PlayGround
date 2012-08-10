@@ -45,6 +45,8 @@
     bool acceptingInput;
     
     NSString* timerString;
+    
+    CCSpriteBatchNode *sceneSpriteBatchNode;
 }
 
 -(void) handlePan:(CGPoint) startPoint endPoint:(CGPoint) endPoint;

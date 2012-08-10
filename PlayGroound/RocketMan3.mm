@@ -19,9 +19,9 @@
 #define RM_LINEAR_DAMP 0.5
 
 
-#define RM_PAN_ROCKET_IMPULSE 10.0
+#define RM_PAN_ROCKET_IMPULSE 15.0
 #define RM_PAN_LENGTH_MIN 2.0
-#define RM_PAN_LENGTH_MAX 20.0
+#define RM_PAN_LENGTH_MAX 30.0
 #define RM_MAX_ROCKET_SLOPE 100.0
 #define RM_MIN_ROCKET_SLOPE 0.0
 #define RM_PAN_SLOPE_ALLOWANCE 0.7
@@ -81,6 +81,8 @@
         lpSoundID = 0;
         
         rotationAngleDelta = 0.0f;
+        
+        gameObjType = kObjTypeRocket;
         
         [self changeState:kStateIdle];
     }
@@ -181,7 +183,12 @@
     increaseFactor = MAX(increaseFactor, RM_PAN_LENGTH_MIN);
     increaseFactor = MIN(increaseFactor, RM_PAN_LENGTH_MAX);
     
-    increaseFactor = 1.0 + (increaseFactor - RM_PAN_LENGTH_MIN)/(RM_PAN_LENGTH_MAX - RM_PAN_LENGTH_MIN);
+    //get a number between 0 and 1
+    increaseFactor = (increaseFactor - RM_PAN_LENGTH_MIN)/(RM_PAN_LENGTH_MAX - RM_PAN_LENGTH_MIN);
+    //square it so that long pans ramp up to full force quickly
+    increaseFactor *= increaseFactor;
+    //add 1 so that we have a minimum pan force
+    increaseFactor += 1.0f;
     
     //determine if it's the left or right device and set up accordingly
     //CCLOG(@"pan factor: %.1f", increaseFactor);
@@ -296,7 +303,8 @@
     body->ApplyForce(forceVector, body->GetWorldCenter());    
 }
 
--(void)updateStateWithDeltaTime:(ccTime)deltaTime andListOfGameObjects:(CCArray *)listOfGameObjects
+//-(void)updateStateWithDeltaTime:(ccTime)deltaTime andListOfGameObjects:(CCArray *)listOfGameObjects
+-(void)updateStateWithDeltaTime:(ccTime)deltaTime
 {
     //see if there are any active maneuvers to finish
     BOOL isManeuvering = FALSE;

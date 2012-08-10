@@ -13,6 +13,7 @@
 #import "PhysicsSprite.h"
 #import "GameManager.h"
 #import "RocketMan3.h"
+#import "GravityWell.h"
 
 /*
 typedef enum {
@@ -48,7 +49,6 @@ enum {
 
 @interface PlayGround3Layer()
 -(void) initPhysics;
--(void) addNewSpriteAtPosition:(CGPoint)p;
 -(void) createRocketMan:(CGPoint) location;
 @end
 
@@ -193,6 +193,16 @@ enum {
     [super onEnter];
 }
 
+-(void) createGameObjects
+{
+    GravityWell* gravityWell;
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    
+    gravityWell = [[[GravityWell alloc] initWithWorld:world atLocation:b2Vec2(winSize.width*0.8f/PTM_RATIO, winSize.height/2.0f/PTM_RATIO) withRadius:8.0] autorelease];        
+
+    [sceneSpriteBatchNode addChild:gravityWell];
+}
+
 -(id) init
 {
 	if( (self=[super init])) {
@@ -206,13 +216,20 @@ enum {
 		// init physics
 		[self initPhysics];
 		        
+        //[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Playground2Atlas.plist"];
+        //sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"Playground2Atlas.png" capacity:250];
+        sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithTexture:nil];
+        [self addChild:sceneSpriteBatchNode z:0];
+
+        
         // create the rocket man
         [self createRocketMan:ccp(s.width/2.0/PTM_RATIO, s.height/5.0/PTM_RATIO)];
-        
+
         // add it as a child
-        [self addChild:rocketMan z:0];
+        [sceneSpriteBatchNode addChild:rocketMan /*z:0*/];
         
-        [self createObstacles];
+        //[self createObstacles];
+        [self createGameObjects];
         
         // make sure touches are enabled for it so gesture recognizer gets it
         //rocketMan.isTouchEnabled = YES;
@@ -363,41 +380,6 @@ enum {
     //ccDrawLine(debugLineStartPoint, debugLineEndPoint);
 	
 	kmGLPopMatrix();
-}
-
--(void) addNewSpriteAtPosition:(CGPoint)p
-{
-	CCLOG(@"Add sprite %0.2f x %02.f",p.x,p.y);
-	CCNode *parent = [self getChildByTag:kTagParentNode];
-	
-	//We have a 64x64 sprite sheet with 4 different 32x32 images.  The following code is
-	//just randomly picking one of the images
-	int idx = (CCRANDOM_0_1() > .5 ? 0:1);
-	int idy = (CCRANDOM_0_1() > .5 ? 0:1);
-	PhysicsSprite *sprite = [PhysicsSprite spriteWithTexture:spriteTexture_ rect:CGRectMake(32 * idx,32 * idy,32,32)];						
-	[parent addChild:sprite];
-	
-	sprite.position = ccp( p.x, p.y);
-	
-	// Define the dynamic body.
-	//Set up a 1m squared box in the physics world
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(p.x/PTM_RATIO, p.y/PTM_RATIO);
-	b2Body *body = world->CreateBody(&bodyDef);
-	
-	// Define another box shape for our dynamic body.
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(.5f, .5f);//These are mid points for our 1m box
-	
-	// Define the dynamic body fixture.
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicBox;	
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.3f;
-	body->CreateFixture(&fixtureDef);
-	
-	[sprite setPhysicsBody:body];
 }
 
 -(void) resetRocketManPosition
@@ -750,15 +732,14 @@ enum {
         }
     }
 
-/* AP, need to set up a spritebatchnode to do this
     CCArray *listOfGameObjects = [sceneSpriteBatchNode children];
-    for (GameCharacter *tempChar in listOfGameObjects)
+    for (GameChar *tempChar in listOfGameObjects)
     {
-        [tempChar updateStateWithDeltaTime:dt andListOfGameObjects:listOfGameObjects];
+        [tempChar updateStateWithDeltaTime:dt];
     }
-*/
+
     //HACK for now just call the update on the rocket manually
-    [rocketMan updateStateWithDeltaTime:dt andListOfGameObjects:nil];
+    //[rocketMan updateStateWithDeltaTime:dt andListOfGameObjects:nil];
     
     
     // see if the rocketMan is in the end zone

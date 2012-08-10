@@ -13,6 +13,7 @@
 #define BULLET_LIFE 0.8
 
 @implementation bullet
+@synthesize delegate;
 
 //@synthesize delegate;
 //@synthesize sensorFixture;
@@ -46,8 +47,25 @@
     body->CreateFixture(&fixtureDef);
     
     body->SetUserData(self);
+    
 }
-
+/*
+-(void) createParticleEffect {
+    
+   
+    bulletFire.scale = 0.1;
+    CGPoint position;
+    float xPos = body->GetWorldPoint(b2Vec2(0,0)).x;
+    float yPos = body->GetWorldPoint(b2Vec2(0,0)).y;
+    position.x = xPos * PTM_RATIO;
+    position.y = yPos * PTM_RATIO;
+    bulletFire.position = position;
+    bulletFire.duration = 0.5;
+    bulletFire.autoRemoveOnFinish = YES;
+    [delegate addParticleEffect:bulletFire];
+    
+}
+*/
 -(void) destroy:(id)sender {
     [self removeFromParentAndCleanup:YES];
 }
@@ -83,8 +101,10 @@
         gameObjType = kobjTypeBullet;
         timeTravelled = 0.0;
         [self createBodyAtLocation:location];
+        //[self createParticleEffect];
         destroyMe = false;
         isDead = NO;
+        //bulletFire = [[CCParticleFire alloc] init];
     }
     return self;
 }

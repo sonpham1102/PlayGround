@@ -31,6 +31,12 @@
 	GLESDebugDraw *m_debugDraw;		// strong ref
     CCTMXTiledMap *tileMapNode;
     
+    //Particle Effect
+    CCParticleFire *bulletFire;
+    CCParticleSmoke *rocketSmokeLeft;
+    CCParticleSmoke *rocketSmokeRight;
+
+    
     //Camera Controls
     b2Vec2 lastCameraPos;
     b2Vec2 lastCameraVel;

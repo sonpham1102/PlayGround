@@ -12,6 +12,7 @@
 		121DD31215D55AC80098A1AF /* BackDropLayer.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 121DD31115D55AC80098A1AF /* BackDropLayer.tmx */; };
 		121DD31415D563A80098A1AF /* BackDropLayer-ipad.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 121DD31315D563A80098A1AF /* BackDropLayer-ipad.tmx */; };
 		121DD31615D563B50098A1AF /* PlanetLayer-ipad.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 121DD31515D563B50098A1AF /* PlanetLayer-ipad.tmx */; };
+		121DD31F15D57D0C0098A1AF /* fire.png in Resources */ = {isa = PBXBuildFile; fileRef = 121DD31E15D57D0C0098A1AF /* fire.png */; };
 		12284ABC15C894790008961A /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12284ABB15C894790008961A /* CoreMotion.framework */; };
 		127EB08415C59E8E002EEA46 /* LandingPad-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 127EB08315C59E8E002EEA46 /* LandingPad-ipad.png */; };
 		127EB08915C5AD6C002EEA46 /* LandingPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 127EB08815C5AD6C002EEA46 /* LandingPad.png */; };
@@ -236,6 +237,7 @@
 		121DD31115D55AC80098A1AF /* BackDropLayer.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = BackDropLayer.tmx; sourceTree = "<group>"; };
 		121DD31315D563A80098A1AF /* BackDropLayer-ipad.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "BackDropLayer-ipad.tmx"; sourceTree = "<group>"; };
 		121DD31515D563B50098A1AF /* PlanetLayer-ipad.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "PlanetLayer-ipad.tmx"; sourceTree = "<group>"; };
+		121DD31E15D57D0C0098A1AF /* fire.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fire.png; sourceTree = "<group>"; };
 		12284ABB15C894790008961A /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		127EB08315C59E8E002EEA46 /* LandingPad-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LandingPad-ipad.png"; sourceTree = "<group>"; };
 		127EB08815C5AD6C002EEA46 /* LandingPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LandingPad.png; sourceTree = "<group>"; };
@@ -690,6 +692,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		121DD31B15D5764A0098A1AF /* Play Ground 1 Specific */ = {
+			isa = PBXGroup;
+			children = (
+				FA81830715B9BB64003AC851 /* RocketMan.h */,
+				FA81830815B9BB64003AC851 /* RocketMan.mm */,
+			);
+			name = "Play Ground 1 Specific";
+			sourceTree = "<group>";
+		};
+		121DD31C15D576670098A1AF /* Play Ground 2 Specific */ = {
+			isa = PBXGroup;
+			children = (
+				12B9470615B883BE00CB76CD /* Rocket.h */,
+				12B9470715B883BE00CB76CD /* Rocket.mm */,
+				12A8A10C15BC7714009E07B1 /* Obstacle.h */,
+				12A8A10D15BC7715009E07B1 /* Obstacle.mm */,
+				12C7159015C838E900D23701 /* Asteroid.h */,
+				12C7159115C838E900D23701 /* Asteroid.mm */,
+				12985ADF15CC556100614FB8 /* bullet.h */,
+				12985AE015CC556200614FB8 /* bullet.mm */,
+			);
+			name = "Play Ground 2 Specific";
+			sourceTree = "<group>";
+		};
+		121DD31D15D57CEA0098A1AF /* Particles */ = {
+			isa = PBXGroup;
+			children = (
+				121DD31E15D57D0C0098A1AF /* fire.png */,
+			);
+			name = Particles;
+			sourceTree = "<group>";
+		};
 		128226BB15B5EC730030D109 = {
 			isa = PBXGroup;
 			children = (
@@ -1266,10 +1300,11 @@
 		12A8A0D715BB206C009E07B1 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				121DD31D15D57CEA0098A1AF /* Particles */,
 				121DD31515D563B50098A1AF /* PlanetLayer-ipad.tmx */,
+				121DD30415D2CEF00098A1AF /* PlanetLayer.tmx */,
 				121DD31315D563A80098A1AF /* BackDropLayer-ipad.tmx */,
 				121DD31115D55AC80098A1AF /* BackDropLayer.tmx */,
-				121DD30415D2CEF00098A1AF /* PlanetLayer.tmx */,
 				12985AF715CD933700614FB8 /* Playground2Atlas.plist */,
 				12985AF815CD933700614FB8 /* Playground2Atlas.png */,
 				12985ADC15CB095700614FB8 /* Playground1Background.tmx */,
@@ -1446,6 +1481,8 @@
 		FA8182E915B865CF003AC851 /* GameObjects */ = {
 			isa = PBXGroup;
 			children = (
+				121DD31B15D5764A0098A1AF /* Play Ground 1 Specific */,
+				121DD31C15D576670098A1AF /* Play Ground 2 Specific */,
 				FA65B50D15D197C9005A1044 /* RocketMan3.h */,
 				FA65B50E15D197CA005A1044 /* RocketMan3.mm */,
 				FA8182EB15B866D8003AC851 /* GameObj.h */,
@@ -1454,16 +1491,6 @@
 				FA8182F215B87426003AC851 /* GameChar.m */,
 				FA8182F415B87709003AC851 /* GameCharPhysics.h */,
 				FA8182F515B87709003AC851 /* GameCharPhysics.mm */,
-				12B9470615B883BE00CB76CD /* Rocket.h */,
-				12B9470715B883BE00CB76CD /* Rocket.mm */,
-				FA81830715B9BB64003AC851 /* RocketMan.h */,
-				FA81830815B9BB64003AC851 /* RocketMan.mm */,
-				12A8A10C15BC7714009E07B1 /* Obstacle.h */,
-				12A8A10D15BC7715009E07B1 /* Obstacle.mm */,
-				12C7159015C838E900D23701 /* Asteroid.h */,
-				12C7159115C838E900D23701 /* Asteroid.mm */,
-				12985ADF15CC556100614FB8 /* bullet.h */,
-				12985AE015CC556200614FB8 /* bullet.mm */,
 			);
 			name = GameObjects;
 			sourceTree = "<group>";
@@ -1560,6 +1587,7 @@
 				121DD31215D55AC80098A1AF /* BackDropLayer.tmx in Resources */,
 				121DD31415D563A80098A1AF /* BackDropLayer-ipad.tmx in Resources */,
 				121DD31615D563B50098A1AF /* PlanetLayer-ipad.tmx in Resources */,
+				121DD31F15D57D0C0098A1AF /* fire.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

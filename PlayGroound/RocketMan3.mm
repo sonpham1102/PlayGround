@@ -236,7 +236,12 @@
 
 -(void)fireTapDevice
 {
-    body->ApplyLinearImpulse(b2Vec2(body->GetMass()*RM_TAP_IMPULSE, 0.0), body->GetWorldCenter());
+    //b2Vec2 tapImpulse = b2Vec2(body->GetMass()*RM_TAP_IMPULSE, 0.0);
+    b2Vec2 tapImpulse = body->GetLinearVelocity();
+    tapImpulse.Normalize();
+    tapImpulse.x *= body->GetMass()*RM_TAP_IMPULSE;
+    tapImpulse.y *= body->GetMass()*RM_TAP_IMPULSE;
+    body->ApplyLinearImpulse(tapImpulse, body->GetWorldCenter());
 }
 
 -(void) planRotationMove:(float)angleDelta

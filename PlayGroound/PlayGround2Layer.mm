@@ -114,19 +114,7 @@ enum {
             //[motionManager startGyroUpdates];
         }
         
-        //Particle Effect
-        rocketSmokeLeft = [[CCParticleSmoke alloc] init];
-        [self addChild:rocketSmokeLeft z:200];
-        [rocketSmokeLeft setGravity:ccp(0, 0)];
-        rocketSmokeLeft.duration = -1;
-        rocketSmokeLeft.scale = 0.2;
         
-        
-        rocketSmokeRight = [[CCParticleSmoke alloc] init];
-        [self addChild:rocketSmokeRight z:200];
-        [rocketSmokeRight setGravity:ccp(0, 0)];
-        rocketSmokeRight.duration = -1;
-        rocketSmokeRight.scale = 0.2;
         
         referenceAttitude = nil;
         
@@ -159,6 +147,24 @@ enum {
 
         rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * LEVEL_WIDTH /2, 
                                                                     s.height*LEVEL_HEIGHT/2)];
+        
+        //Particle Effect
+        rocketSmokeLeft = [[CCParticleSmoke alloc] init];
+    
+        rocketSmokeLeft.positionType = kCCPositionTypeRelative; 
+        [self addChild:rocketSmokeLeft z:200];
+        [rocketSmokeLeft setGravity:ccp(0, 0)];
+        rocketSmokeLeft.duration = -1;
+        rocketSmokeLeft.scale = 0.12;
+        
+        
+        
+        rocketSmokeRight = [[CCParticleSmoke alloc] init];
+        rocketSmokeRight.positionType = kCCPositionTypeRelative;
+        [self addChild:rocketSmokeRight z:200];
+        [rocketSmokeRight setGravity:ccp(0, 0)];
+        rocketSmokeRight.duration = -1;
+        rocketSmokeRight.scale = 0.12;
         
         //rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * 1.5 /2 + 70.0, s.height*0.16)];
         [sceneSpriteBatchNode addChild:rocket];

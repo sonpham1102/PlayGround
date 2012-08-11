@@ -475,7 +475,7 @@ enum {
             
             [bulletFire setGravity:ccp(0, 0)];
             bulletFire.autoRemoveOnFinish = YES;
-            
+            PLAYSOUNDEFFECT(LASER_FIRE);
             [bulletShot release];
             fireSide *= -1;
         }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		120EEB0715D6140B00C629B2 /* scifi1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 120EEB0615D6140B00C629B2 /* scifi1.mp3 */; };
 		121DD2E915D0BFAD0098A1AF /* Level1ContactListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = 121DD2E815D0BFAD0098A1AF /* Level1ContactListener.mm */; };
 		121DD30515D2CEF00098A1AF /* PlanetLayer.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 121DD30415D2CEF00098A1AF /* PlanetLayer.tmx */; };
 		121DD31215D55AC80098A1AF /* BackDropLayer.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 121DD31115D55AC80098A1AF /* BackDropLayer.tmx */; };
@@ -232,6 +233,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		120EEB0615D6140B00C629B2 /* scifi1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = scifi1.mp3; sourceTree = "<group>"; };
 		121DD2E715D0BFAC0098A1AF /* Level1ContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Level1ContactListener.h; sourceTree = "<group>"; };
 		121DD2E815D0BFAD0098A1AF /* Level1ContactListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Level1ContactListener.mm; sourceTree = "<group>"; };
 		121DD30415D2CEF00098A1AF /* PlanetLayer.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PlanetLayer.tmx; sourceTree = "<group>"; };
@@ -1450,6 +1452,7 @@
 		FA1348D015B7516900E5CDB5 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				120EEB0615D6140B00C629B2 /* scifi1.mp3 */,
 				FA81830215B8B1E3003AC851 /* 22k_cargo_space_freighter_closeV2.wav */,
 				FA8182FF15B8B0E5003AC851 /* 22k_cargo_space_freighter_farV1.wav */,
 				FA1348D915B7540300E5CDB5 /* 22k_tap_move_skullV1.wav */,
@@ -1603,6 +1606,7 @@
 				121DD31415D563A80098A1AF /* BackDropLayer-ipad.tmx in Resources */,
 				121DD31615D563B50098A1AF /* PlanetLayer-ipad.tmx in Resources */,
 				121DD31F15D57D0C0098A1AF /* fire.png in Resources */,
+				120EEB0715D6140B00C629B2 /* scifi1.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

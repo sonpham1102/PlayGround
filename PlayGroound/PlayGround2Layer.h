@@ -35,7 +35,7 @@
     CCParticleFire *bulletFire;
     CCParticleFireworks *rocketSmokeLeft;
     CCParticleFireworks *rocketSmokeRight;
-    
+    CCParticleBatchNode *bulletsFiredParticleBatch;
 
     
     //Camera Controls

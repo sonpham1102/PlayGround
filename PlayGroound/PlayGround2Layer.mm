@@ -149,19 +149,24 @@ enum {
                                                                     s.height*LEVEL_HEIGHT/2)];
         
         //Particle Effect
+        bulletsFiredParticleBatch = [CCParticleBatchNode batchNodeWithFile:@"fire.png" capacity:5000];
+        [self addChild:bulletsFiredParticleBatch z:100];
+        
         rocketSmokeLeft = [[CCParticleFireworks alloc] init];
         rocketSmokeLeft.positionType = kCCPositionTypeRelative; 
         [self addChild:rocketSmokeLeft z:200];
-        [rocketSmokeLeft setGravity:ccp(0, -250)];
+        [rocketSmokeLeft setEmitterMode:kCCParticleModeGravity];
+        [rocketSmokeLeft setGravity:ccp(0, -140)];
         [rocketSmokeLeft setEmissionRate:100.0f];
         rocketSmokeLeft.duration = -1;
         rocketSmokeLeft.scale = 0.12;
         
         rocketSmokeRight = [[CCParticleFireworks alloc] init];
         rocketSmokeRight.positionType = kCCPositionTypeRelative;
+        [rocketSmokeRight setEmitterMode:kCCParticleModeGravity];
         [self addChild:rocketSmokeRight z:200];
         [rocketSmokeRight setEmissionRate:100.0f];
-        [rocketSmokeRight setGravity:ccp(0, -250)];
+        [rocketSmokeRight setGravity:ccp(0, -140)];
         rocketSmokeRight.duration = -1;
         rocketSmokeRight.scale = 0.12;
         
@@ -455,22 +460,21 @@ enum {
             [bulletShot setDelegate:self];
             bulletCount ++;
             
-            
-            bulletFire = [CCParticleFire node];
-            bulletFire.scale = 0.1;
+            bulletFire = [CCParticleMeteor node];
+            [bulletsFiredParticleBatch addChild:bulletFire];
+            [bulletShot setBulletFire:bulletFire];
+            bulletFire.scale = 0.001;
+            [bulletFire setEmissionRate:10];
             CGPoint position;
             float xPos = bulletShot.body->GetWorldPoint(b2Vec2(0,0)).x;
             float yPos = bulletShot.body->GetWorldPoint(b2Vec2(0,0)).y;
             position.x = xPos * PTM_RATIO;
             position.y = yPos * PTM_RATIO;
             bulletFire.position = position;
-            bulletFire.duration = 0.03;
+            bulletFire.duration = 0.5;
             
             [bulletFire setGravity:ccp(0, 0)];
-            
             bulletFire.autoRemoveOnFinish = YES;
-            [self addChild:bulletFire z:200];
-            
             
             [bulletShot release];
             fireSide *= -1;

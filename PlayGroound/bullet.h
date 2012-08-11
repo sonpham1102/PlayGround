@@ -14,11 +14,12 @@
     float timeTravelled;
     id <PlayGround2LayerDelegate> delegate;
     BOOL isDead;
-    //CCParticleFire *bulletFire;
+    CCParticleFire *bulletFire;
 }
 
 //@property (nonatomic,readonly) b2Fixture *sensorFixture;
 @property (nonatomic, assign) id <PlayGround2LayerDelegate> delegate;
+@property (nonatomic,assign) CCParticleFire *bulletFire;
 
 -(id)initWithWorld:(b2World *)theWorld atLoaction:(b2Vec2)location;
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime;

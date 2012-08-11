@@ -14,6 +14,7 @@
 
 @implementation bullet
 @synthesize delegate;
+@synthesize bulletFire;
 
 //@synthesize delegate;
 //@synthesize sensorFixture;
@@ -49,23 +50,17 @@
     body->SetUserData(self);
     
 }
-/*
--(void) createParticleEffect {
+
+-(void) moveParticleEffect {
     
-   
-    bulletFire.scale = 0.1;
     CGPoint position;
     float xPos = body->GetWorldPoint(b2Vec2(0,0)).x;
     float yPos = body->GetWorldPoint(b2Vec2(0,0)).y;
     position.x = xPos * PTM_RATIO;
     position.y = yPos * PTM_RATIO;
     bulletFire.position = position;
-    bulletFire.duration = 0.5;
-    bulletFire.autoRemoveOnFinish = YES;
-    [delegate addParticleEffect:bulletFire];
-    
 }
-*/
+
 -(void) destroy:(id)sender {
     [self removeFromParentAndCleanup:YES];
 }
@@ -75,6 +70,8 @@
     if (isDead) {
         return;
     }
+    
+    [self moveParticleEffect];
     
     if (destroyMe) {
         world->DestroyBody(body);
@@ -87,6 +84,7 @@
         [self setVisible:NO];
         isDead = YES;
     }
+    
     
     timeTravelled += deltaTime;
     if (timeTravelled >= BULLET_LIFE) {
@@ -104,7 +102,6 @@
         //[self createParticleEffect];
         destroyMe = false;
         isDead = NO;
-        //bulletFire = [[CCParticleFire alloc] init];
     }
     return self;
 }

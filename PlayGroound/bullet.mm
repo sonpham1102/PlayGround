@@ -56,8 +56,8 @@
     CGPoint position;
     float xPos = body->GetWorldPoint(b2Vec2(0,0)).x;
     float yPos = body->GetWorldPoint(b2Vec2(0,0)).y;
-    position.x = xPos * PTM_RATIO;
-    position.y = yPos * PTM_RATIO;
+    position.x = xPos * PTM_RATIO * 50;
+    position.y = yPos * PTM_RATIO * 50;
     bulletFire.position = position;
 }
 

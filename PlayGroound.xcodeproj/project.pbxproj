@@ -221,6 +221,10 @@
 		FA65B50C15D1844A005A1044 /* PlayGround3UILayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA65B50915D1844A005A1044 /* PlayGround3UILayer.mm */; };
 		FA65B50F15D197CA005A1044 /* RocketMan3.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA65B50E15D197CA005A1044 /* RocketMan3.mm */; };
 		FA65B51215D40B02005A1044 /* GravityWell.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA65B51115D40B01005A1044 /* GravityWell.mm */; };
+		FA65B52115D6D443005A1044 /* BounceTriangle.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA65B52015D6D443005A1044 /* BounceTriangle.mm */; };
+		FA65B52515D6DFDA005A1044 /* TurboPad.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA65B52415D6DFDA005A1044 /* TurboPad.mm */; };
+		FA65B52815D6EDE1005A1044 /* ObstacleBlock.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA65B52715D6EDE0005A1044 /* ObstacleBlock.mm */; };
+		FA65B52A15D6F7E9005A1044 /* PG3Level1.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA65B52915D6F7E9005A1044 /* PG3Level1.plist */; };
 		FA8182ED15B866D8003AC851 /* GameObj.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8182EC15B866D8003AC851 /* GameObj.m */; };
 		FA8182F315B87426003AC851 /* GameChar.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8182F215B87426003AC851 /* GameChar.m */; };
 		FA8182F615B87709003AC851 /* GameCharPhysics.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA8182F515B87709003AC851 /* GameCharPhysics.mm */; };
@@ -657,6 +661,13 @@
 		FA65B50E15D197CA005A1044 /* RocketMan3.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RocketMan3.mm; sourceTree = "<group>"; };
 		FA65B51015D40B00005A1044 /* GravityWell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GravityWell.h; sourceTree = "<group>"; };
 		FA65B51115D40B01005A1044 /* GravityWell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GravityWell.mm; sourceTree = "<group>"; };
+		FA65B51F15D6D443005A1044 /* BounceTriangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BounceTriangle.h; sourceTree = "<group>"; };
+		FA65B52015D6D443005A1044 /* BounceTriangle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BounceTriangle.mm; sourceTree = "<group>"; };
+		FA65B52315D6DFD9005A1044 /* TurboPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TurboPad.h; sourceTree = "<group>"; };
+		FA65B52415D6DFDA005A1044 /* TurboPad.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TurboPad.mm; sourceTree = "<group>"; };
+		FA65B52615D6EDDF005A1044 /* ObstacleBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObstacleBlock.h; sourceTree = "<group>"; };
+		FA65B52715D6EDE0005A1044 /* ObstacleBlock.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ObstacleBlock.mm; sourceTree = "<group>"; };
+		FA65B52915D6F7E9005A1044 /* PG3Level1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PG3Level1.plist; sourceTree = "<group>"; };
 		FA8182EB15B866D8003AC851 /* GameObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObj.h; sourceTree = "<group>"; };
 		FA8182EC15B866D8003AC851 /* GameObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObj.m; sourceTree = "<group>"; };
 		FA8182F115B87426003AC851 /* GameChar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameChar.h; sourceTree = "<group>"; };
@@ -1421,6 +1432,7 @@
 			children = (
 				FA1348CE15B7516400E5CDB5 /* SoundEffects.plist */,
 				FA1348D315B7536C00E5CDB5 /* BackgroundMusic.plist */,
+				FA65B52915D6F7E9005A1044 /* PG3Level1.plist */,
 			);
 			name = Plists;
 			sourceTree = "<group>";
@@ -1483,6 +1495,12 @@
 				12985AE015CC556200614FB8 /* bullet.mm */,
 				FA65B51015D40B00005A1044 /* GravityWell.h */,
 				FA65B51115D40B01005A1044 /* GravityWell.mm */,
+				FA65B51F15D6D443005A1044 /* BounceTriangle.h */,
+				FA65B52015D6D443005A1044 /* BounceTriangle.mm */,
+				FA65B52315D6DFD9005A1044 /* TurboPad.h */,
+				FA65B52415D6DFDA005A1044 /* TurboPad.mm */,
+				FA65B52615D6EDDF005A1044 /* ObstacleBlock.h */,
+				FA65B52715D6EDE0005A1044 /* ObstacleBlock.mm */,
 			);
 			name = GameObjects;
 			sourceTree = "<group>";
@@ -1581,6 +1599,7 @@
 				121DD31615D563B50098A1AF /* PlanetLayer-ipad.tmx in Resources */,
 				121DD31F15D57D0C0098A1AF /* fire.png in Resources */,
 				120EEB0715D6140B00C629B2 /* scifi1.mp3 in Resources */,
+				FA65B52A15D6F7E9005A1044 /* PG3Level1.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1769,6 +1788,9 @@
 				FA65B50C15D1844A005A1044 /* PlayGround3UILayer.mm in Sources */,
 				FA65B50F15D197CA005A1044 /* RocketMan3.mm in Sources */,
 				FA65B51215D40B02005A1044 /* GravityWell.mm in Sources */,
+				FA65B52115D6D443005A1044 /* BounceTriangle.mm in Sources */,
+				FA65B52515D6DFDA005A1044 /* TurboPad.mm in Sources */,
+				FA65B52815D6EDE1005A1044 /* ObstacleBlock.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

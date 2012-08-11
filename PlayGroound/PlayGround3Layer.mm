@@ -14,6 +14,9 @@
 #import "GameManager.h"
 #import "RocketMan3.h"
 #import "GravityWell.h"
+#import "BounceTriangle.h"
+#import "TurboPad.h"
+#import "ObstacleBlock.h"
 
 /*
 typedef enum {
@@ -25,8 +28,8 @@ typedef enum {
 */
 
 //AP : MOVE to a plist or something
-#define SCREEN_LENGTHS 3.0 //number of screens high for the level 
-#define SCREEN_WIDTHS 5.0
+#define SCREEN_LENGTHS 1.0 //number of screens high for the level 
+#define SCREEN_WIDTHS 1.0
 #define END_ZONE_SENSOR_SIZE 0.10 //multiple of screen height
 #define FIXED_POS_Y 0.33f // multiple of screen height
 #define FIXED_POS_X 0.33f // multiple of screen width
@@ -193,14 +196,149 @@ enum {
     [super onEnter];
 }
 
+-(void) buildLevelFromPlist:(NSString *)levelFileName
+{
+
+    NSString *fullFileName = [NSString stringWithFormat:@"%@.plist", levelFileName];
+    NSString *plistPath;
+    
+    //get the string for the path to the plist file
+    NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    plistPath = [rootPath stringByAppendingPathComponent:fullFileName];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:plistPath])
+    {
+        plistPath = [[NSBundle mainBundle] pathForResource:levelFileName ofType:@"plist"];
+    }
+    
+    //read in the plist file
+    NSDictionary *plistDictionary =[NSDictionary dictionaryWithContentsOfFile:plistPath];
+    
+    //see if the file was found, if not return nil
+    if (plistDictionary == nil)
+    {
+        CCLOG(@"error reading the plist: %@.plist", levelFileName);
+    }
+
+    int numberOfObjects;
+    CGSize winSize = [[CCDirector sharedDirector] winSize];
+    
+    //get the minidictionary for each object type
+    //OBSTACLES
+    NSDictionary *obstacleBlocks = [plistDictionary objectForKey:NSStringFromClass([ObstacleBlock class])];
+    //get the number of obstacles
+    numberOfObjects = [[obstacleBlocks objectForKey:@"Number"] intValue];
+    for (int i = 0; i < numberOfObjects; i++)
+    {
+        NSString *objectNumber = [NSString stringWithFormat:@"%i", i+1];
+        NSString *objectSettings = [obstacleBlocks objectForKey:objectNumber];
+        NSArray *objectSettingsFloatStrings = [objectSettings componentsSeparatedByString:@","];
+        // the array should contain an x and y position, width and height, and offset angle
+        float xPos = [[objectSettingsFloatStrings objectAtIndex:0] floatValue];
+        xPos *= winSize.width * SCREEN_WIDTHS/PTM_RATIO;
+        float yPos = [[objectSettingsFloatStrings objectAtIndex:1] floatValue];
+        yPos *= winSize.height * SCREEN_WIDTHS/PTM_RATIO;
+        float width = [[objectSettingsFloatStrings objectAtIndex:2] floatValue];
+        float height = [[objectSettingsFloatStrings objectAtIndex:3] floatValue];
+        float angleOffset = [[objectSettingsFloatStrings objectAtIndex:4] floatValue];
+        ObstacleBlock* obstacle;
+        obstacle = [[[ObstacleBlock alloc] initWithWorld:world atLocation:b2Vec2(xPos, yPos) withWidth:width withHeight:height withOffsetAngle:angleOffset] autorelease];        
+        [sceneSpriteBatchNode addChild:obstacle];
+    }
+    //TURBO PADS
+    NSDictionary *turboPads = [plistDictionary objectForKey:NSStringFromClass([TurboPad class])];
+    numberOfObjects = [[turboPads objectForKey:@"Number"] intValue];
+    for (int i = 0; i < numberOfObjects; i++)
+    {
+        NSString *objectNumber = [NSString stringWithFormat:@"%i", i+1];
+        NSString *objectSettings = [turboPads objectForKey:objectNumber];
+        NSArray *objectSettingsFloatStrings = [objectSettings componentsSeparatedByString:@","];
+        // the array should contain an x and y position, width and height, and offset angle
+        float xPos = [[objectSettingsFloatStrings objectAtIndex:0] floatValue];
+        xPos *= winSize.width * SCREEN_WIDTHS/PTM_RATIO;
+        float yPos = [[objectSettingsFloatStrings objectAtIndex:1] floatValue];
+        yPos *= winSize.height * SCREEN_WIDTHS/PTM_RATIO;
+        float width = [[objectSettingsFloatStrings objectAtIndex:2] floatValue];
+        float height = [[objectSettingsFloatStrings objectAtIndex:3] floatValue];
+        float angleOffset = [[objectSettingsFloatStrings objectAtIndex:4] floatValue];
+        TurboPad* turboPad;
+        turboPad = [[[TurboPad alloc] initWithWorld:world atLocation:b2Vec2(xPos, yPos) withWidth:width withHeight:height withOffsetAngle:angleOffset] autorelease];        
+        [sceneSpriteBatchNode addChild:turboPad];
+    }
+    //BOUNCE TRIANGLES
+    NSDictionary *bounceTriangles = [plistDictionary objectForKey:NSStringFromClass([BounceTriangle class])];
+    numberOfObjects = [[bounceTriangles objectForKey:@"Number"] intValue];
+    for (int i = 0; i < numberOfObjects; i++)
+    {
+        NSString *objectNumber = [NSString stringWithFormat:@"%i", i+1];
+        NSString *objectSettings = [bounceTriangles objectForKey:objectNumber];
+        NSArray *objectSettingsFloatStrings = [objectSettings componentsSeparatedByString:@","];
+        // the array should contain an x and y position, width and height, and offset angle
+        float xPos = [[objectSettingsFloatStrings objectAtIndex:0] floatValue];
+        xPos *= winSize.width * SCREEN_WIDTHS/PTM_RATIO;
+        float yPos = [[objectSettingsFloatStrings objectAtIndex:1] floatValue];
+        yPos *= winSize.height * SCREEN_WIDTHS/PTM_RATIO;
+        float size = [[objectSettingsFloatStrings objectAtIndex:2] floatValue];
+        float angle = [[objectSettingsFloatStrings objectAtIndex:3] floatValue];
+        float angleOffset = [[objectSettingsFloatStrings objectAtIndex:4] floatValue];
+        BounceTriangle* bounceTriangle;
+        bounceTriangle = [[[BounceTriangle alloc] initWithWorld:world atLocation:b2Vec2(xPos, yPos) withSize:size withAngle:angle withOffsetAngle:angleOffset] autorelease];        
+        [sceneSpriteBatchNode addChild:bounceTriangle];
+    }
+    //GRAVITY WELLS
+    NSDictionary *gravityWells = [plistDictionary objectForKey:NSStringFromClass([GravityWell class])];
+    numberOfObjects = [[gravityWells objectForKey:@"Number"] intValue];
+    for (int i = 0; i < numberOfObjects; i++)
+    {
+        NSString *objectNumber = [NSString stringWithFormat:@"%i", i+1];
+        NSString *objectSettings = [gravityWells objectForKey:objectNumber];
+        NSArray *objectSettingsFloatStrings = [objectSettings componentsSeparatedByString:@","];
+        // the array should contain an x and y position, width and height, and offset angle
+        float xPos = [[objectSettingsFloatStrings objectAtIndex:0] floatValue];
+        xPos *= winSize.width * SCREEN_WIDTHS/PTM_RATIO;
+        float yPos = [[objectSettingsFloatStrings objectAtIndex:1] floatValue];
+        yPos *= winSize.height * SCREEN_WIDTHS/PTM_RATIO;
+        float radius = [[objectSettingsFloatStrings objectAtIndex:2] floatValue];
+        GravityWell* gravityWell;
+        gravityWell = [[[GravityWell alloc] initWithWorld:world atLocation:b2Vec2(xPos, yPos) withRadius:radius] autorelease];        
+        [sceneSpriteBatchNode addChild:gravityWell];
+    }
+}
+
 -(void) createGameObjects
 {
+/*
     GravityWell* gravityWell;
     CGSize winSize = [CCDirector sharedDirector].winSize;
     
     gravityWell = [[[GravityWell alloc] initWithWorld:world atLocation:b2Vec2(winSize.width*0.8f/PTM_RATIO, winSize.height/2.0f/PTM_RATIO) withRadius:8.0] autorelease];        
 
     [sceneSpriteBatchNode addChild:gravityWell];
+*/
+/*
+    BounceTriangle* bounceTri;
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    
+    bounceTri = [[[BounceTriangle alloc] initWithWorld:world atLocation:b2Vec2(winSize.width*0.8f/PTM_RATIO, winSize.height/2.0f/PTM_RATIO) withSize:10.0f withAngle:20.0f] autorelease];        
+    
+    [sceneSpriteBatchNode addChild:bounceTri];
+*/
+/*
+    TurboPad* turboPad;
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    
+    turboPad = [[[TurboPad alloc] initWithWorld:world atLocation:b2Vec2(winSize.width*0.8f/PTM_RATIO, winSize.height/2.0f/PTM_RATIO) withWidth:3.0f withHeight:10.0f withOffsetAngle:45.0f] autorelease];        
+    
+    [sceneSpriteBatchNode addChild:turboPad];
+*/
+/*
+    ObstacleBlock* obstacle;
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    
+    obstacle = [[[ObstacleBlock alloc] initWithWorld:world atLocation:b2Vec2(winSize.width*0.8f/PTM_RATIO, winSize.height/2.0f/PTM_RATIO) withWidth:3.0f withHeight:10.0f withOffsetAngle:45.0f] autorelease];        
+    
+    [sceneSpriteBatchNode addChild:obstacle];
+*/
+    [self buildLevelFromPlist:@"PG3Level1"];
 }
 
 -(id) init

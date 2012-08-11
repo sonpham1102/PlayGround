@@ -1602,6 +1602,7 @@
 				121DD31615D563B50098A1AF /* PlanetLayer-ipad.tmx in Resources */,
 				121DD31F15D57D0C0098A1AF /* fire.png in Resources */,
 				120EEB0715D6140B00C629B2 /* scifi1.mp3 in Resources */,
+				120EEB2915D6DF4D00C629B2 /* Sonic Boom.wav in Resources */,
 				FA65B52A15D6F7E9005A1044 /* PG3Level1.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

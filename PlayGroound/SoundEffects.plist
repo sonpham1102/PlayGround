@@ -18,6 +18,8 @@
 	</dict>
 	<key>kPlayGround2</key>
 	<dict>
+		<key>ASTEROID_EXPLOSION</key>
+		<string>Sonic Boom.wav</string>
 		<key>PUZZLE_SKULL</key>
 		<string>22k_tap_move_skullV1.wav</string>
 		<key>ROCKET_JET</key>

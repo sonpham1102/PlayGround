@@ -486,7 +486,18 @@ enum {
 
 - (void) didFlipScreen:(NSNotification *)notification{ 
     [rocket setTurnDirection:[rocket turnDirection]];
-} 
+}
+
+-(void) createExplosionAtLocation:(CGPoint)location{
+    PLAYSOUNDEFFECT(ASTEROID_EXPLOSION);
+    CCParticleExplosion *explosion = [[CCParticleExplosion alloc] init];
+    explosion.position = location;
+    [explosion setDuration:2];
+    [explosion setScale:0.4];
+    [self addChild:explosion];
+    [explosion setAutoRemoveOnFinish:YES];
+    
+}
 
 
 -(void) fireAsteroid:(ccTime)dt {
@@ -507,6 +518,7 @@ enum {
         
         Asteroid *sprite = [[Asteroid alloc] initWithWorld:world atLoaction:ccp(winSize.width * LEVEL_WIDTH * xLaunchPoint, winSize.height * LEVEL_HEIGHT * yLaunchPoint)];
         [sceneSpriteBatchNode addChild:sprite];
+        [sprite setDelegate:self];
         [sprite release];
         asteroidTimer = 0.0;
         asteroidsCreated += 1;

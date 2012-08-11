@@ -697,30 +697,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		121DD31B15D5764A0098A1AF /* Play Ground 1 Specific */ = {
-			isa = PBXGroup;
-			children = (
-				FA81830715B9BB64003AC851 /* RocketMan.h */,
-				FA81830815B9BB64003AC851 /* RocketMan.mm */,
-			);
-			name = "Play Ground 1 Specific";
-			sourceTree = "<group>";
-		};
-		121DD31C15D576670098A1AF /* Play Ground 2 Specific */ = {
-			isa = PBXGroup;
-			children = (
-				12B9470615B883BE00CB76CD /* Rocket.h */,
-				12B9470715B883BE00CB76CD /* Rocket.mm */,
-				12A8A10C15BC7714009E07B1 /* Obstacle.h */,
-				12A8A10D15BC7715009E07B1 /* Obstacle.mm */,
-				12C7159015C838E900D23701 /* Asteroid.h */,
-				12C7159115C838E900D23701 /* Asteroid.mm */,
-				12985ADF15CC556100614FB8 /* bullet.h */,
-				12985AE015CC556200614FB8 /* bullet.mm */,
-			);
-			name = "Play Ground 2 Specific";
-			sourceTree = "<group>";
-		};
 		121DD31D15D57CEA0098A1AF /* Particles */ = {
 			isa = PBXGroup;
 			children = (
@@ -1487,8 +1463,6 @@
 		FA8182E915B865CF003AC851 /* GameObjects */ = {
 			isa = PBXGroup;
 			children = (
-				121DD31B15D5764A0098A1AF /* Play Ground 1 Specific */,
-				121DD31C15D576670098A1AF /* Play Ground 2 Specific */,
 				FA65B50D15D197C9005A1044 /* RocketMan3.h */,
 				FA65B50E15D197CA005A1044 /* RocketMan3.mm */,
 				FA8182EB15B866D8003AC851 /* GameObj.h */,

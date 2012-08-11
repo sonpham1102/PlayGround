@@ -11,8 +11,11 @@
 @interface Asteroid : GameCharPhysics {
     b2World *world;
     BOOL isDead;
+    id <PlayGround2LayerDelegate> delegate;
+    CGPoint explodeLocation;
 }
 
+@property (nonatomic, assign) id <PlayGround2LayerDelegate> delegate;
 
 -(id)initWithWorld:(b2World *)theWorld atLoaction:(CGPoint)location;
 

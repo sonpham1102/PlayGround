@@ -14,6 +14,8 @@
 
 @implementation Asteroid
 
+@synthesize delegate;
+
 -(void)dealloc{
     [super dealloc];
 }
@@ -55,7 +57,11 @@
 
 }
 
--(void)destroy:(id)sender {
+-(void) createExplosion:(id)sender {
+    [delegate createExplosionAtLocation:explodeLocation];
+}
+
+-(void) destroy:(id)sender {
     [self removeFromParentAndCleanup:YES];
 }
 
@@ -66,12 +72,19 @@
     }
     
     if (destroyMe) {
+        
+        float xPos = body->GetWorldPoint(b2Vec2(0,0)).x;
+        float yPos = body->GetWorldPoint(b2Vec2(0,0)).y;
+        explodeLocation.x = xPos * PTM_RATIO;
+        explodeLocation.y = yPos * PTM_RATIO;
+        //[delegate createExplosionAtLocation:position];
         world->DestroyBody(body);
         body = NULL;
-        CCScaleTo *growAction = [CCScaleTo actionWithDuration:0.25 scale:1.25];
-        CCScaleTo *shrinkAction = [CCScaleTo actionWithDuration:0.25 scale:0.75];
+        CCScaleTo *growAction = [CCScaleTo actionWithDuration:0.10 scale:1.15];
+        CCScaleTo *shrinkAction = [CCScaleTo actionWithDuration:0.10 scale:0.85];
         CCCallFuncN *doneAction = [CCCallFuncN actionWithTarget:self selector:@selector(destroy:)];
-        CCSequence *sequence = [CCSequence actions:growAction,shrinkAction,doneAction, nil];
+        CCCallFuncN *explodeAction = [CCCallFuncN actionWithTarget:self selector:@selector(createExplosion:)];
+        CCSequence *sequence = [CCSequence actions:growAction,shrinkAction,doneAction,explodeAction, nil];
         [self runAction:sequence];
         isDead = true;
     }

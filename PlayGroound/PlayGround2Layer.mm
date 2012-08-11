@@ -149,20 +149,19 @@ enum {
                                                                     s.height*LEVEL_HEIGHT/2)];
         
         //Particle Effect
-        rocketSmokeLeft = [[CCParticleSmoke alloc] init];
-    
+        rocketSmokeLeft = [[CCParticleFireworks alloc] init];
         rocketSmokeLeft.positionType = kCCPositionTypeRelative; 
         [self addChild:rocketSmokeLeft z:200];
-        [rocketSmokeLeft setGravity:ccp(0, 0)];
+        [rocketSmokeLeft setGravity:ccp(0, -250)];
+        [rocketSmokeLeft setEmissionRate:100.0f];
         rocketSmokeLeft.duration = -1;
         rocketSmokeLeft.scale = 0.12;
         
-        
-        
-        rocketSmokeRight = [[CCParticleSmoke alloc] init];
+        rocketSmokeRight = [[CCParticleFireworks alloc] init];
         rocketSmokeRight.positionType = kCCPositionTypeRelative;
         [self addChild:rocketSmokeRight z:200];
-        [rocketSmokeRight setGravity:ccp(0, 0)];
+        [rocketSmokeRight setEmissionRate:100.0f];
+        [rocketSmokeRight setGravity:ccp(0, -250)];
         rocketSmokeRight.duration = -1;
         rocketSmokeRight.scale = 0.12;
         
@@ -184,7 +183,7 @@ enum {
         [debugLabel setColor:ccc3(0, 0, 255)];
         debugLabel.position = ccp(s.width*0.8, s.height/2);
         */
-        //[self addChild:rocket z:100];
+
 
 		[self scheduleUpdate];
 	}

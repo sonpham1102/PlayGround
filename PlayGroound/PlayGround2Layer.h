@@ -33,8 +33,8 @@
     
     //Particle Effect
     CCParticleFire *bulletFire;
-    CCParticleSmoke *rocketSmokeLeft;
-    CCParticleSmoke *rocketSmokeRight;
+    CCParticleFireworks *rocketSmokeLeft;
+    CCParticleFireworks *rocketSmokeRight;
     
 
     

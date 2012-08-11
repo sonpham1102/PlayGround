@@ -219,15 +219,12 @@ enum {
         CCLOG(@"error reading the plist: %@.plist", levelFileName);
     }
 
-    int numberOfObjects;
     CGSize winSize = [[CCDirector sharedDirector] winSize];
     
     //get the minidictionary for each object type
     //OBSTACLES
     NSDictionary *obstacleBlocks = [plistDictionary objectForKey:NSStringFromClass([ObstacleBlock class])];
-    //get the number of obstacles
-    numberOfObjects = [[obstacleBlocks objectForKey:@"Number"] intValue];
-    for (int i = 0; i < numberOfObjects; i++)
+    for (int i = 0; i < [obstacleBlocks count]; i++)
     {
         NSString *objectNumber = [NSString stringWithFormat:@"%i", i+1];
         NSString *objectSettings = [obstacleBlocks objectForKey:objectNumber];
@@ -246,8 +243,7 @@ enum {
     }
     //TURBO PADS
     NSDictionary *turboPads = [plistDictionary objectForKey:NSStringFromClass([TurboPad class])];
-    numberOfObjects = [[turboPads objectForKey:@"Number"] intValue];
-    for (int i = 0; i < numberOfObjects; i++)
+    for (int i = 0; i < [turboPads count]; i++)
     {
         NSString *objectNumber = [NSString stringWithFormat:@"%i", i+1];
         NSString *objectSettings = [turboPads objectForKey:objectNumber];
@@ -266,8 +262,7 @@ enum {
     }
     //BOUNCE TRIANGLES
     NSDictionary *bounceTriangles = [plistDictionary objectForKey:NSStringFromClass([BounceTriangle class])];
-    numberOfObjects = [[bounceTriangles objectForKey:@"Number"] intValue];
-    for (int i = 0; i < numberOfObjects; i++)
+    for (int i = 0; i < [bounceTriangles count]; i++)
     {
         NSString *objectNumber = [NSString stringWithFormat:@"%i", i+1];
         NSString *objectSettings = [bounceTriangles objectForKey:objectNumber];
@@ -286,8 +281,7 @@ enum {
     }
     //GRAVITY WELLS
     NSDictionary *gravityWells = [plistDictionary objectForKey:NSStringFromClass([GravityWell class])];
-    numberOfObjects = [[gravityWells objectForKey:@"Number"] intValue];
-    for (int i = 0; i < numberOfObjects; i++)
+    for (int i = 0; i < [gravityWells count]; i++)
     {
         NSString *objectNumber = [NSString stringWithFormat:@"%i", i+1];
         NSString *objectSettings = [gravityWells objectForKey:objectNumber];

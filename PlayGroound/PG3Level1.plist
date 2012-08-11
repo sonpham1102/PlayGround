@@ -4,29 +4,23 @@
 <dict>
 	<key>ObstacleBlock</key>
 	<dict>
-		<key>Number</key>
-		<integer>1</integer>
 		<key>1</key>
-		<string>0.20,0.5,3.0,10.0,45.0</string>
+		<string>0.20,0.25,3.0,10.0,45.0</string>
+		<key>2</key>
+		<string>0.20,0.75,3.0,10.0,45.0</string>
 	</dict>
 	<key>TurboPad</key>
 	<dict>
-		<key>Number</key>
-		<integer>1</integer>
 		<key>1</key>
 		<string>0.40,0.5,3.0,10.0,45.0</string>
 	</dict>
 	<key>GravityWell</key>
 	<dict>
-		<key>Number</key>
-		<integer>1</integer>
 		<key>1</key>
 		<string>0.60,0.5,6.0</string>
 	</dict>
 	<key>BounceTriangle</key>
 	<dict>
-		<key>Number</key>
-		<integer>1</integer>
 		<key>1</key>
 		<string>0.8,0.5,10.0,20.0,0.0</string>
 	</dict>

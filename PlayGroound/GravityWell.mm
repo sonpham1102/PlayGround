@@ -9,8 +9,8 @@
 #import "GravityWell.h"
 #import "Box2DHelpers.h"
 
-#define GW_MG 175.0
-#define GW_DEAD_ZONE_RADIUS_FRACTION 0.15
+#define GW_GRAV_FORCE 300.0
+#define GW_GF_TANGENT_FRAC 0.5
 
 @implementation GravityWell
 -(void) createBodyAtLocation:(b2Vec2) location withRadius:(float) radius
@@ -31,18 +31,8 @@
 
     body->CreateFixture(&fixtureDef); 
     
-    deadZoneRad = radius*GW_DEAD_ZONE_RADIUS_FRACTION;
-    
     forceOn = true;
     initialImpactVector = b2Vec2_zero;
-/*    
-    shape.m_radius = radius/3.0f;
-    fixtureDef.isSensor = false;
-    fixtureDef.friction = 0.0f;
-    fixtureDef.restitution = 0.0f;
-    
-    body->CreateFixture(&fixtureDef);
-*/
 }
 
 -(id) initWithWorld:(b2World *)theWorld atLocation:(b2Vec2)location withRadius:(float) radius
@@ -117,7 +107,7 @@
             if (dotProd >= -0.9f)
             {
                 //apply 1 force that pulls it in to the center
-                gravityMag = GW_MG*rocketBody.body->GetMass();
+                gravityMag = GW_GRAV_FORCE*rocketBody.body->GetMass();
                 gravityForce.x *= gravityMag;
                 gravityForce.y *= gravityMag;
                 rocketBody.body->ApplyForceToCenter(gravityForce);
@@ -129,20 +119,16 @@
                 float xProd = gravityForce.x * rocketVelocity.y - gravityForce.y * rocketVelocity.x;
                 if (xProd < 0)
                 {
-                    float temp = gravityForce.y;
-                    gravityForce.y = -gravityForce.x;
+                    float temp = gravityForce.y*GW_GF_TANGENT_FRAC;
+                    gravityForce.y = -gravityForce.x*GW_GF_TANGENT_FRAC;
                     gravityForce.x = temp;
                 }
                 else 
                 {
-                    float temp = -gravityForce.y;
-                    gravityForce.y = gravityForce.x;
+                    float temp = -gravityForce.y*GW_GF_TANGENT_FRAC;
+                    gravityForce.y = gravityForce.x*GW_GF_TANGENT_FRAC;
                     gravityForce.x = temp;
                 }
-                
-                //gravityMag = GW_MG*rocketBody.body->GetMass();
-                //gravityForce.x *= gravityMag;
-                //gravityForce.y *= gravityMag;
                 rocketBody.body->ApplyForceToCenter(gravityForce);
             }
             else

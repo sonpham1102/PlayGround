@@ -39,8 +39,9 @@ typedef enum {
     kObjTypeAsteroid,
     kobjTypeBullet,
     kObjTypeGravityWell,
-    kObjTypeBoosterPad,
-    kObjTypeBouncePad
+    kObjTypeTurboPad,
+    kObjTypeBounceTriangle,
+    kObjTypeObstacleBlock
 }GameObjType;
 
 // GameChar states

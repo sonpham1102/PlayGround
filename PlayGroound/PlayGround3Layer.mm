@@ -29,7 +29,7 @@ typedef enum {
 
 //AP : MOVE to a plist or something
 #define SCREEN_LENGTHS 1.0 //number of screens high for the level 
-#define SCREEN_WIDTHS 1.0
+#define SCREEN_WIDTHS 2.0
 #define END_ZONE_SENSOR_SIZE 0.10 //multiple of screen height
 #define FIXED_POS_Y 0.33f // multiple of screen height
 #define FIXED_POS_X 0.33f // multiple of screen width
@@ -235,7 +235,9 @@ enum {
         float yPos = [[objectSettingsFloatStrings objectAtIndex:1] floatValue];
         yPos *= winSize.height * SCREEN_LENGTHS/PTM_RATIO;
         float width = [[objectSettingsFloatStrings objectAtIndex:2] floatValue];
+        width *= winSize.width * SCREEN_WIDTHS/PTM_RATIO; 
         float height = [[objectSettingsFloatStrings objectAtIndex:3] floatValue];
+        height *= winSize.height * SCREEN_LENGTHS/PTM_RATIO;
         float angleOffset = [[objectSettingsFloatStrings objectAtIndex:4] floatValue];
         ObstacleBlock* obstacle;
         obstacle = [[[ObstacleBlock alloc] initWithWorld:world atLocation:b2Vec2(xPos, yPos) withWidth:width withHeight:height withOffsetAngle:angleOffset] autorelease];        
@@ -254,7 +256,9 @@ enum {
         float yPos = [[objectSettingsFloatStrings objectAtIndex:1] floatValue];
         yPos *= winSize.height * SCREEN_LENGTHS/PTM_RATIO;
         float width = [[objectSettingsFloatStrings objectAtIndex:2] floatValue];
+        width *= winSize.width * SCREEN_WIDTHS/PTM_RATIO;
         float height = [[objectSettingsFloatStrings objectAtIndex:3] floatValue];
+        height *= winSize.height * SCREEN_LENGTHS/PTM_RATIO;
         float angleOffset = [[objectSettingsFloatStrings objectAtIndex:4] floatValue];
         TurboPad* turboPad;
         turboPad = [[[TurboPad alloc] initWithWorld:world atLocation:b2Vec2(xPos, yPos) withWidth:width withHeight:height withOffsetAngle:angleOffset] autorelease];        
@@ -273,6 +277,7 @@ enum {
         float yPos = [[objectSettingsFloatStrings objectAtIndex:1] floatValue];
         yPos *= winSize.height * SCREEN_LENGTHS/PTM_RATIO;
         float size = [[objectSettingsFloatStrings objectAtIndex:2] floatValue];
+        size *= winSize.width * SCREEN_LENGTHS/PTM_RATIO;
         float angle = [[objectSettingsFloatStrings objectAtIndex:3] floatValue];
         float angleOffset = [[objectSettingsFloatStrings objectAtIndex:4] floatValue];
         BounceTriangle* bounceTriangle;
@@ -292,6 +297,7 @@ enum {
         float yPos = [[objectSettingsFloatStrings objectAtIndex:1] floatValue];
         yPos *= winSize.height * SCREEN_LENGTHS/PTM_RATIO;
         float radius = [[objectSettingsFloatStrings objectAtIndex:2] floatValue];
+        radius *= winSize.width*SCREEN_WIDTHS/PTM_RATIO;
         GravityWell* gravityWell;
         gravityWell = [[[GravityWell alloc] initWithWorld:world atLocation:b2Vec2(xPos, yPos) withRadius:radius] autorelease];        
         [sceneSpriteBatchNode addChild:gravityWell];
@@ -519,7 +525,7 @@ enum {
     [self startStartSequence];
     
     CGSize screenSize = [CCDirector sharedDirector].winSize;
-    rocketMan.body->SetTransform( b2Vec2(screenSize.width/2/PTM_RATIO, screenSize.height/5/PTM_RATIO), -M_PI_2);
+    rocketMan.body->SetTransform( b2Vec2(screenSize.width*0.10f/PTM_RATIO, screenSize.height/5.0/PTM_RATIO), -M_PI_2);
     rocketMan.body->SetLinearVelocity(b2Vec2_zero);
     rocketMan.body->SetAngularVelocity(0.0);
 }

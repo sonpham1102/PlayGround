@@ -140,9 +140,16 @@
         }
     }
     // if we aren't colliding with the rocket and we were previously turned off, turn us back on
-    else if (!forceOn)
+    else
     {
-        forceOn = true;
+        if (!forceOn)
+        {
+            forceOn = true;
+        }
+        if ((initialImpactVector.x != 0.0f) || (initialImpactVector.y !=0.0f))
+        {
+            initialImpactVector = b2Vec2_zero;
+        }
     }
 }
 

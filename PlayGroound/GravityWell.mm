@@ -32,7 +32,7 @@
     body->CreateFixture(&fixtureDef); 
     
     forceOn = true;
-    initialImpactVector = b2Vec2_zero;
+    directionVector = b2Vec2_zero;
 }
 
 -(id) initWithWorld:(b2World *)theWorld atLocation:(b2Vec2)location withRadius:(float) radius
@@ -46,41 +46,7 @@
     }
     return self;
 }
-/*
--(void)updateStateWithDeltaTime:(ccTime)dt
-{
-    GameCharPhysics* rocketBody = isBodyCollidingWithObjectType(body, kObjTypeRocket);
-    if (rocketBody != NULL)
-    {
-        if (forceOn)
-        {
-            //get a vector pointing from the rocket to the center of the gravity well
-            b2Vec2 gravityForce = body->GetWorldCenter() - rocketBody.body->GetWorldCenter();
-            //get it's length
-            float gravityMag = gravityForce.Normalize();
-            //if it's not too close to the center
-            if (gravityMag >= deadZoneRad)
-            {
-                //apply a force that is inversely proportional to the distance apart
-                gravityMag = GW_MG*rocketBody.body->GetMass()/gravityMag/gravityMag/gravityMag;
-                gravityForce.x *= gravityMag;
-                gravityForce.y *= gravityMag;
-                rocketBody.body->ApplyForceToCenter(gravityForce);
-            }
-            //otherwise stop applying a force until the rocket leaves again to creat a slingshot effect
-            else
-            {
-                forceOn = false;
-            }
-        }
-    }
-    // if we aren't colliding with the rocket and we were previously turned off, turn us back on
-    else if (!forceOn)
-    {
-        forceOn = true;
-    }
-}
-*/
+
 -(void)updateStateWithDeltaTime:(ccTime)dt
 {
     GameCharPhysics* rocketBody = isBodyCollidingWithObjectType(body, kObjTypeRocket);
@@ -92,19 +58,35 @@
         float gravityMag = gravityForce.Normalize();
         
         //see if we've been turned on yet.  If not, turn on, and register the initial vector
-        if ((initialImpactVector.x == 0.0f) && (initialImpactVector.y == 0.0f))
+        if ((directionVector.x == 0.0f) && (directionVector.y == 0.0f))
         {
             forceOn = true;
-            initialImpactVector.x = gravityForce.x;
-            initialImpactVector.y = gravityForce.y;
+            b2Vec2 rocketVelocity = rocketBody.body->GetLinearVelocity();
+            
+            //set up a vector to check against to decide when to turn off the force
+            //cross the velocity with the initial gravity vector (vector from edge to center of gravity well)
+            //we only care about the z value
+            float crossProdZ = rocketVelocity.x*gravityForce.y-rocketVelocity.y*gravityForce.x;
+            
+            //the velocity is to the right of the vector to the center, so we'll be looping the rocket to the left
+            if (crossProdZ > 0)
+            {
+                directionVector.x = -gravityForce.y;
+                directionVector.y = gravityForce.x;
+            }
+            //the velocity is to the left of the vector to the center, so we'll be looping the rocket to the right
+            else
+            {
+                directionVector.x = gravityForce.y;
+                directionVector.y = -gravityForce.x;
+            }
         }
         
-        // if the dotProd is negative, we passed the 90 degree angle
         if (forceOn)
         {
             // calculate the dot product - we'll track this to see when to turn off the force
-            float dotProd = b2Dot(initialImpactVector, gravityForce);
-            if (dotProd >= -0.9f)
+            float dotProd = b2Dot(gravityForce, directionVector);
+            if (dotProd >= 0.0f)
             {
                 //apply 1 force that pulls it in to the center
                 gravityMag = GW_GRAV_FORCE*rocketBody.body->GetMass();
@@ -146,9 +128,9 @@
         {
             forceOn = true;
         }
-        if ((initialImpactVector.x != 0.0f) || (initialImpactVector.y !=0.0f))
+        if ((directionVector.x != 0.0f) || (directionVector.y !=0.0f))
         {
-            initialImpactVector = b2Vec2_zero;
+            directionVector = b2Vec2_zero;
         }
     }
 }

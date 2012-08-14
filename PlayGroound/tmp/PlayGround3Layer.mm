@@ -1,22 +1,18 @@
 //
-//  PlayGround3Layer.mm
+//  PlayGround1Layer.mm
 //  PlayGroound
 //
 //  Created by Jason Parlour on 12-07-18.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
-#import "PlayGround3Scene.h"
-#import "PlayGround3Layer.h"
+#import "PlayGround1Scene.h"
+#import "PlayGround1Layer.h"
 // Needed to obtain the Navigation Controller
 #import "AppDelegate.h"
 
 #import "PhysicsSprite.h"
 #import "GameManager.h"
-#import "RocketMan3.h"
-#import "GravityWell.h"
-#import "BounceTriangle.h"
-#import "TurboPad.h"
-#import "ObstacleBlock.h"
+#import "RocketMan.h"
 
 /*
 typedef enum {
@@ -28,8 +24,8 @@ typedef enum {
 */
 
 //AP : MOVE to a plist or something
-#define SCREEN_LENGTHS 1.0 //number of screens high for the level 
-#define SCREEN_WIDTHS 1.0
+#define SCREEN_LENGTHS 3.0 //number of screens high for the level 
+#define SCREEN_WIDTHS 5.0
 #define END_ZONE_SENSOR_SIZE 0.10 //multiple of screen height
 #define FIXED_POS_Y 0.33f // multiple of screen height
 #define FIXED_POS_X 0.33f // multiple of screen width
@@ -50,12 +46,13 @@ enum {
 
 #pragma mark - HelloWorldLayer
 
-@interface PlayGround3Layer()
+@interface PlayGround1Layer()
 -(void) initPhysics;
+-(void) addNewSpriteAtPosition:(CGPoint)p;
 -(void) createRocketMan:(CGPoint) location;
 @end
 
-@implementation PlayGround3Layer
+@implementation PlayGround1Layer
 
 -(void) createBackground {
     
@@ -68,11 +65,7 @@ enum {
     [tileMapNode setScaleY:SCREEN_LENGTHS];
     [tileMapNode setScaleX:SCREEN_WIDTHS];
     [self addChild:tileMapNode z:-10];
-}
 
--(NSString *)getTimerString;
-{
-    return timerString;
 }
 
 #define HORIZONTAL_MIN_SPACE 20.0
@@ -80,9 +73,9 @@ enum {
 #define VERTICAL_MAX_SPACE 15.0
 #define VERTICAL_MIN_SPACE 5.0
 #define MIN_OBSTACLE_WIDTH 2.0
-#define MAX_OBSTACLE_WIDTH 6.0
-#define MIN_OBSTACLE_HEIGHT 20.0
-#define MAX_OBSTACLE_HEIGHT 40.0
+#define MAX_OBSTACLE_WIDTH 12.0
+#define MIN_OBSTACLE_HEIGHT 10.0
+#define MAX_OBSTACLE_HEIGHT 35.0
 
 -(void) createObstacleAtLocation: (b2Vec2) location withWidth: (float) width withHeight: (float) height
 {
@@ -101,9 +94,7 @@ enum {
     fixtureDef.shape = &shape;
     //fixtureDef.isSensor = true;
     fixtureDef.density = 0.0;
-    fixtureDef.restitution = 1.2f;
-    fixtureDef.friction = 0.0f;
-    
+    fixtureDef.restitution = 2.0f;
     
     body->CreateFixture(&fixtureDef);
     
@@ -155,186 +146,6 @@ enum {
     }
 }
 
--(void) setString3:(id)sender
-{
-    timerString = @"3";
-}
-
--(void) setString2:(id)sender
-{
-    timerString = @"2";
-}
-
--(void) setString1:(id)sender
-{
-    timerString = @"1";
-}
-
--(void) setStringGo:(id)sender
-{
-    timerString = @"GO!";
-    acceptingInput = true;
-    raceTimer = 0.0;
-}
-
--(void) startStartSequence
-{
-    acceptingInput = false;
-    CCDelayTime *delay = [CCDelayTime actionWithDuration:1.0];
-    CCCallFuncN *action3 = [CCCallFuncN actionWithTarget:self selector:@selector(setString3:)];
-    CCCallFuncN *action2 = [CCCallFuncN actionWithTarget:self selector:@selector(setString2:)];
-    CCCallFuncN *action1 = [CCCallFuncN actionWithTarget:self selector:@selector(setString1:)];
-    CCCallFuncN *actionGO = [CCCallFuncN actionWithTarget:self selector:@selector(setStringGo:)];
-    CCSequence *actionList = [CCSequence actions:action3, delay, action2, delay, action1, delay, actionGO, nil];
-    
-    [self runAction:actionList];
-}
-
--(void) onEnter
-{
-    [self startStartSequence];
-    [super onEnter];
-}
-
--(void) buildLevelFromPlist:(NSString *)levelFileName
-{
-
-    NSString *fullFileName = [NSString stringWithFormat:@"%@.plist", levelFileName];
-    NSString *plistPath;
-    
-    //get the string for the path to the plist file
-    NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    plistPath = [rootPath stringByAppendingPathComponent:fullFileName];
-    if (![[NSFileManager defaultManager] fileExistsAtPath:plistPath])
-    {
-        plistPath = [[NSBundle mainBundle] pathForResource:levelFileName ofType:@"plist"];
-    }
-    
-    //read in the plist file
-    NSDictionary *plistDictionary =[NSDictionary dictionaryWithContentsOfFile:plistPath];
-    
-    //see if the file was found, if not return nil
-    if (plistDictionary == nil)
-    {
-        CCLOG(@"error reading the plist: %@.plist", levelFileName);
-    }
-
-    CGSize winSize = [[CCDirector sharedDirector] winSize];
-    
-    //get the minidictionary for each object type
-    //OBSTACLES
-    NSDictionary *obstacleBlocks = [plistDictionary objectForKey:NSStringFromClass([ObstacleBlock class])];
-    for (int i = 0; i < [obstacleBlocks count]; i++)
-    {
-        NSString *objectNumber = [NSString stringWithFormat:@"%i", i+1];
-        NSString *objectSettings = [obstacleBlocks objectForKey:objectNumber];
-        NSArray *objectSettingsFloatStrings = [objectSettings componentsSeparatedByString:@","];
-        // the array should contain an x and y position, width and height, and offset angle
-        float xPos = [[objectSettingsFloatStrings objectAtIndex:0] floatValue];
-        xPos *= winSize.width * SCREEN_WIDTHS/PTM_RATIO;
-        float yPos = [[objectSettingsFloatStrings objectAtIndex:1] floatValue];
-        yPos *= winSize.height * SCREEN_LENGTHS/PTM_RATIO;
-        float width = [[objectSettingsFloatStrings objectAtIndex:2] floatValue];
-        float height = [[objectSettingsFloatStrings objectAtIndex:3] floatValue];
-        float angleOffset = [[objectSettingsFloatStrings objectAtIndex:4] floatValue];
-        ObstacleBlock* obstacle;
-        obstacle = [[[ObstacleBlock alloc] initWithWorld:world atLocation:b2Vec2(xPos, yPos) withWidth:width withHeight:height withOffsetAngle:angleOffset] autorelease];        
-        [sceneSpriteBatchNode addChild:obstacle];
-    }
-    //TURBO PADS
-    NSDictionary *turboPads = [plistDictionary objectForKey:NSStringFromClass([TurboPad class])];
-    for (int i = 0; i < [turboPads count]; i++)
-    {
-        NSString *objectNumber = [NSString stringWithFormat:@"%i", i+1];
-        NSString *objectSettings = [turboPads objectForKey:objectNumber];
-        NSArray *objectSettingsFloatStrings = [objectSettings componentsSeparatedByString:@","];
-        // the array should contain an x and y position, width and height, and offset angle
-        float xPos = [[objectSettingsFloatStrings objectAtIndex:0] floatValue];
-        xPos *= winSize.width * SCREEN_WIDTHS/PTM_RATIO;
-        float yPos = [[objectSettingsFloatStrings objectAtIndex:1] floatValue];
-        yPos *= winSize.height * SCREEN_LENGTHS/PTM_RATIO;
-        float width = [[objectSettingsFloatStrings objectAtIndex:2] floatValue];
-        float height = [[objectSettingsFloatStrings objectAtIndex:3] floatValue];
-        float angleOffset = [[objectSettingsFloatStrings objectAtIndex:4] floatValue];
-        TurboPad* turboPad;
-        turboPad = [[[TurboPad alloc] initWithWorld:world atLocation:b2Vec2(xPos, yPos) withWidth:width withHeight:height withOffsetAngle:angleOffset] autorelease];        
-        [sceneSpriteBatchNode addChild:turboPad];
-    }
-    //BOUNCE TRIANGLES
-    NSDictionary *bounceTriangles = [plistDictionary objectForKey:NSStringFromClass([BounceTriangle class])];
-    for (int i = 0; i < [bounceTriangles count]; i++)
-    {
-        NSString *objectNumber = [NSString stringWithFormat:@"%i", i+1];
-        NSString *objectSettings = [bounceTriangles objectForKey:objectNumber];
-        NSArray *objectSettingsFloatStrings = [objectSettings componentsSeparatedByString:@","];
-        // the array should contain an x and y position, width and height, and offset angle
-        float xPos = [[objectSettingsFloatStrings objectAtIndex:0] floatValue];
-        xPos *= winSize.width * SCREEN_WIDTHS/PTM_RATIO;
-        float yPos = [[objectSettingsFloatStrings objectAtIndex:1] floatValue];
-        yPos *= winSize.height * SCREEN_LENGTHS/PTM_RATIO;
-        float size = [[objectSettingsFloatStrings objectAtIndex:2] floatValue];
-        float angle = [[objectSettingsFloatStrings objectAtIndex:3] floatValue];
-        float angleOffset = [[objectSettingsFloatStrings objectAtIndex:4] floatValue];
-        BounceTriangle* bounceTriangle;
-        bounceTriangle = [[[BounceTriangle alloc] initWithWorld:world atLocation:b2Vec2(xPos, yPos) withSize:size withAngle:angle withOffsetAngle:angleOffset] autorelease];        
-        [sceneSpriteBatchNode addChild:bounceTriangle];
-    }
-    //GRAVITY WELLS
-    NSDictionary *gravityWells = [plistDictionary objectForKey:NSStringFromClass([GravityWell class])];
-    for (int i = 0; i < [gravityWells count]; i++)
-    {
-        NSString *objectNumber = [NSString stringWithFormat:@"%i", i+1];
-        NSString *objectSettings = [gravityWells objectForKey:objectNumber];
-        NSArray *objectSettingsFloatStrings = [objectSettings componentsSeparatedByString:@","];
-        // the array should contain an x and y position, width and height, and offset angle
-        float xPos = [[objectSettingsFloatStrings objectAtIndex:0] floatValue];
-        xPos *= winSize.width * SCREEN_WIDTHS/PTM_RATIO;
-        float yPos = [[objectSettingsFloatStrings objectAtIndex:1] floatValue];
-        yPos *= winSize.height * SCREEN_LENGTHS/PTM_RATIO;
-        float radius = [[objectSettingsFloatStrings objectAtIndex:2] floatValue];
-        GravityWell* gravityWell;
-        gravityWell = [[[GravityWell alloc] initWithWorld:world atLocation:b2Vec2(xPos, yPos) withRadius:radius] autorelease];        
-        [sceneSpriteBatchNode addChild:gravityWell];
-    }
-}
-
--(void) createGameObjects
-{
-/*
-    GravityWell* gravityWell;
-    CGSize winSize = [CCDirector sharedDirector].winSize;
-    
-    gravityWell = [[[GravityWell alloc] initWithWorld:world atLocation:b2Vec2(winSize.width*0.8f/PTM_RATIO, winSize.height/2.0f/PTM_RATIO) withRadius:8.0] autorelease];        
-
-    [sceneSpriteBatchNode addChild:gravityWell];
-*/
-/*
-    BounceTriangle* bounceTri;
-    CGSize winSize = [CCDirector sharedDirector].winSize;
-    
-    bounceTri = [[[BounceTriangle alloc] initWithWorld:world atLocation:b2Vec2(winSize.width*0.8f/PTM_RATIO, winSize.height/2.0f/PTM_RATIO) withSize:10.0f withAngle:20.0f] autorelease];        
-    
-    [sceneSpriteBatchNode addChild:bounceTri];
-*/
-/*
-    TurboPad* turboPad;
-    CGSize winSize = [CCDirector sharedDirector].winSize;
-    
-    turboPad = [[[TurboPad alloc] initWithWorld:world atLocation:b2Vec2(winSize.width*0.8f/PTM_RATIO, winSize.height/2.0f/PTM_RATIO) withWidth:3.0f withHeight:10.0f withOffsetAngle:45.0f] autorelease];        
-    
-    [sceneSpriteBatchNode addChild:turboPad];
-*/
-/*
-    ObstacleBlock* obstacle;
-    CGSize winSize = [CCDirector sharedDirector].winSize;
-    
-    obstacle = [[[ObstacleBlock alloc] initWithWorld:world atLocation:b2Vec2(winSize.width*0.8f/PTM_RATIO, winSize.height/2.0f/PTM_RATIO) withWidth:3.0f withHeight:10.0f withOffsetAngle:45.0f] autorelease];        
-    
-    [sceneSpriteBatchNode addChild:obstacle];
-*/
-    [self buildLevelFromPlist:@"PG3Level1"];
-}
-
 -(id) init
 {
 	if( (self=[super init])) {
@@ -348,20 +159,13 @@ enum {
 		// init physics
 		[self initPhysics];
 		        
-        //[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Playground2Atlas.plist"];
-        //sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"Playground2Atlas.png" capacity:250];
-        sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithTexture:nil];
-        [self addChild:sceneSpriteBatchNode z:0];
-
-        
         // create the rocket man
-        [self createRocketMan:ccp(s.width*0.10f/PTM_RATIO, s.height/5.0/PTM_RATIO)];
-
-        // add it as a child
-        [sceneSpriteBatchNode addChild:rocketMan /*z:0*/];
+        [self createRocketMan:ccp(s.width/2, s.height/5)];
         
-        //[self createObstacles];
-        [self createGameObjects];
+        // add it as a child
+        [self addChild:rocketMan z:0];
+        
+        [self createObstacles];
         
         // make sure touches are enabled for it so gesture recognizer gets it
         //rocketMan.isTouchEnabled = YES;
@@ -374,14 +178,14 @@ enum {
         //_panRaycastCallback = new PanRayCastCallback();
         
         debugLineEndPoint = CGPointZero;
-        debugLineStartPoint = CGPointZero;
+        debugLineStartPoint = CGPointZero;      
         
-        raceTimer = 0.0f;
-        acceptingInput = false;
-                
+        CCLabelTTF *label = [CCLabelTTF labelWithString:@"Tap screen" fontName:@"Marker Felt" fontSize:32];
+		[self addChild:label z:0];
+		[label setColor:ccc3(0,0,255)];
+		label.position = ccp( s.width/2, s.height-50);
+        
         [self createBackground];
-        
-        [self startStartSequence];
 		
 		[self scheduleUpdate];
 	}
@@ -405,7 +209,7 @@ enum {
 	CGSize s = [[CCDirector sharedDirector] winSize];
 	
 	b2Vec2 gravity;
-	gravity.Set(-10.0f, 0.0f);
+	gravity.Set(0.0f, 0.0f);
 	world = new b2World(gravity);
 	
 	
@@ -491,7 +295,7 @@ enum {
 
 -(void) createRocketMan:(CGPoint) location
 {
-    rocketMan = [[RocketMan3 alloc] initWithWorld:world atLocation:location];
+    rocketMan = [[RocketMan alloc] initWithWorld:world atLocation:location];
 }
 
 -(void) draw
@@ -514,12 +318,46 @@ enum {
 	kmGLPopMatrix();
 }
 
+-(void) addNewSpriteAtPosition:(CGPoint)p
+{
+	CCLOG(@"Add sprite %0.2f x %02.f",p.x,p.y);
+	CCNode *parent = [self getChildByTag:kTagParentNode];
+	
+	//We have a 64x64 sprite sheet with 4 different 32x32 images.  The following code is
+	//just randomly picking one of the images
+	int idx = (CCRANDOM_0_1() > .5 ? 0:1);
+	int idy = (CCRANDOM_0_1() > .5 ? 0:1);
+	PhysicsSprite *sprite = [PhysicsSprite spriteWithTexture:spriteTexture_ rect:CGRectMake(32 * idx,32 * idy,32,32)];						
+	[parent addChild:sprite];
+	
+	sprite.position = ccp( p.x, p.y);
+	
+	// Define the dynamic body.
+	//Set up a 1m squared box in the physics world
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position.Set(p.x/PTM_RATIO, p.y/PTM_RATIO);
+	b2Body *body = world->CreateBody(&bodyDef);
+	
+	// Define another box shape for our dynamic body.
+	b2PolygonShape dynamicBox;
+	dynamicBox.SetAsBox(.5f, .5f);//These are mid points for our 1m box
+	
+	// Define the dynamic body fixture.
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &dynamicBox;	
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.3f;
+	body->CreateFixture(&fixtureDef);
+	
+	[sprite setPhysicsBody:body];
+}
+
 -(void) resetRocketManPosition
 {
-    [self startStartSequence];
     
     CGSize screenSize = [CCDirector sharedDirector].winSize;
-    rocketMan.body->SetTransform( b2Vec2(screenSize.width/2/PTM_RATIO, screenSize.height/5/PTM_RATIO), -M_PI_2);
+    rocketMan.body->SetTransform( b2Vec2(screenSize.width/2/PTM_RATIO, screenSize.height/5/PTM_RATIO), 0.0f);
     rocketMan.body->SetLinearVelocity(b2Vec2_zero);
     rocketMan.body->SetAngularVelocity(0.0);
 }
@@ -712,13 +550,7 @@ enum {
     b2Vec2 rocketVelocity = rocketMan.body->GetLinearVelocity();
     b2Vec2 rocketPosition = rocketMan.body->GetPosition();
     b2Vec2 forwardVector = rocketMan.body->GetWorldVector(b2Vec2(0.0f, 1.0f));
-
-    //zero out the rocket velocity if it's not in +ve x
-    if (rocketVelocity.x < 0.0f)
-    {
-        rocketVelocity.x = 0.0f;
-    }
-    
+        
     //we want the camera to be ahead of the rocket's movement
     float speed = rocketVelocity.Normalize() * PTM_RATIO;;
 /*
@@ -750,7 +582,6 @@ enum {
     {
         velocityOffset = maximumOffset;
     }
-
     rocketVelocity.x = rocketVelocity.x * velocityOffset;
     rocketVelocity.y = rocketVelocity.y * velocityOffset; 
     
@@ -793,12 +624,12 @@ enum {
     b2Vec2 slashVector = b2Vec2((endPoint.x - startPoint.x)/PTM_RATIO, (endPoint.y - startPoint.y)/PTM_RATIO);
     if (slashVector.LengthSquared() < MIN_PAN_LENGTH_SQ)
     {
-        //CCLOG(@"Pan too short %.2f vs %.2f", slashVector.LengthSquared(), MIN_PAN_LENGTH_SQ);         
+        CCLOG(@"Pan too short %.2f vs %.2f", slashVector.LengthSquared(), MIN_PAN_LENGTH_SQ);         
         return;
     }
     else
     {
-        //CCLOG(@"Pan good %.2f", slashVector.LengthSquared());
+        CCLOG(@"Pan good %.2f", slashVector.LengthSquared());
     }
     
     debugLineStartPoint = startPoint;
@@ -807,11 +638,35 @@ enum {
     // give the rocked the parameters for the pan move
     // AP this is two functions in case I want to use collision detection to see if touch actually hits the 
     // rocket
-    // CONVERT the points to meters before sending them to rocket 
-    startPoint = ccpMult(startPoint, 1.0/PTM_RATIO);
-    endPoint = ccpMult(endPoint, 1.0/PTM_RATIO);
     [rocketMan planPanMove:startPoint endPoint:endPoint];
     [rocketMan executePanMove];
+    
+    //AP - here's where I would check for a "valid" pan (for now all pans are valid) 
+    
+    //AP : Need to subtract any movement of the view
+    //panEndPoint.x -= [self position].x;
+    //panEndPoint.y -= [self position].y;
+    
+    
+    // perform a raycast, if the line hits the rocketman
+//    world->RayCast(_panRaycastCallback, b2Vec2(panStartPoint.x/PTM_RATIO, panStartPoint.y/PTM_RATIO),
+//                   b2Vec2(panEndPoint.x/PTM_RATIO, panEndPoint.y/PTM_RATIO));
+    
+    
+    /*
+     //see if the pan actually intersected one of the sides of the rocket man
+     CGRect boundingBox = rocketMan.boundingBox;
+     
+     float left = CGRectGetMinX(boundingBox);        
+     float right = CGRectGetMaxX(boundingBox);
+     float top = CGRectGetMinX(boundingBox);
+     float bottom = CGRectGetMinX(boundingBox);
+     
+     float determinant; 
+     */        
+    
+
+    
     
 }
 
@@ -864,14 +719,15 @@ enum {
         }
     }
 
+/* AP, need to set up a spritebatchnode to do this
     CCArray *listOfGameObjects = [sceneSpriteBatchNode children];
-    for (GameChar *tempChar in listOfGameObjects)
+    for (GameCharacter *tempChar in listOfGameObjects)
     {
-        [tempChar updateStateWithDeltaTime:dt];
+        [tempChar updateStateWithDeltaTime:dt andListOfGameObjects:listOfGameObjects];
     }
-
+*/
     //HACK for now just call the update on the rocket manually
-    //[rocketMan updateStateWithDeltaTime:dt andListOfGameObjects:nil];
+    [rocketMan updateStateWithDeltaTime:dt andListOfGameObjects:nil];
     
     
     // see if the rocketMan is in the end zone
@@ -894,12 +750,6 @@ enum {
         edge = edge->next;
     }
 
-    // this means the race is on
-    if(acceptingInput)
-    {
-        raceTimer+=dt;
-        timerString = [NSString stringWithFormat:@"%.2f", raceTimer];
-    }
     
     [self followRocketMan2:dt];
 }
@@ -918,8 +768,6 @@ enum {
 {
 
 }
-
--(bool) isAcceptingInput {return acceptingInput;}
 
 #pragma mark GameKit delegate
 

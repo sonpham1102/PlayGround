@@ -7,9 +7,11 @@
 //
 
 // ONLY constants needed by all levels should go in here
+//#import "Box2D.h"
 
 #ifndef PlayGroound_GlobalConstants_h
 #define PlayGroound_GlobalConstants_h
+
 
 //Pixel to metres ratio. Box2D uses metres as the unit for measurement.
 //This ratio defines how many pixels correspond to 1 Box2D "metre"
@@ -51,14 +53,16 @@ typedef enum {
     kStateManeuver
 }CharStates;
 
+
 @protocol PlayGround2LayerDelegate
 
--(void) createBullet:(ccTime)deltaTime;
+-(void) createBullet:(ccTime)deltaTime withTarget:(CGPoint)bulletTarget withVelocity:(CGPoint)targetVelocity;
 -(void) decrementBulletCount;
 -(void) addParticleEffect:(CCParticleSystemQuad*)effect;
 -(void) createExplosionAtLocation:(CGPoint)location;
 
 @end
+
 
 // A macro to determine if iPad or not
 #ifdef UI_USER_INTERFACE_IDIOM//()

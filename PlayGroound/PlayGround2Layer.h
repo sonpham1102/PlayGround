@@ -21,6 +21,8 @@
 #import "Level1ContactListener.h"
 
 
+
+
 // HelloWorldLayer
 @interface PlayGround2Layer : CCLayer <PlayGround2LayerDelegate>
 {
@@ -79,7 +81,10 @@
 
 }
 
+
 @property (nonatomic,retain) CMMotionManager *motionManager;
 @property (nonatomic,assign) CCLabelBMFont *debugLabel;
 
 @end
+
+

@@ -21,7 +21,7 @@
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
 #define LEVEL_HEIGHT 10 //25
-#define LEVEL_WIDTH 4 //10
+#define LEVEL_WIDTH 3 //10
 #define MAX_VELOCITY 5
 //#define FRICTION_COEFF 0.08
 
@@ -41,6 +41,8 @@
 #define CAMERA_CATCHUP_TIME 1.0 //1 second
 #define MAX_CAMERA_SPEED 1.0 //(in M/s)
 
+#define MIN_BULLET_SLOPE 1.0
+#define BULLET_TRACKING_FACTOR 0.5
 #define BULLET_TIME 0.1
 #define TOTAL_BULLETS 100000
 
@@ -430,33 +432,44 @@ enum {
     
 }
 
--(void) createBullet:(ccTime)deltaTime {
+-(void) createBullet:(ccTime)deltaTime withTarget:(CGPoint)bulletTarget withVelocity:(CGPoint)targetVelocity {
+    
+    b2Vec2 targetPosition = b2Vec2(bulletTarget.x,bulletTarget.y);
+    b2Vec2 targetVel = b2Vec2(targetVelocity.x,targetVelocity.y);
     
     if ((bulletTime >= BULLET_TIME) || (bulletCount == 0)){
         if (bulletCount <= TOTAL_BULLETS) {
             b2Vec2 firePoint = rocket.body->GetWorldPoint(b2Vec2(fireSide/PTM_RATIO,25/PTM_RATIO));
-            bullet *bulletShot = [[bullet alloc] initWithWorld:world atLoaction:firePoint];
-            [sceneSpriteBatchNode addChild:bulletShot];
-            b2Vec2 bodyCenter = rocket.body->GetWorldCenter();
+            
             b2Vec2 linVelo = rocket.body->GetLinearVelocity();
-            float32 bulletPower;
-            if (linVelo.x < 0) {
-                bulletPower += -linVelo.x; 
-            } else {
-                bulletPower += linVelo.x;
+            b2Vec2 impulse; // = b2Vec2(0,bulletPower);
+            impulse = targetVel - linVelo;
+            impulse.x *= BULLET_TRACKING_FACTOR;
+            impulse.y *= BULLET_TRACKING_FACTOR;
+            impulse += targetPosition - firePoint;
+            
+            b2Vec2 localImpulse = rocket.body->GetLocalVector(impulse);
+            float slope = MIN_BULLET_SLOPE;
+            
+            if (localImpulse.x != 0) {
+                slope = ABS(localImpulse.y / localImpulse.x);
             }
-            if (linVelo.y < 0) {
-                bulletPower += -linVelo.y;
-            } else {
-                bulletPower += linVelo.y;
+            
+            if (slope < MIN_BULLET_SLOPE || localImpulse.y < 0.0) {
+                return;
             }
-            bulletPower *= 200;
-            bulletPower = MAX(1000, bulletPower);
-            bulletPower = MIN(1700, bulletPower);
-            b2Vec2 impulse = b2Vec2(0,bulletPower);
-            b2Vec2 impulseWorld = rocket.body->GetWorldVector(impulse);
-            b2Vec2 impulsePoint = rocket.body->GetWorldPoint(b2Vec2(0,40));
-            bulletShot.body->ApplyForce(impulseWorld, impulsePoint);
+            bullet *bulletShot = [[bullet alloc] initWithWorld:world atLoaction:firePoint];
+            bulletShot.body->SetLinearVelocity(linVelo);
+            float bulletPower = bulletShot.body->GetMass() * 750.0f;
+            
+            [sceneSpriteBatchNode addChild:bulletShot];
+            
+            impulse.Normalize();
+            impulse.x *= bulletPower;
+            impulse.y *= bulletPower;
+            b2Vec2 impulsePoint = bulletShot.body->GetWorldCenter();
+            bulletShot.body->ApplyForce(impulse, impulsePoint);
+            
             [bulletShot setDelegate:self];
             bulletCount ++;
             
@@ -531,7 +544,7 @@ enum {
     
     CGSize winSize = [CCDirector sharedDirector].winSize;
 
-    b2Vec2 cTarget = rocket.body->GetWorldPoint(b2Vec2(0, 3.5));
+    b2Vec2 cTarget = rocket.body->GetWorldPoint(b2Vec2(0, 13.5));
                                             
     float fixtedPositionY = winSize.height/2;
     float fixtedPositionX = winSize.width/2;
@@ -668,6 +681,7 @@ enum {
             if (touchLeft == nil)
             {
                 [self schedule:@selector(fireLeft)];
+                [rocket setFiringLeftRocket:YES];
                 touchLeft = touch;
                 leftRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
                 CGPoint position;
@@ -683,6 +697,7 @@ enum {
             if (touchRight == nil)
             {
                 [self schedule:@selector(fireRight)];
+                [rocket setFiringRightRocket:YES];
                 touchRight = touch;
                 rightRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
                 CGPoint position;
@@ -724,11 +739,13 @@ enum {
 #else*/        
         if (touch == touchLeft) {
             [self unschedule:@selector(fireLeft)];
+            [rocket setFiringLeftRocket:NO];
             [rocketSmokeLeft stopSystem];
             touchLeft = nil;
             STOPSOUNDEFFECT(leftRocketSoundID);
         } else  if (touch == touchRight) {
             [self unschedule:@selector(fireRight)];
+            [rocket setFiringRightRocket:NO];
             [rocketSmokeRight stopSystem];
             touchRight = nil;
             STOPSOUNDEFFECT(rightRocketSoundID);

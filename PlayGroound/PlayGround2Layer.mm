@@ -32,8 +32,8 @@
 #define CAMERA_VELOCITY_FACTOR 0.6
 
 #define CAMERA_DENSITY 3.0 //weight of the camera body
-#define CAMERA_LINEAR_DAMP 20.0 //the linear dampening for the camera, causes it to drag behind
-#define CAMERA_SPRING 10.0 //the spring force that pulls the camera towards its target
+#define CAMERA_LINEAR_DAMP 10.0 //the linear dampening for the camera, causes it to drag behind
+#define CAMERA_SPRING 20.0 //the spring force that pulls the camera towards its target
 
 // AP: clean this shit up once I get a smooth camera follow
 #define CAMERA_CORRECTION_FACTOR 0.1 // affects the speed at which the camera will try to follow the rocket
@@ -590,7 +590,7 @@ enum {
     b2Vec2 rocketPosition = rocket.body->GetPosition();
     
     //we want the camera to be ahead of the rocket's movement
-    float speed = rocketVelocity.Normalize() * PTM_RATIO;
+    float speed = rocketVelocity.Normalize() * PTM_RATIO ;
     
     //rocketVelocity = rocket.body->GetLocalVector(b2Vec2(0,1.0));
     
@@ -605,6 +605,7 @@ enum {
     float a = winSize.width/2.0*0.9;
     float b = winSize.height/2.0*0.9;
     float maximumOffset = a*b/sqrt(b*cosf(theta)*b*cosf(theta) + a*sinf(theta)*a*sinf(theta));
+
     
     if (velocityOffset >= maximumOffset)
     {

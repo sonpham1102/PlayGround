@@ -35,7 +35,7 @@
     
     body->CreateFixture(&fixtureDef);
     
-    body->SetTransform(body->GetPosition(), angleOffset*M_PI_2/180.0f);
+    body->SetTransform(body->GetPosition(), angleOffset*M_PI/180.0f);
 }
 
 -(id)initWithWorld:(b2World*)theWorld atLocation:(b2Vec2) location withWidth: (float) width withHeight:(float) height withOffsetAngle:(float)angleOffset

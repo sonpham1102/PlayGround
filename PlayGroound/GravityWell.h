@@ -12,7 +12,7 @@
 {
     b2World *world;
     bool forceOn;
-    b2Vec2 initialImpactVector;
+    b2Vec2 directionVector;
 }
 
 //location should be in meters so that this object doesn't need the know that layer's PTM_RATIO

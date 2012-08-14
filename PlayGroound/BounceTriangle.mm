@@ -20,8 +20,8 @@
     body->SetUserData(self);
     
     //the size is the length of the hypoteneuse
-    float halfWidth = cosf(angle*M_PI_2/180.0f)*size/2.0f;
-    float halfHeight = sinf(angle*M_PI_2/180.0f)*size;
+    float halfWidth = cosf(angle*M_PI/180.0f)*size/2.0f;
+    float halfHeight = sinf(angle*M_PI/180.0f)*size;
     
     b2PolygonShape shape;
     b2Vec2 verts[]={
@@ -38,7 +38,7 @@
     fixtureDef.restitution = 3.0f;
     body->CreateFixture(&fixtureDef);
     
-    body->SetTransform(body->GetPosition(), angleOffset*M_PI_2/180.0f);
+    body->SetTransform(body->GetPosition(), angleOffset*M_PI/180.0f);
 }
 
 

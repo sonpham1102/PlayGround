@@ -12,7 +12,7 @@
 
 GameCharPhysics* isBodyCollidingWithObjectType(b2Body *body, 
                                    GameObjType objectTyp);
-bool isSensorCollidingWithObjectType(b2Body *body, 
+b2Body* isSensorCollidingWithObjectType(b2Body *body, 
                                      GameObjType objectType,
                                      b2Fixture* fixturee,
                                      b2World *world);

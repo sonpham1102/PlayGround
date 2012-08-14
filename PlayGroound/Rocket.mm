@@ -22,10 +22,15 @@
 @synthesize turnDirection;
 @synthesize sensorFixture;
 @synthesize delegate;
+@synthesize firingLeftRocket;
+@synthesize firingRightRocket;
 
 
--(void) fireBullet:(ccTime)deltaTime {
-    [delegate createBullet:deltaTime];
+-(void) fireBullet:(ccTime)deltaTime withTarget:(b2Body *)target{
+    
+    CGPoint bulletTarget = ccp(target->GetPosition().x, target->GetPosition().y);
+    CGPoint targetVelocity = ccp(target->GetLinearVelocity().x, target->GetLinearVelocity().y);
+    [delegate createBullet:deltaTime withTarget:bulletTarget withVelocity:targetVelocity];
 }
 
 -(void) createWeaponSensor {
@@ -137,8 +142,10 @@
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime {
     [self turnRocket];
     //check to see if sensor detects asteroid
-    if (isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture,world)) {
-        [self fireBullet:deltaTime];
+    b2Body* bulletTarget = isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture,world);
+    if (bulletTarget != nil) {
+        [self fireBullet:deltaTime withTarget:bulletTarget];
+         
     }
     /*
     if (isBodyCollidingWithObjectType(body, kObjTypeAsteroid)) {
@@ -154,22 +161,42 @@
 
 -(void) fireLeftRocket {
     
-    b2Vec2 bodyCenter = body->GetWorldCenter();
-    b2Vec2 impulse = b2Vec2(0,body->GetMass() * 10.0f);
-    b2Vec2 impulseWorld = body->GetWorldVector(impulse);
-    b2Vec2 impulsePoint = body->GetWorldPoint(b2Vec2(-1.25 * SCALE_FACTOR,
+    if (firingRightRocket) {
+
+        b2Vec2 bodyCenter = body->GetWorldCenter();
+        b2Vec2 impulse = b2Vec2(0,body->GetMass() * 15.0f);
+        b2Vec2 impulseWorld = body->GetWorldVector(impulse);
+        b2Vec2 impulsePoint = body->GetWorldPoint(b2Vec2(-1.25 * SCALE_FACTOR,
                                                      /*-1.75*/0.0 * SCALE_FACTOR));
-    body->ApplyForce(impulseWorld, impulsePoint);
+        body->ApplyForce(impulseWorld, impulsePoint);
+    } else {
+        b2Vec2 bodyCenter = body->GetWorldCenter();
+        b2Vec2 impulse = b2Vec2(-body->GetMass() * 15.0f,0.0f);
+        b2Vec2 impulseWorld = body->GetWorldVector(impulse);
+        b2Vec2 impulsePoint = body->GetWorldPoint(b2Vec2(-1.25 * SCALE_FACTOR,
+                                                         /*-1.75*/0.0 * SCALE_FACTOR));
+        body->ApplyForce(impulseWorld, impulsePoint);
+        
+    }
 }
 
 -(void) fireRightRocket {
     
-    b2Vec2 bodyCenter = body->GetWorldCenter();
-    b2Vec2 impulse = b2Vec2(0,body->GetMass() * 10.0f);
-    b2Vec2 impulseWorld = body->GetWorldVector(impulse);
-    b2Vec2 impulsePoint = body->GetWorldPoint(b2Vec2(1.25 * SCALE_FACTOR,
+    if  (firingLeftRocket) {
+        b2Vec2 bodyCenter = body->GetWorldCenter();
+        b2Vec2 impulse = b2Vec2(0,body->GetMass() * 10.0f);
+        b2Vec2 impulseWorld = body->GetWorldVector(impulse);
+        b2Vec2 impulsePoint = body->GetWorldPoint(b2Vec2(1.25 * SCALE_FACTOR,
                                                      /*-1.75*/0.0 * SCALE_FACTOR));
-    body->ApplyForce(impulseWorld, impulsePoint);
+        body->ApplyForce(impulseWorld, impulsePoint);
+    } else {
+        b2Vec2 bodyCenter = body->GetWorldCenter();
+        b2Vec2 impulse = b2Vec2(body->GetMass() * 15.0f,0.0f);
+        b2Vec2 impulseWorld = body->GetWorldVector(impulse);
+        b2Vec2 impulsePoint = body->GetWorldPoint(b2Vec2(-1.25 * SCALE_FACTOR,
+                                                         /*-1.75*/0.0 * SCALE_FACTOR));
+        body->ApplyForce(impulseWorld, impulsePoint);
+    }
 }
 
 -(id) initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location {

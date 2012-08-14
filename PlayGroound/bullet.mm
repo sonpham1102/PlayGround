@@ -9,6 +9,7 @@
 #import "bullet.h"
 #import "Box2DHelpers.h"
 
+
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 #define BULLET_LIFE 0.8
 
@@ -54,11 +55,12 @@
 -(void) moveParticleEffect {
     
     CGPoint position;
-    float xPos = body->GetWorldPoint(b2Vec2(0,0)).x;
-    float yPos = body->GetWorldPoint(b2Vec2(0,0)).y;
-    position.x = xPos * PTM_RATIO * 50;
-    position.y = yPos * PTM_RATIO * 50;
+    float xPos = body->GetPosition().x;
+    float yPos = body->GetPosition().y;
+    position.x = xPos * PTM_RATIO;
+    position.y = yPos * PTM_RATIO;
     bulletFire.position = position;
+    
 }
 
 -(void) destroy:(id)sender {

@@ -17,11 +17,12 @@
 #import "GlobalConstants.h"
 #import "Obstacle.h"
 #import "Asteroid.h"
+#import "Missle.h"
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
-#define LEVEL_HEIGHT 10 //25
-#define LEVEL_WIDTH 3 //10
+#define LEVEL_HEIGHT 13 //25
+#define LEVEL_WIDTH 5 //10
 #define MAX_VELOCITY 5
 //#define FRICTION_COEFF 0.08
 
@@ -41,10 +42,12 @@
 #define CAMERA_CATCHUP_TIME 1.0 //1 second
 #define MAX_CAMERA_SPEED 1.0 //(in M/s)
 
-#define MIN_BULLET_SLOPE 1.0
+#define MIN_BULLET_SLOPE 1.5
 #define BULLET_TRACKING_FACTOR 0.5
 #define BULLET_TIME 0.1
 #define TOTAL_BULLETS 100000
+#define MISSILE_LIMIT 3
+#define MISSLE_FIRE_DELAY 1.5
 
 #define USE_MAX_VELOCITY 0
 //#define NO_TEST 0
@@ -65,8 +68,6 @@ enum {
 @synthesize motionManager;
 @synthesize debugLabel;
 
-
-
 -(void) onEnter{
     [super onEnter];
     self.isTouchEnabled = YES;
@@ -82,6 +83,9 @@ enum {
                                                     name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 }
 
+-(void)decrementMissleCount{
+    missleCount --;
+}
 -(void)decrementBulletCount{
     bulletCount --;
 }
@@ -101,6 +105,8 @@ enum {
         asteroidsCreated = 0;
         bulletTime = 0.0;
         bulletCount = 0;
+        missleTime = 0.0;
+        missleCount = 0;
         loopCount = 0;
         fireSide = 10;
         
@@ -429,6 +435,8 @@ enum {
     [rocket setPitchTurn:pitch];
     //[rocket updateStateWithDeltaTime:dt];
 	[self followRocket2:dt];
+    bulletTime += dt;
+    missleTime += dt;
     
 }
 
@@ -456,6 +464,13 @@ enum {
             }
             
             if (slope < MIN_BULLET_SLOPE || localImpulse.y < 0.0) {
+                if ((missleCount < MISSILE_LIMIT) && (missleTime >= MISSLE_FIRE_DELAY)){
+                    Missle *fireMissle = [[Missle alloc] initWithWorld:world atLoaction:rocket.body->GetWorldPoint(b2Vec2(0,35/PTM_RATIO)) withTarget:rocket.bulletTarget];
+                    [fireMissle setDelegate:self];
+                    [sceneSpriteBatchNode addChild:fireMissle];
+                    missleCount ++;
+                    missleTime = 0.0;
+                }
                 return;
             }
             bullet *bulletShot = [[bullet alloc] initWithWorld:world atLoaction:firePoint];
@@ -494,7 +509,7 @@ enum {
         }
         bulletTime = 0.0;
     }
-    bulletTime += deltaTime;
+    //bulletTime += deltaTime;
 }
 
 - (void) didFlipScreen:(NSNotification *)notification{ 
@@ -507,8 +522,10 @@ enum {
     explosion.position = location;
     [explosion setDuration:2];
     [explosion setScale:0.4];
+    [explosion setEmissionRate:75];
     [self addChild:explosion];
     [explosion setAutoRemoveOnFinish:YES];
+    [rocket setBulletTarget:nil];
     
 }
 

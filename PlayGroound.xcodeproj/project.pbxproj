@@ -10,6 +10,7 @@
 		120EEB0715D6140B00C629B2 /* scifi1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 120EEB0615D6140B00C629B2 /* scifi1.mp3 */; };
 		120EEB2915D6DF4D00C629B2 /* Sonic Boom.wav in Resources */ = {isa = PBXBuildFile; fileRef = 120EEB2815D6DF4D00C629B2 /* Sonic Boom.wav */; };
 		120EEB3115D711AC00C629B2 /* Asteroid.mm in Sources */ = {isa = PBXBuildFile; fileRef = 120EEB3015D711AC00C629B2 /* Asteroid.mm */; };
+		120EEB3815DAC47D00C629B2 /* Missle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 120EEB3715DAC47D00C629B2 /* Missle.mm */; };
 		121DD2E915D0BFAD0098A1AF /* Level1ContactListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = 121DD2E815D0BFAD0098A1AF /* Level1ContactListener.mm */; };
 		121DD30515D2CEF00098A1AF /* PlanetLayer.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 121DD30415D2CEF00098A1AF /* PlanetLayer.tmx */; };
 		121DD31215D55AC80098A1AF /* BackDropLayer.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 121DD31115D55AC80098A1AF /* BackDropLayer.tmx */; };
@@ -242,6 +243,8 @@
 		120EEB2815D6DF4D00C629B2 /* Sonic Boom.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Sonic Boom.wav"; sourceTree = "<group>"; };
 		120EEB2F15D711AC00C629B2 /* Asteroid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Asteroid.h; sourceTree = "<group>"; };
 		120EEB3015D711AC00C629B2 /* Asteroid.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Asteroid.mm; sourceTree = "<group>"; };
+		120EEB3615DAC47C00C629B2 /* Missle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Missle.h; sourceTree = "<group>"; };
+		120EEB3715DAC47D00C629B2 /* Missle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Missle.mm; sourceTree = "<group>"; };
 		121DD2E715D0BFAC0098A1AF /* Level1ContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Level1ContactListener.h; sourceTree = "<group>"; };
 		121DD2E815D0BFAD0098A1AF /* Level1ContactListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Level1ContactListener.mm; sourceTree = "<group>"; };
 		121DD30415D2CEF00098A1AF /* PlanetLayer.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PlanetLayer.tmx; sourceTree = "<group>"; };
@@ -1504,6 +1507,8 @@
 				FA65B52715D6EDE0005A1044 /* ObstacleBlock.mm */,
 				120EEB2F15D711AC00C629B2 /* Asteroid.h */,
 				120EEB3015D711AC00C629B2 /* Asteroid.mm */,
+				120EEB3615DAC47C00C629B2 /* Missle.h */,
+				120EEB3715DAC47D00C629B2 /* Missle.mm */,
 			);
 			name = GameObjects;
 			sourceTree = "<group>";
@@ -1795,6 +1800,7 @@
 				FA65B52515D6DFDA005A1044 /* TurboPad.mm in Sources */,
 				FA65B52815D6EDE1005A1044 /* ObstacleBlock.mm in Sources */,
 				120EEB3115D711AC00C629B2 /* Asteroid.mm in Sources */,
+				120EEB3815DAC47D00C629B2 /* Missle.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -40,6 +40,7 @@ typedef enum {
     kObjTypeNone,
     kObjTypeAsteroid,
     kobjTypeBullet,
+    kobjTypeMissle,
     kObjTypeGravityWell,
     kObjTypeTurboPad,
     kObjTypeBounceTriangle,
@@ -60,6 +61,7 @@ typedef enum {
 -(void) decrementBulletCount;
 -(void) addParticleEffect:(CCParticleSystemQuad*)effect;
 -(void) createExplosionAtLocation:(CGPoint)location;
+-(void) decrementMissleCount;
 
 @end
 

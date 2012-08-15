@@ -52,13 +52,11 @@
     }
     if (!target.destroyMe) {
         b2Vec2 currentPos = body->GetPosition();
-        b2Vec2 targetPos = target.body->GetPosition();
+        b2Vec2 offset = body->GetWorldVector(body->GetLinearVelocity());
+        b2Vec2 targetPos = target.body->GetWorldPoint(target.body->GetLinearVelocity()) - offset;
         b2Vec2 destination = targetPos - currentPos;
         b2Vec2 force = body->GetLocalVector(destination);
         body->ApplyForceToCenter(destination);
-        if (timeTravelled > 1.5) {
-            body->ApplyLinearImpulse(force, destination);
-        }
     }
        
     

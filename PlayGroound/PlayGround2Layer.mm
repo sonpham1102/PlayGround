@@ -22,11 +22,11 @@
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
 #define LEVEL_HEIGHT 1 //25
-#define LEVEL_WIDTH 3 //10
+#define LEVEL_WIDTH 7 //10
 #define MAX_VELOCITY 5
 //#define FRICTION_COEFF 0.08
 
-#define ASTEROID_TIMER 5.5
+#define ASTEROID_TIMER 2.5
 #define ASTEROID_LIMIT 75
 
 // used in FollowRocket2
@@ -359,7 +359,7 @@ enum {
     cameraBody->SetLinearDamping(CAMERA_LINEAR_DAMP);
     cameraBody->CreateFixture(&fixtureDef);
 }
-/*
+
 -(void) draw
 {
 	//
@@ -377,7 +377,7 @@ enum {
 	
 	kmGLPopMatrix();
 }
-*/
+
 -(void) update: (ccTime) dt
 {
     static double UPDATE_INTERVAL = 1.0/60.0f;
@@ -467,8 +467,9 @@ enum {
                 if ((missleCount < MISSILE_LIMIT) && (missleTime >= MISSLE_FIRE_DELAY)){
                     Missle *fireMissle = [[Missle alloc] initWithWorld:world atLoaction:rocket.body->GetWorldPoint(b2Vec2(0,35/PTM_RATIO)) withTarget:rocket.bulletTarget];
                     [fireMissle setDelegate:self];
-                    fireMissle.body->SetLinearVelocity(rocket.body->GetWorldVector(b2Vec2(0,64.0f /PTM_RATIO)));
+                    //fireMissle.body->SetLinearVelocity(rocket.body->GetWorldVector(b2Vec2(0,64.0f /PTM_RATIO)));
                     [sceneSpriteBatchNode addChild:fireMissle];
+                    [fireMissle release];
                     missleCount ++;
                     missleTime = 0.0;
                 }

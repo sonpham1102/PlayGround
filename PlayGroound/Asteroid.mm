@@ -52,7 +52,7 @@
         direction = 1.0;
     }
     
-    b2Vec2 impulse = b2Vec2(body->GetMass() * 350.0f * direction,0);
+    b2Vec2 impulse = b2Vec2(body->GetMass() * 150.0f * direction,0);
     body->ApplyForce(impulse, body->GetWorldCenter()); 
     
 }

@@ -7,7 +7,7 @@
 //
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
-#define MISSLE_LIFE 15
+#define MISSLE_LIFE 5
 #define SCALE_FACTOR 0.2f
 
 #import "Missle.h"
@@ -66,17 +66,17 @@
         
         b2Vec2 currentPos = body->GetPosition();
         
-        b2Vec2 targetPos = target.body->GetPosition() - currentPos;
+        b2Vec2 targetPos = target.body->GetWorldPoint(target.body->GetLinearVelocityFromLocalPoint(b2Vec2(0,0)))  - currentPos;
         
         float bodyAngle = body->GetAngle();
         float desiredAngle = atan2f( -targetPos.x, targetPos.y );
 
         float totalRotation = desiredAngle - bodyAngle;
-        float change = CC_DEGREES_TO_RADIANS(4); //allow 4 degree rotation per time step
+        float change = CC_DEGREES_TO_RADIANS(8); //allow 4 degree rotation per time step
         float newAngle = bodyAngle + min( change, max(-change, totalRotation));
         body->SetTransform( body->GetPosition(), newAngle );
         
-        b2Vec2 impulse = b2Vec2(0,body->GetMass() * 5.0f);
+        b2Vec2 impulse = b2Vec2(0,body->GetMass() * 8.0f);
         b2Vec2 impulseWorld = body->GetWorldVector(impulse);
         b2Vec2 impulsePoint = body->GetWorldPoint(b2Vec2(-1.25 * SCALE_FACTOR,
                                                          /*-1.75*/0.0 * SCALE_FACTOR));

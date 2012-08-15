@@ -29,6 +29,7 @@
     UIRotationGestureRecognizer* rotationsGestureRecognizer;
     
     CCLabelTTF* timerLabel;
+    CCLabelTTF* bestTimeLabel;
     
     bool isGPLayerAcceptingInput;
 }

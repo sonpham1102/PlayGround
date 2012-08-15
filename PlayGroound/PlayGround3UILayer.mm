@@ -259,17 +259,9 @@
         [self setUpLongPressGesture];
         [self setUpRotationGesture];
         
-        timerLabel = [CCLabelTTF labelWithString:@"Tap screen" fontName:@"Marker Felt" fontSize:32];
-		[self addChild:timerLabel z:0];
-		[timerLabel setColor:ccc3(0,0,255)];
-
-        CGSize s = [CCDirector sharedDirector].winSize;
-		timerLabel.position = ccp(s.width-50, s.height/2);
-        timerLabel.rotation = 90.0;
-
         // this should give the tap the best chance of being recognized before the pan
         [panGestureRecognizer requireGestureRecognizerToFail:tapGestureRecognizer];
-        
+
         isGPLayerAcceptingInput = false;
         
         //start gesture disabled
@@ -277,6 +269,19 @@
         tapGestureRecognizer.enabled = false;
         longPressGestureRecognizer.enabled = false;
         rotationsGestureRecognizer.enabled = false;
+                
+        CGSize s = [CCDirector sharedDirector].winSize;
+        
+        timerLabel = [CCLabelTTF labelWithString:@"Tap screen" fontName:@"Marker Felt" fontSize:32];
+		[self addChild:timerLabel z:0];
+		[timerLabel setColor:ccc3(0,0,255)];
+        timerLabel.position = ccp(s.width-50, s.height/2);
+        timerLabel.rotation = 90.0;
+        bestTimeLabel = [CCLabelTTF labelWithString:@"--.--" fontName:@"Marker Felt" fontSize:32];
+		[self addChild:bestTimeLabel z:0];
+		[bestTimeLabel setColor:ccc3(0,255,0)];
+        bestTimeLabel.position = ccp(s.width-100, s.height/2);
+        bestTimeLabel.rotation = 90.0;
         
         [self scheduleUpdate];
     }
@@ -305,6 +310,7 @@
     }
     //get the string for the timer label from the gp layer
     [timerLabel setString:[gpLayer getTimerString]];
+    [bestTimeLabel setString:[gpLayer getBestTimeString]];
 }
 
 -(void) createMenu

@@ -66,6 +66,12 @@ enum {
     return timerString;
 }
 
+-(NSString *)getBestTimeString;
+{
+    return bestTimeString;
+}
+
+
 #define HORIZONTAL_MIN_SPACE 20.0
 #define HORIZONTAL_MAX_SPACE 30.0
 #define VERTICAL_MAX_SPACE 15.0
@@ -164,6 +170,12 @@ enum {
 -(void) setStringGo:(id)sender
 {
     timerString = @"GO!";
+    
+    if (bestTime > 0.0f)
+    {
+        bestTimeString = [NSString stringWithFormat:@"Best: %.2f", bestTime];
+    }
+    
     acceptingInput = true;
     raceTimer = 0.0;
 }
@@ -375,6 +387,9 @@ enum {
         
         raceTimer = 0.0f;
         acceptingInput = false;
+        
+        bestTime = -1.0f;
+        bestTimeString = @"--/--";
                 
         [self createBackground];
         
@@ -514,6 +529,13 @@ enum {
 -(void) resetRocketManPosition
 {
     [self startStartSequence];
+    
+    bestTimeString = [NSString stringWithFormat:@"!! %.2f !!", raceTimer];
+    
+    if ((bestTime < 0.0f) || (raceTimer < bestTime))
+    {
+        bestTime = raceTimer;
+    }
     
     CGSize screenSize = [CCDirector sharedDirector].winSize;
     rocketMan.body->SetTransform( b2Vec2(screenSize.width*0.10f/PTM_RATIO, screenSize.height/5.0/PTM_RATIO), -M_PI_2);

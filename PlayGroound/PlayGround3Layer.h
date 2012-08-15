@@ -41,10 +41,12 @@
     b2Body* cameraBody;
     
     float raceTimer;
+    float bestTime;
     
     bool acceptingInput;
     
     NSString* timerString;
+    NSString* bestTimeString;
     
     CCSpriteBatchNode *sceneSpriteBatchNode;
 }
@@ -55,6 +57,7 @@
 -(void) handleLongPress:(BOOL) continueFiring;
 -(bool) isAcceptingInput;
 -(NSString *)getTimerString;
+-(NSString *)getBestTimeString;
 
 @end
 

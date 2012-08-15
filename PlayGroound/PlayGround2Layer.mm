@@ -21,12 +21,12 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
-#define LEVEL_HEIGHT 13 //25
-#define LEVEL_WIDTH 5 //10
+#define LEVEL_HEIGHT 1 //25
+#define LEVEL_WIDTH 3 //10
 #define MAX_VELOCITY 5
 //#define FRICTION_COEFF 0.08
 
-#define ASTEROID_TIMER 0.5
+#define ASTEROID_TIMER 5.5
 #define ASTEROID_LIMIT 75
 
 // used in FollowRocket2
@@ -45,7 +45,7 @@
 #define MIN_BULLET_SLOPE 1.5
 #define BULLET_TRACKING_FACTOR 0.5
 #define BULLET_TIME 0.1
-#define TOTAL_BULLETS 100000
+#define TOTAL_BULLETS 1000
 #define MISSILE_LIMIT 3
 #define MISSLE_FIRE_DELAY 1.5
 
@@ -154,7 +154,7 @@ enum {
         [self addChild:sceneSpriteBatchNode z:0];
 
         rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * LEVEL_WIDTH /2, 
-                                                                    s.height*LEVEL_HEIGHT/2)];
+                                                                    s.height*LEVEL_HEIGHT*0.05)];
         
         //Particle Effect
         bulletsFiredParticleBatch = [CCParticleBatchNode batchNodeWithFile:@"fire.png" capacity:5000];
@@ -467,12 +467,14 @@ enum {
                 if ((missleCount < MISSILE_LIMIT) && (missleTime >= MISSLE_FIRE_DELAY)){
                     Missle *fireMissle = [[Missle alloc] initWithWorld:world atLoaction:rocket.body->GetWorldPoint(b2Vec2(0,35/PTM_RATIO)) withTarget:rocket.bulletTarget];
                     [fireMissle setDelegate:self];
+                    fireMissle.body->SetLinearVelocity(rocket.body->GetWorldVector(b2Vec2(0,64.0f /PTM_RATIO)));
                     [sceneSpriteBatchNode addChild:fireMissle];
                     missleCount ++;
                     missleTime = 0.0;
                 }
                 return;
             }
+            /*
             bullet *bulletShot = [[bullet alloc] initWithWorld:world atLoaction:firePoint];
             bulletShot.body->SetLinearVelocity(linVelo);
             float bulletPower = bulletShot.body->GetMass() * 750.0f;
@@ -506,6 +508,7 @@ enum {
             PLAYSOUNDEFFECT(LASER_FIRE);
             [bulletShot release];
             fireSide *= -1;
+             */
         }
         bulletTime = 0.0;
     }

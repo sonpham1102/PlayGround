@@ -18,15 +18,6 @@
 #import "TurboPad.h"
 #import "ObstacleBlock.h"
 
-/*
-typedef enum {
-    UISwipeGestureRecognizerDirectionRight = 1 << 0,
-    UISwipeGestureRecognizerDirectionLeft  = 1 << 1,
-    UISwipeGestureRecognizerDirectionUp    = 1 << 2,
-    UISwipeGestureRecognizerDirectionDown  = 1 << 3
-} UISwipeGestureRecognizerDirection;
-*/
-
 //AP : MOVE to a plist or something
 #define SCREEN_LENGTHS 1.0 //number of screens high for the level 
 #define SCREEN_WIDTHS 2.0

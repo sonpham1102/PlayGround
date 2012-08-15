@@ -24,13 +24,14 @@
 @synthesize delegate;
 @synthesize firingLeftRocket;
 @synthesize firingRightRocket;
+@synthesize bulletTarget;
 
 
 -(void) fireBullet:(ccTime)deltaTime withTarget:(b2Body *)target{
     
-    CGPoint bulletTarget = ccp(target->GetPosition().x, target->GetPosition().y);
+    CGPoint bulletTargetPos = ccp(target->GetPosition().x, target->GetPosition().y);
     CGPoint targetVelocity = ccp(target->GetLinearVelocity().x, target->GetLinearVelocity().y);
-    [delegate createBullet:deltaTime withTarget:bulletTarget withVelocity:targetVelocity];
+    [delegate createBullet:deltaTime withTarget:bulletTargetPos withVelocity:targetVelocity];
 }
 
 -(void) createWeaponSensor {
@@ -142,10 +143,10 @@
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime {
     [self turnRocket];
     //check to see if sensor detects asteroid
-    b2Body* bulletTarget = isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture,world);
-    if (bulletTarget != nil) {
+    //b2Body* bulletTarget = isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture,world);
+    if (bulletTarget != NULL) {
         [self fireBullet:deltaTime withTarget:bulletTarget];
-         
+        
     }
     /*
     if (isBodyCollidingWithObjectType(body, kObjTypeAsteroid)) {
@@ -205,6 +206,7 @@
         
         world = theWorld;
         gameObjType = kObjTypeRocket;
+        bulletTarget = nil;
         
         [self createRocketAtLocation:location];
     }

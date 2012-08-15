@@ -77,7 +77,6 @@
         float yPos = body->GetWorldPoint(b2Vec2(0,0)).y;
         explodeLocation.x = xPos * PTM_RATIO;
         explodeLocation.y = yPos * PTM_RATIO;
-        //[delegate createExplosionAtLocation:position];
         world->DestroyBody(body);
         body = NULL;
         CCScaleTo *growAction = [CCScaleTo actionWithDuration:0.10 scale:1.15];
@@ -96,7 +95,7 @@
         gameObjType = kObjTypeAsteroid;
         [self createBodyAtLocation:location];
         destroyMe = false;
-        characterHealth = 100;
+        characterHealth = 100000;
         isDead = NO;
     }
     return self;

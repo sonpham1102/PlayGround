@@ -68,9 +68,11 @@
     CMAttitude *referenceAttitude;
     
     int bulletCount;
+    int missleCount;
     int turn;
     CGPoint cameraTarget;
     float bulletTime;
+    float missleTime;
     b2Vec2 cameraMoveVector;
     float cameraDistanceToTarget;
     float cameraDistanceTravelled;
@@ -81,9 +83,8 @@
 
 }
 
-
-@property (nonatomic,retain) CMMotionManager *motionManager;
-@property (nonatomic,assign) CCLabelBMFont *debugLabel;
+@property (nonatomic, retain) CMMotionManager *motionManager;
+@property (nonatomic, assign) CCLabelBMFont *debugLabel;
 
 @end
 

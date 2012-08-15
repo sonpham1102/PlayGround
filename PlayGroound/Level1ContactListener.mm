@@ -9,6 +9,8 @@
 #import "Level1ContactListener.h"
 #import "GameCharPhysics.h"
 #import "Asteroid.h"
+#import "Missle.h"
+#import "Rocket.h"
 
 
 Level1ContactListener::Level1ContactListener() : _contacts() {
@@ -18,15 +20,41 @@ Level1ContactListener::~Level1ContactListener() {
 }
 
 void Level1ContactListener::BeginContact(b2Contact* contact) {
-
+    b2Fixture* fixtureA = contact->GetFixtureA();
+    b2Fixture* fixtireB = contact->GetFixtureB();
+    b2Body *bodyA = fixtureA->GetBody();
+    b2Body *bodyB = fixtireB->GetBody();
+    GameCharPhysics *spriteA = (GameCharPhysics*) bodyA->GetUserData();
+    GameCharPhysics *spriteB = (GameCharPhysics*) bodyB->GetUserData();
+    if (fixtureA->IsSensor() && spriteB.gameObjType == kObjTypeAsteroid) {
+        Rocket *rocket = (Rocket *) bodyA->GetUserData();
+        [rocket setBulletTarget:bodyB];
+    } else if (fixtireB->IsSensor() && spriteA.gameObjType == kObjTypeAsteroid) {
+        Rocket *rocket = (Rocket *) bodyB->GetUserData();
+        [rocket setBulletTarget:bodyA];
+    }     
 }
 
 void Level1ContactListener::EndContact(b2Contact* contact) {
+    b2Fixture* fixtureA = contact->GetFixtureA();
+    b2Fixture* fixtireB = contact->GetFixtureB();
+    b2Body *bodyA = fixtureA->GetBody();
+    b2Body *bodyB = fixtireB->GetBody();
+    GameCharPhysics *spriteA = (GameCharPhysics*) bodyA->GetUserData();
+    GameCharPhysics *spriteB = (GameCharPhysics*) bodyB->GetUserData();
+    if (fixtureA->IsSensor() && spriteB.gameObjType == kObjTypeAsteroid) {
+        Rocket *rocket = (Rocket *) bodyA->GetUserData();
+        [rocket setBulletTarget:NULL];
+    } else if (fixtireB->IsSensor() && spriteA.gameObjType == kObjTypeAsteroid) {
+        Rocket *rocket = (Rocket *) bodyB->GetUserData();
+        [rocket setBulletTarget:NULL];
+    }
     
 }
 
 void Level1ContactListener::PreSolve(b2Contact* contact, 
                                  const b2Manifold* oldManifold) {
+    
 }
 
 void Level1ContactListener::PostSolve(b2Contact* contact, 
@@ -46,6 +74,8 @@ void Level1ContactListener::PostSolve(b2Contact* contact,
     } else if (spriteB.gameObjType == kobjTypeBullet) {
         spriteB.destroyMe = true;
     }
+    
+  
     
     if ((spriteA.gameObjType == kObjTypeAsteroid || spriteB.gameObjType == kObjTypeAsteroid) && 
     (spriteA.gameObjType == kobjTypeBullet || spriteB.gameObjType == kobjTypeBullet)){
@@ -68,7 +98,12 @@ void Level1ContactListener::PostSolve(b2Contact* contact,
                 spriteB.destroyMe = true;
             }
         }
-        
+    
+    }
+    if ((spriteA.gameObjType == kObjTypeAsteroid && spriteB.gameObjType == kobjTypeMissle) ||
+        (spriteA.gameObjType == kobjTypeMissle && spriteB.gameObjType == kObjTypeAsteroid)) {
+        spriteA.destroyMe = true;
+        spriteB.destroyMe = true;
     }
 }
 

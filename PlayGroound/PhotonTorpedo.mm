@@ -62,6 +62,8 @@
             b2Vec2 destination = targetPos - currentPos;
             float length = destination.Length();
             if (length < oldLength) {
+                if (oldLength < 1.5)
+                    oldLength = 1.5;
                 length = oldLength + (oldLength - length);
             } else {
                 oldLength = length;

@@ -22,7 +22,7 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
-#define LEVEL_HEIGHT 1.5 //25
+#define LEVEL_HEIGHT 10 //25
 #define LEVEL_WIDTH 4 //10
 #define MAX_VELOCITY 5
 //#define FRICTION_COEFF 0.08
@@ -43,7 +43,7 @@
 #define CAMERA_CATCHUP_TIME 1.0 //1 second
 #define MAX_CAMERA_SPEED 1.0 //(in M/s)
 
-#define MIN_BULLET_SLOPE 1.5
+#define MIN_BULLET_SLOPE 1.0
 #define BULLET_TRACKING_FACTOR 0.5
 #define BULLET_TIME 0.1
 #define TOTAL_BULLETS 1000
@@ -506,7 +506,7 @@ enum {
                  position.x = xPos * PTM_RATIO;
                  position.y = yPos * PTM_RATIO;
                  bulletFire.position = position;
-                 bulletFire.duration = 0.5;
+                 bulletFire.duration = 0.8;
                  
                  [bulletFire setGravity:ccp(0, 0)];
                  bulletFire.autoRemoveOnFinish = YES;

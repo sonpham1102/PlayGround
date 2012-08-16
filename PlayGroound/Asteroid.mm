@@ -95,7 +95,7 @@
         gameObjType = kObjTypeAsteroid;
         [self createBodyAtLocation:location];
         destroyMe = false;
-        characterHealth = 200;
+        characterHealth = 100;
         isDead = NO;
     }
     return self;

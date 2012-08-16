@@ -16,6 +16,7 @@
     BOOL isDead;
     float timeTravelled;
     id <PlayGround2LayerDelegate> delegate;
+    float oldLength;
 }
 
 @property (nonatomic,assign) Asteroid *target;

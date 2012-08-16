@@ -21,7 +21,10 @@
 #import "Level1ContactListener.h"
 
 
-
+typedef enum {
+    kWeaponBullets,
+    kWeaponPhotons
+}weaponState;
 
 // HelloWorldLayer
 @interface PlayGround2Layer : CCLayer <PlayGround2LayerDelegate>
@@ -80,8 +83,10 @@
     int loopCount;
     Level1ContactListener *contactListener;
     int fireSide;
+    weaponState weaponToFire;
 
 }
+
 
 @property (nonatomic, retain) CMMotionManager *motionManager;
 @property (nonatomic, assign) CCLabelBMFont *debugLabel;

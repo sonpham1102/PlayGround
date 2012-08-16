@@ -22,13 +22,13 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
-#define LEVEL_HEIGHT 10 //25
+#define LEVEL_HEIGHT 1.5 //25
 #define LEVEL_WIDTH 4 //10
 #define MAX_VELOCITY 5
 //#define FRICTION_COEFF 0.08
 
 #define ASTEROID_TIMER 2.5
-#define ASTEROID_LIMIT 40
+#define ASTEROID_LIMIT 75
 
 // used in FollowRocket2
 #define CAMERA_VELOCITY_FACTOR 0.6
@@ -110,6 +110,8 @@ enum {
         missleCount = 0;
         loopCount = 0;
         fireSide = 10;
+        
+        weaponToFire = kWeaponBullets;
         
 		// enable events
         
@@ -283,6 +285,14 @@ enum {
     [self addChild:obstacle];
 }
 
+-(void)switchWeapons{
+    if (weaponToFire == kWeaponBullets) {
+        weaponToFire = kWeaponPhotons;
+    } else {
+        weaponToFire = kWeaponBullets;
+    }
+}
+
 -(void) initPhysics
 {
 	
@@ -445,75 +455,80 @@ enum {
     
     b2Vec2 targetPosition = b2Vec2(bulletTarget.x,bulletTarget.y);
     b2Vec2 targetVel = b2Vec2(targetVelocity.x,targetVelocity.y);
-    
-    if ((bulletTime >= BULLET_TIME) || (bulletCount == 0)){
-        if (bulletCount <= TOTAL_BULLETS) {
-            b2Vec2 firePoint = rocket.body->GetWorldPoint(b2Vec2(fireSide/PTM_RATIO,25/PTM_RATIO));
-            
-            b2Vec2 linVelo = rocket.body->GetLinearVelocity();
-            b2Vec2 impulse; // = b2Vec2(0,bulletPower);
-            impulse = targetVel - linVelo;
-            impulse.x *= BULLET_TRACKING_FACTOR;
-            impulse.y *= BULLET_TRACKING_FACTOR;
-            impulse += targetPosition - firePoint;
-            
-            b2Vec2 localImpulse = rocket.body->GetLocalVector(impulse);
-            float slope = MIN_BULLET_SLOPE;
-            
-            if (localImpulse.x != 0) {
-                slope = ABS(localImpulse.y / localImpulse.x);
-            }
-            
-            if (slope < MIN_BULLET_SLOPE || localImpulse.y < 0.0) {
-                if ((missleCount < MISSILE_LIMIT) && (missleTime >= MISSLE_FIRE_DELAY)){
-                    PhotonTorpedo *fireMissle = [[PhotonTorpedo alloc] initWithWorld:world atLoaction:rocket.body->GetWorldPoint(b2Vec2(0,35/PTM_RATIO)) withTarget:rocket.bulletTarget];
-                    [fireMissle setDelegate:self];
-                    //fireMissle.body->SetLinearVelocity(rocket.body->GetWorldVector(b2Vec2(0,1000.0f /PTM_RATIO)));
-                    [sceneSpriteBatchNode addChild:fireMissle];
-                    [fireMissle release];
-                    missleCount ++;
-                    missleTime = 0.0;
+    if (weaponToFire == kWeaponBullets) {
+        if ((bulletTime >= BULLET_TIME) || (bulletCount == 0)){
+            if (bulletCount <= TOTAL_BULLETS) {
+                b2Vec2 firePoint = rocket.body->GetWorldPoint(b2Vec2(fireSide/PTM_RATIO,25/PTM_RATIO));
+                
+                b2Vec2 linVelo = rocket.body->GetLinearVelocity();
+                b2Vec2 impulse; // = b2Vec2(0,bulletPower);
+                impulse = targetVel - linVelo;
+                impulse.x *= BULLET_TRACKING_FACTOR;
+                impulse.y *= BULLET_TRACKING_FACTOR;
+                impulse += targetPosition - firePoint;
+                
+                b2Vec2 localImpulse = rocket.body->GetLocalVector(impulse);
+                float slope = MIN_BULLET_SLOPE;
+                
+                if (localImpulse.x != 0) {
+                    slope = ABS(localImpulse.y / localImpulse.x);
                 }
-                return;
+    
+                 if (slope < MIN_BULLET_SLOPE || localImpulse.y < 0.0) {
+                     return;
+                 }
+                 
+                
+                
+                 bullet *bulletShot = [[bullet alloc] initWithWorld:world atLoaction:firePoint];
+                 bulletShot.body->SetLinearVelocity(linVelo);
+                 float bulletPower = bulletShot.body->GetMass() * 750.0f;
+                 
+                 [sceneSpriteBatchNode addChild:bulletShot];
+                 
+                 impulse.Normalize();
+                 impulse.x *= bulletPower;
+                 impulse.y *= bulletPower;
+                 b2Vec2 impulsePoint = bulletShot.body->GetWorldCenter();
+                 bulletShot.body->ApplyForce(impulse, impulsePoint);
+                 
+                 [bulletShot setDelegate:self];
+                 bulletCount ++;
+                 
+                 bulletFire = [CCParticleMeteor node];
+                 [bulletsFiredParticleBatch addChild:bulletFire];
+                 [bulletShot setBulletFire:bulletFire];
+                 bulletFire.scale = 0.001;
+                 [bulletFire setEmissionRate:10];
+                 CGPoint position;
+                 float xPos = bulletShot.body->GetWorldPoint(b2Vec2(0,0)).x;
+                 float yPos = bulletShot.body->GetWorldPoint(b2Vec2(0,0)).y;
+                 position.x = xPos * PTM_RATIO;
+                 position.y = yPos * PTM_RATIO;
+                 bulletFire.position = position;
+                 bulletFire.duration = 0.5;
+                 
+                 [bulletFire setGravity:ccp(0, 0)];
+                 bulletFire.autoRemoveOnFinish = YES;
+                 PLAYSOUNDEFFECT(LASER_FIRE);
+                 [bulletShot release];
+                 fireSide *= -1;
+                  
             }
-            
-            bullet *bulletShot = [[bullet alloc] initWithWorld:world atLoaction:firePoint];
-            bulletShot.body->SetLinearVelocity(linVelo);
-            float bulletPower = bulletShot.body->GetMass() * 750.0f;
-            
-            [sceneSpriteBatchNode addChild:bulletShot];
-            
-            impulse.Normalize();
-            impulse.x *= bulletPower;
-            impulse.y *= bulletPower;
-            b2Vec2 impulsePoint = bulletShot.body->GetWorldCenter();
-            bulletShot.body->ApplyForce(impulse, impulsePoint);
-            
-            [bulletShot setDelegate:self];
-            bulletCount ++;
-            
-            bulletFire = [CCParticleMeteor node];
-            [bulletsFiredParticleBatch addChild:bulletFire];
-            [bulletShot setBulletFire:bulletFire];
-            bulletFire.scale = 0.001;
-            [bulletFire setEmissionRate:10];
-            CGPoint position;
-            float xPos = bulletShot.body->GetWorldPoint(b2Vec2(0,0)).x;
-            float yPos = bulletShot.body->GetWorldPoint(b2Vec2(0,0)).y;
-            position.x = xPos * PTM_RATIO;
-            position.y = yPos * PTM_RATIO;
-            bulletFire.position = position;
-            bulletFire.duration = 0.5;
-            
-            [bulletFire setGravity:ccp(0, 0)];
-            bulletFire.autoRemoveOnFinish = YES;
-            PLAYSOUNDEFFECT(LASER_FIRE);
-            [bulletShot release];
-            fireSide *= -1;
-             
+            bulletTime = 0.0;
+        }  
+    } else if (weaponToFire == kWeaponPhotons) {
+        if ((missleCount < MISSILE_LIMIT) && (missleTime >= MISSLE_FIRE_DELAY)){
+            PhotonTorpedo *fireMissle = [[PhotonTorpedo alloc] initWithWorld:world atLoaction:rocket.body->GetWorldPoint(b2Vec2(0,35/PTM_RATIO)) withTarget:rocket.bulletTarget];
+            [fireMissle setDelegate:self];
+            fireMissle.body->SetLinearVelocity(rocket.body->GetWorldVector(b2Vec2(0,250.0f /PTM_RATIO)));
+            [sceneSpriteBatchNode addChild:fireMissle];
+            [fireMissle release];
+            missleCount ++;
+            missleTime = 0.0;
         }
-        bulletTime = 0.0;
     }
+    
     //bulletTime += deltaTime;
 }
 

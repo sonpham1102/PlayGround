@@ -10,6 +10,11 @@
 #import "cocos2d.h"
 #import "GameManager.h"
 
-@interface PlayGroundScene2UILayer : CCLayer
+@interface PlayGroundScene2UILayer : CCLayer {
+    id <PlayGround2LayerDelegate> delegate;
+}
+@property (nonatomic, assign) id <PlayGround2LayerDelegate> delegate;
+
+
 
 @end

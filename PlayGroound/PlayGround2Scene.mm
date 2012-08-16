@@ -19,6 +19,7 @@
         [self addChild:uiLayer z:10];
         PlayGround2Layer *playGroundLayer = [PlayGround2Layer node];
         [self addChild:playGroundLayer z:5];
+        [uiLayer setDelegate:playGroundLayer];
     }
     return self;
 }

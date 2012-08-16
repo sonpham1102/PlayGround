@@ -10,6 +10,8 @@
 
 @implementation PlayGroundScene2UILayer
 
+@synthesize delegate;
+
 -(id) init {
     if( (self=[super init])) {
         [self createMenu];
@@ -27,6 +29,12 @@
                               {
                                   [[GameManager sharedGameManager] runLevelWithID:kMainMenu];
                               }];
+    [CCMenuItemFont setFontSize:16];
+    CCMenuItemLabel *weaponSwitch = [CCMenuItemFont itemWithString:@"Switch Weapons" block:^(id sender)
+                                     {
+                                         [delegate switchWeapons];
+                                     }];
+    
 	//JP : Not using Achievements and Leader Boards of now
     /*
      // Achievement Menu Item using blocks
@@ -61,16 +69,18 @@
     [reset setScale:0.75f];
 	//CCMenu *menu = [CCMenu menuWithItems:itemAchievement, itemLeaderboard, reset, nil];
     CCMenu *menu = [CCMenu menuWithItems:reset, nil];
+    CCMenu *weaponSwitchMenu = [CCMenu menuWithItems:weaponSwitch, nil];
     
 	
 	[menu alignItemsVertically];
+    [weaponSwitchMenu alignItemsVertically];
 	
     //JP: Repositioned Menu to Upper Right Corner
     //    Should use IPAD Idiom to set properly
 	CGSize size = [[CCDirector sharedDirector] winSize];
 	[menu setPosition:ccp( size.width*0.9, size.height*0.95)];
-	
-	
+	[weaponSwitch setPosition:ccp(0,-size.height*0.45)];
+	[self addChild: weaponSwitchMenu z:-1];
 	[self addChild: menu z:-1];	
 }
 

@@ -18,6 +18,7 @@
 #import "Obstacle.h"
 #import "Asteroid.h"
 #import "Missle.h"
+#import "PhotonTorpedo.h"
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
@@ -465,9 +466,9 @@ enum {
             
             if (slope < MIN_BULLET_SLOPE || localImpulse.y < 0.0) {
                 if ((missleCount < MISSILE_LIMIT) && (missleTime >= MISSLE_FIRE_DELAY)){
-                    Missle *fireMissle = [[Missle alloc] initWithWorld:world atLoaction:rocket.body->GetWorldPoint(b2Vec2(0,35/PTM_RATIO)) withTarget:rocket.bulletTarget];
+                    PhotonTorpedo *fireMissle = [[PhotonTorpedo alloc] initWithWorld:world atLoaction:rocket.body->GetWorldPoint(b2Vec2(0,35/PTM_RATIO)) withTarget:rocket.bulletTarget];
                     [fireMissle setDelegate:self];
-                    //fireMissle.body->SetLinearVelocity(rocket.body->GetWorldVector(b2Vec2(0,20.0f /PTM_RATIO)));
+                    fireMissle.body->SetLinearVelocity(rocket.body->GetWorldVector(b2Vec2(0,1000.0f /PTM_RATIO)));
                     [sceneSpriteBatchNode addChild:fireMissle];
                     [fireMissle release];
                     missleCount ++;
@@ -475,7 +476,7 @@ enum {
                 }
                 return;
             }
-            /*
+            
             bullet *bulletShot = [[bullet alloc] initWithWorld:world atLoaction:firePoint];
             bulletShot.body->SetLinearVelocity(linVelo);
             float bulletPower = bulletShot.body->GetMass() * 750.0f;
@@ -509,7 +510,7 @@ enum {
             PLAYSOUNDEFFECT(LASER_FIRE);
             [bulletShot release];
             fireSide *= -1;
-             */
+             
         }
         bulletTime = 0.0;
     }

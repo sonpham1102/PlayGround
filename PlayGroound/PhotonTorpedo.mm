@@ -11,6 +11,7 @@
 
 #import "PhotonTorpedo.h"
 #define SCALE_FACTOR 0.2f
+#define PROTON_SPEED_FACTOR 10
 
 
 @implementation PhotonTorpedo
@@ -22,7 +23,7 @@
     
     float32 size = 3.0;
     b2BodyDef bodyDef;
-    bodyDef.type = b2_dynamicBody;
+    bodyDef.type = b2_kinematicBody;
     bodyDef.position = location;
     bodyDef.bullet = true;
     
@@ -53,12 +54,12 @@
     }
     if (!target.destroyMe) {
         b2Vec2 currentPos = body->GetPosition();
-        b2Vec2 offset = body->GetWorldVector(body->GetLinearVelocity());
-        b2Vec2 targetPos = target.body->GetWorldPoint(target.body->GetLinearVelocity()) - offset;
+        b2Vec2 targetPos = target.body->GetPosition();
         b2Vec2 destination = targetPos - currentPos;
-        b2Vec2 force = body->GetWorldVector(destination);
-        body->ApplyLinearImpulse(force, body->GetWorldPoint(b2Vec2(0.0 * SCALE_FACTOR,
-                                                                   0.0 * SCALE_FACTOR)));
+        float length = destination.Length();
+        destination.x = (destination.x / length) * PROTON_SPEED_FACTOR;
+        destination.y = (destination.y / length) * PROTON_SPEED_FACTOR;
+        body->SetLinearVelocity(destination);
     }
     
     

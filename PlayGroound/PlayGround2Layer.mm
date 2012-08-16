@@ -360,7 +360,7 @@ enum {
     cameraBody->SetLinearDamping(CAMERA_LINEAR_DAMP);
     cameraBody->CreateFixture(&fixtureDef);
 }
-
+/*
 -(void) draw
 {
 	//
@@ -378,7 +378,7 @@ enum {
 	
 	kmGLPopMatrix();
 }
-
+*/
 -(void) update: (ccTime) dt
 {
     static double UPDATE_INTERVAL = 1.0/60.0f;
@@ -468,7 +468,7 @@ enum {
                 if ((missleCount < MISSILE_LIMIT) && (missleTime >= MISSLE_FIRE_DELAY)){
                     PhotonTorpedo *fireMissle = [[PhotonTorpedo alloc] initWithWorld:world atLoaction:rocket.body->GetWorldPoint(b2Vec2(0,35/PTM_RATIO)) withTarget:rocket.bulletTarget];
                     [fireMissle setDelegate:self];
-                    fireMissle.body->SetLinearVelocity(rocket.body->GetWorldVector(b2Vec2(0,1000.0f /PTM_RATIO)));
+                    //fireMissle.body->SetLinearVelocity(rocket.body->GetWorldVector(b2Vec2(0,1000.0f /PTM_RATIO)));
                     [sceneSpriteBatchNode addChild:fireMissle];
                     [fireMissle release];
                     missleCount ++;

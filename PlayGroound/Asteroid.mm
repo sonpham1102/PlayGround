@@ -52,7 +52,7 @@
         direction = 1.0;
     }
     
-    b2Vec2 impulse = b2Vec2(body->GetMass() * 750.0f * direction,0);
+    b2Vec2 impulse = b2Vec2(body->GetMass() * 350.0f * direction,0);
     body->ApplyForce(impulse, body->GetWorldCenter()); 
     
 }
@@ -95,7 +95,7 @@
         gameObjType = kObjTypeAsteroid;
         [self createBodyAtLocation:location];
         destroyMe = false;
-        characterHealth = 100000;
+        characterHealth = 200;
         isDead = NO;
     }
     return self;

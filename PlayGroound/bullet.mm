@@ -54,11 +54,15 @@
 
 -(void) moveParticleEffect {
     
-    CGPoint position;
+    
+    
+    CGPoint position = CGPointMake(body->GetPosition().x * PTM_RATIO, body->GetPosition().y * PTM_RATIO);
+    /*
     float xPos = body->GetPosition().x;
     float yPos = body->GetPosition().y;
     position.x = xPos * PTM_RATIO;
     position.y = yPos * PTM_RATIO;
+     */
     bulletFire.position = position;
     
 }

@@ -25,6 +25,7 @@
 @synthesize firingLeftRocket;
 @synthesize firingRightRocket;
 @synthesize bulletTarget;
+@synthesize isDead;
 
 
 -(void) fireBullet:(ccTime)deltaTime withTarget:(b2Body *)target{
@@ -140,18 +141,27 @@
     
 }
 
+
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime {
+    
+    if (isDead) {
+        return;
+    }
+    
     [self turnRocket];
-    //check to see if sensor detects asteroid
-    //b2Body* bulletTarget = isSensorCollidingWithObjectType(body, kObjTypeAsteroid,sensorFixture,world);
+    
     if (bulletTarget != NULL) {
         [self fireBullet:deltaTime withTarget:bulletTarget];
         
     }
-    /*
-    if (isBodyCollidingWithObjectType(body, kObjTypeAsteroid)) {
-        //CCLOG(@"Collided with Asteroid Handle it");
-    }*/
+    if (characterHealth <= 0) {
+        CGPoint pos = CGPointMake(body->GetPosition().x * PTM_RATIO, body->GetPosition().y * PTM_RATIO);
+        [delegate createExplosionAtLocation:pos];
+        isDead = YES;
+        return;
+    }
+    
+    
     b2Vec2 velocity = body->GetLinearVelocity();
     b2Vec2 force = velocity;
     force.Normalize();
@@ -207,6 +217,8 @@
         world = theWorld;
         gameObjType = kObjTypeRocket;
         bulletTarget = nil;
+        characterHealth = 100;
+        isDead = NO;
         
         [self createRocketAtLocation:location];
     }

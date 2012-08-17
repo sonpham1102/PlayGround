@@ -62,6 +62,8 @@
 }
 
 -(void) destroy:(id)sender {
+    [delegate addAsteroidDestroyed];
+    [delegate decrementAsteroidCount];
     [self removeFromParentAndCleanup:YES];
 }
 

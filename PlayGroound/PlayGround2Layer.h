@@ -70,6 +70,7 @@ typedef enum {
     CCLabelBMFont *debugLabel;
     CMAttitude *referenceAttitude;
     
+    int asteroidsDestroyed;
     int bulletCount;
     int missleCount;
     int turn;
@@ -80,7 +81,6 @@ typedef enum {
     float cameraDistanceToTarget;
     float cameraDistanceTravelled;
     CCSpriteBatchNode *sceneSpriteBatchNode;
-    int loopCount;
     Level1ContactListener *contactListener;
     int fireSide;
     weaponState weaponToFire;

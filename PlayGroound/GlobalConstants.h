@@ -63,6 +63,8 @@ typedef enum {
 -(void) createExplosionAtLocation:(CGPoint)location;
 -(void) decrementMissleCount;
 -(void) switchWeapons;
+-(void) addAsteroidDestroyed;
+-(void) decrementAsteroidCount;
 @end
 
 

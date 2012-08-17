@@ -54,11 +54,6 @@ void Level1ContactListener::EndContact(b2Contact* contact) {
 
 void Level1ContactListener::PreSolve(b2Contact* contact, 
                                  const b2Manifold* oldManifold) {
-    
-}
-
-void Level1ContactListener::PostSolve(b2Contact* contact, 
-                                  const b2ContactImpulse* impulse) {
     b2Manifold *manifold = contact->GetManifold();
     
     b2Fixture* fixtureA = contact->GetFixtureA();
@@ -75,10 +70,10 @@ void Level1ContactListener::PostSolve(b2Contact* contact,
         spriteB.destroyMe = true;
     }
     
-  
+    
     
     if ((spriteA.gameObjType == kObjTypeAsteroid || spriteB.gameObjType == kObjTypeAsteroid) && 
-    (spriteA.gameObjType == kobjTypeBullet || spriteB.gameObjType == kobjTypeBullet)){
+        (spriteA.gameObjType == kobjTypeBullet || spriteB.gameObjType == kobjTypeBullet)){
         if (spriteA.gameObjType == kObjTypeAsteroid) {
             b2Vec2 impulsePower = spriteB.body->GetLinearVelocity();
             impulsePower.x /= 10;
@@ -86,7 +81,7 @@ void Level1ContactListener::PostSolve(b2Contact* contact,
             spriteA.body->ApplyLinearImpulse(impulsePower, manifold->points->localPoint);
             spriteA.characterHealth -= 10;
             if (spriteA.characterHealth <= 0) {
-                 spriteA.destroyMe = true;
+                spriteA.destroyMe = true;
             }
         } else if (spriteB.gameObjType == kObjTypeAsteroid) {
             b2Vec2 impulsePower = spriteA.body->GetLinearVelocity();
@@ -98,7 +93,7 @@ void Level1ContactListener::PostSolve(b2Contact* contact,
                 spriteB.destroyMe = true;
             }
         }
-    
+        
     }
     if ((spriteA.gameObjType == kObjTypeAsteroid && spriteB.gameObjType == kobjTypeMissle) ||
         (spriteA.gameObjType == kobjTypeMissle && spriteB.gameObjType == kObjTypeAsteroid)) {
@@ -107,4 +102,25 @@ void Level1ContactListener::PostSolve(b2Contact* contact,
     }
 }
 
+    
 
+
+void Level1ContactListener::PostSolve(b2Contact* contact, 
+                                  const b2ContactImpulse* impulse) {
+    b2Fixture* fixtureA = contact->GetFixtureA();
+    b2Fixture* fixtireB = contact->GetFixtureB();
+    b2Body *bodyA = fixtureA->GetBody();
+    b2Body *bodyB = fixtireB->GetBody();
+    GameCharPhysics *spriteA = (GameCharPhysics*) bodyA->GetUserData();
+    GameCharPhysics *spriteB = (GameCharPhysics*) bodyB->GetUserData();
+    
+    if ((spriteA.gameObjType == kObjTypeRocket || spriteB.gameObjType == kObjTypeRocket) &&
+        (spriteB.gameObjType == kObjTypeAsteroid || spriteA.gameObjType == kObjTypeAsteroid)) {
+        if (spriteA.gameObjType == kObjTypeRocket) {
+            spriteA.characterHealth -= 25;
+        } else if (spriteB.gameObjType == kObjTypeRocket) {
+            spriteB.characterHealth -= 25;
+        }
+    }
+
+}

@@ -20,6 +20,7 @@
     BOOL firingLeftRocket;
     BOOL firingRightRocket;
     b2Body *bulletTarget;
+    BOOL isDead;
 }
 
 @property (nonatomic, readonly) b2Fixture *sensorFixture;
@@ -29,6 +30,7 @@
 @property (nonatomic, readwrite) BOOL firingLeftRocket;
 @property (nonatomic, readwrite) BOOL firingRightRocket;
 @property (nonatomic, readwrite) b2Body *bulletTarget;
+@property (nonatomic, readonly) BOOL isDead;
 
 -(void) updateStateWithDeltaTime:(ccTime)deltaTime;
 -(id) initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location;

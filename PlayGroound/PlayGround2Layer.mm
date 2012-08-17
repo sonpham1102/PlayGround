@@ -91,6 +91,22 @@ enum {
     bulletCount --;
 }
 
+-(void)decrementAsteroidCount{
+    asteroidsCreated --;
+}
+
+-(void)addAsteroidDestroyed{
+    asteroidsDestroyed ++;
+}
+
+-(void) showEndGame{
+    CCLabelTTF *endLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"YOU DIED!!\n\nAsteroids Destroyed : %d",asteroidsDestroyed] fontName:@"Marker Felt" fontSize:12];
+    [self addChild:endLabel z:500];
+    [endLabel setColor:ccc3(0,0,255)];
+    endLabel.position = rocket.position;
+    [self unscheduleUpdate];
+}
+
 -(id) init
 {
 	if( (self=[super init])) {
@@ -108,8 +124,8 @@ enum {
         bulletCount = 0;
         missleTime = 0.0;
         missleCount = 0;
-        loopCount = 0;
         fireSide = 10;
+        asteroidsDestroyed = 0;
         
         weaponToFire = kWeaponBullets;
         
@@ -424,8 +440,7 @@ enum {
     for (GameCharPhysics *tempChar in listOfGameObjects) {
         [tempChar updateStateWithDeltaTime:dt];
     }
-    loopCount ++;
-    
+ 
     [self fireAsteroid:dt];
     
     CMDeviceMotion *currentDeviceMotion = motionManager.deviceMotion;
@@ -442,12 +457,21 @@ enum {
     [currentAttitude multiplyByInverseOfAttitude:referenceAttitude];
     
     float pitch = currentAttitude.pitch;
-    
+
     [rocket setPitchTurn:pitch];
-    //[rocket updateStateWithDeltaTime:dt];
-	[self followRocket2:dt];
+    [self followRocket2:dt];
+    
     bulletTime += dt;
     missleTime += dt;
+    
+    if (rocket.isDead) {
+        rocket.body->SetLinearVelocity(b2Vec2(0,0));
+        [rocket setVisible:NO];
+        [self setIsTouchEnabled:NO];
+        [rocketSmokeLeft stopSystem];
+        [rocketSmokeRight stopSystem];
+        [self showEndGame];
+    }
     
 }
 

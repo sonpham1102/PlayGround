@@ -100,17 +100,17 @@ enum {
 }
 
 -(void) showEndGame{
-    CCLabelTTF *endLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"YOU DIED!!\n\nAsteroids Destroyed : %d",asteroidsDestroyed] fontName:@"Marker Felt" fontSize:12];
-    [self addChild:endLabel z:500];
-    [endLabel setColor:ccc3(0,0,255)];
-    endLabel.position = rocket.position;
+    NSString *endLabel = [NSString stringWithFormat:@"YOU DIED!!\n\nAsteroids Destroyed : %d",asteroidsDestroyed];
+    [uiLayer displayText:endLabel andOnCompleteCallTarget:nil selector:nil];
     [self unscheduleUpdate];
 }
 
--(id) init
+-(id) initWithUILayer:(PlayGroundScene2UILayer *)ui
 {
 	if( (self=[super init])) {
 		
+        uiLayer = ui;
+        
         touchRight = nil;
         touchLeft = nil;
         touchMiddle = nil;

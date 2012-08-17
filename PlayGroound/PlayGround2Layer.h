@@ -20,6 +20,8 @@
 #import "bullet.h"
 #import "Level1ContactListener.h"
 
+@class PlayGroundScene2UILayer;
+
 
 typedef enum {
     kWeaponBullets,
@@ -84,12 +86,16 @@ typedef enum {
     Level1ContactListener *contactListener;
     int fireSide;
     weaponState weaponToFire;
+    
+    PlayGroundScene2UILayer *uiLayer;
 
 }
 
 
 @property (nonatomic, retain) CMMotionManager *motionManager;
 @property (nonatomic, assign) CCLabelBMFont *debugLabel;
+
+-(id)initWithUILayer:(PlayGroundScene2UILayer *)ui;
 
 @end
 

@@ -357,7 +357,6 @@
         
     
         body->ApplyForce(dragForce, body->GetWorldCenter());
-        CCLOG(@"Damping Force:%.2f - SpeedSq:%.2f",dragForceMag, speedSq);
     }
         
         

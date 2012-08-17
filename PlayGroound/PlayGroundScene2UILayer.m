@@ -10,11 +10,38 @@
 
 @implementation PlayGroundScene2UILayer
 
+@synthesize delegate;
+
 -(id) init {
     if( (self=[super init])) {
         [self createMenu];
+        CGSize winSize = [CCDirector sharedDirector].winSize;
+        label = [CCLabelTTF labelWithString:@"" fontName:@"Marker Felt"
+                                   fontSize:32.0];
+        label.position = ccp(winSize.width/2, winSize.height/2);
+        label.visible = NO;
+        [self addChild:label];
     }
     return self;
+}
+
+-(BOOL)displayText:(NSString *)text andOnCompleteCallTarget:(id)target selector:(SEL)selector {
+    [label stopAllActions];
+    [label setString:text];
+    label.visible = YES;
+    label.scale = 0.0;
+    label.opacity = 255;
+    
+    CCScaleTo *scaleUp = [CCScaleTo actionWithDuration:0.5 scale:1.2];
+    CCScaleTo *scaleBack = [CCScaleTo actionWithDuration:0.1 scale:1.0];
+    CCDelayTime *delay = [CCDelayTime actionWithDuration:2.0];
+    //CCFadeOut *fade = [CCFadeOut actionWithDuration:0.5];
+    //CCHide *hide = [CCHide action];
+    CCCallFuncN *onComplete = [CCCallFuncN actionWithTarget:target
+                                                   selector:selector];
+    CCSequence *sequence = [CCSequence actions:scaleUp,scaleBack,delay,onComplete, nil];
+    [label runAction:sequence];
+    return TRUE;
 }
 
 -(void) createMenu
@@ -27,6 +54,12 @@
                               {
                                   [[GameManager sharedGameManager] runLevelWithID:kMainMenu];
                               }];
+    [CCMenuItemFont setFontSize:16];
+    CCMenuItemLabel *weaponSwitch = [CCMenuItemFont itemWithString:@"Switch Weapons" block:^(id sender)
+                                     {
+                                         [delegate switchWeapons];
+                                     }];
+    
 	//JP : Not using Achievements and Leader Boards of now
     /*
      // Achievement Menu Item using blocks
@@ -61,16 +94,18 @@
     [reset setScale:0.75f];
 	//CCMenu *menu = [CCMenu menuWithItems:itemAchievement, itemLeaderboard, reset, nil];
     CCMenu *menu = [CCMenu menuWithItems:reset, nil];
+    CCMenu *weaponSwitchMenu = [CCMenu menuWithItems:weaponSwitch, nil];
     
 	
 	[menu alignItemsVertically];
+    [weaponSwitchMenu alignItemsVertically];
 	
     //JP: Repositioned Menu to Upper Right Corner
     //    Should use IPAD Idiom to set properly
 	CGSize size = [[CCDirector sharedDirector] winSize];
 	[menu setPosition:ccp( size.width*0.9, size.height*0.95)];
-	
-	
+	[weaponSwitch setPosition:ccp(0,-size.height*0.45)];
+	[self addChild: weaponSwitchMenu z:-1];
 	[self addChild: menu z:-1];	
 }
 

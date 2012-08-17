@@ -7,11 +7,11 @@
 //
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
-#define MISSLE_LIFE 15
+#define MISSLE_LIFE 7
 
 #import "PhotonTorpedo.h"
 #define SCALE_FACTOR 0.2f
-#define PROTON_SPEED_FACTOR 10
+#define PROTON_SPEED_FACTOR 0.3
 
 
 @implementation PhotonTorpedo
@@ -23,7 +23,7 @@
     
     float32 size = 3.0;
     b2BodyDef bodyDef;
-    bodyDef.type = b2_kinematicBody;
+    bodyDef.type = b2_dynamicBody;
     bodyDef.position = location;
     bodyDef.bullet = true;
     
@@ -40,6 +40,7 @@
     
     body->SetUserData(self);
     [self setScale:3];
+
 }
 
 -(void) destroy:(id)sender {
@@ -53,13 +54,30 @@
         return;
     }
     if (!target.destroyMe) {
+        if (timeTravelled > 0.05) {
+            
+            body->SetLinearDamping(4.5);
+            b2Vec2 currentPos = body->GetPosition();
+            b2Vec2 targetPos = target.body->GetPosition();
+            b2Vec2 destination = targetPos - currentPos;
+            float length = destination.Length();
+            if (length < oldLength) {
+                if (oldLength < 1.5)
+                    oldLength = 1.5;
+                length = oldLength + (oldLength - length);
+            } else {
+                oldLength = length;
+            }
+            destination.Normalize();
+            destination.x *= PROTON_SPEED_FACTOR * length * (1 + timeTravelled);
+            destination.y *= PROTON_SPEED_FACTOR * length * (1 + timeTravelled);
+        
+            body->ApplyLinearImpulse(destination, body->GetPosition());
+        }
         b2Vec2 currentPos = body->GetPosition();
         b2Vec2 targetPos = target.body->GetPosition();
         b2Vec2 destination = targetPos - currentPos;
-        float length = destination.Length();
-        destination.x = (destination.x / length) * PROTON_SPEED_FACTOR;
-        destination.y = (destination.y / length) * PROTON_SPEED_FACTOR;
-        body->SetLinearVelocity(destination);
+        oldLength = destination.Length();
     }
     
     
@@ -94,6 +112,10 @@
         destroyMe = false;
         isDead = false;
         timeTravelled = 0.0;
+        b2Vec2 currentPos = body->GetPosition();
+        b2Vec2 targetPos = target.body->GetPosition();
+        b2Vec2 destination = targetPos - currentPos;
+        oldLength = destination.Length();
     }
     return self;
 }

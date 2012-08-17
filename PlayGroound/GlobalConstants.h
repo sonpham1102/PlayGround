@@ -62,7 +62,9 @@ typedef enum {
 -(void) addParticleEffect:(CCParticleSystemQuad*)effect;
 -(void) createExplosionAtLocation:(CGPoint)location;
 -(void) decrementMissleCount;
-
+-(void) switchWeapons;
+-(void) addAsteroidDestroyed;
+-(void) decrementAsteroidCount;
 @end
 
 

@@ -17,8 +17,9 @@
     {
         PlayGroundScene2UILayer *uiLayer = [PlayGroundScene2UILayer node];
         [self addChild:uiLayer z:10];
-        PlayGround2Layer *playGroundLayer = [PlayGround2Layer node];
+        PlayGround2Layer *playGroundLayer = [[[PlayGround2Layer alloc] initWithUILayer:uiLayer]autorelease];
         [self addChild:playGroundLayer z:5];
+        [uiLayer setDelegate:playGroundLayer];
     }
     return self;
 }

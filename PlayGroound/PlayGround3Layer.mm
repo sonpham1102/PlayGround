@@ -341,7 +341,7 @@ enum {
     
     [sceneSpriteBatchNode addChild:obstacle];
 */
-    [self buildLevelFromPlist:@"PG3Level3"];
+    [self buildLevelFromPlist:@"PG3Level2"];
 }
 
 -(id) init

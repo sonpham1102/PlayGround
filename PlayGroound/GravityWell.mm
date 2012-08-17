@@ -9,7 +9,7 @@
 #import "GravityWell.h"
 #import "Box2DHelpers.h"
 
-#define GW_GRAV_FORCE 300.0
+#define GW_GRAV_FORCE 200.0
 #define GW_GF_TANGENT_FRAC 0.5
 
 @implementation GravityWell

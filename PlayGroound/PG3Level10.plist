@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ObstacleBlock</key>
+	<dict>
+		<key>1</key>
+		<string>0.20,0.5,0.02,0.6,0.0</string>
+		<key>2</key>
+		<string>0.40,0.75,0.02,0.4,0.0</string>
+		<key>3</key>
+		<string>0.60,0.6,0.02,0.4,0.0</string>
+		<key>4</key>
+		<string>0.80,0.5,0.02,0.35,0.0</string>
+		<key>5</key>
+		<string>0.35,0.25,0.02,0.3,-25.0</string>
+		<key>6</key>
+		<string>0.80,0.07,0.02,0.15,0.0</string>
+	</dict>
+	<key>TurboPad</key>
+	<dict>
+		<key>1</key>
+		<string>0.70,0.2,0.05,0.15,0.0</string>
+	</dict>
+	<key>GravityWell</key>
+	<dict>
+		<key>1</key>
+		<string>0.50,0.26,0.05</string>
+	</dict>
+	<key>BounceTriangle</key>
+	<dict>
+		<key>1</key>
+		<string>0.21,0.92,0.2,10.0,-5.0</string>
+		<key>2</key>
+		<string>0.21,0.08,0.2,10.0,5.0</string>
+		<key>3</key>
+		<string>0.7,0.9,0.25,5.0,-25.0</string>
+		<key>4</key>
+		<string>0.9,0.20,0.1,10.0,45.0</string>
+	</dict>
+</dict>
+</plist>

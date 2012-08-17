@@ -35,7 +35,7 @@
     fixtureDef.shape = &shape;
     
     fixtureDef.friction = 0.0f;
-    fixtureDef.restitution = 3.0f;
+    fixtureDef.restitution = 4.0f;
     body->CreateFixture(&fixtureDef);
     
     body->SetTransform(body->GetPosition(), angleOffset*M_PI/180.0f);

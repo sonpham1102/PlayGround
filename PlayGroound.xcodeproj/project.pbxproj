@@ -228,7 +228,11 @@
 		FA65B52515D6DFDA005A1044 /* TurboPad.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA65B52415D6DFDA005A1044 /* TurboPad.mm */; };
 		FA65B52815D6EDE1005A1044 /* ObstacleBlock.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA65B52715D6EDE0005A1044 /* ObstacleBlock.mm */; };
 		FA65B52A15D6F7E9005A1044 /* PG3Level1.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA65B52915D6F7E9005A1044 /* PG3Level1.plist */; };
-		FA65B53D15DB0189005A1044 /* PG3Level2.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA65B53415DB0189005A1044 /* PG3Level2.plist */; };
+		FA65B55115DD6830005A1044 /* PG3Level10.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA65B55015DD6830005A1044 /* PG3Level10.plist */; };
+		FA65B55615DDC0F6005A1044 /* PG3Level2.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA65B55215DDC0F5005A1044 /* PG3Level2.plist */; };
+		FA65B55715DDC0F6005A1044 /* PG3Level3.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA65B55315DDC0F5005A1044 /* PG3Level3.plist */; };
+		FA65B55815DDC0F6005A1044 /* PG3Level4.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA65B55415DDC0F5005A1044 /* PG3Level4.plist */; };
+		FA65B55915DDC0F6005A1044 /* PG3Level9.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA65B55515DDC0F6005A1044 /* PG3Level9.plist */; };
 		FA8182ED15B866D8003AC851 /* GameObj.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8182EC15B866D8003AC851 /* GameObj.m */; };
 		FA8182F315B87426003AC851 /* GameChar.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8182F215B87426003AC851 /* GameChar.m */; };
 		FA8182F615B87709003AC851 /* GameCharPhysics.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA8182F515B87709003AC851 /* GameCharPhysics.mm */; };
@@ -677,7 +681,11 @@
 		FA65B52615D6EDDF005A1044 /* ObstacleBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObstacleBlock.h; sourceTree = "<group>"; };
 		FA65B52715D6EDE0005A1044 /* ObstacleBlock.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ObstacleBlock.mm; sourceTree = "<group>"; };
 		FA65B52915D6F7E9005A1044 /* PG3Level1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PG3Level1.plist; sourceTree = "<group>"; };
-		FA65B53415DB0189005A1044 /* PG3Level2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PG3Level2.plist; path = tmp/PG3Level2.plist; sourceTree = "<group>"; };
+		FA65B55015DD6830005A1044 /* PG3Level10.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PG3Level10.plist; sourceTree = "<group>"; };
+		FA65B55215DDC0F5005A1044 /* PG3Level2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PG3Level2.plist; sourceTree = "<group>"; };
+		FA65B55315DDC0F5005A1044 /* PG3Level3.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PG3Level3.plist; sourceTree = "<group>"; };
+		FA65B55415DDC0F5005A1044 /* PG3Level4.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PG3Level4.plist; sourceTree = "<group>"; };
+		FA65B55515DDC0F6005A1044 /* PG3Level9.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PG3Level9.plist; sourceTree = "<group>"; };
 		FA8182EB15B866D8003AC851 /* GameObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObj.h; sourceTree = "<group>"; };
 		FA8182EC15B866D8003AC851 /* GameObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObj.m; sourceTree = "<group>"; };
 		FA8182F115B87426003AC851 /* GameChar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameChar.h; sourceTree = "<group>"; };
@@ -1440,7 +1448,11 @@
 		FA1348CD15B7513400E5CDB5 /* Plists */ = {
 			isa = PBXGroup;
 			children = (
-				FA65B53415DB0189005A1044 /* PG3Level2.plist */,
+				FA65B55215DDC0F5005A1044 /* PG3Level2.plist */,
+				FA65B55315DDC0F5005A1044 /* PG3Level3.plist */,
+				FA65B55415DDC0F5005A1044 /* PG3Level4.plist */,
+				FA65B55515DDC0F6005A1044 /* PG3Level9.plist */,
+				FA65B55015DD6830005A1044 /* PG3Level10.plist */,
 				FA1348CE15B7516400E5CDB5 /* SoundEffects.plist */,
 				FA1348D315B7536C00E5CDB5 /* BackgroundMusic.plist */,
 				FA65B52915D6F7E9005A1044 /* PG3Level1.plist */,
@@ -1617,7 +1629,11 @@
 				120EEB0715D6140B00C629B2 /* scifi1.mp3 in Resources */,
 				120EEB2915D6DF4D00C629B2 /* Sonic Boom.wav in Resources */,
 				FA65B52A15D6F7E9005A1044 /* PG3Level1.plist in Resources */,
-				FA65B53D15DB0189005A1044 /* PG3Level2.plist in Resources */,
+				FA65B55115DD6830005A1044 /* PG3Level10.plist in Resources */,
+				FA65B55615DDC0F6005A1044 /* PG3Level2.plist in Resources */,
+				FA65B55715DDC0F6005A1044 /* PG3Level3.plist in Resources */,
+				FA65B55815DDC0F6005A1044 /* PG3Level4.plist in Resources */,
+				FA65B55915DDC0F6005A1044 /* PG3Level9.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

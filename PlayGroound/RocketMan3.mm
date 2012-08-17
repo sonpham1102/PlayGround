@@ -13,20 +13,23 @@
 //MOVE TO A pLIST
 #define RM_DENSITY 5.0f
 #define RM_FRICTION 0.1f
-#define RM_RESTITUTION 0.5f
+#define RM_RESTITUTION 0.2f
 
 #define RM_RADIUS 1.0
-#define RM_LINEAR_DAMP 0.5
 
+#define RM_LINEAR_DAMP 0.0
+#define RM_MIN_DRAG_SPEED_SQ 90.0
+#define RM_DRAG_COEFF 0.06
+#define RM_DRAG_FORCE_MAX 1000.0
 
 #define RM_PAN_ROCKET_IMPULSE 15.0
 #define RM_PAN_LENGTH_MIN 2.0
 #define RM_PAN_LENGTH_MAX 30.0
-#define RM_MAX_ROCKET_SLOPE 100.0
+#define RM_MAX_ROCKET_SLOPE 0.3
 #define RM_MIN_ROCKET_SLOPE 0.0
 #define RM_PAN_SLOPE_ALLOWANCE 0.7
 
-#define RM_TAP_IMPULSE 30.0
+#define RM_TAP_IMPULSE 50.0
 
 #define RM_ROT_FACTOR 180.0 //controls the torque spinning with rotation touch.
 #define RM_ROT_COUNTER_SPIN M_PI_2
@@ -185,10 +188,11 @@
     
     //get a number between 0 and 1
     increaseFactor = (increaseFactor - RM_PAN_LENGTH_MIN)/(RM_PAN_LENGTH_MAX - RM_PAN_LENGTH_MIN);
-    //square it so that long pans ramp up to full force quickly
-    increaseFactor *= increaseFactor;
     //add 1 so that we have a minimum pan force
     increaseFactor += 1.0f;
+    //square it so that long pans ramp up to full force quickly
+    increaseFactor *= increaseFactor;
+    
     
     //determine if it's the left or right device and set up accordingly
     //CCLOG(@"pan factor: %.1f", increaseFactor);
@@ -243,9 +247,11 @@
 
 -(void)fireTapDevice
 {
-    //b2Vec2 tapImpulse = b2Vec2(body->GetMass()*RM_TAP_IMPULSE, 0.0);
-    b2Vec2 tapImpulse = body->GetLinearVelocity();
-    tapImpulse.Normalize();
+//    b2Vec2 tapImpulse = body->GetLinearVelocity();
+//    tapImpulse.Normalize();
+
+    b2Vec2 tapImpulse = b2Vec2(1.0f, 0.0f);
+    
     tapImpulse.x *= body->GetMass()*RM_TAP_IMPULSE;
     tapImpulse.y *= body->GetMass()*RM_TAP_IMPULSE;
     body->ApplyLinearImpulse(tapImpulse, body->GetWorldCenter());
@@ -329,6 +335,31 @@
         }
 
     }
+    
+    //apply a drag if over a specified velocity
+    float speedSq = body->GetLinearVelocity().LengthSquared();
+    
+    if (speedSq > RM_MIN_DRAG_SPEED_SQ)
+    {
+        b2Vec2 dragForce = body->GetLinearVelocity();
+        
+        //need to limit the drag force to get decent bounces
+        float dragForceMag = speedSq*RM_DRAG_COEFF*body->GetMass();
+        
+        if (dragForceMag > RM_DRAG_FORCE_MAX)
+        {
+            dragForceMag = RM_DRAG_FORCE_MAX;
+        }
+        
+        dragForce.Normalize();
+        dragForce.x *= -dragForceMag;
+        dragForce.y *= -dragForceMag;
+        
+    
+        body->ApplyForce(dragForce, body->GetWorldCenter());
+        CCLOG(@"Damping Force:%.2f - SpeedSq:%.2f",dragForceMag, speedSq);
+    }
+        
         
     if(!isManeuvering)
     {

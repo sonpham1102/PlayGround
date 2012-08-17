@@ -10,7 +10,8 @@
 #import "Box2DHelpers.h"
 
 #define TP_SIDEWAYS_FORCE 10.0f
-#define TP_FORCE 800.0f
+#define TP_FORCE 600.0f
+#define TP_IMPULSE 10.0f
 
 @implementation TurboPad
 
@@ -60,13 +61,17 @@
     if (rocketBody != NULL)
     {
         b2Vec2 rocketVelocity = body->GetLocalVector(rocketBody.body->GetLinearVelocity());
-        
-        //apply a rear force to propel forward and a sideways force to damp sideways velocity
-        b2Vec2 forceVector = body->GetWorldVector(b2Vec2(1.0f, 0.0f));
-        forceVector.y = -rocketVelocity.y*TP_SIDEWAYS_FORCE * rocketBody.body->GetMass();
-        forceVector.x *= rocketBody.body->GetMass() * TP_FORCE;
-        
-        rocketBody.body->ApplyForce(body->GetWorldVector(forceVector), rocketBody.body->GetPosition());
+        //apply a rear impulse to propel forward and a sideways force to damp sideways velocity
+        b2Vec2 impulseVector = body->GetWorldVector(b2Vec2(1.0f, 0.0f));
+        impulseVector.x *= rocketBody.body->GetMass()*TP_IMPULSE;
+        impulseVector.y *= rocketBody.body->GetMass()*TP_IMPULSE;
+
+        b2Vec2 forceVector = body->GetWorldVector(b2Vec2(0.0f, -rocketVelocity.y));
+        forceVector.x *= TP_SIDEWAYS_FORCE * rocketBody.body->GetMass();       
+        forceVector.y *= TP_SIDEWAYS_FORCE * rocketBody.body->GetMass();
+
+        rocketBody.body->ApplyForce(forceVector, rocketBody.body->GetWorldCenter());
+        rocketBody.body->ApplyLinearImpulse(impulseVector, rocketBody.body->GetWorldCenter());
     }
 }
 

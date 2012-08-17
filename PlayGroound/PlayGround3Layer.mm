@@ -20,7 +20,7 @@
 
 //AP : MOVE to a plist or something
 #define SCREEN_LENGTHS 1.0 //number of screens high for the level 
-#define SCREEN_WIDTHS 2.0
+#define SCREEN_WIDTHS 3.0
 #define END_ZONE_SENSOR_SIZE 0.10 //multiple of screen height
 #define FIXED_POS_Y 0.33f // multiple of screen height
 #define FIXED_POS_X 0.33f // multiple of screen width
@@ -341,7 +341,7 @@ enum {
     
     [sceneSpriteBatchNode addChild:obstacle];
 */
-    [self buildLevelFromPlist:@"PG3Level1"];
+    [self buildLevelFromPlist:@"PG3Level3"];
 }
 
 -(id) init
@@ -364,7 +364,7 @@ enum {
 
         
         // create the rocket man
-        [self createRocketMan:ccp(s.width*0.10f/PTM_RATIO, s.height/5.0/PTM_RATIO)];
+        [self createRocketMan:ccp(s.width*0.10f/PTM_RATIO, s.height*SCREEN_LENGTHS/2.0/PTM_RATIO)];
 
         // add it as a child
         [sceneSpriteBatchNode addChild:rocketMan /*z:0*/];
@@ -417,7 +417,7 @@ enum {
 	CGSize s = [[CCDirector sharedDirector] winSize];
 	
 	b2Vec2 gravity;
-	gravity.Set(-10.0f, 0.0f);
+	gravity.Set(/*-10.0f*/0.0f, 0.0f);
 	world = new b2World(gravity);
 	
 	
@@ -538,7 +538,7 @@ enum {
     }
     
     CGSize screenSize = [CCDirector sharedDirector].winSize;
-    rocketMan.body->SetTransform( b2Vec2(screenSize.width*0.10f/PTM_RATIO, screenSize.height/5.0/PTM_RATIO), -M_PI_2);
+    rocketMan.body->SetTransform( b2Vec2(screenSize.width*0.10f/PTM_RATIO, screenSize.height*SCREEN_LENGTHS/2.0/PTM_RATIO), -M_PI_2);
     rocketMan.body->SetLinearVelocity(b2Vec2_zero);
     rocketMan.body->SetAngularVelocity(0.0);
 }
@@ -883,16 +883,6 @@ enum {
         }
     }
 
-    CCArray *listOfGameObjects = [sceneSpriteBatchNode children];
-    for (GameChar *tempChar in listOfGameObjects)
-    {
-        [tempChar updateStateWithDeltaTime:dt];
-    }
-
-    //HACK for now just call the update on the rocket manually
-    //[rocketMan updateStateWithDeltaTime:dt andListOfGameObjects:nil];
-    
-    
     // see if the rocketMan is in the end zone
     b2ContactEdge *edge = rocketMan.body->GetContactList();
     while (edge)
@@ -904,15 +894,21 @@ enum {
             b2Fixture *fixtureB = contact->GetFixtureB();
             b2Body *bodyA = fixtureA->GetBody();
             b2Body *bodyB = fixtureB->GetBody();
-
+            
             if ((bodyA == endZoneSensor) || (bodyB == endZoneSensor))
             {
                 [self resetRocketManPosition];
             }
         }
         edge = edge->next;
-    }
-
+    }    
+    
+    CCArray *listOfGameObjects = [sceneSpriteBatchNode children];
+    for (GameChar *tempChar in listOfGameObjects)
+    {
+        [tempChar updateStateWithDeltaTime:dt];
+    }    
+    
     // this means the race is on
     if(acceptingInput)
     {

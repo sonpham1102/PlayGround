@@ -318,14 +318,21 @@
 	// Default font size will be 22 points.
 	[CCMenuItemFont setFontSize:22];
 	
-	// Reset Button
-	CCMenuItemLabel *reset = [CCMenuItemFont itemWithString:@"Main Menu" block:^(id sender)
+	// Main Menu Button
+	CCMenuItemLabel *mainMenu = [CCMenuItemFont itemWithString:@"Main Menu" block:^(id sender)
                               {
                                   [[GameManager sharedGameManager] runLevelWithID:kMainMenu];
                               }];
+    [mainMenu setScale:0.75f];
+
+	// reset Button
+	CCMenuItemLabel *reset = [CCMenuItemFont itemWithString:@"Reset" block:^(id sender)
+                                 {
+                                     [[GameManager sharedGameManager] runLevelWithID:kPlayGround3];
+                                 }];
     [reset setScale:0.75f];
 
-    CCMenu *menu = [CCMenu menuWithItems:reset, nil];
+    CCMenu *menu = [CCMenu menuWithItems:mainMenu, reset, nil];
     	
 	[menu alignItemsVertically];
 	

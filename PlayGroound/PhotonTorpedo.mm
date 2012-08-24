@@ -61,13 +61,14 @@
             b2Vec2 targetPos = target.body->GetPosition();
             b2Vec2 destination = targetPos - currentPos;
             float length = destination.Length();
+            /*
             if (length < oldLength) {
                 if (oldLength < 1.5)
                     oldLength = 1.5;
                 length = oldLength + (oldLength - length);
             } else {
                 oldLength = length;
-            }
+            }*/
             destination.Normalize();
             destination.x *= PROTON_SPEED_FACTOR * length * (1 + timeTravelled);
             destination.y *= PROTON_SPEED_FACTOR * length * (1 + timeTravelled);

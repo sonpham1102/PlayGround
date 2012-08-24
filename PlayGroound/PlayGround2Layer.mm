@@ -22,12 +22,12 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
-#define LEVEL_HEIGHT 10 //25
-#define LEVEL_WIDTH 4 //10
+#define LEVEL_HEIGHT 1 //25
+#define LEVEL_WIDTH 3 //10
 #define MAX_VELOCITY 5
 //#define FRICTION_COEFF 0.08
 
-#define ASTEROID_TIMER 2.5
+#define ASTEROID_TIMER 3
 #define ASTEROID_LIMIT 75
 
 // used in FollowRocket2

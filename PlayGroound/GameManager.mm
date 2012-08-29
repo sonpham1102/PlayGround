@@ -27,6 +27,7 @@ static GameManager* _sharedGameManager = nil;
 @synthesize soundEffectsState;
 @synthesize isMusicON;
 @synthesize isSoundEffectsON;
+@synthesize PG3Level;
 
 
 //creates the _sharedGameManager (if necessary) and returns a pointer to it
@@ -68,6 +69,7 @@ static GameManager* _sharedGameManager = nil;
         hasAudioBeenInitialized = NO;
         soundEngine = nil;
         managerSoundState = kAudioManagerUninitialized;
+        PG3Level = 1;
     }
     return self;
 }

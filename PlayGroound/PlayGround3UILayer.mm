@@ -332,7 +332,22 @@
                                  }];
     [reset setScale:0.75f];
 
-    CCMenu *menu = [CCMenu menuWithItems:mainMenu, reset, nil];
+	// switch level Button
+	CCMenuItemLabel *nextLevel = [CCMenuItemFont itemWithString:@"Next" block:^(id sender)
+                              {
+                                  int currentLevel = [GameManager sharedGameManager].PG3Level;
+                                  currentLevel++;
+                                  if (currentLevel > 4)
+                                  {
+                                      currentLevel = 1;
+                                  }
+                                  [GameManager sharedGameManager].PG3Level = currentLevel;
+                                  [[GameManager sharedGameManager] runLevelWithID:kPlayGround3];
+                              }];
+    [nextLevel setScale:0.75f];
+    
+    
+    CCMenu *menu = [CCMenu menuWithItems:mainMenu, reset, nextLevel, nil];
     	
 	[menu alignItemsVertically];
 	

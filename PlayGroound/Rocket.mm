@@ -77,7 +77,7 @@
 -(void) createRocketAtLocation:(CGPoint)location {
     
     b2BodyDef bodyDef;
-    bodyDef.type = b2_staticBody;
+    bodyDef.type = b2_dynamicBody;
     bodyDef.position = b2Vec2(location.x/PTM_RATIO,
                               location.y/PTM_RATIO);
     body = world->CreateBody(&bodyDef);
@@ -213,7 +213,7 @@
 -(id) initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location {
     
     if ((self = [super initWithSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:@"rocket1.png"]] )) {
-        
+        [self setScale:0.5];
         world = theWorld;
         gameObjType = kObjTypeRocket;
         bulletTarget = nil;

@@ -1,12 +1,10 @@
 //
-//  PlayGround2Layer.h
+//  PlayGround4Layer.h
 //  PlayGroound
 //
-//  Created by Jason Parlour on 12-07-18.
+//  Created by Jason Parlour on 12-08-29.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
-
-
 
 #import <GameKit/GameKit.h>
 #import "GlobalConstants.h"
@@ -20,17 +18,17 @@
 #import "bullet.h"
 #import "Level1ContactListener.h"
 
-@class PlayGroundScene2UILayer;
+@class PlayGroundScene4UILayer;
 
-
+/*
 typedef enum {
     kWeaponBullets,
     kWeaponPhotons,
     kWeaponMissiles
 }weaponState;
+*/
 
-// HelloWorldLayer
-@interface PlayGround2Layer : CCLayer <PlayGround2LayerDelegate>
+@interface PlayGround4Layer : CCLayer <PlayGround4LayerDelegate>
 {
     Rocket *rocket;
 	CCTexture2D *spriteTexture_;	// weak ref
@@ -39,14 +37,12 @@ typedef enum {
 	GLESDebugDraw *m_debugDraw;		// strong ref
     CCTMXTiledMap *tileMapNode;
     
-    b2Body *leftWallBody;
-    
     //Particle Effect
     CCParticleFire *bulletFire;
     CCParticleFireworks *rocketSmokeLeft;
     CCParticleFireworks *rocketSmokeRight;
     CCParticleBatchNode *bulletsFiredParticleBatch;
-
+    
     
     //Camera Controls
     b2Vec2 lastCameraPos;
@@ -90,16 +86,14 @@ typedef enum {
     int fireSide;
     weaponState weaponToFire;
     
-    PlayGroundScene2UILayer *uiLayer;
-
+    PlayGroundScene4UILayer *uiLayer;
+    
 }
 
 
 @property (nonatomic, retain) CMMotionManager *motionManager;
 @property (nonatomic, assign) CCLabelBMFont *debugLabel;
 
--(id)initWithUILayer:(PlayGroundScene2UILayer *)ui;
+-(id)initWithUILayer:(PlayGroundScene4UILayer *)ui;
 
 @end
-
-

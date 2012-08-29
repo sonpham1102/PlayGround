@@ -341,7 +341,8 @@ enum {
     
     [sceneSpriteBatchNode addChild:obstacle];
 */
-    [self buildLevelFromPlist:@"PG3Level2"];
+    //[self buildLevelFromPlist:@"PG3Level4"];
+    [self buildLevelFromPlist:[NSString stringWithFormat:@"PG3Level%i",[GameManager sharedGameManager].PG3Level]];
 }
 
 -(id) init

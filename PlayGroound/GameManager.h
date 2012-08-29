@@ -29,6 +29,9 @@
     NSMutableDictionary *listOfSoundEffectFiles;
     // build in conjunction with the list above, contains a loaded/not loaded flag
     NSMutableDictionary *soundEffectsState;
+    
+    //HACK to switch levels for PG3
+    int PG3Level;
 }
 
 +(GameManager*)sharedGameManager;
@@ -39,6 +42,8 @@
 @property (nonatomic, retain) NSMutableDictionary *soundEffectsState;
 @property (readwrite) BOOL isMusicON;
 @property (readwrite) BOOL isSoundEffectsON;
+@property (readwrite) int PG3Level;
+
 
 -(void)setupAudioEngine;
 //plays a sound effect.  The key and the file it plays are found in the Plist

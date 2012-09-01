@@ -22,8 +22,8 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
-#define LEVEL_HEIGHT 50 //25
-#define LEVEL_WIDTH 1 //10
+#define LEVEL_HEIGHT 15 //25
+#define LEVEL_WIDTH 5 //10
 #define MAX_VELOCITY 5
 //#define FRICTION_COEFF 0.08
 
@@ -413,7 +413,7 @@ enum {
     cameraBody->SetLinearDamping(CAMERA_LINEAR_DAMP);
     cameraBody->CreateFixture(&fixtureDef);
 }
-
+/*
 -(void) draw
 {
 	//
@@ -431,7 +431,7 @@ enum {
 	
 	kmGLPopMatrix();
 }
-
+*/
 -(void) update: (ccTime) dt
 {
     static double UPDATE_INTERVAL = 1.0/60.0f;

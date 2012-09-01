@@ -213,7 +213,7 @@
 -(id) initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location {
     
     if ((self = [super initWithSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:@"rocket1.png"]] )) {
-        [self setScale:0.5];
+        [self setScale:0.75];
         world = theWorld;
         gameObjType = kObjTypeRocket;
         bulletTarget = nil;

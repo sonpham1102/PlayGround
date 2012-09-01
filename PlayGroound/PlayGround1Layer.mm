@@ -94,7 +94,7 @@ enum {
     fixtureDef.shape = &shape;
     //fixtureDef.isSensor = true;
     fixtureDef.density = 0.0;
-    fixtureDef.restitution = 2.0f;
+    fixtureDef.restitution = 0.5f;
     
     body->CreateFixture(&fixtureDef);
     

@@ -1,13 +1,12 @@
 //
-//  PlayGround2Layer.mm
+//  PlayGround4Layer.m
 //  PlayGroound
 //
-//  Created by Jason Parlour on 12-07-18.
+//  Created by Jason Parlour on 12-08-29.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
-
-#import "PlayGround2Scene.h"
-#import "PlayGround2Layer.h"
+#import "PlayGround4Scene.h"
+#import "PlayGround4Layer.h"
 // Needed to obtain the Navigation Controller
 #import "AppDelegate.h"
 
@@ -22,8 +21,8 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
-#define LEVEL_HEIGHT 15 //25
-#define LEVEL_WIDTH 5 //10
+#define LEVEL_HEIGHT 10 //25
+#define LEVEL_WIDTH 3 //10
 #define MAX_VELOCITY 5
 //#define FRICTION_COEFF 0.08
 
@@ -31,7 +30,7 @@
 #define ASTEROID_LIMIT 75
 
 // used in FollowRocket2
-#define CAMERA_VELOCITY_FACTOR 1.6
+#define CAMERA_VELOCITY_FACTOR 0.6
 
 #define CAMERA_DENSITY 3.0 //weight of the camera body
 #define CAMERA_LINEAR_DAMP 10.0 //the linear dampening for the camera, causes it to drag behind
@@ -60,11 +59,11 @@ enum {
 
 #pragma mark - HelloWorldLayer
 
-@interface PlayGround2Layer()
+@interface PlayGround4Layer()
 -(void) initPhysics;
 @end
 
-@implementation PlayGround2Layer
+@implementation PlayGround4Layer
 
 @synthesize motionManager;
 @synthesize debugLabel;
@@ -105,56 +104,7 @@ enum {
     [self unscheduleUpdate];
 }
 
--(void)createGroundEdgesWithVerts:(b2Vec2 *)verts numVerts:(int)num {
-    b2BodyDef groundBodyDef;
-    groundBodyDef.type = b2_staticBody;
-    groundBodyDef.position.Set(0, 0);
-    leftWallBody = world->CreateBody(&groundBodyDef);
-    b2EdgeShape groundShape;
-    b2FixtureDef groundFixtureDef;
-    groundFixtureDef.shape = &groundShape;
-    groundFixtureDef.density = 0.0;
-    for(int i = 0; i < num - 1; i++) {
-        
-        b2Vec2 left = verts[i];
-        b2Vec2 right = verts[i+1];
-        groundShape.Set(left, right);
-        leftWallBody->CreateFixture(&groundFixtureDef);
-    }
-    
-}
-
--(void)createGround1 {
-    int num = 23;
-    b2Vec2 verts[] = {
-        b2Vec2(-1022.5f / 100.0, -20.2f / 100.0),
-        b2Vec2(-966.6f / 100.0, -18.0f / 100.0),
-        b2Vec2(-893.8f / 100.0, -10.3f / 100.0),
-        b2Vec2(-888.8f / 100.0, 1.1f / 100.0),
-        b2Vec2(-804.0f / 100.0, 10.3f / 100.0),
-        b2Vec2(-799.7f / 100.0, 5.3f / 100.0),
-        b2Vec2(-795.5f / 100.0, 8.1f / 100.0),
-        b2Vec2(-755.2f / 100.0, -1.8f / 100.0),
-        b2Vec2(-755.2f / 100.0, -9.5f / 100.0),
-        b2Vec2(-632.2f / 100.0, 5.3f / 100.0),
-        b2Vec2(-603.9f / 100.0, 17.3f / 100.0),
-        b2Vec2(-536.0f / 100.0, 18.0f / 100.0),
-        b2Vec2(-518.3f / 100.0, 28.6f / 100.0),
-        b2Vec2(-282.1f / 100.0, 13.1f / 100.0),
-        b2Vec2(-258.1f / 100.0, 27.2f / 100.0),
-        b2Vec2(-135.1f / 100.0, 18.7f / 100.0),
-        b2Vec2(9.2f / 100.0, -19.4f / 100.0),
-        b2Vec2(483.0f / 100.0, -18.7f / 100.0),
-        b2Vec2(578.4f / 100.0, 11.0f / 100.0),
-        b2Vec2(733.3f / 100.0, -7.4f / 100.0),
-        b2Vec2(827.3f / 100.0, -1.1f / 100.0),
-        b2Vec2(1006.9f / 100.0, -20.2f / 100.0),
-        b2Vec2(1023.2f / 100.0, -20.2f / 100.0)
-        
-    };
-    [self createGroundEdgesWithVerts:verts numVerts:num];
-}
--(id) initWithUILayer:(PlayGroundScene2UILayer *)ui
+-(id) initWithUILayer:(PlayGroundScene4UILayer *)ui
 {
 	if( (self=[super init])) {
 		
@@ -194,7 +144,7 @@ enum {
         
         referenceAttitude = nil;
         
-
+        
         cameraTarget = CGPointZero;
         lastCameraPos = b2Vec2_zero;
         lastCameraVel = b2Vec2_zero;
@@ -218,7 +168,7 @@ enum {
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"Playground2Atlas.plist"];
         sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"Playground2Atlas.png" capacity:250];
         [self addChild:sceneSpriteBatchNode z:0];
-
+        
         rocket = [[Rocket alloc] initWithWorld:world atLocation:ccp(s.width * LEVEL_WIDTH /2, 
                                                                     s.height*LEVEL_HEIGHT*0.05)];
         
@@ -244,14 +194,13 @@ enum {
         rocketSmokeRight.duration = -1;
         rocketSmokeRight.scale = 0.12;
         
-
+        
         [sceneSpriteBatchNode addChild:rocket];
         [rocket release];
-
+        
         [rocket setTurnDirection:1];
         [rocket setDelegate:self];
-        [self createGround1];
-
+        
 		[self scheduleUpdate];
 	}
 	return self;
@@ -260,7 +209,7 @@ enum {
 -(void) createBackground {
     
     CGSize winSize = [CCDirector sharedDirector].winSize;
-
+    
     CCTMXLayer *backDropLayer = [[CCTMXTiledMap tiledMapWithTMXFile:@"BackDropLayer.tmx"] layerNamed:@"BackDrop"];
     CCTMXLayer *planetsLayer = [[CCTMXTiledMap tiledMapWithTMXFile:@"PlanetLayer.tmx"] layerNamed:@"Planets"];
     
@@ -286,7 +235,7 @@ enum {
              parallaxRatio:ccp(1,1)
             positionOffset:ccp(0.0f, 0.0f)];
     [planetsLayer release]; 
-     
+    
     [self addChild:parallaxNode z:-1]; 
 }
 
@@ -306,15 +255,15 @@ enum {
 -(void) initAsteroids {
     
     CGSize winSize = [CCDirector sharedDirector].winSize;
-     
-     for (int i = 0; i < 25; i++)
-     {
-         Asteroid *sprite = [[Asteroid alloc] initWithWorld:world atLoaction:ccp(winSize.width * 0.5 + (5*i), winSize.height * 0.5)];
-         sprite.position = ccp(winSize.width/2,winSize.height/2);
-         [sceneSpriteBatchNode addChild:sprite];
-         [sprite release];
-     }
-     
+    
+    for (int i = 0; i < 25; i++)
+    {
+        Asteroid *sprite = [[Asteroid alloc] initWithWorld:world atLoaction:ccp(winSize.width * 0.5 + (5*i), winSize.height * 0.5)];
+        sprite.position = ccp(winSize.width/2,winSize.height/2);
+        [sceneSpriteBatchNode addChild:sprite];
+        [sprite release];
+    }
+    
 }
 
 -(void) addParticleEffect:(CCParticleSystemQuad*)effect{
@@ -413,7 +362,7 @@ enum {
     cameraBody->SetLinearDamping(CAMERA_LINEAR_DAMP);
     cameraBody->CreateFixture(&fixtureDef);
 }
-/*
+
 -(void) draw
 {
 	//
@@ -426,12 +375,12 @@ enum {
 	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position );
 	
 	kmGLPushMatrix();
-    	
+    
 	world->DrawDebugData();	
 	
 	kmGLPopMatrix();
 }
-*/
+
 -(void) update: (ccTime) dt
 {
     static double UPDATE_INTERVAL = 1.0/60.0f;
@@ -467,7 +416,7 @@ enum {
     for (GameCharPhysics *tempChar in listOfGameObjects) {
         [tempChar updateStateWithDeltaTime:dt];
     }
- 
+    
     [self fireAsteroid:dt];
     
     CMDeviceMotion *currentDeviceMotion = motionManager.deviceMotion;
@@ -482,7 +431,7 @@ enum {
     [currentAttitude multiplyByInverseOfAttitude:referenceAttitude];
     
     float pitch = currentAttitude.pitch;
-
+    
     [rocket setPitchTurn:pitch];
     [self followRocket2:dt];
     
@@ -522,45 +471,45 @@ enum {
                 if (localImpulse.x != 0) {
                     slope = ABS(localImpulse.y / localImpulse.x);
                 }
-    
-                 if (slope < MIN_BULLET_SLOPE || localImpulse.y < 0.0) {
-                     return;
-                 }
                 
-                 bullet *bulletShot = [[bullet alloc] initWithWorld:world atLoaction:firePoint];
-                 bulletShot.body->SetLinearVelocity(linVelo);
-                 float bulletPower = bulletShot.body->GetMass() * 750.0f;
-                 
-                 [sceneSpriteBatchNode addChild:bulletShot];
-                 
-                 impulse.Normalize();
-                 impulse.x *= bulletPower;
-                 impulse.y *= bulletPower;
-                 b2Vec2 impulsePoint = bulletShot.body->GetWorldCenter();
-                 bulletShot.body->ApplyForce(impulse, impulsePoint);
-                 
-                 [bulletShot setDelegate:self];
-                 bulletCount ++;
-                 
-                 bulletFire = [CCParticleMeteor node];
-                 [bulletsFiredParticleBatch addChild:bulletFire];
-                 [bulletShot setBulletFire:bulletFire];
-                 bulletFire.scale = 0.001;
-                 [bulletFire setEmissionRate:10];
-                 CGPoint position;
-                 float xPos = bulletShot.body->GetWorldPoint(b2Vec2(0,0)).x;
-                 float yPos = bulletShot.body->GetWorldPoint(b2Vec2(0,0)).y;
-                 position.x = xPos * PTM_RATIO;
-                 position.y = yPos * PTM_RATIO;
-                 bulletFire.position = position;
-                 bulletFire.duration = 0.8;
-                 
-                 [bulletFire setGravity:ccp(0, 0)];
-                 bulletFire.autoRemoveOnFinish = YES;
-                 PLAYSOUNDEFFECT(LASER_FIRE);
-                 [bulletShot release];
-                 fireSide *= -1;
-                  
+                if (slope < MIN_BULLET_SLOPE || localImpulse.y < 0.0) {
+                    return;
+                }
+                
+                bullet *bulletShot = [[bullet alloc] initWithWorld:world atLoaction:firePoint];
+                bulletShot.body->SetLinearVelocity(linVelo);
+                float bulletPower = bulletShot.body->GetMass() * 750.0f;
+                
+                [sceneSpriteBatchNode addChild:bulletShot];
+                
+                impulse.Normalize();
+                impulse.x *= bulletPower;
+                impulse.y *= bulletPower;
+                b2Vec2 impulsePoint = bulletShot.body->GetWorldCenter();
+                bulletShot.body->ApplyForce(impulse, impulsePoint);
+                
+                [bulletShot setDelegate:self];
+                bulletCount ++;
+                
+                bulletFire = [CCParticleMeteor node];
+                [bulletsFiredParticleBatch addChild:bulletFire];
+                [bulletShot setBulletFire:bulletFire];
+                bulletFire.scale = 0.001;
+                [bulletFire setEmissionRate:10];
+                CGPoint position;
+                float xPos = bulletShot.body->GetWorldPoint(b2Vec2(0,0)).x;
+                float yPos = bulletShot.body->GetWorldPoint(b2Vec2(0,0)).y;
+                position.x = xPos * PTM_RATIO;
+                position.y = yPos * PTM_RATIO;
+                bulletFire.position = position;
+                bulletFire.duration = 0.8;
+                
+                [bulletFire setGravity:ccp(0, 0)];
+                bulletFire.autoRemoveOnFinish = YES;
+                PLAYSOUNDEFFECT(LASER_FIRE);
+                [bulletShot release];
+                fireSide *= -1;
+                
             }
             bulletTime = 0.0;
         }  
@@ -614,7 +563,7 @@ enum {
         CGSize winSize = [CCDirector sharedDirector].winSize;
         float32 xLaunchPoint;
         float32 yLaunchPoint;
-    
+        
         xLaunchPoint = arc4random()%2;
         if (xLaunchPoint == 1) {
             xLaunchPoint -=0.01;
@@ -636,9 +585,9 @@ enum {
 -(void)followRocket:(float) dt {
     
     CGSize winSize = [CCDirector sharedDirector].winSize;
-
+    
     b2Vec2 cTarget = rocket.body->GetWorldPoint(b2Vec2(0, 13.5));
-                                            
+    
     float fixtedPositionY = winSize.height/2;
     float fixtedPositionX = winSize.width/2;
     float newY = fixtedPositionY - cTarget.y * PTM_RATIO;
@@ -652,7 +601,7 @@ enum {
     CGPoint newPos = ccp(newX, newY);
     
     [self updateCameraPosition:newPos];
-
+    
 }
 
 -(void) updateCameraPosition:(CGPoint) newTarget
@@ -691,14 +640,14 @@ enum {
     b2Vec2 cameraPosition;
     cameraPosition.x = rocketPosition.x * PTM_RATIO;
     cameraPosition.y = rocketPosition.y * PTM_RATIO;
-
+    
     float velocityOffset = CAMERA_VELOCITY_FACTOR*speed;
     
     float theta = atanf(rocketVelocity.y/rocketVelocity.x);
     float a = winSize.width/2.0*0.9;
     float b = winSize.height/2.0*0.9;
     float maximumOffset = a*b/sqrt(b*cosf(theta)*b*cosf(theta) + a*sinf(theta)*a*sinf(theta));
-
+    
     
     if (velocityOffset >= maximumOffset)
     {
@@ -719,14 +668,14 @@ enum {
     //now make sure the camera doesn't go outside the level bounds
     float newX = -cameraPosition.x;
     float newY = -cameraPosition.y;
-
+    
     newX = MIN(0, newX);
     newX = MAX(newX,-winSize.width * (LEVEL_WIDTH - 1));
     newY = MIN(newY,0);
     newY = MAX(newY,-winSize.height * (LEVEL_HEIGHT-1));
     
     CGPoint newPos = ccp(newX, newY);
-        
+    
     [self updateCameraPosition:newPos];   
     
 }
@@ -760,17 +709,17 @@ enum {
     for (UITouch *touch in touches){
         CGPoint location = [touch locationInView:[touch view]];
         location = [[CCDirector sharedDirector] convertToGL:location];
-/*#if NO_TEST
-        if ((touchLeft == nil) && (touchRight == nil))
-        {
-            [self schedule:@selector(fireLeft)];
-            touchLeft = touch;
-            leftRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
-            [self schedule:@selector(fireRight)];
-            touchRight = touch;
-            rightRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
-        }
-#else*/
+        /*#if NO_TEST
+         if ((touchLeft == nil) && (touchRight == nil))
+         {
+         [self schedule:@selector(fireLeft)];
+         touchLeft = touch;
+         leftRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
+         [self schedule:@selector(fireRight)];
+         touchRight = touch;
+         rightRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
+         }
+         #else*/
         if (location.x < [CCDirector sharedDirector].winSize.width/3) {
             if (touchLeft == nil)
             {
@@ -812,25 +761,25 @@ enum {
                 middleRocketSoundID = PLAYSOUNDEFFECTLOOPED(ROCKET_JET);
             }
         }
-//#endif
+        //#endif
     }
 }
 
 - (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     for (UITouch *touch in touches) {
-
-/*#if NO_TEST
-        if (touch == touchLeft)
-        {
-            [self unschedule:@selector(fireLeft)];
-            [self unschedule:@selector(fireRight)];
-            STOPSOUNDEFFECT(leftRocketSoundID);
-            touchLeft = nil;
-            touchRight = nil;
-            STOPSOUNDEFFECT(rightRocketSoundID);            
-        }
-#else*/        
+        
+        /*#if NO_TEST
+         if (touch == touchLeft)
+         {
+         [self unschedule:@selector(fireLeft)];
+         [self unschedule:@selector(fireRight)];
+         STOPSOUNDEFFECT(leftRocketSoundID);
+         touchLeft = nil;
+         touchRight = nil;
+         STOPSOUNDEFFECT(rightRocketSoundID);            
+         }
+         #else*/        
         if (touch == touchLeft) {
             [self unschedule:@selector(fireLeft)];
             [rocket setFiringLeftRocket:NO];
@@ -849,7 +798,7 @@ enum {
             STOPSOUNDEFFECT(middleRocketSoundID);
             touchMiddle = nil;
         }
-//#endif
+        //#endif
     } 
 }
 -(void) ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event

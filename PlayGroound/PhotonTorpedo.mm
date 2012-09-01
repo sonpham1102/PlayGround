@@ -48,7 +48,7 @@
     [self removeFromParentAndCleanup:YES];
 }
 
--(void)updateStateWithDeltaTime:(ccTime)dt {
+-(void)updateStateWithDeltaTime2:(ccTime)dt {
     
     if (isDead) {
         return;
@@ -61,18 +61,68 @@
             b2Vec2 targetPos = target.body->GetPosition();
             b2Vec2 destination = targetPos - currentPos;
             float length = destination.Length();
-            /*
+            
             if (length < oldLength) {
                 if (oldLength < 1.5)
                     oldLength = 1.5;
                 length = oldLength + (oldLength - length);
             } else {
                 oldLength = length;
-            }*/
+            }
             destination.Normalize();
             destination.x *= PROTON_SPEED_FACTOR * length * (1 + timeTravelled);
             destination.y *= PROTON_SPEED_FACTOR * length * (1 + timeTravelled);
         
+            body->ApplyLinearImpulse(destination, body->GetPosition());
+        }
+        b2Vec2 currentPos = body->GetPosition();
+        b2Vec2 targetPos = target.body->GetPosition();
+        b2Vec2 destination = targetPos - currentPos;
+        oldLength = destination.Length();
+    }
+    
+    
+    if (destroyMe) {
+        world->DestroyBody(body);
+        body = NULL;
+        CCScaleTo *growAction = [CCScaleTo actionWithDuration:0.25 scale:1.25];
+        CCScaleTo *shrinkAction = [CCScaleTo actionWithDuration:0.25 scale:0.75];
+        CCCallFuncN *doneAction = [CCCallFuncN actionWithTarget:self selector:@selector(destroy:)];
+        CCSequence *sequence = [CCSequence actions:growAction,shrinkAction,doneAction, nil];
+        [self runAction:sequence];
+        [self setVisible:NO];
+        isDead = YES;
+    }
+    
+    timeTravelled += dt;
+    if (timeTravelled >= MISSLE_LIFE) {
+        destroyMe = true;
+    }
+    
+    if (target.destroyMe) {
+        destroyMe = true;
+    }
+}
+
+-(void)updateStateWithDeltaTime:(ccTime)dt {
+    
+    if (isDead) {
+        return;
+    }
+    if (!target.destroyMe) {
+        if (timeTravelled > 0.05) {
+            
+            body->SetLinearDamping(4.5);
+            b2Vec2 currentPos = body->GetPosition();
+            b2Vec2 targetPos = target.body->GetPosition();
+            b2Vec2 destination = targetPos - currentPos;
+            float length = destination.Normalize();
+            if (length < 1.5) {
+                length = 1.5;
+            }
+            destination.x *= PROTON_SPEED_FACTOR * length * (1 + timeTravelled);
+            destination.y *= PROTON_SPEED_FACTOR * length * (1 + timeTravelled);
+            
             body->ApplyLinearImpulse(destination, body->GetPosition());
         }
         b2Vec2 currentPos = body->GetPosition();

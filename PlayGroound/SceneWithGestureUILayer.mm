@@ -10,6 +10,8 @@
 #import "SceneWithGestureLayer.h"
 #import "GameManager.h"
 
+#define LOG_GESTURES
+
 @implementation SceneWithGestureUILayer
 
 // GESTURE SETUP FUNCTIONS
@@ -259,13 +261,13 @@
         
         // this should give the tap the best chance of being recognized before the pan
         [panGestureRecognizer requireGestureRecognizerToFail:tapGestureRecognizer];
-
+/*
         //start gesture disabled
         panGestureRecognizer.enabled = false;
         tapGestureRecognizer.enabled = false;
         longPressGestureRecognizer.enabled = false;
         rotationsGestureRecognizer.enabled = false;
-                
+*/                
         CGSize s = [CCDirector sharedDirector].winSize;
     }
     return self;

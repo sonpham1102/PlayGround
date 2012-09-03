@@ -242,6 +242,9 @@
 		FA81830015B8B0E5003AC851 /* 22k_cargo_space_freighter_farV1.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA8182FF15B8B0E5003AC851 /* 22k_cargo_space_freighter_farV1.wav */; };
 		FA81830315B8B1E3003AC851 /* 22k_cargo_space_freighter_closeV2.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA81830215B8B1E3003AC851 /* 22k_cargo_space_freighter_closeV2.wav */; };
 		FA81830915B9BB64003AC851 /* RocketMan.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA81830815B9BB64003AC851 /* RocketMan.mm */; };
+		FA91258E15F52FD10016554B /* SceneWithGestureLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA91258915F52FD10016554B /* SceneWithGestureLayer.mm */; };
+		FA91258F15F52FD10016554B /* SceneWithGestureScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA91258B15F52FD10016554B /* SceneWithGestureScene.mm */; };
+		FA91259015F52FD10016554B /* SceneWithGestureUILayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA91258D15F52FD10016554B /* SceneWithGestureUILayer.mm */; };
 		FAA7D17115C6FDFB00C513A2 /* PlayGround1UILayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FAA7D17015C6FDFB00C513A2 /* PlayGround1UILayer.mm */; };
 		FAA7D17D15C9E15E00C513A2 /* CustomPanGesureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA7D17C15C9E15E00C513A2 /* CustomPanGesureRecognizer.m */; };
 		FAC2977A15BDC874008559AF /* CCNode+SFGestureRecognizers.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC2977915BDC874008559AF /* CCNode+SFGestureRecognizers.m */; };
@@ -705,6 +708,12 @@
 		FA81830215B8B1E3003AC851 /* 22k_cargo_space_freighter_closeV2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 22k_cargo_space_freighter_closeV2.wav; sourceTree = "<group>"; };
 		FA81830715B9BB64003AC851 /* RocketMan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RocketMan.h; sourceTree = "<group>"; };
 		FA81830815B9BB64003AC851 /* RocketMan.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RocketMan.mm; sourceTree = "<group>"; };
+		FA91258815F52FD10016554B /* SceneWithGestureLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneWithGestureLayer.h; sourceTree = "<group>"; };
+		FA91258915F52FD10016554B /* SceneWithGestureLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SceneWithGestureLayer.mm; sourceTree = "<group>"; };
+		FA91258A15F52FD10016554B /* SceneWithGestureScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneWithGestureScene.h; sourceTree = "<group>"; };
+		FA91258B15F52FD10016554B /* SceneWithGestureScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SceneWithGestureScene.mm; sourceTree = "<group>"; };
+		FA91258C15F52FD10016554B /* SceneWithGestureUILayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneWithGestureUILayer.h; sourceTree = "<group>"; };
+		FA91258D15F52FD10016554B /* SceneWithGestureUILayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SceneWithGestureUILayer.mm; sourceTree = "<group>"; };
 		FAA7D16F15C6FDFB00C513A2 /* PlayGround1UILayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGround1UILayer.h; sourceTree = "<group>"; };
 		FAA7D17015C6FDFB00C513A2 /* PlayGround1UILayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround1UILayer.mm; sourceTree = "<group>"; };
 		FAA7D17B15C9E15D00C513A2 /* CustomPanGesureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPanGesureRecognizer.h; sourceTree = "<group>"; };
@@ -1392,8 +1401,6 @@
 				12B946D515B731C700CB76CD /* PlayGround1Layer.mm */,
 				FAA7D16F15C6FDFB00C513A2 /* PlayGround1UILayer.h */,
 				FAA7D17015C6FDFB00C513A2 /* PlayGround1UILayer.mm */,
-				FAA7D17B15C9E15D00C513A2 /* CustomPanGesureRecognizer.h */,
-				FAA7D17C15C9E15E00C513A2 /* CustomPanGesureRecognizer.m */,
 			);
 			name = PlayGround1;
 			sourceTree = "<group>";
@@ -1412,6 +1419,7 @@
 		FA1348B415B7125F00E5CDB5 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				FA91259115F5301D0016554B /* GestureRecognizers */,
 				12A8A10815BC7630009E07B1 /* Box2d */,
 				FA1348B615B7126B00E5CDB5 /* Singletons */,
 				FA8182E915B865CF003AC851 /* GameObjects */,
@@ -1456,6 +1464,7 @@
 		FA1348BA15B714E200E5CDB5 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				FA91258615F52EA10016554B /* SceneWithGestureBase */,
 				1210DEDB15F29FCD00857C87 /* PlayGround4 */,
 				FA65B50115D182DE005A1044 /* Playground3 */,
 				12B946FA15B8609C00CB76CD /* Options */,
@@ -1554,6 +1563,28 @@
 				120EEB4715DC48F700C629B2 /* PhotonTorpedo.mm */,
 			);
 			name = GameObjects;
+			sourceTree = "<group>";
+		};
+		FA91258615F52EA10016554B /* SceneWithGestureBase */ = {
+			isa = PBXGroup;
+			children = (
+				FA91258815F52FD10016554B /* SceneWithGestureLayer.h */,
+				FA91258915F52FD10016554B /* SceneWithGestureLayer.mm */,
+				FA91258A15F52FD10016554B /* SceneWithGestureScene.h */,
+				FA91258B15F52FD10016554B /* SceneWithGestureScene.mm */,
+				FA91258C15F52FD10016554B /* SceneWithGestureUILayer.h */,
+				FA91258D15F52FD10016554B /* SceneWithGestureUILayer.mm */,
+			);
+			name = SceneWithGestureBase;
+			sourceTree = "<group>";
+		};
+		FA91259115F5301D0016554B /* GestureRecognizers */ = {
+			isa = PBXGroup;
+			children = (
+				FAA7D17B15C9E15D00C513A2 /* CustomPanGesureRecognizer.h */,
+				FAA7D17C15C9E15E00C513A2 /* CustomPanGesureRecognizer.m */,
+			);
+			name = GestureRecognizers;
 			sourceTree = "<group>";
 		};
 		FAC2977215BDC83F008559AF /* UIGestureRecognizer */ = {
@@ -1853,6 +1884,9 @@
 				1210DEE215F2A06700857C87 /* PlayGround4Scene.mm in Sources */,
 				1210DEE515F2A0DB00857C87 /* PlayGround4Layer.mm in Sources */,
 				1210DEE915F5046C00857C87 /* PlayGroundScene4UILayer.m in Sources */,
+				FA91258E15F52FD10016554B /* SceneWithGestureLayer.mm in Sources */,
+				FA91258F15F52FD10016554B /* SceneWithGestureScene.mm in Sources */,
+				FA91259015F52FD10016554B /* SceneWithGestureUILayer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

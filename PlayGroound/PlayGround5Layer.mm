@@ -1,12 +1,12 @@
 //
-//  SceneWithGestureLayer.mm
+//  PlayGround5Layer.mm
 //  PlayGroound
 //
 //  Created by Jason Parlour on 12-07-18.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
-#import "SceneWithGestureScene.h"
-#import "SceneWithGestureLayer.h"
+#import "PlayGround5Scene.h"
+#import "PlayGround5Layer.h"
 // Needed to obtain the Navigation Controller
 #import "AppDelegate.h"
 
@@ -19,11 +19,11 @@ enum {
 };
 
 
-@interface SceneWithGestureLayer()
+@interface PlayGround5Layer()
 -(void) initPhysics;
 @end
 
-@implementation SceneWithGestureLayer
+@implementation PlayGround5Layer
 
 -(void) createBackground {
     

@@ -15,7 +15,7 @@
 #import "PlayGround3Scene.h"
 #import "PlayGround4Scene.h"
 #import "OptionsScene.h"
-#import "SceneWithGestureScene.h"
+#import "PlayGround5Scene.h"
 
 
 @implementation GameManager
@@ -455,7 +455,7 @@ static GameManager* _sharedGameManager = nil;
             sceneToRun = [PlayGround4Scene node];
             break;
         case kPlayGround5:
-            sceneToRun = [SceneWithGestureScene node];
+            sceneToRun = [PlayGround5Scene node];
             break;
         case kOptionsMenu:
             sceneToRun = [OptionsScene node];

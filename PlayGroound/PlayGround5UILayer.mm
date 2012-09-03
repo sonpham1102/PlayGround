@@ -1,18 +1,18 @@
 //
-//  SceneWithGestureUILayer.m
+//  PlayGround5UILayer.m
 //  PlayGroound
 //
 //  Created by alex on 12-07-30.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "SceneWithGestureUILayer.h"
-#import "SceneWithGestureLayer.h"
+#import "PlayGround5UILayer.h"
+#import "PlayGround5Layer.h"
 #import "GameManager.h"
 
 #define LOG_GESTURES
 
-@implementation SceneWithGestureUILayer
+@implementation PlayGround5UILayer
 
 // GESTURE SETUP FUNCTIONS
 -(void) setUpPanGesture
@@ -246,7 +246,7 @@
     }    
 }
 
--(id) initWithGameplayLayer:(SceneWithGestureLayer *)gameplayLayer;
+-(id) initWithGameplayLayer:(PlayGround5Layer *)gameplayLayer;
 {
     if( (self=[super init]))
     {

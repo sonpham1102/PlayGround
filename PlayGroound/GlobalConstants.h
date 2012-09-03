@@ -30,7 +30,8 @@ typedef enum
     kOptionsMenu = 2,
     kPlayGround1 = 100,
     kPlayGround2 = 120,
-    kPlayGround3 = 140
+    kPlayGround3 = 140,
+    kPlayGround4 = 160
 } LevelIDs;
 
 // GameObj types
@@ -65,6 +66,11 @@ typedef enum {
 -(void) switchWeapons;
 -(void) addAsteroidDestroyed;
 -(void) decrementAsteroidCount;
+@end
+
+@protocol PlayGround4LayerDelegate
+
+
 @end
 
 

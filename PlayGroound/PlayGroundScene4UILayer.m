@@ -2,7 +2,7 @@
 //  PlayGroundScene4UILayer.m
 //  PlayGroound
 //
-//  Created by Jason Parlour on 12-08-29.
+//  Created by Jason Parlour on 12-09-03.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
@@ -54,11 +54,6 @@
                               {
                                   [[GameManager sharedGameManager] runLevelWithID:kMainMenu];
                               }];
-    [CCMenuItemFont setFontSize:16];
-    CCMenuItemLabel *weaponSwitch = [CCMenuItemFont itemWithString:@"Switch Weapons" block:^(id sender)
-                                     {
-                                         [delegate switchWeapons];
-                                     }];
     
 	//JP : Not using Achievements and Leader Boards of now
     /*
@@ -94,22 +89,18 @@
     [reset setScale:0.75f];
 	//CCMenu *menu = [CCMenu menuWithItems:itemAchievement, itemLeaderboard, reset, nil];
     CCMenu *menu = [CCMenu menuWithItems:reset, nil];
-    CCMenu *weaponSwitchMenu = [CCMenu menuWithItems:weaponSwitch, nil];
     
-	
 	[menu alignItemsVertically];
-    [weaponSwitchMenu alignItemsVertically];
-	
+
     //JP: Repositioned Menu to Upper Right Corner
     //    Should use IPAD Idiom to set properly
 	CGSize size = [[CCDirector sharedDirector] winSize];
 	[menu setPosition:ccp( size.width*0.9, size.height*0.95)];
-	[weaponSwitchMenu setPosition:ccp(size.width/2,size.height*0.15)];
-	[self addChild: weaponSwitchMenu z:-1];
 	[self addChild: menu z:-1];	
 }
 
 -(void) dealloc {
     [super dealloc];
 }
+
 @end

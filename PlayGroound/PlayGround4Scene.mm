@@ -2,7 +2,7 @@
 //  PlayGround4Scene.m
 //  PlayGroound
 //
-//  Created by Jason Parlour on 12-08-29.
+//  Created by Jason Parlour on 12-09-01.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
@@ -23,7 +23,5 @@
     }
     return self;
 }
-
-
 
 @end

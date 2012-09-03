@@ -2,7 +2,7 @@
 //  PlayGroundScene4UILayer.h
 //  PlayGroound
 //
-//  Created by Jason Parlour on 12-08-29.
+//  Created by Jason Parlour on 12-09-03.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
@@ -15,11 +15,6 @@
     CCLabelTTF *label;
 }
 
--(BOOL)displayText:(NSString *)text 
-andOnCompleteCallTarget:(id)target selector:(SEL)selector;
-
 @property (nonatomic, assign) id <PlayGround4LayerDelegate> delegate;
-
-
 
 @end

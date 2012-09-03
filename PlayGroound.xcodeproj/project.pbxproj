@@ -12,6 +12,9 @@
 		120EEB3115D711AC00C629B2 /* Asteroid.mm in Sources */ = {isa = PBXBuildFile; fileRef = 120EEB3015D711AC00C629B2 /* Asteroid.mm */; };
 		120EEB3815DAC47D00C629B2 /* Missle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 120EEB3715DAC47D00C629B2 /* Missle.mm */; };
 		120EEB4815DC48F800C629B2 /* PhotonTorpedo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 120EEB4715DC48F700C629B2 /* PhotonTorpedo.mm */; };
+		1210DEE215F2A06700857C87 /* PlayGround4Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1210DEE115F2A06700857C87 /* PlayGround4Scene.mm */; };
+		1210DEE515F2A0DB00857C87 /* PlayGround4Layer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1210DEE415F2A0DB00857C87 /* PlayGround4Layer.mm */; };
+		1210DEE915F5046C00857C87 /* PlayGroundScene4UILayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1210DEE815F5046C00857C87 /* PlayGroundScene4UILayer.m */; };
 		121DD2E915D0BFAD0098A1AF /* Level1ContactListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = 121DD2E815D0BFAD0098A1AF /* Level1ContactListener.mm */; };
 		121DD30515D2CEF00098A1AF /* PlanetLayer.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 121DD30415D2CEF00098A1AF /* PlanetLayer.tmx */; };
 		121DD31215D55AC80098A1AF /* BackDropLayer.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 121DD31115D55AC80098A1AF /* BackDropLayer.tmx */; };
@@ -253,6 +256,12 @@
 		120EEB3715DAC47D00C629B2 /* Missle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Missle.mm; sourceTree = "<group>"; };
 		120EEB4615DC48F600C629B2 /* PhotonTorpedo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotonTorpedo.h; sourceTree = "<group>"; };
 		120EEB4715DC48F700C629B2 /* PhotonTorpedo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PhotonTorpedo.mm; sourceTree = "<group>"; };
+		1210DEE015F2A06700857C87 /* PlayGround4Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGround4Scene.h; sourceTree = "<group>"; };
+		1210DEE115F2A06700857C87 /* PlayGround4Scene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround4Scene.mm; sourceTree = "<group>"; };
+		1210DEE315F2A0DB00857C87 /* PlayGround4Layer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGround4Layer.h; sourceTree = "<group>"; };
+		1210DEE415F2A0DB00857C87 /* PlayGround4Layer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround4Layer.mm; sourceTree = "<group>"; };
+		1210DEE715F5046C00857C87 /* PlayGroundScene4UILayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGroundScene4UILayer.h; sourceTree = "<group>"; };
+		1210DEE815F5046C00857C87 /* PlayGroundScene4UILayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayGroundScene4UILayer.m; sourceTree = "<group>"; };
 		121DD2E715D0BFAC0098A1AF /* Level1ContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Level1ContactListener.h; sourceTree = "<group>"; };
 		121DD2E815D0BFAD0098A1AF /* Level1ContactListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Level1ContactListener.mm; sourceTree = "<group>"; };
 		121DD30415D2CEF00098A1AF /* PlanetLayer.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PlanetLayer.tmx; sourceTree = "<group>"; };
@@ -726,6 +735,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1210DEDB15F29FCD00857C87 /* PlayGround4 */ = {
+			isa = PBXGroup;
+			children = (
+				1210DEE015F2A06700857C87 /* PlayGround4Scene.h */,
+				1210DEE115F2A06700857C87 /* PlayGround4Scene.mm */,
+				1210DEE315F2A0DB00857C87 /* PlayGround4Layer.h */,
+				1210DEE415F2A0DB00857C87 /* PlayGround4Layer.mm */,
+				1210DEE715F5046C00857C87 /* PlayGroundScene4UILayer.h */,
+				1210DEE815F5046C00857C87 /* PlayGroundScene4UILayer.m */,
+			);
+			name = PlayGround4;
+			sourceTree = "<group>";
+		};
 		121DD31D15D57CEA0098A1AF /* Particles */ = {
 			isa = PBXGroup;
 			children = (
@@ -1434,6 +1456,7 @@
 		FA1348BA15B714E200E5CDB5 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				1210DEDB15F29FCD00857C87 /* PlayGround4 */,
 				FA65B50115D182DE005A1044 /* Playground3 */,
 				12B946FA15B8609C00CB76CD /* Options */,
 				12B946CD15B730C100CB76CD /* PlayGround1 */,
@@ -1827,6 +1850,9 @@
 				120EEB3115D711AC00C629B2 /* Asteroid.mm in Sources */,
 				120EEB3815DAC47D00C629B2 /* Missle.mm in Sources */,
 				120EEB4815DC48F800C629B2 /* PhotonTorpedo.mm in Sources */,
+				1210DEE215F2A06700857C87 /* PlayGround4Scene.mm in Sources */,
+				1210DEE515F2A0DB00857C87 /* PlayGround4Layer.mm in Sources */,
+				1210DEE915F5046C00857C87 /* PlayGroundScene4UILayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,6 +13,8 @@
 #import "SimpleAudioEngine.h"
 #import "GlobalConstants.h"
 #import <GameKit/GameKit.h>
+#import "Paddle.h"
+#import "Ball.h"
 
 
 @class PlayGroundScene4UILayer;
@@ -23,7 +25,18 @@
     PlayGroundScene4UILayer *uiLayer;
     
     b2World* world;
+    
+    Paddle* thePaddle;
+    Ball* theBall;
+    
+    UITouch* leftTouch;
+    UITouch* rightTouch;
+    CGPoint leftTouchPos;
+    CGPoint rightTouchPos;
 }
+
+@property (nonatomic, readonly) CGPoint leftTouchPos;
+@property (nonatomic, readonly) CGPoint rightTouchPos;
 
 -(id)initWithUILayer:(PlayGroundScene4UILayer *)ui;
 

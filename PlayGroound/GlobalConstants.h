@@ -70,6 +70,8 @@ typedef enum {
 
 @protocol PlayGround4LayerDelegate
 
+-(CGPoint) getLeftTouchPos;
+-(CGPoint) getRightTouchPos;
 
 @end
 

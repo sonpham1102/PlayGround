@@ -15,6 +15,8 @@
 		1210DEE215F2A06700857C87 /* PlayGround4Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1210DEE115F2A06700857C87 /* PlayGround4Scene.mm */; };
 		1210DEE515F2A0DB00857C87 /* PlayGround4Layer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1210DEE415F2A0DB00857C87 /* PlayGround4Layer.mm */; };
 		1210DEE915F5046C00857C87 /* PlayGroundScene4UILayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1210DEE815F5046C00857C87 /* PlayGroundScene4UILayer.m */; };
+		1210DEF015F6570A00857C87 /* Paddle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1210DEEF15F6570A00857C87 /* Paddle.mm */; };
+		1210DEF815F69FE900857C87 /* Ball.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1210DEF715F69FE800857C87 /* Ball.mm */; };
 		121DD2E915D0BFAD0098A1AF /* Level1ContactListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = 121DD2E815D0BFAD0098A1AF /* Level1ContactListener.mm */; };
 		121DD30515D2CEF00098A1AF /* PlanetLayer.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 121DD30415D2CEF00098A1AF /* PlanetLayer.tmx */; };
 		121DD31215D55AC80098A1AF /* BackDropLayer.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 121DD31115D55AC80098A1AF /* BackDropLayer.tmx */; };
@@ -262,6 +264,10 @@
 		1210DEE415F2A0DB00857C87 /* PlayGround4Layer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround4Layer.mm; sourceTree = "<group>"; };
 		1210DEE715F5046C00857C87 /* PlayGroundScene4UILayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGroundScene4UILayer.h; sourceTree = "<group>"; };
 		1210DEE815F5046C00857C87 /* PlayGroundScene4UILayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayGroundScene4UILayer.m; sourceTree = "<group>"; };
+		1210DEEE15F6570A00857C87 /* Paddle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Paddle.h; sourceTree = "<group>"; };
+		1210DEEF15F6570A00857C87 /* Paddle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Paddle.mm; sourceTree = "<group>"; };
+		1210DEF615F69FE600857C87 /* Ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ball.h; sourceTree = "<group>"; };
+		1210DEF715F69FE800857C87 /* Ball.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Ball.mm; sourceTree = "<group>"; };
 		121DD2E715D0BFAC0098A1AF /* Level1ContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Level1ContactListener.h; sourceTree = "<group>"; };
 		121DD2E815D0BFAD0098A1AF /* Level1ContactListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Level1ContactListener.mm; sourceTree = "<group>"; };
 		121DD30415D2CEF00098A1AF /* PlanetLayer.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PlanetLayer.tmx; sourceTree = "<group>"; };
@@ -1552,6 +1558,10 @@
 				120EEB3715DAC47D00C629B2 /* Missle.mm */,
 				120EEB4615DC48F600C629B2 /* PhotonTorpedo.h */,
 				120EEB4715DC48F700C629B2 /* PhotonTorpedo.mm */,
+				1210DEEE15F6570A00857C87 /* Paddle.h */,
+				1210DEEF15F6570A00857C87 /* Paddle.mm */,
+				1210DEF615F69FE600857C87 /* Ball.h */,
+				1210DEF715F69FE800857C87 /* Ball.mm */,
 			);
 			name = GameObjects;
 			sourceTree = "<group>";
@@ -1853,6 +1863,8 @@
 				1210DEE215F2A06700857C87 /* PlayGround4Scene.mm in Sources */,
 				1210DEE515F2A0DB00857C87 /* PlayGround4Layer.mm in Sources */,
 				1210DEE915F5046C00857C87 /* PlayGroundScene4UILayer.m in Sources */,
+				1210DEF015F6570A00857C87 /* Paddle.mm in Sources */,
+				1210DEF815F69FE900857C87 /* Ball.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

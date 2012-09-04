@@ -13,8 +13,7 @@
 #import "cocos2d.h"
 #import "Box2D.h"
 #import "GLES-Render.h"
-#import "RocketMan3.h"
-#import "PanRayCastCallback.h"
+#import "GunBot.h"
 
 #define PTM_RATIO (IS_IPAD() ? (8.0*1024.0/480.0) : 8.0)
 
@@ -23,14 +22,21 @@
 	CCTexture2D *spriteTexture_;	// weak ref
 	b2World* world;					// strong ref
 	GLESDebugDraw *m_debugDraw;		// strong ref
-    
+
     CCSpriteBatchNode *sceneSpriteBatchNode;
+    
+    GunBot* gunBot;
+    bool lpStarted;
+    float enemySpawnTimer;
 }
 
 -(void) handlePan:(CGPoint) startPoint endPoint:(CGPoint) endPoint;
 -(void) handleTap:(CGPoint) tapPoint;
 -(void) handleRotation:(float) angleDelta;
--(void) handleLongPress:(BOOL) continueFiring;
+-(void) handleLongPressStart:(CGPoint) point;
+-(void) handleLongPressMove:(CGPoint) point;
+-(void) handleLongPressEnd:(CGPoint) point;
+
 
 @end
 

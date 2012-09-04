@@ -37,6 +37,15 @@
 	<key>kPlayGround4</key>
 	<dict/>
 	<key>kPlayGround5</key>
-	<dict/>
+	<dict>
+		<key>LP_DETECTED</key>
+		<string>22k_tap_move_skullV1.wav</string>
+		<key>FIRE_GUN</key>
+		<string>scifi1.mp3</string>
+		<key>ENEMY_SPAWN</key>
+		<string>22k_enemy_teleportV1.wav</string>
+		<key>ENEMY_EXPLODE</key>
+		<string>22k_enemy_robot_taking_damageV1.wav</string>
+	</dict>
 </dict>
 </plist>

@@ -13,8 +13,7 @@
 #import "cocos2d.h"
 #import "Box2D.h"
 #import "GLES-Render.h"
-#import "RocketMan3.h"
-#import "PanRayCastCallback.h"
+#import "GameCharPhysics.h"
 
 #define PTM_RATIO (IS_IPAD() ? (8.0*1024.0/480.0) : 8.0)
 

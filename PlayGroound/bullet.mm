@@ -94,7 +94,7 @@
 -(id) initWithWorld:(b2World *)theWorld atLoaction:(b2Vec2)location {
     if ((self = [super initWithSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:@"bullet.png"]])) {
         world = theWorld;
-        gameObjType = kobjTypeBullet;
+        gameObjType = kObjTypeBullet;
         timeTravelled = 0.0;
         [self createBodyAtLocation:location];
         //[self createParticleEffect];

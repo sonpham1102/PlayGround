@@ -14,6 +14,7 @@
 #define LEVEL_HEIGHT 1 //25
 #define LEVEL_WIDTH 1 //10
 
+
 @implementation PlayGround4Layer
 
 @synthesize leftTouchPos;
@@ -52,6 +53,7 @@
         theBall.body->ApplyLinearImpulse(b2Vec2(0,-1.5f), b2Vec2(0,0));
         [self addChild:thePaddle];
         [self addChild:theBall];
+         
         leftTouch = nil;
         rightTouch = nil;
         [self scheduleUpdate];

@@ -15,8 +15,8 @@
 		1210DEE215F2A06700857C87 /* PlayGround4Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1210DEE115F2A06700857C87 /* PlayGround4Scene.mm */; };
 		1210DEE515F2A0DB00857C87 /* PlayGround4Layer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1210DEE415F2A0DB00857C87 /* PlayGround4Layer.mm */; };
 		1210DEE915F5046C00857C87 /* PlayGroundScene4UILayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1210DEE815F5046C00857C87 /* PlayGroundScene4UILayer.m */; };
-		1210DEF015F6570A00857C87 /* Paddle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1210DEEF15F6570A00857C87 /* Paddle.mm */; };
-		1210DEF815F69FE900857C87 /* Ball.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1210DEF715F69FE800857C87 /* Ball.mm */; };
+		1210DEFE15F6C20700857C87 /* Paddle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1210DEEF15F6570A00857C87 /* Paddle.mm */; };
+		1210DEFF15F6C20A00857C87 /* Ball.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1210DEF715F69FE800857C87 /* Ball.mm */; };
 		121DD2E915D0BFAD0098A1AF /* Level1ContactListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = 121DD2E815D0BFAD0098A1AF /* Level1ContactListener.mm */; };
 		121DD30515D2CEF00098A1AF /* PlanetLayer.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 121DD30415D2CEF00098A1AF /* PlanetLayer.tmx */; };
 		121DD31215D55AC80098A1AF /* BackDropLayer.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 121DD31115D55AC80098A1AF /* BackDropLayer.tmx */; };
@@ -1917,8 +1917,14 @@
 				1210DEE215F2A06700857C87 /* PlayGround4Scene.mm in Sources */,
 				1210DEE515F2A0DB00857C87 /* PlayGround4Layer.mm in Sources */,
 				1210DEE915F5046C00857C87 /* PlayGroundScene4UILayer.m in Sources */,
-				1210DEF015F6570A00857C87 /* Paddle.mm in Sources */,
-				1210DEF815F69FE900857C87 /* Ball.mm in Sources */,
+				FA91258E15F52FD10016554B /* SceneWithGestureLayer.mm in Sources */,
+				FA91258F15F52FD10016554B /* SceneWithGestureScene.mm in Sources */,
+				FA91259015F52FD10016554B /* SceneWithGestureUILayer.mm in Sources */,
+				FA91259915F5484F0016554B /* PlayGround5Layer.mm in Sources */,
+				FA91259A15F5484F0016554B /* PlayGround5Scene.mm in Sources */,
+				FA91259B15F5484F0016554B /* PlayGround5UILayer.mm in Sources */,
+				1210DEFE15F6C20700857C87 /* Paddle.mm in Sources */,
+				1210DEFF15F6C20A00857C87 /* Ball.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

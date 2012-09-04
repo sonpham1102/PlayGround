@@ -1599,6 +1599,12 @@
 				1210DEEF15F6570A00857C87 /* Paddle.mm */,
 				1210DEF615F69FE600857C87 /* Ball.h */,
 				1210DEF715F69FE800857C87 /* Ball.mm */,
+				FA91259C15F66FAC0016554B /* GunBot.h */,
+				FA91259D15F66FAC0016554B /* GunBot.mm */,
+				FA91259F15F67DCC0016554B /* GBBullet.h */,
+				FA9125A015F67DCC0016554B /* GBBullet.mm */,
+				FA9125A215F691280016554B /* GBEnemy.h */,
+				FA9125A315F691280016554B /* GBEnemy.mm */,
 			);
 			name = GameObjects;
 			sourceTree = "<group>";
@@ -1946,6 +1952,9 @@
 				FA91259B15F5484F0016554B /* PlayGround5UILayer.mm in Sources */,
 				1210DEFE15F6C20700857C87 /* Paddle.mm in Sources */,
 				1210DEFF15F6C20A00857C87 /* Ball.mm in Sources */,
+				FA91259E15F66FAC0016554B /* GunBot.mm in Sources */,
+				FA9125A115F67DCC0016554B /* GBBullet.mm in Sources */,
+				FA9125A415F691290016554B /* GBEnemy.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -17,7 +17,6 @@
     PlayGround5Layer* gpLayer;
     CGPoint panStartPoint;
     CGPoint panEndPoint;
-    CGPoint tapPoint;
     
     float rotStartingAngle;
     

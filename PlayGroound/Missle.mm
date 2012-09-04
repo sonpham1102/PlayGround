@@ -177,7 +177,7 @@
 -(id) initWithWorld:(b2World *)theWorld atLoaction:(b2Vec2)location withTarget:(b2Body*)myTarget {
     if (self = [super initWithSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:@"bullet.png"]]){
         world = theWorld;
-        gameObjType = kobjTypeMissle;
+        gameObjType = kObjTypeMissle;
         [self createBodyAtLocation:location];
         target = (Asteroid*) myTarget->GetUserData();
         destroyMe = false;

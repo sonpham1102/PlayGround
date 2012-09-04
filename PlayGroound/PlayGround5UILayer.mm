@@ -10,7 +10,7 @@
 #import "PlayGround5Layer.h"
 #import "GameManager.h"
 
-#define LOG_GESTURES
+//#define LOG_GESTURES
 
 @implementation PlayGround5UILayer
 
@@ -31,8 +31,6 @@
     tapGestureRecognizer.delegate = self;
     tapGestureRecognizer.cancelsTouchesInView = FALSE;
     [self addGestureRecognizer:tapGestureRecognizer];
-    
-    tapPoint = CGPointZero;  
 }
 
 -(void) setUpLongPressGesture
@@ -169,7 +167,7 @@
     }
     else if (aTapGestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
-        tapPoint = [aTapGestureRecognizer locationInView:aTapGestureRecognizer.view];
+        CGPoint tapPoint = [aTapGestureRecognizer locationInView:aTapGestureRecognizer.view];
         tapPoint = [[CCDirector sharedDirector] convertToGL:tapPoint];
         
         //tell the gameplay layer that a tap gesture was completed
@@ -182,32 +180,36 @@
 
 - (void)handleLongPressGesture:(UILongPressGestureRecognizer*)aLongPressGestureRecognizer
 {
+    CGPoint lpPoint = [aLongPressGestureRecognizer locationInView:aLongPressGestureRecognizer.view];
+    lpPoint = [[CCDirector sharedDirector] convertToGL:lpPoint];
+    
     if (aLongPressGestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
 #ifdef LOG_GESTURES
         CCLOG(@"Long Press started");
-#endif
-        [gpLayer handleLongPress:TRUE];
+#endif        
+        [gpLayer handleLongPressStart:lpPoint];
     }
     else if (aLongPressGestureRecognizer.state == UIGestureRecognizerStateChanged)
     {
 #ifdef LOG_GESTURES
         CCLOG(@"Long Press moved");
 #endif
+        [gpLayer handleLongPressMove:lpPoint];
     }
     else if (aLongPressGestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
 #ifdef LOG_GESTURES
         CCLOG(@"Long Press ended");
 #endif
-        [gpLayer handleLongPress:FALSE];
+        [gpLayer handleLongPressEnd:lpPoint];
     }
     else if (aLongPressGestureRecognizer.state == UIGestureRecognizerStateCancelled)
     {
 #ifdef LOG_GESTURES
         CCLOG(@"Long Press cancelled");
 #endif
-        [gpLayer handleLongPress:FALSE];        
+        [gpLayer handleLongPressEnd:lpPoint];        
     }
 }
 
@@ -261,13 +263,6 @@
         
         // this should give the tap the best chance of being recognized before the pan
         [panGestureRecognizer requireGestureRecognizerToFail:tapGestureRecognizer];
-/*
-        //start gesture disabled
-        panGestureRecognizer.enabled = false;
-        tapGestureRecognizer.enabled = false;
-        longPressGestureRecognizer.enabled = false;
-        rotationsGestureRecognizer.enabled = false;
-*/                
 //        CGSize s = [CCDirector sharedDirector].winSize;
     }
     return self;

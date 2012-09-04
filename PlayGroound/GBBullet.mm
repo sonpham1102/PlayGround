@@ -8,6 +8,7 @@
 
 #import "GBBullet.h"
 #import "Box2DHelpers.h"
+#import "GameManager.h"
 
 @implementation GBBullet
 
@@ -45,6 +46,8 @@
     body->SetLinearVelocity(velocity);
     
     body->SetUserData(self);
+    
+    PLAYSOUNDEFFECT(FIRE_GUN);
 }
 
 -(id) initWithWorld:(b2World *)theWorld atLocation:(b2Vec2)location withVelocity:(b2Vec2) velocity

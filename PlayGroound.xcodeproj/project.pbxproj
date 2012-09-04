@@ -253,6 +253,7 @@
 		FA9125A415F691290016554B /* GBEnemy.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA9125A315F691280016554B /* GBEnemy.mm */; };
 		FA9125A715F6B89E0016554B /* 22k_enemy_robot_taking_damageV1.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA9125A515F6B89E0016554B /* 22k_enemy_robot_taking_damageV1.wav */; };
 		FA9125A815F6B89E0016554B /* 22k_enemy_teleportV1.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA9125A615F6B89E0016554B /* 22k_enemy_teleportV1.wav */; };
+		FA9125AA15F6BE8F0016554B /* 22k_viking_powerupV2.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA9125A915F6BE8F0016554B /* 22k_viking_powerupV2.wav */; };
 		FAA7D17115C6FDFB00C513A2 /* PlayGround1UILayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FAA7D17015C6FDFB00C513A2 /* PlayGround1UILayer.mm */; };
 		FAA7D17D15C9E15E00C513A2 /* CustomPanGesureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA7D17C15C9E15E00C513A2 /* CustomPanGesureRecognizer.m */; };
 		FAC2977A15BDC874008559AF /* CCNode+SFGestureRecognizers.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC2977915BDC874008559AF /* CCNode+SFGestureRecognizers.m */; };
@@ -736,6 +737,7 @@
 		FA9125A315F691280016554B /* GBEnemy.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GBEnemy.mm; sourceTree = "<group>"; };
 		FA9125A515F6B89E0016554B /* 22k_enemy_robot_taking_damageV1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 22k_enemy_robot_taking_damageV1.wav; sourceTree = "<group>"; };
 		FA9125A615F6B89E0016554B /* 22k_enemy_teleportV1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 22k_enemy_teleportV1.wav; sourceTree = "<group>"; };
+		FA9125A915F6BE8F0016554B /* 22k_viking_powerupV2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 22k_viking_powerupV2.wav; sourceTree = "<group>"; };
 		FAA7D16F15C6FDFB00C513A2 /* PlayGround1UILayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGround1UILayer.h; sourceTree = "<group>"; };
 		FAA7D17015C6FDFB00C513A2 /* PlayGround1UILayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround1UILayer.mm; sourceTree = "<group>"; };
 		FAA7D17B15C9E15D00C513A2 /* CustomPanGesureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPanGesureRecognizer.h; sourceTree = "<group>"; };
@@ -1518,6 +1520,7 @@
 		FA1348D015B7516900E5CDB5 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				FA9125A915F6BE8F0016554B /* 22k_viking_powerupV2.wav */,
 				FA9125A515F6B89E0016554B /* 22k_enemy_robot_taking_damageV1.wav */,
 				FA9125A615F6B89E0016554B /* 22k_enemy_teleportV1.wav */,
 				120EEB2815D6DF4D00C629B2 /* Sonic Boom.wav */,
@@ -1734,6 +1737,7 @@
 				FA65B55915DDC0F6005A1044 /* PG3Level9.plist in Resources */,
 				FA9125A715F6B89E0016554B /* 22k_enemy_robot_taking_damageV1.wav in Resources */,
 				FA9125A815F6B89E0016554B /* 22k_enemy_teleportV1.wav in Resources */,
+				FA9125AA15F6BE8F0016554B /* 22k_viking_powerupV2.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

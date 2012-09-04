@@ -8,6 +8,7 @@
 
 #import "GBEnemy.h"
 #import "Box2DHelpers.h"
+#import "GameManager.h"
 
 #define GBENEMY_DENSITY 1.0
 #define GBENEMY_FRICTION 1.0
@@ -50,6 +51,8 @@
     body->SetLinearDamping(GBENEMY_LINEAR_DAMP);
     
     body->SetUserData(self);
+    
+    PLAYSOUNDEFFECT(ENEMY_SPAWN);
 }
 
 -(id) initWithWorld:(b2World *)theWorld atLocation:(b2Vec2)location withTargetBody:(b2Body*) theTarget
@@ -95,6 +98,7 @@
     {
         destroyMe = TRUE;
         [self setVisible:NO];
+        PLAYSOUNDEFFECT(ENEMY_EXPLODE);
     
         return;
     }

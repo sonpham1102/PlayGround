@@ -7,7 +7,6 @@
 //
 
 #import "GameCharPhysics.h"
-#import "GlobalConstants.h"
 
 @interface GBBullet : GameCharPhysics
 {

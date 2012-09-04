@@ -10,8 +10,6 @@
 		<string>0.63,0.15,0.02,0.3,50.0</string>
 		<key>3</key>
 		<string>0.63,0.85,0.02,0.3,-50.0</string>
-		<key>4</key>
-		<string>0.8,0.5,0.02,0.2,0.0</string>
 	</dict>
 	<key>ObstacleBlock</key>
 	<dict>

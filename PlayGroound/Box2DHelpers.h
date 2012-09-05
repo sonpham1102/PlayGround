@@ -16,3 +16,4 @@ b2Body* isSensorCollidingWithObjectType(b2Body *body,
                                      GameObjType objectType,
                                      b2Fixture* fixturee,
                                      b2World *world);
+bool isBodyCollidingWithAnything(b2Body *body);

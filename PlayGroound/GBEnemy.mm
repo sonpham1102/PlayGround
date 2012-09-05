@@ -37,6 +37,10 @@
     
     fixtureDef.shape = &shape;
     
+//    fixtureDef.filter.groupIndex = kEnemyWallGroup;
+    fixtureDef.filter.categoryBits = kCollCatEnemy;
+    fixtureDef.filter.maskBits = kCollMaskEnemy;
+    
     body->CreateFixture(&fixtureDef);
     
     //figure out a random starting velocity (starting with a number between 0 and 1)
@@ -74,24 +78,11 @@
 
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime
 {
-    // see if the bullet should die
-/*    if (isDead)
+    if (destroyMe)
     {
-        //first time we are here, remove the physics body but not the sprite (just in case this sprite is still in the update list
-        if (body != NULL)
-        {
-            world->DestroyBody(body);
-            body = NULL;
-        }
-        //second time we are here there's no way another object is colliding with us, so it should be safe to remove ourselves from the scene
-        else
-        {
-            [self removeFromParentAndCleanup:YES];
-            CCLOG(@"Enemy removed");
-        }
         return;
     }
-*/
+    
     // see if we've been hit by a bullet
     GameCharPhysics* bulletBody = isBodyCollidingWithObjectType(body, kObjTypeBullet);
     if (bulletBody != NULL)

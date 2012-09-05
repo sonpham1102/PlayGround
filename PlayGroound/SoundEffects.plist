@@ -46,6 +46,18 @@
 		<string>22k_viking_powerupV2.wav</string>
 		<key>ENEMY_EXPLODE</key>
 		<string>22k_enemy_robot_taking_damageV1.wav</string>
+		<key>ANNOUNCER_V1</key>
+		<string>tf_nemesis.wav</string>
+		<key>ANNOUNCER_V2</key>
+		<string>tf_revenge.wav</string>
+		<key>ANNOUNCER_V3</key>
+		<string>tf_domination.wav</string>
+		<key>ANNOUNCER_V4</key>
+		<string>crit_hit.wav</string>
+		<key>ANNOUNCER_V5</key>
+		<string>crit_hit2.wav</string>
+		<key>ANNOUNCER_V6</key>
+		<string>crit_hit3.wav</string>
 	</dict>
 </dict>
 </plist>

@@ -16,12 +16,14 @@
 #import "GBEnemy.h"
 
 #define LP_START_MAX_DISTANCE 2.0
-#define MAX_BULLET_SPEED 50.0
-#define MIN_BULLET_SPEED 1.0
-#define MAX_PAN_LENGTH 20.0
+//#define MAX_BULLET_SPEED 50.0
+//#define MIN_BULLET_SPEED 1.0
+//#define MAX_PAN_LENGTH 20.0
 #define MIN_PAN_LENGTH 1.0
 
 #define ENEMY_SPAWN_TIME 2.0
+
+#define BULLET_SPEED 35.0
 
 
 enum {
@@ -43,7 +45,28 @@ enum {
 -(void) createGunBot: (CGPoint) location
 {
     gunBot = [[GunBot alloc] initWithWorld:world atLocation:location];
+    [sceneSpriteBatchNode addChild:gunBot z:5];
 }
+
+-(BOOL) displayText:(NSString *)text andOnCompleteCallTarget:(id)target selector:(SEL)selector
+{
+    [label stopAllActions];
+    [label setString:text];
+    label.visible = YES;
+    label.scale = 0.0;
+    label.opacity = 255;
+    
+    CCScaleTo *scaleUp = [CCScaleTo actionWithDuration:0.5 scale:1.2];
+    CCScaleTo *scaleBack = [CCScaleTo actionWithDuration:0.1 scale:1.0];
+    CCDelayTime *delay = [CCDelayTime actionWithDuration:2.0];
+    CCFadeOut *fade = [CCFadeOut actionWithDuration:0.5];
+    CCHide *hide = [CCHide action];
+    CCCallFuncN *onComplete = [CCCallFuncN actionWithTarget:target selector:selector];
+    CCSequence *sequence = [CCSequence actions:scaleUp, scaleBack, delay, fade, hide, onComplete, nil];
+    [label runAction:sequence];
+    return TRUE;
+}
+
 
 -(id) init
 {
@@ -57,20 +80,27 @@ enum {
 		
 		// init physics
 		[self initPhysics];
+
+        sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithTexture:nil];
+        [self addChild:sceneSpriteBatchNode z:0];        
         
         [self createGunBot:ccp(s.width/2.0/PTM_RATIO, s.height/2.0/PTM_RATIO)];
-		        
-        sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithTexture:nil];
-        [self addChild:sceneSpriteBatchNode z:0];
-                
+		                        
         [self createBackground];
 		
 		[self scheduleUpdate];
         
         //init variables
         lpStarted = false;
-
-        enemySpawnTimer = 0.0f;
+        currentWaveNumber = 0;
+        isCreatingWave = false;
+        gameOver = false;
+        
+        CGSize winSize = [CCDirector sharedDirector].winSize;
+        label = [CCLabelTTF labelWithString:@"" fontName:@"Helvetica" fontSize:48.0];
+        label.position = ccp(winSize.width/2, winSize.height/2);
+        label.visible = NO;
+        [self addChild:label];
 	}
 	return self;
 }
@@ -125,22 +155,30 @@ enum {
 	// Define the ground box shape.
 	b2EdgeShape groundBox;		
 	
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &groundBox;
+    fixtureDef.filter.categoryBits = kCollCatWall;
+    fixtureDef.filter.maskBits = kCollMaskWall;
 	// bottom
 	
 	groundBox.Set(b2Vec2(0,0), b2Vec2(s.width/PTM_RATIO,0));
-	groundBody->CreateFixture(&groundBox,0);
+	//groundBody->CreateFixture(&groundBox,0);
+    groundBody->CreateFixture(&fixtureDef);
 	
 	// top
 	groundBox.Set(b2Vec2(0,s.height/PTM_RATIO), b2Vec2(s.width/PTM_RATIO,s.height/PTM_RATIO));
-	groundBody->CreateFixture(&groundBox,0);
+	//groundBody->CreateFixture(&groundBox,0);
+    groundBody->CreateFixture(&fixtureDef);
 	
 	// left
 	groundBox.Set(b2Vec2(0,s.height/PTM_RATIO), b2Vec2(0,0));
-	groundBody->CreateFixture(&groundBox,0);
+	//groundBody->CreateFixture(&groundBox,0);
+    groundBody->CreateFixture(&fixtureDef);
 	
 	// right
 	groundBox.Set(b2Vec2(s.width/PTM_RATIO,s.height/PTM_RATIO), b2Vec2(s.width/PTM_RATIO,0));
-	groundBody->CreateFixture(&groundBox,0);
+	//groundBody->CreateFixture(&groundBox,0);
+    groundBody->CreateFixture(&fixtureDef);
 }
 
 -(void) draw
@@ -166,25 +204,33 @@ enum {
 
 -(void) handlePan:(CGPoint)startPoint endPoint:(CGPoint)endPoint
 {
+    if (gameOver) {
+        return;
+    }
+    
     //create a bullet and launch it in along the pan vector with a speed proportional to the length (with limits)
     
     //the start and end are in screen space, get the vector between them and convert to screen space
     b2Vec2 launchVector = b2Vec2((endPoint.x - startPoint.x)/PTM_RATIO, (endPoint.y - startPoint.y)/PTM_RATIO);
     
     b2Vec2 velocityVector;
+    
     float panLengthInMeters = launchVector.Normalize();
     // make sure the pan is long enough to be worth processing
     if (panLengthInMeters < MIN_PAN_LENGTH)
     {
         return;
     }
+/*
     if (panLengthInMeters > MAX_PAN_LENGTH)
     {
         panLengthInMeters = MAX_PAN_LENGTH;
     }
     // get the speed between min and max depending on pan length
     float speed = MIN_BULLET_SPEED + (MAX_BULLET_SPEED - MIN_BULLET_SPEED)*panLengthInMeters/MAX_PAN_LENGTH;
-    
+*/  
+    // do a fixed velocity instead
+    float speed = BULLET_SPEED;
     velocityVector.x = launchVector.x * speed;
     velocityVector.y = launchVector.y * speed;
     
@@ -207,6 +253,10 @@ enum {
 
 -(void) handleLongPressStart:(CGPoint)point
 {
+    if (gameOver) {
+        return;
+    }
+
     //check if the start point is close enough to the gunbot
     //first need to convert to physics space (meters)
     b2Vec2 touchInWorld = b2Vec2(point.x/PTM_RATIO, point.y/PTM_RATIO);
@@ -241,7 +291,36 @@ enum {
     lpStarted = false;
 }
 
--(void) spawnEnemies
+-(void) playRandomAnnouncerSound
+{
+    int soundNumber = arc4random() % 6;
+    
+    switch (soundNumber) {
+        case 0:
+            PLAYSOUNDEFFECT(ANNOUNCER_V1);
+            break;
+        case 1:
+            PLAYSOUNDEFFECT(ANNOUNCER_V2);
+            break;
+        case 2:
+            PLAYSOUNDEFFECT(ANNOUNCER_V3);
+            break;
+        case 3:
+            PLAYSOUNDEFFECT(ANNOUNCER_V4);
+            break;
+        case 4:
+            PLAYSOUNDEFFECT(ANNOUNCER_V5);
+            break;
+        case 5:
+            PLAYSOUNDEFFECT(ANNOUNCER_V6);
+            break;
+            
+        default:
+            break;
+    }
+}
+
+-(void) spawnEnemies:(id) sender
 {
     //choose a random spot near the edge of the level
     b2Vec2 location;
@@ -273,10 +352,44 @@ enum {
     }
     location.y = winSize.height*randomNum/PTM_RATIO;
     
-
+    
     GBEnemy* enemy = [[GBEnemy alloc] initWithWorld:world atLocation:location withTargetBody:gunBot.body];
     [sceneSpriteBatchNode addChild:enemy];
     [enemy release];
+    
+    isCreatingWave = false;
+}
+
+
+-(void) startNewWave
+{
+    currentWaveNumber++;
+    
+    isCreatingWave = true;
+    
+    //set up the wave depending on which one it is
+    if (currentWaveNumber == 1)
+    {
+        PLAYSOUNDEFFECT(ANNOUNCER_V1);
+    }
+    else
+    {
+        [self playRandomAnnouncerSound];
+//        enemiesPerWave += ENEMY_INCREASE_PER_WAVE;
+//        timePerEnemy *= ENEMY_TIME_PER_SPAWN_FACTOR;
+        
+        //find out how many subwaves we should make
+    }
+    
+    [self displayText:[NSString stringWithFormat:@"Wave %i", currentWaveNumber] andOnCompleteCallTarget:self selector:@selector(spawnEnemies:)];
+}
+
+-(void) displayFinalResult:(id) sender
+{
+    [label setString:[NSString stringWithFormat:@"Waves Complete: %i", (currentWaveNumber - 1)]];
+    label.visible = YES;
+    label.scale = 2.0;
+    label.opacity = 255;
 }
 
 -(void) update: (ccTime) dt
@@ -313,6 +426,7 @@ enum {
     
     CCArray *listOfGameObjects = [sceneSpriteBatchNode children];
     CCArray *listOfObjectsToDestroy = [CCArray array];
+    int numberOfLivingEnemies = 0;
     for (GameChar *tempChar in listOfGameObjects)
     {
         [tempChar updateStateWithDeltaTime:dt];
@@ -324,6 +438,10 @@ enum {
             {
                 [listOfObjectsToDestroy addObject:object];
             }
+            if ([tempChar gameObjType] == kObjTypeEnemy)
+            {
+                numberOfLivingEnemies++;
+            }
         }
     }
     
@@ -334,13 +452,31 @@ enum {
         [tempChar removeFromParentAndCleanup:YES];
     }
     
-    // see if its time to spawn new enemies
-    enemySpawnTimer += dt;
-    if (enemySpawnTimer > ENEMY_SPAWN_TIME)
+    // see if the player was killed
+    if (gunBot.destroyMe && !gameOver)
     {
-        enemySpawnTimer = 0.0;
-        [self spawnEnemies];
+        gameOver = true;
+        PLAYSOUNDEFFECT(ANNOUNCER_V6);
+        [self displayText:@"Game Over!" andOnCompleteCallTarget:self selector:@selector(displayFinalResult:)];
     }
+    else if (gameOver)
+    {
+        return;
+    }
+    
+    // if we aren't generating a new wave, see if we should start
+    if (!isCreatingWave)
+    {
+        if (numberOfLivingEnemies == 0)
+        {
+            [self startNewWave];
+        }
+    }
+//    else
+//    {
+//        [self spawnEnemies];
+//    }
+    // see if its time to start a new wave
 }
 
 @end

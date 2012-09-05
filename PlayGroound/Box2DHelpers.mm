@@ -11,6 +11,7 @@
 #import "Rocket.h"
 
 
+
 GameCharPhysics* isBodyCollidingWithObjectType(b2Body *body, GameObjType objectType) {
     b2ContactEdge* edge = body->GetContactList();
     while (edge)
@@ -96,6 +97,17 @@ bool isSensorCollidingWithObjectType(b2Body *body, GameObjType objectType,b2Fixt
     return false;
 }
 
-
-
-
+bool isBodyCollidingWithAnything(b2Body *body)
+{
+    b2ContactEdge* edge = body->GetContactList();
+    while (edge)
+    {
+        b2Contact* contact = edge->contact;
+        if (contact->IsTouching())
+        {        
+            return true;
+        }
+        edge = edge->next;
+    }
+    return false;
+}

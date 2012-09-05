@@ -27,7 +27,17 @@
     
     GunBot* gunBot;
     bool lpStarted;
-    float enemySpawnTimer;
+    
+    CCLabelTTF *label;
+    
+    int enemiesPerWave;
+    float timePerEnemy;
+    float timePerSubwave;
+    int numberOfSimultaneousSubWaves;
+    bool isCreatingWave;
+    int currentWaveNumber;
+    
+    bool gameOver;
 }
 
 -(void) handlePan:(CGPoint) startPoint endPoint:(CGPoint) endPoint;
@@ -36,7 +46,6 @@
 -(void) handleLongPressStart:(CGPoint) point;
 -(void) handleLongPressMove:(CGPoint) point;
 -(void) handleLongPressEnd:(CGPoint) point;
-
 
 @end
 

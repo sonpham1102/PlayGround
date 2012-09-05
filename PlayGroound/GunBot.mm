@@ -7,12 +7,13 @@
 //
 
 #import "GunBot.h"
+#import "Box2DHelpers.h"
 
-#define GB_DENSITY 1.0
+#define GB_DENSITY 10.0
 #define GB_FRICTION 1.0
 #define GB_RESTITUTION 1.0
 #define GB_RADIUS 1.0
-#define GB_LINEAR_DAMP 1.0
+#define GB_LINEAR_DAMP 10.0
 
 @implementation GunBot
 
@@ -34,7 +35,9 @@
     fixtureDef.shape = &shape;
     
     // make sure it doesn't collide with it's own bullets
-    fixtureDef.filter.groupIndex = -1;
+    //fixtureDef.filter.groupIndex = kGunBotBulletGroup;
+    fixtureDef.filter.categoryBits = kCollCatGunBot;
+    fixtureDef.filter.maskBits = kCollMaskGunBot;
     
     body->CreateFixture(&fixtureDef);
     
@@ -56,6 +59,25 @@
     }
     return self;
 }
+
+-(void)updateStateWithDeltaTime:(ccTime)deltaTime
+{
+    if (destroyMe)
+    {
+        return;
+    }
+    
+    // see if we've been hit by an Enemy
+    GameCharPhysics* enemy = isBodyCollidingWithObjectType(body, kObjTypeEnemy);
+    if (enemy != NULL)
+    {
+        destroyMe = TRUE;
+        [self setVisible:NO];
+    
+        return;
+    }
+}
+
 
 
 @end

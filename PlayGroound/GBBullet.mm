@@ -37,7 +37,9 @@
     fixtureDef.shape = &shape;
     
     // make sure the bullets don't collide with the GunBot
-    fixtureDef.filter.groupIndex = -1;
+    //fixtureDef.filter.groupIndex = kGunBotBulletGroup;
+    fixtureDef.filter.categoryBits = kCollCatBullet;
+    fixtureDef.filter.maskBits = kCollMaskBullet;
     
     body->CreateFixture(&fixtureDef);
     
@@ -68,25 +70,11 @@
 
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime
 {
-    // see if the bullet should die
-/*
-    if (isDead)
+    if (destroyMe)
     {
-        //first time we are here, remove the physics body but not the sprite (just in case this sprite is still in the update list
-        if (body != NULL)
-        {
-            world->DestroyBody(body);
-            body = NULL;
-        }
-        //second time we are here there's no way another object is colliding with us, so it should be safe to remove ourselves from the scene
-        else
-        {
-            [self removeFromParentAndCleanup:YES];
-            CCLOG(@"bullet removed");
-        }
         return;
     }
- */   
+    
     lifeTimer += deltaTime;
     if (lifeTimer > MAX_LIFE_TIME)
     {
@@ -96,13 +84,11 @@
     }
     else
     {
-        // see if we've hit an enemy
-        GameCharPhysics* enemyBody = isBodyCollidingWithObjectType(body, kObjTypeEnemy);
-        if (enemyBody != NULL)
+        // see if it hits anything and destroy it
+        if (isBodyCollidingWithAnything(body))
         {
             destroyMe = true;
             [self setVisible:NO];
-            CCLOG(@"Bullet hit Enemy");
         }
     }
 }

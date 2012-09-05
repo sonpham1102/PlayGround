@@ -58,6 +58,19 @@ typedef enum {
     kStateManeuver
 }CharStates;
 
+// PG5Collision categories and masks
+typedef enum {
+    kCollCatGunBot = 0x0001,
+    kCollCatEnemy = 0x0002,
+    kCollCatBullet = 0x0004,
+    kCollCatWall = 0x0008,
+    // the gunbot can collide with everything except bullets
+    kCollMaskGunBot = 0x000A,
+    kCollMaskEnemy = 0x0007,
+    kCollMaskBullet = 0x000A,
+    kCollMaskWall = 0x0005
+} PG5CollFilters;
+
 
 @protocol PlayGround2LayerDelegate
 

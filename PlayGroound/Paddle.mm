@@ -18,12 +18,12 @@
     if ((self = [super init])){
         world = theWorld;
         gameObjType = kObjTypePaddle;
-        [self createBodyAtLoaction:location];
+        [self createBodyAtLocation:location];
     }
     return self;
 }
 
--(void)createBodyAtLoaction:(CGPoint)location {
+-(void)createBodyAtLocation:(CGPoint)location {
     b2BodyDef bodydef;
     bodydef.type = b2_dynamicBody;
     bodydef.position = b2Vec2(location.x/PTM_RATIO,

@@ -16,6 +16,8 @@
 
 #import "Paddle.h"
 #import "Ball.h"
+#import "Block.h"
+#import "Level4ContactListener.h"
 
 
 @class PlayGroundScene4UILayer;
@@ -27,6 +29,8 @@
     
     b2World* world;
     
+    Level4ContactListener* contactListener;
+    
     Paddle* thePaddle;
     Ball* theBall;
     
@@ -34,6 +38,8 @@
     UITouch* rightTouch;
     CGPoint leftTouchPos;
     CGPoint rightTouchPos;
+    
+    CCSpriteBatchNode *sceneSpriteBatchNode;
 }
 
 @property (nonatomic, readonly) CGPoint leftTouchPos;

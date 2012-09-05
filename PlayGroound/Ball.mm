@@ -17,7 +17,7 @@
     if ((self = [super init])){
         world = theWorld;
         gameObjType = kObjTypeBall;
-        [self createBodyAtLoaction:location];
+        [self createBodyAtLocation:location];
     }
     return self;
 }
@@ -35,7 +35,7 @@
     
 }
 
--(void)createBodyAtLoaction:(CGPoint)location {
+-(void)createBodyAtLocation:(CGPoint)location {
     b2BodyDef bodydef;
     bodydef.bullet = true;
     bodydef.type = b2_dynamicBody;

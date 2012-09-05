@@ -50,7 +50,8 @@ typedef enum {
     kObjTypeGunBot,
     kObjTypeEnemy,
     kObjTypePaddle,
-    kObjTypeBall
+    kObjTypeBall,
+    kObjTypeBlock,
 }GameObjType;
 
 // GameChar states

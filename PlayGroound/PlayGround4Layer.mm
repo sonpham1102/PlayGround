@@ -44,15 +44,23 @@
 		// init physics
 		[self initPhysics];
         
+        contactListener = new Level4ContactListener();
+        world->SetContactListener(contactListener);
+        
+        sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithTexture:nil];
+        [self addChild:sceneSpriteBatchNode z:0];
+        
+        [self buildLevel];
+        
         thePaddle = [[Paddle alloc]initWithWorld:world atLocation:ccp(winSize.width * 0.5, 
                                                                        winSize.height * .05)];
         [thePaddle setDelegate:self];
         
         theBall = [[Ball alloc]initWithWorld:world atLocation:ccp(winSize.width * 0.5, 
-                                                                  winSize.height * 0.95)];
-        theBall.body->ApplyLinearImpulse(b2Vec2(0,-1.5f), b2Vec2(0,0));
-        [self addChild:thePaddle];
-        [self addChild:theBall];
+                                                                  winSize.height * 0.7)];
+        theBall.body->ApplyLinearImpulse(b2Vec2(0,-0.1f), b2Vec2(0,0));
+        [sceneSpriteBatchNode addChild:thePaddle];
+        [sceneSpriteBatchNode addChild:theBall];
          
         leftTouch = nil;
         rightTouch = nil;
@@ -60,6 +68,18 @@
         
 	}
 	return self;
+}
+
+-(void) buildLevel {
+    
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    
+    for (float i = 1.0; i <= 9.0 ; i++) {
+        Block* theBlock = [[Block alloc] initWithWorld:world atLocation:ccp(winSize.width * (i/10) , winSize.height * 0.8)];
+        [sceneSpriteBatchNode addChild:theBlock];
+        [theBlock release];
+    }
+    
 }
 
 -(void) initPhysics
@@ -133,8 +153,8 @@
         timeAccumulator = MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL;
     }
     
-    int32 velocityIterations = 5;
-    int32 positionIterations = 5;
+    int32 velocityIterations = 15;
+    int32 positionIterations = 15;
     while (timeAccumulator >= UPDATE_INTERVAL)
     {
         timeAccumulator -= UPDATE_INTERVAL;
@@ -151,11 +171,28 @@
         }
     }
     
-    [thePaddle updateStateWithDeltaTime:dt];
+    CCArray *listOfGameObjects = [sceneSpriteBatchNode children];
+    CCArray *listOfObjectsToDestroy = [CCArray array];
+    for (GameChar *tempChar in listOfGameObjects)
+    {
+        [tempChar updateStateWithDeltaTime:dt];
+        //for each object, check if it's dead and store it to be cleaned up later
+        if ([tempChar gameObjType] == kObjTypeBlock)
+        {
+            GameCharPhysics *object = (GameCharPhysics*) tempChar;
+            if (object.destroyMe == true)
+            {
+                [listOfObjectsToDestroy addObject:object];
+            }
+        }
+    }
     
-    CCLOG(@"\nLeft Position X:%.2f Y:%.2f \nRight Position X:%.2f Y:%.2f",leftTouchPos.x,leftTouchPos.y,
-          rightTouchPos.x,rightTouchPos.y);
-    
+    for (GameCharPhysics *tempChar in listOfObjectsToDestroy)
+    {
+        world->DestroyBody(tempChar.body);
+        tempChar.body = NULL;
+        [tempChar removeFromParentAndCleanup:YES];
+    }
 }
 
 -(void) draw
@@ -203,7 +240,7 @@
     for (UITouch *touch in touches){
         if (touch == leftTouch) {
             leftTouch = nil;
-            leftTouchPos = ccp(0, 0);
+            leftTouchPos = ccp(4 * PTM_RATIO, 2 * PTM_RATIO);
         } else if (touch == rightTouch) {
             rightTouch = nil;
             rightTouchPos = ccp(0, 0);

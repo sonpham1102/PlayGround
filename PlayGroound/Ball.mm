@@ -9,18 +9,33 @@
 #import "Ball.h"
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
+#define MAX_SPEED 10
 
 @implementation Ball
 
 -(id)initWithWorld:(b2World*)theWorld atLocation:(CGPoint)location {
     if ((self = [super init])){
         world = theWorld;
-        [self createBodyAtLoaction:location];
+        gameObjType = kObjTypeBall;
+        [self createBodyAtLocation:location];
     }
     return self;
 }
 
--(void)createBodyAtLoaction:(CGPoint)location {
+-(void)updateStateWithDeltaTime:(ccTime)dt{
+    
+    b2Vec2 vel = body->GetLinearVelocity();
+    float speed = vel.Normalize();
+    
+    if (speed > MAX_SPEED) {
+        body->ApplyForce(-vel, body->GetLocalCenter());
+    } else {
+        body->ApplyForce(vel, body->GetLocalCenter());
+    }
+    
+}
+
+-(void)createBodyAtLocation:(CGPoint)location {
     b2BodyDef bodydef;
     bodydef.bullet = true;
     bodydef.type = b2_dynamicBody;
@@ -30,11 +45,11 @@
     
     b2FixtureDef fixtureDef;
     fixtureDef.density = 1.0f;
-    fixtureDef.friction = 0.0f;
+    fixtureDef.friction = 0.15f;
     fixtureDef.restitution = 1.0f;
     
     b2CircleShape circle;
-    circle.m_radius = 5.4 / PTM_RATIO;
+    circle.m_radius = 6.4 / PTM_RATIO;
     fixtureDef.shape = &circle;
     
     body->CreateFixture(&fixtureDef);

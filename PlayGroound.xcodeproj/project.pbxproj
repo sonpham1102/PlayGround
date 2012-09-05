@@ -24,6 +24,8 @@
 		121DD31615D563B50098A1AF /* PlanetLayer-ipad.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 121DD31515D563B50098A1AF /* PlanetLayer-ipad.tmx */; };
 		121DD31F15D57D0C0098A1AF /* fire.png in Resources */ = {isa = PBXBuildFile; fileRef = 121DD31E15D57D0C0098A1AF /* fire.png */; };
 		12284ABC15C894790008961A /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12284ABB15C894790008961A /* CoreMotion.framework */; };
+		12514F9D15F7C26F00634C99 /* Block.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12514F9C15F7C26F00634C99 /* Block.mm */; };
+		12514FA115F7CA1500634C99 /* Level4ContactListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12514FA015F7CA1500634C99 /* Level4ContactListener.mm */; };
 		127EB08415C59E8E002EEA46 /* LandingPad-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 127EB08315C59E8E002EEA46 /* LandingPad-ipad.png */; };
 		127EB08915C5AD6C002EEA46 /* LandingPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 127EB08815C5AD6C002EEA46 /* LandingPad.png */; };
 		128226CB15B5EC730030D109 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 128226CA15B5EC730030D109 /* QuartzCore.framework */; };
@@ -294,6 +296,10 @@
 		121DD31515D563B50098A1AF /* PlanetLayer-ipad.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "PlanetLayer-ipad.tmx"; sourceTree = "<group>"; };
 		121DD31E15D57D0C0098A1AF /* fire.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fire.png; sourceTree = "<group>"; };
 		12284ABB15C894790008961A /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		12514F9B15F7C26F00634C99 /* Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Block.h; sourceTree = "<group>"; };
+		12514F9C15F7C26F00634C99 /* Block.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Block.mm; sourceTree = "<group>"; };
+		12514F9F15F7CA1500634C99 /* Level4ContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Level4ContactListener.h; sourceTree = "<group>"; };
+		12514FA015F7CA1500634C99 /* Level4ContactListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Level4ContactListener.mm; sourceTree = "<group>"; };
 		127EB08315C59E8E002EEA46 /* LandingPad-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LandingPad-ipad.png"; sourceTree = "<group>"; };
 		127EB08815C5AD6C002EEA46 /* LandingPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LandingPad.png; sourceTree = "<group>"; };
 		128226C615B5EC730030D109 /* PlayGroound.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayGroound.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -795,6 +801,8 @@
 				1210DEE415F2A0DB00857C87 /* PlayGround4Layer.mm */,
 				1210DEE715F5046C00857C87 /* PlayGroundScene4UILayer.h */,
 				1210DEE815F5046C00857C87 /* PlayGroundScene4UILayer.m */,
+				12514F9F15F7CA1500634C99 /* Level4ContactListener.h */,
+				12514FA015F7CA1500634C99 /* Level4ContactListener.mm */,
 			);
 			name = PlayGround4;
 			sourceTree = "<group>";
@@ -1623,6 +1631,8 @@
 				FA9125A015F67DCC0016554B /* GBBullet.mm */,
 				FA9125A215F691280016554B /* GBEnemy.h */,
 				FA9125A315F691280016554B /* GBEnemy.mm */,
+				12514F9B15F7C26F00634C99 /* Block.h */,
+				12514F9C15F7C26F00634C99 /* Block.mm */,
 			);
 			name = GameObjects;
 			sourceTree = "<group>";
@@ -1979,6 +1989,8 @@
 				FA91259E15F66FAC0016554B /* GunBot.mm in Sources */,
 				FA9125A115F67DCC0016554B /* GBBullet.mm in Sources */,
 				FA9125A415F691290016554B /* GBEnemy.mm in Sources */,
+				12514F9D15F7C26F00634C99 /* Block.mm in Sources */,
+				12514FA115F7CA1500634C99 /* Level4ContactListener.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

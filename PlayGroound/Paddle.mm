@@ -17,6 +17,7 @@
 -(id)initWithWorld:(b2World*)theWorld atLocation:(CGPoint)location {
     if ((self = [super init])){
         world = theWorld;
+        gameObjType = kObjTypePaddle;
         [self createBodyAtLoaction:location];
     }
     return self;
@@ -34,17 +35,17 @@
     b2FixtureDef fixtureDef;
     fixtureDef.density = 10.0f;
     fixtureDef.friction = 1.0f;
-    fixtureDef.restitution = 1.0f;
+    fixtureDef.restitution = 1.15f;
     
     b2PolygonShape shape;
     
     fixtureDef.shape = &shape;
     
     b2Vec2 vert[] = {
-        b2Vec2(15.0 / PTM_RATIO, 5.0 / PTM_RATIO),
-        b2Vec2(-15.0 / PTM_RATIO, 5.0 / PTM_RATIO),
-        b2Vec2(-15.0 / PTM_RATIO, -5.0 / PTM_RATIO),
-        b2Vec2(15.0 / PTM_RATIO, -5.0 / PTM_RATIO)
+        b2Vec2(20.0 / PTM_RATIO, 5.0 / PTM_RATIO),
+        b2Vec2(-20.0 / PTM_RATIO, 5.0 / PTM_RATIO),
+        b2Vec2(-20.0 / PTM_RATIO, -5.0 / PTM_RATIO),
+        b2Vec2(20.0 / PTM_RATIO, -5.0 / PTM_RATIO)
     };
     
     shape.Set(vert, 4);
@@ -52,12 +53,12 @@
     
     b2CircleShape circle;
     circle.m_radius = 5.4 / PTM_RATIO;
-    circle.m_p = b2Vec2(15 / PTM_RATIO, 0);
+    circle.m_p = b2Vec2(20 / PTM_RATIO, 0);
     fixtureDef.shape = &circle;
     
     body->CreateFixture(&fixtureDef);
     
-    circle.m_p = b2Vec2(-15 / PTM_RATIO, 0);
+    circle.m_p = b2Vec2(-20 / PTM_RATIO, 0);
     
     body->CreateFixture(&fixtureDef);
     body->SetSleepingAllowed(NO);
@@ -67,6 +68,10 @@
 }
 
 -(void)updateStateWithDeltaTime:(ccTime)dt {
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    b2Vec2 centre = b2Vec2(winSize.width/2/PTM_RATIO,0);
+    b2Vec2 paddlecenter = body->GetWorldCenter();
+    float offset =  paddlecenter.x - centre.x;
     
     CGPoint leftPos = [delegate getLeftTouchPos];
     CGPoint rightPos = [delegate getRightTouchPos];
@@ -78,8 +83,8 @@
     
     float desiredAngle = atan2f( -targetLine.x, targetLine.y ) - CC_DEGREES_TO_RADIANS(90);
     
-    b2Vec2 newPos = b2Vec2((leftPos.x + rightPos.x) / 2 / PTM_RATIO, 
-                           (leftPos.y + rightPos.y) / 2 / PTM_RATIO);
+    b2Vec2 newPos = b2Vec2(((leftPos.x + rightPos.x) / 2 / PTM_RATIO) + (offset * 10.0 / PTM_RATIO), 
+                           ((leftPos.y + rightPos.y) / 2 / PTM_RATIO) + (42 / PTM_RATIO));
     
     body->SetTransform(newPos, desiredAngle);
 }   

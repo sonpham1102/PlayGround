@@ -48,7 +48,9 @@ typedef enum {
     kObjTypeBounceTriangle,
     kObjTypeObstacleBlock,
     kObjTypeGunBot,
-    kObjTypeEnemy
+    kObjTypeEnemy,
+    kObjTypePaddle,
+    kObjTypeBall
 }GameObjType;
 
 // GameChar states

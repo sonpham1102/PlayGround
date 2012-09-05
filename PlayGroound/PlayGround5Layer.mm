@@ -399,7 +399,6 @@ enum {
     static double timeAccumulator = 0;
     
     timeAccumulator += dt;
-    CCLOG(@"new update");
     
     if (timeAccumulator > (MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL))
     {

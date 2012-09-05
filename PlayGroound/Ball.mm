@@ -49,7 +49,7 @@
     fixtureDef.restitution = 1.0f;
     
     b2CircleShape circle;
-    circle.m_radius = 6.4 / PTM_RATIO;
+    circle.m_radius = 0.2;
     fixtureDef.shape = &circle;
     
     body->CreateFixture(&fixtureDef);

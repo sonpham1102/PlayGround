@@ -42,10 +42,10 @@
     b2PolygonShape shape;
     b2Vec2 verts[] = {
         
-        b2Vec2(15.0 / PTM_RATIO, 7.0 / PTM_RATIO),
-        b2Vec2(-15.0 / PTM_RATIO, 7.0 / PTM_RATIO),
-        b2Vec2(-15.0 / PTM_RATIO, -7.0 / PTM_RATIO),
-        b2Vec2(15.0 / PTM_RATIO, -7.0 / PTM_RATIO)
+        b2Vec2(0.7 , 0.3 ),
+        b2Vec2(-0.7 , 0.3),
+        b2Vec2(-0.7 , -0.3 ),
+        b2Vec2(0.7 , -0.3 )
         
     };
     shape.Set(verts, 4);

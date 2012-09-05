@@ -42,23 +42,23 @@
     fixtureDef.shape = &shape;
     
     b2Vec2 vert[] = {
-        b2Vec2(20.0 / PTM_RATIO, 5.0 / PTM_RATIO),
-        b2Vec2(-20.0 / PTM_RATIO, 5.0 / PTM_RATIO),
-        b2Vec2(-20.0 / PTM_RATIO, -5.0 / PTM_RATIO),
-        b2Vec2(20.0 / PTM_RATIO, -5.0 / PTM_RATIO)
+        b2Vec2(0.7 , 0.15),
+        b2Vec2(-0.7 , 0.15),
+        b2Vec2(-0.7 , -0.15),
+        b2Vec2(0.7, -0.15)
     };
     
     shape.Set(vert, 4);
     body->CreateFixture(&fixtureDef);
     
     b2CircleShape circle;
-    circle.m_radius = 5.4 / PTM_RATIO;
-    circle.m_p = b2Vec2(20 / PTM_RATIO, 0);
+    circle.m_radius = 0.15;
+    circle.m_p = b2Vec2(0.7, 0);
     fixtureDef.shape = &circle;
     
     body->CreateFixture(&fixtureDef);
     
-    circle.m_p = b2Vec2(-20 / PTM_RATIO, 0);
+    circle.m_p = b2Vec2(-0.7, 0);
     
     body->CreateFixture(&fixtureDef);
     body->SetSleepingAllowed(NO);

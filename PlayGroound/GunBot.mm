@@ -66,7 +66,7 @@
     {
         return;
     }
-    
+/*    
     // see if we've been hit by an Enemy
     GameCharPhysics* enemy = isBodyCollidingWithObjectType(body, kObjTypeEnemy);
     if (enemy != NULL)
@@ -76,6 +76,7 @@
     
         return;
     }
+ */
 }
 
 

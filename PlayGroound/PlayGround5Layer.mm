@@ -21,18 +21,15 @@
 //#define MAX_PAN_LENGTH 20.0
 #define MIN_PAN_LENGTH 1.0
 
-#define ENEMY_SPAWN_TIME 2.0
-
 #define BULLET_SPEED 35.0
 
-#define ENEMY_STARTING_WAVE_SIZE 10
-#define ENEMY_STARTING_SPAWN_RATE 1.0
+#define ENEMY_STARTING_WAVE_SIZE 8
+#define ENEMY_STARTING_SPAWN_RATE 2.5
 #define ENEMY_INCREASE_PER_WAVE 2
 #define ENEMY_SPAWN_RATE_FACTOR 0.9
 #define ENEMY_WAVE_TARGET_TIME 10.0
-#define ENEMY_MAX_PER_SUBWAVE 10
-#define ENEMY_MIN_PER_SUBWAVE 5
-
+#define ENEMY_MAX_PER_SUBWAVE 8
+#define ENEMY_MIN_PER_SUBWAVE 4
 enum {
 	kTagParentNode = 1,
 };
@@ -374,12 +371,17 @@ enum {
     leftGateTimer = 0.0;
     leftGateCount = 0;
     leftGateTarget = 0;
-    leftGateTimer = 0.0;
-    leftGateCount = 0;
-    leftGateTarget = 0;
-    leftGateTimer = 0.0;
-    leftGateCount = 0;
-    leftGateTarget = 0;
+    rightGateTimer = 0.0;
+    rightGateCount = 0;
+    rightGateTarget = 0;
+    topGateTimer = 0.0;
+    topGateCount = 0;
+    topGateTarget = 0;
+    bottomGateTimer = 0.0;
+    bottomGateCount = 0;
+    bottomGateTarget = 0;
+    
+    enemiesAllocated = 0;
     
     //set up the wave depending on which one it is
     if (currentWaveNumber == 1)
@@ -468,8 +470,8 @@ enum {
         bottomGateTimer += dt;
         if (bottomGateTimer > timePerEnemy)
         {
-            [self createEnemyAtLocation:b2Vec2(-10.0/PTM_RATIO, winSize.height/2.0/PTM_RATIO)];
-            leftGateCount++;
+            [self createEnemyAtLocation:b2Vec2(winSize.width/2.0/PTM_RATIO, -10)];
+            bottomGateCount++;
             bottomGateTimer = 0.0f;
         }
         isFinished = false;
@@ -491,7 +493,6 @@ enum {
         {
             enemiesForSubWave = remainingEnemies;
         }
-        enemiesAllocated +=enemiesForSubWave;
         //now randomly choose a gate for them
         int gateIndex = arc4random() % 4;
         switch (gateIndex) {
@@ -501,6 +502,7 @@ enum {
                     leftGateTarget = enemiesForSubWave;
                     enemiesAllocated+=enemiesForSubWave;
                     leftGateTimer = 0.0;
+                    leftGateCount = 0;
                 }
                 break;
             case 1:
@@ -509,6 +511,7 @@ enum {
                     rightGateTarget = enemiesForSubWave;
                     enemiesAllocated+=enemiesForSubWave;
                     rightGateTimer = 0.0;
+                    rightGateCount = 0;
                 }
                 break;
             case 2:
@@ -517,6 +520,7 @@ enum {
                     topGateTarget = enemiesForSubWave;
                     enemiesAllocated+=enemiesForSubWave;
                     topGateTimer = 0.0f;
+                    topGateCount = 0;
                 }
                 break;
             case 3:
@@ -525,10 +529,12 @@ enum {
                     bottomGateTarget = enemiesForSubWave;
                     enemiesAllocated+=enemiesForSubWave;
                     bottomGateTimer = 0.0f;
+                    bottomGateCount = 0;
                 }
                 break;
                 
             default:
+                CCLOG(@"ILLLLEEGAL");
                 break;
         }
     }

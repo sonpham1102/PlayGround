@@ -76,7 +76,7 @@
     CGSize winSize = [CCDirector sharedDirector].winSize;
     
     for (float i = 1.0; i <= 9.0 ; i++) {
-        Block* theBlock = [[Block alloc] initWithWorld:world atLocation:ccp(winSize.width * (i/10) , winSize.height * 0.8)];
+        BreakBlock* theBlock = [[BreakBlock alloc] initWithWorld:world atLocation:ccp(winSize.width * (i/10) , winSize.height * 0.8)];
         [sceneSpriteBatchNode addChild:theBlock];
         [theBlock release];
     }   

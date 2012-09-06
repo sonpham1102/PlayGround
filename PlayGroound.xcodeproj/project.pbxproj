@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		120EBAB815F8FBB10063D039 /* Block.mm in Sources */ = {isa = PBXBuildFile; fileRef = 120EBAB715F8FBB10063D039 /* Block.mm */; };
+		120EBAB815F8FBB10063D039 /* BreakBlock.mm in Sources */ = {isa = PBXBuildFile; fileRef = 120EBAB715F8FBB10063D039 /* BreakBlock.mm */; };
 		120EEB0715D6140B00C629B2 /* scifi1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 120EEB0615D6140B00C629B2 /* scifi1.mp3 */; };
 		120EEB2915D6DF4D00C629B2 /* Sonic Boom.wav in Resources */ = {isa = PBXBuildFile; fileRef = 120EEB2815D6DF4D00C629B2 /* Sonic Boom.wav */; };
 		120EEB3115D711AC00C629B2 /* Asteroid.mm in Sources */ = {isa = PBXBuildFile; fileRef = 120EEB3015D711AC00C629B2 /* Asteroid.mm */; };
@@ -270,8 +270,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		120EBAB615F8FBB10063D039 /* Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Block.h; sourceTree = "<group>"; };
-		120EBAB715F8FBB10063D039 /* Block.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Block.mm; sourceTree = "<group>"; };
+		120EBAB615F8FBB10063D039 /* BreakBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BreakBlock.h; sourceTree = "<group>"; };
+		120EBAB715F8FBB10063D039 /* BreakBlock.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BreakBlock.mm; sourceTree = "<group>"; };
 		120EEB0615D6140B00C629B2 /* scifi1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = scifi1.mp3; sourceTree = "<group>"; };
 		120EEB2815D6DF4D00C629B2 /* Sonic Boom.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Sonic Boom.wav"; sourceTree = "<group>"; };
 		120EEB2F15D711AC00C629B2 /* Asteroid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Asteroid.h; sourceTree = "<group>"; };
@@ -1631,8 +1631,8 @@
 				FA9125A015F67DCC0016554B /* GBBullet.mm */,
 				FA9125A215F691280016554B /* GBEnemy.h */,
 				FA9125A315F691280016554B /* GBEnemy.mm */,
-				120EBAB615F8FBB10063D039 /* Block.h */,
-				120EBAB715F8FBB10063D039 /* Block.mm */,
+				120EBAB615F8FBB10063D039 /* BreakBlock.h */,
+				120EBAB715F8FBB10063D039 /* BreakBlock.mm */,
 			);
 			name = GameObjects;
 			sourceTree = "<group>";
@@ -1990,7 +1990,7 @@
 				FA9125A115F67DCC0016554B /* GBBullet.mm in Sources */,
 				FA9125A415F691290016554B /* GBEnemy.mm in Sources */,
 				12514FA115F7CA1500634C99 /* Level4ContactListener.mm in Sources */,
-				120EBAB815F8FBB10063D039 /* Block.mm in Sources */,
+				120EBAB815F8FBB10063D039 /* BreakBlock.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,6 +10,7 @@
 
 @interface BreakBlock : GameCharPhysics {
     b2World* world;
+    
 }
 
 -(id)initWithWorld:(b2World*)theWorld atLocation:(CGPoint)location;

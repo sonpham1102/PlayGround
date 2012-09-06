@@ -7,10 +7,15 @@
 //
 
 #import "PlayGroundScene4UILayer.h"
+#import "GameManager.h"
 
 @implementation PlayGroundScene4UILayer
 
 @synthesize delegate;
+
+-(void)fuckOff{
+    
+}
 
 -(id) init {
     if( (self=[super init])) {

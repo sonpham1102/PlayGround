@@ -7,13 +7,18 @@
 //
 
 #import "CCLayer.h"
-#import "cocos2d.h"
-#import "GameManager.h"
+//#import "cocos2d.h"
+#import "GlobalConstants.h"
+//#import "GameManager.h"
 
 @interface PlayGroundScene4UILayer : CCLayer {
     id <PlayGround4LayerDelegate> delegate;
     CCLabelTTF *label;
 }
+
+-(void) fuckOff;
+
+-(BOOL)displayText:(NSString *)text andOnCompleteCallTarget:(id)target selector:(SEL)selector;
 
 @property (nonatomic, assign) id <PlayGround4LayerDelegate> delegate;
 

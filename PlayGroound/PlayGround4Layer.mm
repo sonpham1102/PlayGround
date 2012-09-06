@@ -6,8 +6,9 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "PlayGround4Layer.h"
 
+#import "PlayGround4Layer.h"
+#import "BreakBlock.h"
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
@@ -194,6 +195,10 @@
         tempChar.body = NULL;
         [tempChar removeFromParentAndCleanup:YES];
     }
+    
+    
+    //[uiLayer displayText:@"Test" andOnCompleteCallTarget:nil selector:nil];
+     //displayText:(NSString *)text andOnCompleteCallTarget:(id)target selector:(SEL)selector
 }
 
 -(void) draw

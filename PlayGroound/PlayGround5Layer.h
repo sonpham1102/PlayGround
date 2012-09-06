@@ -22,7 +22,7 @@
 	CCTexture2D *spriteTexture_;	// weak ref
 	b2World* world;					// strong ref
 	GLESDebugDraw *m_debugDraw;		// strong ref
-
+    
     CCSpriteBatchNode *sceneSpriteBatchNode;
     
     GunBot* gunBot;
@@ -30,12 +30,26 @@
     
     CCLabelTTF *label;
     
-    int enemiesPerWave;
+    int enemySpawnTarget;
     float timePerEnemy;
-    float timePerSubwave;
-    int numberOfSimultaneousSubWaves;
     bool isCreatingWave;
     int currentWaveNumber;
+    int enemiesAllocated;
+    
+    int leftGateTarget;
+    int leftGateCount;
+    int topGateTarget;
+    int topGateCount;
+    int rightGateTarget;
+    int rightGateCount;
+    int bottomGateTarget;
+    int bottomGateCount;
+    float leftGateTimer;
+    float rightGateTimer;
+    float topGateTimer;
+    float bottomGateTimer;
+    
+    bool isReadyToSpawn;
     
     bool gameOver;
 }

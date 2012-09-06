@@ -535,6 +535,7 @@ enum {
     else if ((enemiesAllocated >= enemySpawnTarget) && isFinished)
     {
         isCreatingWave = false;
+        isReadyToSpawn = false;
     }
 }
 

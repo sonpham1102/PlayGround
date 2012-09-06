@@ -8,9 +8,6 @@
 
 #import "Level4ContactListener.h"
 #import "GameCharPhysics.h"
-#import "Paddle.h"
-#import "Ball.h"
-#import "Block.h"
 
 
 Level4ContactListener::Level4ContactListener() : _contacts() {

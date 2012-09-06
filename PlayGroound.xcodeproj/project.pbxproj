@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		120EBAB815F8FBB10063D039 /* Block.mm in Sources */ = {isa = PBXBuildFile; fileRef = 120EBAB715F8FBB10063D039 /* Block.mm */; };
 		120EEB0715D6140B00C629B2 /* scifi1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 120EEB0615D6140B00C629B2 /* scifi1.mp3 */; };
 		120EEB2915D6DF4D00C629B2 /* Sonic Boom.wav in Resources */ = {isa = PBXBuildFile; fileRef = 120EEB2815D6DF4D00C629B2 /* Sonic Boom.wav */; };
 		120EEB3115D711AC00C629B2 /* Asteroid.mm in Sources */ = {isa = PBXBuildFile; fileRef = 120EEB3015D711AC00C629B2 /* Asteroid.mm */; };
@@ -24,7 +25,6 @@
 		121DD31615D563B50098A1AF /* PlanetLayer-ipad.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 121DD31515D563B50098A1AF /* PlanetLayer-ipad.tmx */; };
 		121DD31F15D57D0C0098A1AF /* fire.png in Resources */ = {isa = PBXBuildFile; fileRef = 121DD31E15D57D0C0098A1AF /* fire.png */; };
 		12284ABC15C894790008961A /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12284ABB15C894790008961A /* CoreMotion.framework */; };
-		12514F9D15F7C26F00634C99 /* Block.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12514F9C15F7C26F00634C99 /* Block.mm */; };
 		12514FA115F7CA1500634C99 /* Level4ContactListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12514FA015F7CA1500634C99 /* Level4ContactListener.mm */; };
 		127EB08415C59E8E002EEA46 /* LandingPad-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 127EB08315C59E8E002EEA46 /* LandingPad-ipad.png */; };
 		127EB08915C5AD6C002EEA46 /* LandingPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 127EB08815C5AD6C002EEA46 /* LandingPad.png */; };
@@ -270,6 +270,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		120EBAB615F8FBB10063D039 /* Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Block.h; sourceTree = "<group>"; };
+		120EBAB715F8FBB10063D039 /* Block.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Block.mm; sourceTree = "<group>"; };
 		120EEB0615D6140B00C629B2 /* scifi1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = scifi1.mp3; sourceTree = "<group>"; };
 		120EEB2815D6DF4D00C629B2 /* Sonic Boom.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Sonic Boom.wav"; sourceTree = "<group>"; };
 		120EEB2F15D711AC00C629B2 /* Asteroid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Asteroid.h; sourceTree = "<group>"; };
@@ -296,8 +298,6 @@
 		121DD31515D563B50098A1AF /* PlanetLayer-ipad.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "PlanetLayer-ipad.tmx"; sourceTree = "<group>"; };
 		121DD31E15D57D0C0098A1AF /* fire.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fire.png; sourceTree = "<group>"; };
 		12284ABB15C894790008961A /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
-		12514F9B15F7C26F00634C99 /* Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Block.h; sourceTree = "<group>"; };
-		12514F9C15F7C26F00634C99 /* Block.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Block.mm; sourceTree = "<group>"; };
 		12514F9F15F7CA1500634C99 /* Level4ContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Level4ContactListener.h; sourceTree = "<group>"; };
 		12514FA015F7CA1500634C99 /* Level4ContactListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Level4ContactListener.mm; sourceTree = "<group>"; };
 		127EB08315C59E8E002EEA46 /* LandingPad-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LandingPad-ipad.png"; sourceTree = "<group>"; };
@@ -1631,8 +1631,8 @@
 				FA9125A015F67DCC0016554B /* GBBullet.mm */,
 				FA9125A215F691280016554B /* GBEnemy.h */,
 				FA9125A315F691280016554B /* GBEnemy.mm */,
-				12514F9B15F7C26F00634C99 /* Block.h */,
-				12514F9C15F7C26F00634C99 /* Block.mm */,
+				120EBAB615F8FBB10063D039 /* Block.h */,
+				120EBAB715F8FBB10063D039 /* Block.mm */,
 			);
 			name = GameObjects;
 			sourceTree = "<group>";
@@ -1989,8 +1989,8 @@
 				FA91259E15F66FAC0016554B /* GunBot.mm in Sources */,
 				FA9125A115F67DCC0016554B /* GBBullet.mm in Sources */,
 				FA9125A415F691290016554B /* GBEnemy.mm in Sources */,
-				12514F9D15F7C26F00634C99 /* Block.mm in Sources */,
 				12514FA115F7CA1500634C99 /* Level4ContactListener.mm in Sources */,
+				120EBAB815F8FBB10063D039 /* Block.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

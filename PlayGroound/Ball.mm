@@ -38,6 +38,7 @@
 -(void)createBodyAtLocation:(CGPoint)location {
     b2BodyDef bodydef;
     bodydef.bullet = true;
+    bodydef.fixedRotation = true;
     bodydef.type = b2_dynamicBody;
     bodydef.position = b2Vec2(location.x/PTM_RATIO,
                               location.y/PTM_RATIO);

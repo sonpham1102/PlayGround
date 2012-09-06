@@ -70,6 +70,7 @@
 	return self;
 }
 
+
 -(void) buildLevel {
     
     CGSize winSize = [CCDirector sharedDirector].winSize;
@@ -78,9 +79,9 @@
         Block* theBlock = [[Block alloc] initWithWorld:world atLocation:ccp(winSize.width * (i/10) , winSize.height * 0.8)];
         [sceneSpriteBatchNode addChild:theBlock];
         [theBlock release];
-    }
-    
+    }   
 }
+
 
 -(void) initPhysics
 {

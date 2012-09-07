@@ -10,7 +10,7 @@
 #import "PlayGround5Layer.h"
 #import "GameManager.h"
 
-//#define LOG_GESTURES
+#define LOG_GESTURES
 
 @implementation PlayGround5UILayer
 
@@ -47,6 +47,14 @@
     [self addGestureRecognizer:rotationsGestureRecognizer];  
 }
 
+-(void) setUpTwoTouchPanGesture
+{
+    twoTouchPanGestureRecognizer = [[CustomPanGesureRecognizer alloc] initWithTarget:self action:@selector(handleTwoTouchPanGesture:)];
+    twoTouchPanGestureRecognizer.delegate = self;
+    twoTouchPanGestureRecognizer.minimumNumberOfTouches = 2;
+    [self addGestureRecognizer:twoTouchPanGestureRecognizer];
+}
+
 // DELEGATE FUNCTIONS - allow finer control of touch behaviour
 -(BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
@@ -56,7 +64,9 @@
         if ((longPressGestureRecognizer.state != UIGestureRecognizerStateBegan) &&
             (longPressGestureRecognizer.state != UIGestureRecognizerStateChanged) &&
             (rotationsGestureRecognizer.state != UIGestureRecognizerStateBegan) &&
-            (rotationsGestureRecognizer.state != UIGestureRecognizerStateChanged))
+            (rotationsGestureRecognizer.state != UIGestureRecognizerStateChanged) &&
+            (twoTouchPanGestureRecognizer.state != UIGestureRecognizerStateBegan) &&
+            (twoTouchPanGestureRecognizer.state != UIGestureRecognizerStateChanged))
         {
             return YES;
         }
@@ -224,6 +234,14 @@
             panGestureRecognizer.enabled = NO;
             panGestureRecognizer.enabled = YES;
         }
+        // if a two touch pan gesture is in progress, kill it
+        if ((twoTouchPanGestureRecognizer.state == UIGestureRecognizerStateBegan) ||
+            (twoTouchPanGestureRecognizer.state == UIGestureRecognizerStateChanged))
+        {
+            twoTouchPanGestureRecognizer.enabled = NO;
+            twoTouchPanGestureRecognizer.enabled = YES;
+        }
+        
 #ifdef LOG_GESTURES        
         CCLOG(@"Rotation started");
 #endif
@@ -235,18 +253,59 @@
 #ifdef LOG_GESTURES
         CCLOG(@"Rotation moved");
 #endif
-        float rotationDelta = aRotationGestureRecognizer.rotation - rotStartingAngle;
-        [gpLayer handleRotation:rotationDelta];
-        rotStartingAngle = aRotationGestureRecognizer.rotation;
     }
     else if (aRotationGestureRecognizer.state == UIGestureRecognizerStateEnded)
     {
-        [gpLayer handleRotation:0.0f];
+        float rotationDelta = aRotationGestureRecognizer.rotation - rotStartingAngle;
+        [gpLayer handleRotation:rotationDelta];
 #ifdef LOG_GESTURES
         CCLOG(@"Rotation ended");
 #endif
     }    
 }
+
+- (void)handleTwoTouchPanGesture:(CustomPanGesureRecognizer*)aTwoTouchPanGestureRecognizer
+{
+    CGPoint centroidPoint = [aTwoTouchPanGestureRecognizer locationInView:aTwoTouchPanGestureRecognizer.view];
+    centroidPoint = [[CCDirector sharedDirector] convertToGL:centroidPoint];
+    CGPoint panVelocity = [aTwoTouchPanGestureRecognizer velocityInView:aTwoTouchPanGestureRecognizer.view];
+    panVelocity = [[CCDirector sharedDirector] convertToGL:panVelocity];
+    
+    if (aTwoTouchPanGestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        //if a panGesture is in progress, kill it
+        if ((panGestureRecognizer.state == UIGestureRecognizerStateBegan) ||
+            (panGestureRecognizer.state == UIGestureRecognizerStateChanged))
+        {
+            panGestureRecognizer.enabled = NO;
+            panGestureRecognizer.enabled = YES;
+        }
+#ifdef LOG_GESTURES
+        CCLOG(@"Two Touch Pan started");
+#endif        
+    }
+    else if (aTwoTouchPanGestureRecognizer.state == UIGestureRecognizerStateChanged)
+    {
+#ifdef LOG_GESTURES
+        CCLOG(@"Two Touch Pan moved");
+#endif
+    }
+    else if (aTwoTouchPanGestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+#ifdef LOG_GESTURES
+        CCLOG(@"Two Touch Pan ended");
+#endif
+        [gpLayer handleTwoTouchPan:centroidPoint withVelocity:panVelocity];
+    }
+    else if (aTwoTouchPanGestureRecognizer.state == UIGestureRecognizerStateCancelled)
+    {
+#ifdef LOG_GESTURES
+        CCLOG(@"Two Touch Pan cancelled");
+#endif      
+    }
+}
+//////////////////////////
+
 
 -(id) initWithGameplayLayer:(PlayGround5Layer *)gameplayLayer;
 {
@@ -260,9 +319,11 @@
         [self setUpTapGesture];
         [self setUpLongPressGesture];
         [self setUpRotationGesture];
+        [self setUpTwoTouchPanGesture];
         
         // this should give the tap the best chance of being recognized before the pan
         [panGestureRecognizer requireGestureRecognizerToFail:tapGestureRecognizer];
+
 //        CGSize s = [CCDirector sharedDirector].winSize;
     }
     return self;
@@ -323,6 +384,7 @@
     [panGestureRecognizer release];
     [longPressGestureRecognizer release];
     [rotationsGestureRecognizer release];
+    [twoTouchPanGestureRecognizer release];
     
     [super dealloc];
 }

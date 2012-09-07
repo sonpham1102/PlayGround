@@ -264,6 +264,11 @@
 		FA98050E15F7CD56001C54D8 /* crit_hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA98050B15F7CD56001C54D8 /* crit_hit.wav */; };
 		FA98050F15F7CD56001C54D8 /* crit_hit2.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA98050C15F7CD56001C54D8 /* crit_hit2.wav */; };
 		FA98051015F7CD56001C54D8 /* crit_hit3.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA98050D15F7CD56001C54D8 /* crit_hit3.wav */; };
+		FAA5D59715FA60E900F5E7CA /* ShotGunBlast.mm in Sources */ = {isa = PBXBuildFile; fileRef = FAA5D59615FA60E900F5E7CA /* ShotGunBlast.mm */; };
+		FAA5D59B15FA667300F5E7CA /* cockgun-02.wav in Resources */ = {isa = PBXBuildFile; fileRef = FAA5D59915FA667300F5E7CA /* cockgun-02.wav */; };
+		FAA5D59C15FA667300F5E7CA /* shotgun-02.wav in Resources */ = {isa = PBXBuildFile; fileRef = FAA5D59A15FA667300F5E7CA /* shotgun-02.wav */; };
+		FAA5D59F15FA6A3500F5E7CA /* GBVortex.mm in Sources */ = {isa = PBXBuildFile; fileRef = FAA5D59E15FA6A3500F5E7CA /* GBVortex.mm */; };
+		FAA5D5A115FA700300F5E7CA /* 22k_tap_move_meteorV1.wav in Resources */ = {isa = PBXBuildFile; fileRef = FAA5D5A015FA700300F5E7CA /* 22k_tap_move_meteorV1.wav */; };
 		FAA7D17115C6FDFB00C513A2 /* PlayGround1UILayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FAA7D17015C6FDFB00C513A2 /* PlayGround1UILayer.mm */; };
 		FAA7D17D15C9E15E00C513A2 /* CustomPanGesureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA7D17C15C9E15E00C513A2 /* CustomPanGesureRecognizer.m */; };
 		FAC2977A15BDC874008559AF /* CCNode+SFGestureRecognizers.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC2977915BDC874008559AF /* CCNode+SFGestureRecognizers.m */; };
@@ -762,6 +767,13 @@
 		FA98050B15F7CD56001C54D8 /* crit_hit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = crit_hit.wav; sourceTree = "<group>"; };
 		FA98050C15F7CD56001C54D8 /* crit_hit2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = crit_hit2.wav; sourceTree = "<group>"; };
 		FA98050D15F7CD56001C54D8 /* crit_hit3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = crit_hit3.wav; sourceTree = "<group>"; };
+		FAA5D59515FA60E900F5E7CA /* ShotGunBlast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShotGunBlast.h; sourceTree = "<group>"; };
+		FAA5D59615FA60E900F5E7CA /* ShotGunBlast.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ShotGunBlast.mm; sourceTree = "<group>"; };
+		FAA5D59915FA667300F5E7CA /* cockgun-02.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "cockgun-02.wav"; sourceTree = "<group>"; };
+		FAA5D59A15FA667300F5E7CA /* shotgun-02.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "shotgun-02.wav"; sourceTree = "<group>"; };
+		FAA5D59D15FA6A3500F5E7CA /* GBVortex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBVortex.h; sourceTree = "<group>"; };
+		FAA5D59E15FA6A3500F5E7CA /* GBVortex.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GBVortex.mm; sourceTree = "<group>"; };
+		FAA5D5A015FA700300F5E7CA /* 22k_tap_move_meteorV1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 22k_tap_move_meteorV1.wav; sourceTree = "<group>"; };
 		FAA7D16F15C6FDFB00C513A2 /* PlayGround1UILayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGround1UILayer.h; sourceTree = "<group>"; };
 		FAA7D17015C6FDFB00C513A2 /* PlayGround1UILayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround1UILayer.mm; sourceTree = "<group>"; };
 		FAA7D17B15C9E15D00C513A2 /* CustomPanGesureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPanGesureRecognizer.h; sourceTree = "<group>"; };
@@ -1546,6 +1558,9 @@
 		FA1348D015B7516900E5CDB5 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				FAA5D5A015FA700300F5E7CA /* 22k_tap_move_meteorV1.wav */,
+				FAA5D59915FA667300F5E7CA /* cockgun-02.wav */,
+				FAA5D59A15FA667300F5E7CA /* shotgun-02.wav */,
 				FA98050B15F7CD56001C54D8 /* crit_hit.wav */,
 				FA98050C15F7CD56001C54D8 /* crit_hit2.wav */,
 				FA98050D15F7CD56001C54D8 /* crit_hit3.wav */,
@@ -1633,6 +1648,10 @@
 				FA9125A315F691280016554B /* GBEnemy.mm */,
 				120EBAB615F8FBB10063D039 /* BreakBlock.h */,
 				120EBAB715F8FBB10063D039 /* BreakBlock.mm */,
+				FAA5D59515FA60E900F5E7CA /* ShotGunBlast.h */,
+				FAA5D59615FA60E900F5E7CA /* ShotGunBlast.mm */,
+				FAA5D59D15FA6A3500F5E7CA /* GBVortex.h */,
+				FAA5D59E15FA6A3500F5E7CA /* GBVortex.mm */,
 			);
 			name = GameObjects;
 			sourceTree = "<group>";
@@ -1782,6 +1801,9 @@
 				FA98050E15F7CD56001C54D8 /* crit_hit.wav in Resources */,
 				FA98050F15F7CD56001C54D8 /* crit_hit2.wav in Resources */,
 				FA98051015F7CD56001C54D8 /* crit_hit3.wav in Resources */,
+				FAA5D59B15FA667300F5E7CA /* cockgun-02.wav in Resources */,
+				FAA5D59C15FA667300F5E7CA /* shotgun-02.wav in Resources */,
+				FAA5D5A115FA700300F5E7CA /* 22k_tap_move_meteorV1.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1991,6 +2013,8 @@
 				FA9125A415F691290016554B /* GBEnemy.mm in Sources */,
 				12514FA115F7CA1500634C99 /* Level4ContactListener.mm in Sources */,
 				120EBAB815F8FBB10063D039 /* BreakBlock.mm in Sources */,
+				FAA5D59715FA60E900F5E7CA /* ShotGunBlast.mm in Sources */,
+				FAA5D59F15FA6A3500F5E7CA /* GBVortex.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

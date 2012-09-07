@@ -11,8 +11,11 @@
 @interface GunBot : GameCharPhysics
 {
     b2World* world;
+    float spinTimer;
+    float spinDirection;
 }
 
 -(id) initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location;
+-(void) setSpinDirection:(float) direction;
 
 @end

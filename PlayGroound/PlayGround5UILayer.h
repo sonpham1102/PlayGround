@@ -25,6 +25,8 @@
     UITapGestureRecognizer* tapGestureRecognizer;
     UILongPressGestureRecognizer* longPressGestureRecognizer;
     UIRotationGestureRecognizer* rotationsGestureRecognizer;
+    
+    CustomPanGesureRecognizer* twoTouchPanGestureRecognizer;
 
 }
 

@@ -52,6 +52,12 @@
     bool isReadyToSpawn;
     
     bool gameOver;
+    
+    float elapsedTime;
+    float lastSBTime;
+    float lastSpinTime;
+    
+    bool isVortexPlaced;
 }
 
 -(void) handlePan:(CGPoint) startPoint endPoint:(CGPoint) endPoint;
@@ -60,6 +66,7 @@
 -(void) handleLongPressStart:(CGPoint) point;
 -(void) handleLongPressMove:(CGPoint) point;
 -(void) handleLongPressEnd:(CGPoint) point;
+-(void) handleTwoTouchPan:(CGPoint) centroid withVelocity:(CGPoint) velocity;
 
 @end
 

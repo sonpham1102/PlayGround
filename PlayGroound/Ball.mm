@@ -10,6 +10,7 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 #define MAX_SPEED 10
+#define BALL_FORCE_MAG 1.25
 
 @implementation Ball
 
@@ -25,12 +26,18 @@
 -(void)updateStateWithDeltaTime:(ccTime)dt{
     
     b2Vec2 vel = body->GetLinearVelocity();
+    
     float speed = vel.Normalize();
     
+    b2Vec2 forceVector;
+    
+    forceVector.x = vel.x*BALL_FORCE_MAG;
+    forceVector.y = vel.y*BALL_FORCE_MAG;
+    
     if (speed > MAX_SPEED) {
-        body->ApplyForce(-vel, body->GetLocalCenter());
+        body->ApplyForce(-forceVector, body->GetLocalCenter());
     } else {
-        body->ApplyForce(vel, body->GetLocalCenter());
+        body->ApplyForce(forceVector, body->GetLocalCenter());
     }
     
 }

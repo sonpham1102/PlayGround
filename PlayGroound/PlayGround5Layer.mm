@@ -14,6 +14,8 @@
 #import "GameManager.h"
 #import "GBBullet.h"
 #import "GBEnemy.h"
+#import "ShotGunBlast.h"
+#import "GBVortex.h"
 
 #define LP_START_MAX_DISTANCE 2.0
 //#define MAX_BULLET_SPEED 50.0
@@ -30,6 +32,12 @@
 #define ENEMY_WAVE_TARGET_TIME 10.0
 #define ENEMY_MAX_PER_SUBWAVE 8
 #define ENEMY_MIN_PER_SUBWAVE 4
+#define GB_ROTATION_ANGLE_TRIGGER 10.0*M_PI/180.0
+#define GB_LAUNCH_IMPULSE 40.0
+
+#define SGB_COOLDOWN 3.0
+#define SPIN_COOLDOWN 10.0
+
 enum {
 	kTagParentNode = 1,
 };
@@ -99,6 +107,10 @@ enum {
         currentWaveNumber = 0;
         isCreatingWave = false;
         gameOver = false;
+        elapsedTime = 0.0;
+        lastSBTime = 0.0;
+        lastSpinTime = 0.0;
+        isVortexPlaced = false;
         
         CGSize winSize = [CCDirector sharedDirector].winSize;
         label = [CCLabelTTF labelWithString:@"" fontName:@"Helvetica" fontSize:48.0];
@@ -211,12 +223,23 @@ enum {
     if (gameOver) {
         return;
     }
-    
-    //create a bullet and launch it in along the pan vector with a speed proportional to the length (with limits)
-    
+
     //the start and end are in screen space, get the vector between them and convert to screen space
     b2Vec2 launchVector = b2Vec2((endPoint.x - startPoint.x)/PTM_RATIO, (endPoint.y - startPoint.y)/PTM_RATIO);
+        
+    //if the gunbot is spinning, launch him
+    if ([gunBot characterState] == kStateManeuver)
+    {
+        b2Vec2 impulseVector = launchVector;
+        impulseVector.Normalize();
+        impulseVector.x *= GB_LAUNCH_IMPULSE*gunBot.body->GetMass();
+        impulseVector.y *= GB_LAUNCH_IMPULSE*gunBot.body->GetMass();
+        gunBot.body->ApplyLinearImpulse(impulseVector, gunBot.body->GetPosition());
+        return;
+    }
     
+    //create a bullet and launch it in along the pan vector 
+        
     b2Vec2 velocityVector;
     
     float panLengthInMeters = launchVector.Normalize();
@@ -251,8 +274,21 @@ enum {
 }
 
 -(void) handleRotation:(float)angleDelta
-{
-    
+{    
+    //if the angle is big enough, put the gunbot into rotation mode
+    if (ABS(angleDelta) > GB_ROTATION_ANGLE_TRIGGER)
+    {
+        //make sure enough time has passed between shots
+        if (((elapsedTime - lastSpinTime) < SPIN_COOLDOWN) && (lastSpinTime != 0.0))
+        {
+            PLAYSOUNDEFFECT(SHOTGUN_RELOADING);
+            return;
+        }
+
+        [gunBot setSpinDirection:angleDelta];
+        [gunBot changeState:kStateManeuver];
+        lastSpinTime = elapsedTime;
+    }
 }
 
 -(void) handleLongPressStart:(CGPoint)point
@@ -274,6 +310,16 @@ enum {
         gunBot.body->SetTransform(touchInWorld, gunBot.body->GetAngle());
         PLAYSOUNDEFFECT(LP_DETECTED);
     }
+    else if (isVortexPlaced == false)       
+    {
+        //place a vortex at that location
+        GBVortex* vortex = [[GBVortex alloc] initWithWorld:world atLocation:touchInWorld];
+        [sceneSpriteBatchNode addChild:vortex];
+        
+        [vortex release]; 
+        
+        isVortexPlaced = true;
+    }
 }
 
 -(void) handleLongPressMove:(CGPoint)point
@@ -293,6 +339,35 @@ enum {
         gunBot.body->SetTransform(touchInWorld, gunBot.body->GetAngle());       
     }
     lpStarted = false;
+}
+
+-(void) handleTwoTouchPan:(CGPoint)centroid withVelocity:(CGPoint)velocity
+{
+    if (gameOver) {
+        return;
+    }
+
+    //make sure enough time has passed between shots
+    if (((elapsedTime - lastSBTime) < SGB_COOLDOWN) && (lastSBTime != 0.0))
+    {
+        PLAYSOUNDEFFECT(SHOTGUN_RELOADING);
+        return;
+    }
+    
+    b2Vec2 velocityVector = b2Vec2(velocity.x, velocity.y);
+    velocityVector.Normalize();
+    
+    float speed = BULLET_SPEED;
+    velocityVector.x *= speed;
+    velocityVector.y *= speed;
+    
+    //make a new bullet
+    ShotGunBlast* bullet = [[ShotGunBlast alloc] initWithWorld:world atLocation:gunBot.body->GetPosition() withVelocity:velocityVector];
+    [sceneSpriteBatchNode addChild:bullet];
+    
+    lastSBTime = elapsedTime;
+    
+    [bullet release];    
 }
 
 -(void) playRandomAnnouncerSound
@@ -493,6 +568,11 @@ enum {
         {
             enemiesForSubWave = remainingEnemies;
         }
+        
+        // figure out a random delay before starting
+        float randomDelay = (float)arc4random()/(float)0x100000000;
+        randomDelay *= (ENEMY_MAX_PER_SUBWAVE - ENEMY_MIN_PER_SUBWAVE)/2.0 * timePerEnemy;
+        
         //now randomly choose a gate for them
         int gateIndex = arc4random() % 4;
         switch (gateIndex) {
@@ -501,7 +581,7 @@ enum {
                 {
                     leftGateTarget = enemiesForSubWave;
                     enemiesAllocated+=enemiesForSubWave;
-                    leftGateTimer = 0.0;
+                    leftGateTimer = -randomDelay;
                     leftGateCount = 0;
                 }
                 break;
@@ -510,7 +590,7 @@ enum {
                 {
                     rightGateTarget = enemiesForSubWave;
                     enemiesAllocated+=enemiesForSubWave;
-                    rightGateTimer = 0.0;
+                    rightGateTimer = -randomDelay;
                     rightGateCount = 0;
                 }
                 break;
@@ -519,7 +599,7 @@ enum {
                 {
                     topGateTarget = enemiesForSubWave;
                     enemiesAllocated+=enemiesForSubWave;
-                    topGateTimer = 0.0f;
+                    topGateTimer = -randomDelay;
                     topGateCount = 0;
                 }
                 break;
@@ -528,7 +608,7 @@ enum {
                 {
                     bottomGateTarget = enemiesForSubWave;
                     enemiesAllocated+=enemiesForSubWave;
-                    bottomGateTimer = 0.0f;
+                    bottomGateTimer = -randomDelay;
                     bottomGateCount = 0;
                 }
                 break;
@@ -569,12 +649,14 @@ enum {
 {
     [label setString:[NSString stringWithFormat:@"Waves Complete: %i", (currentWaveNumber - 1)]];
     label.visible = YES;
-    label.scale = 2.0;
+    label.scale = 1.0;
     label.opacity = 255;
 }
 
 -(void) update: (ccTime) dt
 {
+    elapsedTime += dt;
+    
     static double UPDATE_INTERVAL = 1.0/60.0f;
     static double MAX_CYCLES_PER_FRAME = 5;
     static double timeAccumulator = 0;
@@ -607,11 +689,14 @@ enum {
     CCArray *listOfGameObjects = [sceneSpriteBatchNode children];
     CCArray *listOfObjectsToDestroy = [CCArray array];
     int numberOfLivingEnemies = 0;
+    isVortexPlaced = false;
     for (GameChar *tempChar in listOfGameObjects)
     {
         [tempChar updateStateWithDeltaTime:dt];
         //for each object, check if it's dead and store it to be cleaned up later
-        if (([tempChar gameObjType] == kObjTypeEnemy) || ([tempChar gameObjType] == kObjTypeBullet))
+        if (([tempChar gameObjType] == kObjTypeEnemy) || 
+            ([tempChar gameObjType] == kObjTypeBullet) ||
+            ([tempChar gameObjType] == kObjTypeGravityWell))
         {
             GameCharPhysics *object = (GameCharPhysics*) tempChar;
             if (object.destroyMe == true)
@@ -622,6 +707,10 @@ enum {
             {
                 numberOfLivingEnemies++;
             }
+        }
+        if ([tempChar gameObjType] == kObjTypeGravityWell)
+        {
+            isVortexPlaced = true;
         }
     }
     

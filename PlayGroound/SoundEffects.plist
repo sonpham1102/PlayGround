@@ -58,6 +58,12 @@
 		<string>crit_hit2.wav</string>
 		<key>ANNOUNCER_V6</key>
 		<string>crit_hit3.wav</string>
+		<key>FIRE_SHOTGUN</key>
+		<string>shotgun-02.wav</string>
+		<key>SHOTGUN_RELOADING</key>
+		<string>cockgun-02.wav</string>
+		<key>VORTEX_SPAWN</key>
+		<string>22k_tap_move_meteorV1.wav</string>
 	</dict>
 </dict>
 </plist>

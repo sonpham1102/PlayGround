@@ -14,8 +14,24 @@
 #define GB_RESTITUTION 1.0
 #define GB_RADIUS 1.0
 #define GB_LINEAR_DAMP 10.0
+#define GB_ANGULAR_DAMP 10.0
+#define GB_SPIN_VELOCITY 20.0
+#define GB_SPIN_TIME 3.0
 
 @implementation GunBot
+-(void) setSpinDirection:(float)angle
+{
+    
+    if (angle > 0.0)
+    {
+        spinDirection = -1.0;
+    }
+    else
+    {
+        spinDirection = 1.0;
+    }
+}
+
 
 -(void) createGunBotAtLocation:(CGPoint) location
 {
@@ -42,6 +58,7 @@
     body->CreateFixture(&fixtureDef);
     
     body->SetLinearDamping(GB_LINEAR_DAMP);
+    body->SetAngularDamping(GB_ANGULAR_DAMP);
     body->SetLinearVelocity(b2Vec2_zero);
     
     body->SetUserData(self);
@@ -56,6 +73,8 @@
         [self createGunBotAtLocation:location];
                 
         gameObjType = kObjTypeGunBot;
+        [self setCharacterState:kStateIdle];
+        spinTimer = 0.0;
     }
     return self;
 }
@@ -69,15 +88,50 @@
     
     // see if we've been hit by an Enemy
     GameCharPhysics* enemy = isBodyCollidingWithObjectType(body, kObjTypeEnemy);
-    if (enemy != NULL)
+    if ((enemy != NULL) && ([self characterState] != kStateManeuver))
     {
         destroyMe = TRUE;
         [self setVisible:NO];
     
         return;
     }
+    
+    // if spinning, see if it's time to stop
+    if ([self characterState] == kStateManeuver)
+    {
+        spinTimer += deltaTime;
+        if (spinTimer > GB_SPIN_TIME)
+        {
+            [self changeState:kStateIdle];
+        }
+    }
 }
 
-
+-(void) changeState:(CharStates)newState
+{
+    if (characterState == newState)
+    {
+        return;
+    }
+    
+    [self setCharacterState:newState];
+    
+    switch (newState) {
+        case kStateManeuver:
+            //give the bot an angular velocity
+            body->SetAngularDamping(0.0f);
+            body->SetLinearDamping(0.0f);
+            body->SetAngularVelocity(spinDirection * GB_SPIN_VELOCITY);
+            //start the spin timer
+            spinTimer = 0.0f;
+            break;
+        case kStateIdle:
+            body->SetLinearDamping(GB_LINEAR_DAMP);
+            body->SetAngularDamping(GB_ANGULAR_DAMP);
+            break;
+        default:
+            break;
+    }
+}
 
 @end

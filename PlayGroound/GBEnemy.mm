@@ -18,6 +18,8 @@
 #define GBENEMY_LINEAR_DAMP 1.0
 #define GBENEMY_PROPULSION_FORCE 13.0
 
+#define GBENEMY_VORTEX_FORCE 40.0
+
 
 @implementation GBEnemy
 -(void) createAtLocation:(b2Vec2) location
@@ -89,8 +91,7 @@
     {
         destroyMe = TRUE;
         [self setVisible:NO];
-        PLAYSOUNDEFFECT(ENEMY_EXPLODE);
-    
+        PLAYSOUNDEFFECT(ENEMY_EXPLODE);    
         return;
     }
     
@@ -101,6 +102,17 @@
         destroyMe = TRUE;
         [self setVisible:false];
         return;
+    }
+    
+    // see if we are trapped in a vortex
+    GameCharPhysics* vortexBody = isBodyCollidingWithObjectType(body, kObjTypeGravityWell);
+    if (vortexBody != NULL)
+    {
+        b2Vec2 vortexForce = vortexBody.body->GetPosition() - body->GetPosition();
+        vortexForce.Normalize();
+        vortexForce.x *= GBENEMY_VORTEX_FORCE;
+        vortexForce.y *= GBENEMY_VORTEX_FORCE;
+        body->ApplyForce(vortexForce, body->GetPosition());
     }
     
     // if we got here, then continue moving towards the target

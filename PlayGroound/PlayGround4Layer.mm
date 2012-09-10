@@ -8,6 +8,7 @@
 
 
 #import "PlayGround4Layer.h"
+#import "PlayGroundScene4UILayer.h"
 #import "BreakBlock.h"
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
@@ -58,7 +59,7 @@
         [thePaddle setDelegate:self];
         
         theBall = [[Ball alloc]initWithWorld:world atLocation:ccp(winSize.width * 0.5, 
-                                                                  winSize.height * 0.7)];
+                                                                  winSize.height * 0.5)];
         theBall.body->ApplyLinearImpulse(b2Vec2(0,-0.1f), b2Vec2(0,0));
         [sceneSpriteBatchNode addChild:thePaddle];
         [sceneSpriteBatchNode addChild:theBall];
@@ -75,12 +76,16 @@
 -(void) buildLevel {
     
     CGSize winSize = [CCDirector sharedDirector].winSize;
-    
-    for (float i = 1.0; i <= 9.0 ; i++) {
-        BreakBlock* theBlock = [[BreakBlock alloc] initWithWorld:world atLocation:ccp(winSize.width * (i/10) , winSize.height * 0.8)];
-        [sceneSpriteBatchNode addChild:theBlock];
-        [theBlock release];
-    }   
+    float row = 0.92;
+    for (int r = 0; r < 5; r++) {
+        for (float i = 1.0; i <= 9.0 ; i++) {
+            BreakBlock* theBlock = [[BreakBlock alloc] initWithWorld:world atLocation:ccp(winSize.width * (i/10) , winSize.height * row)];
+            [sceneSpriteBatchNode addChild:theBlock];
+            [theBlock release];
+        }
+        row -= 0.07;
+    }
+       
 }
 
 
@@ -195,10 +200,7 @@
         tempChar.body = NULL;
         [tempChar removeFromParentAndCleanup:YES];
     }
-    
-    
-    //[uiLayer displayText:@"Test" andOnCompleteCallTarget:nil selector:nil];
-     //displayText:(NSString *)text andOnCompleteCallTarget:(id)target selector:(SEL)selector
+
 }
 
 -(void) draw

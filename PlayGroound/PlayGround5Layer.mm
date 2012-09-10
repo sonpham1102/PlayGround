@@ -38,7 +38,7 @@
 #define SGB_COOLDOWN 2.0
 #define SPIN_COOLDOWN 10.0
 
-#define GB_PAN_MOVE_OFFSET 4.0
+#define GB_PAN_MOVE_OFFSET 3.0
 
 #define MAX_PAN_POINTS 180
 #define MIN_PAN_MOVE_DELTA 2.0

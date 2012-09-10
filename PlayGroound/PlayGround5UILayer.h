@@ -15,8 +15,6 @@
 @interface PlayGround5UILayer : CCLayer <UIGestureRecognizerDelegate>
 {
     PlayGround5Layer* gpLayer;
-    CGPoint panStartPoint;
-    CGPoint panEndPoint;
     
     float rotStartingAngle;
     

@@ -67,14 +67,16 @@
 // location should be in meters (not points)
 -(id) initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location
 {
-    if ((self = [super init/*WithFile:@"Default.png"*/])) {
-        
+    if ((self = [super init/*WithFile:@"Default.png"*/] ))
+    {        
         world = theWorld;
         [self createGunBotAtLocation:location];
                 
         gameObjType = kObjTypeGunBot;
         [self setCharacterState:kStateIdle];
         spinTimer = 0.0;
+        
+        [self setScale:1.0];
     }
     return self;
 }

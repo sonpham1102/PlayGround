@@ -20,9 +20,6 @@
     panGestureRecognizer = [[CustomPanGesureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     panGestureRecognizer.delegate = self;
     [self addGestureRecognizer:panGestureRecognizer];
-
-    panEndPoint = CGPointZero;
-    panStartPoint = CGPointZero;
 }
 
 -(void) setUpTapGesture
@@ -137,6 +134,7 @@
 }
 
 // GESTURE HANDLERS
+/*
 - (void)handlePanGesture:(UIPanGestureRecognizer*)aPanGestureRecognizer
 {
     if (aPanGestureRecognizer.state == UIGestureRecognizerStateBegan)
@@ -166,7 +164,39 @@
 #endif
     }  
 }
+*/
+- (void)handlePanGesture:(UIPanGestureRecognizer*)aPanGestureRecognizer
+{
+    CGPoint panPoint = [aPanGestureRecognizer locationInView:[aPanGestureRecognizer view]];
+    panPoint = [[CCDirector sharedDirector] convertToGL:panPoint];
+    
+    if (aPanGestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        // log the start point
+        [gpLayer handlePanStart:panPoint];
+#ifdef LOG_GESTURES
+        CCLOG(@"Pan gesture started");
+#endif
+    }
+    else if (aPanGestureRecognizer.state == UIGestureRecognizerStateChanged)
+    {
+        [gpLayer handlePanMove:panPoint];
 
+#ifdef LOG_GESTURES
+        CCLOG(@"Pan gesture moved");
+#endif
+    }
+    else if (aPanGestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+        [gpLayer handlePanEnd:panPoint];
+        
+#ifdef LOG_GESTURES
+        CCLOG(@"Pan ended");
+#endif
+    }  
+}
+
+ 
 - (void)handleTapGesture:(UITapGestureRecognizer*)aTapGestureRecognizer
 {
     if (aTapGestureRecognizer.state == UIGestureRecognizerStateBegan)

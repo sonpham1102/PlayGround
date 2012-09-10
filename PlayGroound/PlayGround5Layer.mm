@@ -35,8 +35,15 @@
 #define GB_ROTATION_ANGLE_TRIGGER 10.0*M_PI/180.0
 #define GB_LAUNCH_IMPULSE 40.0
 
-#define SGB_COOLDOWN 3.0
+#define SGB_COOLDOWN 2.0
 #define SPIN_COOLDOWN 10.0
+
+#define GB_PAN_MOVE_OFFSET 4.0
+
+#define MAX_PAN_POINTS 180
+#define MIN_PAN_MOVE_DELTA 2.0
+
+#define GB_PAN_MOVE_FORCE 100.0
 
 enum {
 	kTagParentNode = 1,
@@ -79,7 +86,6 @@ enum {
     return TRUE;
 }
 
-
 -(id) init
 {
 	if( (self=[super init])) {
@@ -94,8 +100,8 @@ enum {
 		[self initPhysics];
         
         sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithTexture:nil];
-        [self addChild:sceneSpriteBatchNode z:0];        
-        
+        [self addChild:sceneSpriteBatchNode z:0];
+      
         [self createGunBot:ccp(s.width/2.0/PTM_RATIO, s.height/2.0/PTM_RATIO)];
         
         [self createBackground];
@@ -111,6 +117,13 @@ enum {
         lastSBTime = 0.0;
         lastSpinTime = 0.0;
         isVortexPlaced = false;
+        
+        panStartPoint = CGPointZero;
+        panEndPoint = CGPointZero;
+        
+        isPlanningMove = false;
+        
+        panPoints = [[NSMutableArray alloc]init];
         
         CGSize winSize = [CCDirector sharedDirector].winSize;
         label = [CCLabelTTF labelWithString:@"" fontName:@"Helvetica" fontSize:48.0];
@@ -128,6 +141,8 @@ enum {
 	
 	delete m_debugDraw;
 	m_debugDraw = NULL;
+    
+    [panPoints release];
     
 	[super dealloc];
 }	
@@ -215,6 +230,104 @@ enum {
     //ccDrawLine(debugLineStartPoint, debugLineEndPoint);
 	
 	kmGLPopMatrix();
+}
+
+-(void) handlePanStart:(CGPoint)startPoint
+{
+    // see if the start point is on the gunbot
+    b2Vec2 panPoint = b2Vec2(startPoint.x/PTM_RATIO, startPoint.y/PTM_RATIO);
+                             
+    b2Vec2 distanceVector = gunBot.body->GetPosition() - panPoint;
+    
+    float distance = distanceVector.Length();
+    
+    if (distance < GB_PAN_MOVE_OFFSET)
+    {
+        PLAYSOUNDEFFECT(LP_DETECTED);
+        isPlanningMove = true;
+        if ([panPoints count] != 0)
+        {
+            [panPoints removeAllObjects];
+        }
+        [panPoints addObject:[NSValue valueWithCGPoint:startPoint]];
+    }
+    else
+    {
+        isPlanningMove = false;
+        panStartPoint = startPoint;
+    }
+}
+
+-(void) handlePanMove:(CGPoint)newPoint
+{
+    if (isPlanningMove)
+    {
+        if ([panPoints count] < MAX_PAN_POINTS)
+        {
+            [panPoints addObject:[NSValue valueWithCGPoint:newPoint]];
+
+            if ([panPoints count] == MAX_PAN_POINTS)
+            {
+                PLAYSOUNDEFFECT(LP_DETECTED);
+            }
+        }
+    }
+}
+
+-(void) handlePanEnd:(CGPoint)endPoint
+{
+    panEndPoint = endPoint;
+    
+    if (gameOver) {
+        return;
+    }
+    
+    if (isPlanningMove)
+    {
+        if ([panPoints count] < MAX_PAN_POINTS)
+        {
+            [panPoints addObject:[NSValue valueWithCGPoint:endPoint]];
+            PLAYSOUNDEFFECT(LP_DETECTED);
+        }
+        isPlanningMove = false;
+        currentPanTargetIndex = 0;
+        return;
+    }
+    
+    //the start and end are in screen space, get the vector between them and convert to screen space
+    b2Vec2 launchVector = b2Vec2((panEndPoint.x - panStartPoint.x)/PTM_RATIO, (panEndPoint.y - panStartPoint.y)/PTM_RATIO);
+    
+    //if the gunbot is spinning, launch him
+    if ([gunBot characterState] == kStateManeuver)
+    {
+        b2Vec2 impulseVector = launchVector;
+        impulseVector.Normalize();
+        impulseVector.x *= GB_LAUNCH_IMPULSE*gunBot.body->GetMass();
+        impulseVector.y *= GB_LAUNCH_IMPULSE*gunBot.body->GetMass();
+        gunBot.body->ApplyLinearImpulse(impulseVector, gunBot.body->GetPosition());
+        return;
+    }
+    
+    //create a bullet and launch it in along the pan vector 
+    
+    b2Vec2 velocityVector;
+    
+    float panLengthInMeters = launchVector.Normalize();
+    // make sure the pan is long enough to be worth processing
+    if (panLengthInMeters < MIN_PAN_LENGTH)
+    {
+        return;
+    }
+    // do a fixed velocity 
+    float speed = BULLET_SPEED;
+    velocityVector.x = launchVector.x * speed;
+    velocityVector.y = launchVector.y * speed;
+    
+    //make a new bullet
+    GBBullet* bullet = [[GBBullet alloc] initWithWorld:world atLocation:gunBot.body->GetPosition() withVelocity:velocityVector];
+    [sceneSpriteBatchNode addChild:bullet];
+    
+    [bullet release];
 }
 
 
@@ -732,6 +845,47 @@ enum {
     {
         return;
     }
+    
+    // see if the gunbot has a pan move in progress
+    if ( ([panPoints count] != 0) && !isPlanningMove)
+    {
+        b2Vec2 currentPosition = gunBot.body->GetPosition();
+        b2Vec2 targetVector = currentPanTarget - currentPosition;
+        
+        //if this is the first time in here, set up the first target
+        if (currentPanTargetIndex == 0)
+        {
+            CGPoint newTarget = [[panPoints objectAtIndex:currentPanTargetIndex] CGPointValue];
+            currentPanTarget.x = newTarget.x/PTM_RATIO;
+            currentPanTarget.y = newTarget.y/PTM_RATIO;
+            currentPanTargetIndex++;
+        }
+        else if (targetVector.Normalize() > MIN_PAN_MOVE_DELTA)
+        {
+            //push the gunbot towards the target
+            b2Vec2 forceVector;
+            forceVector.x = targetVector.x * gunBot.body->GetMass() * GB_PAN_MOVE_FORCE;
+            forceVector.y = targetVector.y * gunBot.body->GetMass() * GB_PAN_MOVE_FORCE;
+            gunBot.body->ApplyForce(forceVector, gunBot.body->GetWorldCenter());
+        }
+        else
+        {
+            //we are close enough, so change the target
+            if (currentPanTargetIndex >= [panPoints count])
+            {
+                //we are finished the pan manouvre
+                [panPoints removeAllObjects];
+            }
+            else
+            {
+                CGPoint newTarget = [[panPoints objectAtIndex:currentPanTargetIndex] CGPointValue];
+                currentPanTarget.x = newTarget.x/PTM_RATIO;
+                currentPanTarget.y = newTarget.y/PTM_RATIO;
+                currentPanTargetIndex++;
+            }
+        }
+    }
+    
     
     // if we aren't generating a new wave, see if we should start
     if (!isCreatingWave)

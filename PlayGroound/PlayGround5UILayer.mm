@@ -10,7 +10,7 @@
 #import "PlayGround5Layer.h"
 #import "GameManager.h"
 
-#define LOG_GESTURES
+//#define LOG_GESTURES
 
 @implementation PlayGround5UILayer
 
@@ -134,7 +134,7 @@
 }
 
 // GESTURE HANDLERS
-/*
+
 - (void)handlePanGesture:(UIPanGestureRecognizer*)aPanGestureRecognizer
 {
     if (aPanGestureRecognizer.state == UIGestureRecognizerStateBegan)
@@ -164,8 +164,8 @@
 #endif
     }  
 }
-*/
-- (void)handlePanGesture:(UIPanGestureRecognizer*)aPanGestureRecognizer
+/*
+- (void)handlePanGesture2:(UIPanGestureRecognizer*)aPanGestureRecognizer
 {
     CGPoint panPoint = [aPanGestureRecognizer locationInView:[aPanGestureRecognizer view]];
     panPoint = [[CCDirector sharedDirector] convertToGL:panPoint];
@@ -195,7 +195,7 @@
 #endif
     }  
 }
-
+*/
  
 - (void)handleTapGesture:(UITapGestureRecognizer*)aTapGestureRecognizer
 {

@@ -25,6 +25,9 @@
     UIRotationGestureRecognizer* rotationsGestureRecognizer;
     
     CustomPanGesureRecognizer* twoTouchPanGestureRecognizer;
+    
+    CGPoint panEndPoint;
+    CGPoint panStartPoint;
 
 }
 

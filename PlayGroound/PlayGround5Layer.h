@@ -68,9 +68,10 @@
     bool isPlanningMove;
 }
 
--(void) handlePanStart:(CGPoint) startPoint;
--(void) handlePanMove:(CGPoint) newPoint;
--(void) handlePanEnd:(CGPoint) endPoint;
+//-(void) handlePanStart:(CGPoint) startPoint;
+//-(void) handlePanMove:(CGPoint) newPoint;
+//-(void) handlePanEnd:(CGPoint) endPoint;
+-(void) handlePan:(CGPoint)startPoint endPoint:(CGPoint)endPoint;
 -(void) handleTap:(CGPoint) tapPoint;
 -(void) handleRotation:(float) angleDelta;
 -(void) handleLongPressStart:(CGPoint) point;

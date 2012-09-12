@@ -13,8 +13,8 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
-#define LEVEL_HEIGHT 1 //25
-#define LEVEL_WIDTH 1 //10
+#define LEVEL_HEIGHT 1 
+#define LEVEL_WIDTH 1
 
 
 @implementation PlayGround4Layer
@@ -255,31 +255,7 @@
         }
     }
 }
-/*
--(void)ccTouchesEnded:(UITouch *)touch withEvent:(UIEvent *)event {
-    
-    
-    if (touch == leftTouch) {
-        leftTouch = nil;
-        leftTouchPos = ccp(0, 0);
-    } else if (touch == rightTouch) {
-        rightTouch = nil;
-        rightTouchPos = ccp(0, 0);
-    }
-}
 
--(void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event{
-    if (touch == leftTouch) {
-        CGPoint location = [touch locationInView:[touch view]];
-        location = [[CCDirector sharedDirector] convertToGL:location];
-        leftTouchPos = location;
-    } else if (touch == rightTouch) {
-        CGPoint location = [touch locationInView:[touch view]];
-        location = [[CCDirector sharedDirector] convertToGL:location];
-        rightTouchPos = location;
-    }
-}
-*/
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
     for (UITouch *touch in touches){
         CGPoint location = [touch locationInView:[touch view]];

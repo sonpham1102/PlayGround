@@ -34,6 +34,10 @@
     forceVector.x = vel.x*BALL_FORCE_MAG;
     forceVector.y = vel.y*BALL_FORCE_MAG;
     
+    if (forceVector.y == 0.0f) {
+        forceVector.y += 1.0;
+    }
+    
     if (speed > MAX_SPEED) {
         body->ApplyForce(-forceVector, body->GetLocalCenter());
     } else {
@@ -52,7 +56,7 @@
     body = world->CreateBody(&bodydef);
     
     b2FixtureDef fixtureDef;
-    fixtureDef.density = 1.0f;
+    fixtureDef.density = 0.1f;
     fixtureDef.friction = 0.15f;
     fixtureDef.restitution = 1.0f;
     

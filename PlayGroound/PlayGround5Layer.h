@@ -17,7 +17,7 @@
 
 #define PTM_RATIO (IS_IPAD() ? (8.0*1024.0/480.0) : 8.0)
 
-@interface PlayGround5Layer : CCLayer
+@interface PlayGround5Layer : CCLayer <UIGestureRecognizerDelegate>
 {
 	CCTexture2D *spriteTexture_;	// weak ref
 	b2World* world;					// strong ref
@@ -57,10 +57,21 @@
     float lastSBTime;
     float lastSpinTime;
     
+    CGPoint panStartPoint;
+    CGPoint panEndPoint;
+    NSMutableArray *panPoints;
+    b2Vec2 currentPanTarget;
+    int currentPanTargetIndex;
+    
     bool isVortexPlaced;
+    
+    bool isPlanningMove;
 }
 
--(void) handlePan:(CGPoint) startPoint endPoint:(CGPoint) endPoint;
+//-(void) handlePanStart:(CGPoint) startPoint;
+//-(void) handlePanMove:(CGPoint) newPoint;
+//-(void) handlePanEnd:(CGPoint) endPoint;
+-(void) handlePan:(CGPoint)startPoint endPoint:(CGPoint)endPoint;
 -(void) handleTap:(CGPoint) tapPoint;
 -(void) handleRotation:(float) angleDelta;
 -(void) handleLongPressStart:(CGPoint) point;

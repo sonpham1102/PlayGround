@@ -25,18 +25,24 @@
 
 #define BULLET_SPEED 35.0
 
-#define ENEMY_STARTING_WAVE_SIZE 8
-#define ENEMY_STARTING_SPAWN_RATE 2.5
+#define ENEMY_STARTING_WAVE_SIZE 6
+#define ENEMY_STARTING_SPAWN_RATE 3.0
 #define ENEMY_INCREASE_PER_WAVE 2
-#define ENEMY_SPAWN_RATE_FACTOR 0.9
-#define ENEMY_WAVE_TARGET_TIME 10.0
-#define ENEMY_MAX_PER_SUBWAVE 8
-#define ENEMY_MIN_PER_SUBWAVE 4
+#define ENEMY_SPAWN_RATE_FACTOR 0.98
+#define ENEMY_MAX_PER_SUBWAVE 6
+#define ENEMY_MIN_PER_SUBWAVE 3
 #define GB_ROTATION_ANGLE_TRIGGER 10.0*M_PI/180.0
 #define GB_LAUNCH_IMPULSE 40.0
 
-#define SGB_COOLDOWN 3.0
+#define SGB_COOLDOWN 2.0
 #define SPIN_COOLDOWN 10.0
+
+#define GB_PAN_MOVE_OFFSET 3.0
+
+#define MAX_PAN_POINTS 120
+#define MIN_PAN_MOVE_DELTA 2.0
+
+#define GB_PAN_MOVE_FORCE 100.0
 
 enum {
 	kTagParentNode = 1,
@@ -79,7 +85,6 @@ enum {
     return TRUE;
 }
 
-
 -(id) init
 {
 	if( (self=[super init])) {
@@ -94,8 +99,8 @@ enum {
 		[self initPhysics];
         
         sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithTexture:nil];
-        [self addChild:sceneSpriteBatchNode z:0];        
-        
+        [self addChild:sceneSpriteBatchNode z:0];
+      
         [self createGunBot:ccp(s.width/2.0/PTM_RATIO, s.height/2.0/PTM_RATIO)];
         
         [self createBackground];
@@ -111,6 +116,13 @@ enum {
         lastSBTime = 0.0;
         lastSpinTime = 0.0;
         isVortexPlaced = false;
+        
+        panStartPoint = CGPointZero;
+        panEndPoint = CGPointZero;
+        
+        isPlanningMove = false;
+        
+        panPoints = [[NSMutableArray alloc]init];
         
         CGSize winSize = [CCDirector sharedDirector].winSize;
         label = [CCLabelTTF labelWithString:@"" fontName:@"Helvetica" fontSize:48.0];
@@ -128,6 +140,8 @@ enum {
 	
 	delete m_debugDraw;
 	m_debugDraw = NULL;
+    
+    [panPoints release];
     
 	[super dealloc];
 }	
@@ -212,9 +226,88 @@ enum {
 	
 	world->DrawDebugData();	
     
-    //ccDrawLine(debugLineStartPoint, debugLineEndPoint);
+    //ccDrawLine(panStartPoint, panEndPoint);
 	
 	kmGLPopMatrix();
+}
+
+-(void) handleLongPressStart:(CGPoint)startPoint
+{
+    
+    // see if the start point is close to the gunbot
+    b2Vec2 point = b2Vec2(startPoint.x/PTM_RATIO, startPoint.y/PTM_RATIO);
+                             
+    b2Vec2 distanceVector = gunBot.body->GetPosition() - point;
+    
+    float distance = distanceVector.Length();
+    
+    if (distance < GB_PAN_MOVE_OFFSET)
+    {
+        if ([gunBot characterState] != kStateManeuver)
+        {
+            PLAYSOUNDEFFECT(LP_DETECTED);
+            isPlanningMove = true;
+            if ([panPoints count] != 0)
+            {
+                [panPoints removeAllObjects];
+            }
+            [panPoints addObject:[NSValue valueWithCGPoint:startPoint]];
+        }
+    }
+    else
+    {
+        isPlanningMove = false;        
+        
+        if (isVortexPlaced == false)       
+        {
+            //place a vortex at that location
+            b2Vec2 touchInWorld = b2Vec2(startPoint.x/PTM_RATIO, startPoint.y/PTM_RATIO);
+
+            GBVortex* vortex = [[GBVortex alloc] initWithWorld:world atLocation:touchInWorld];
+            [sceneSpriteBatchNode addChild:vortex];
+            
+            [vortex release]; 
+            
+            isVortexPlaced = true;
+        }
+    }
+}
+
+-(void) handleLongPressMove:(CGPoint)newPoint
+{
+    if (isPlanningMove)
+    {
+        if ([panPoints count] < MAX_PAN_POINTS)
+        {
+            [panPoints addObject:[NSValue valueWithCGPoint:newPoint]];
+
+            if ([panPoints count] == MAX_PAN_POINTS)
+            {
+                PLAYSOUNDEFFECT(LP_DETECTED);
+            }
+        }
+    }
+}
+
+-(void) handleLongPressEnd:(CGPoint)endPoint
+{
+    
+    if (gameOver) {
+        return;
+    }
+    
+    if (isPlanningMove)
+    {
+        if ([panPoints count] < MAX_PAN_POINTS)
+        {
+            [panPoints addObject:[NSValue valueWithCGPoint:endPoint]];
+            PLAYSOUNDEFFECT(LP_DETECTED);
+        }
+        isPlanningMove = false;
+        currentPanTargetIndex = 0;
+    }
+    
+    return;
 }
 
 
@@ -235,6 +328,12 @@ enum {
         impulseVector.x *= GB_LAUNCH_IMPULSE*gunBot.body->GetMass();
         impulseVector.y *= GB_LAUNCH_IMPULSE*gunBot.body->GetMass();
         gunBot.body->ApplyLinearImpulse(impulseVector, gunBot.body->GetPosition());
+        
+        // for fun lets drop another vortex at the start location
+        GBVortex* vortex = [[GBVortex alloc] initWithWorld:world atLocation:gunBot.body->GetPosition()];
+        [sceneSpriteBatchNode addChild:vortex];
+        [vortex release];
+
         return;
     }
     
@@ -248,14 +347,6 @@ enum {
     {
         return;
     }
-    /*
-     if (panLengthInMeters > MAX_PAN_LENGTH)
-     {
-     panLengthInMeters = MAX_PAN_LENGTH;
-     }
-     // get the speed between min and max depending on pan length
-     float speed = MIN_BULLET_SPEED + (MAX_BULLET_SPEED - MIN_BULLET_SPEED)*panLengthInMeters/MAX_PAN_LENGTH;
-     */  
     // do a fixed velocity instead
     float speed = BULLET_SPEED;
     velocityVector.x = launchVector.x * speed;
@@ -288,10 +379,16 @@ enum {
         [gunBot setSpinDirection:angleDelta];
         [gunBot changeState:kStateManeuver];
         lastSpinTime = elapsedTime;
+        
+        if (isPlanningMove || ([panPoints count] != 0))
+        {
+            isPlanningMove = false;
+            [panPoints removeAllObjects];
+        }
     }
 }
 
--(void) handleLongPressStart:(CGPoint)point
+-(void) handleLongPressStartOLD:(CGPoint)point
 {
     if (gameOver) {
         return;
@@ -322,7 +419,7 @@ enum {
     }
 }
 
--(void) handleLongPressMove:(CGPoint)point
+-(void) handleLongPressMoveOLD:(CGPoint)point
 {
     if (lpStarted)
     {
@@ -331,7 +428,7 @@ enum {
     }
 }
 
--(void) handleLongPressEnd:(CGPoint)point
+-(void) handleLongPressEndOLD:(CGPoint)point
 {
     if (lpStarted)
     {
@@ -732,6 +829,47 @@ enum {
     {
         return;
     }
+    
+    // see if the gunbot has a pan move in progress
+    if ( ([panPoints count] != 0) && !isPlanningMove)
+    {
+        b2Vec2 currentPosition = gunBot.body->GetPosition();
+        b2Vec2 targetVector = currentPanTarget - currentPosition;
+        
+        //if this is the first time in here, set up the first target
+        if (currentPanTargetIndex == 0)
+        {
+            CGPoint newTarget = [[panPoints objectAtIndex:currentPanTargetIndex] CGPointValue];
+            currentPanTarget.x = newTarget.x/PTM_RATIO;
+            currentPanTarget.y = newTarget.y/PTM_RATIO;
+            currentPanTargetIndex++;
+        }
+        else if (targetVector.Normalize() > MIN_PAN_MOVE_DELTA)
+        {
+            //push the gunbot towards the target
+            b2Vec2 forceVector;
+            forceVector.x = targetVector.x * gunBot.body->GetMass() * GB_PAN_MOVE_FORCE;
+            forceVector.y = targetVector.y * gunBot.body->GetMass() * GB_PAN_MOVE_FORCE;
+            gunBot.body->ApplyForce(forceVector, gunBot.body->GetWorldCenter());
+        }
+        else
+        {
+            //we are close enough, so change the target
+            if (currentPanTargetIndex >= [panPoints count])
+            {
+                //we are finished the pan manouvre
+                [panPoints removeAllObjects];
+            }
+            else
+            {
+                CGPoint newTarget = [[panPoints objectAtIndex:currentPanTargetIndex] CGPointValue];
+                currentPanTarget.x = newTarget.x/PTM_RATIO;
+                currentPanTarget.y = newTarget.y/PTM_RATIO;
+                currentPanTargetIndex++;
+            }
+        }
+    }
+    
     
     // if we aren't generating a new wave, see if we should start
     if (!isCreatingWave)

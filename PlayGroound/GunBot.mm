@@ -11,12 +11,13 @@
 
 #define GB_DENSITY 10.0
 #define GB_FRICTION 1.0
-#define GB_RESTITUTION 1.0
+#define GB_RESTITUTION 0.5
 #define GB_RADIUS 1.0
 #define GB_LINEAR_DAMP 10.0
 #define GB_ANGULAR_DAMP 10.0
 #define GB_SPIN_VELOCITY 20.0
 #define GB_SPIN_TIME 3.0
+#define GB_SPIN_DAMP 0.5
 
 @implementation GunBot
 -(void) setSpinDirection:(float)angle
@@ -67,14 +68,16 @@
 // location should be in meters (not points)
 -(id) initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location
 {
-    if ((self = [super init/*WithFile:@"Default.png"*/])) {
-        
+    if ((self = [super init/*WithFile:@"Default.png"*/] ))
+    {        
         world = theWorld;
         [self createGunBotAtLocation:location];
                 
         gameObjType = kObjTypeGunBot;
         [self setCharacterState:kStateIdle];
         spinTimer = 0.0;
+        
+        [self setScale:1.0];
     }
     return self;
 }
@@ -119,8 +122,8 @@
     switch (newState) {
         case kStateManeuver:
             //give the bot an angular velocity
-            body->SetAngularDamping(0.0f);
-            body->SetLinearDamping(0.0f);
+            body->SetAngularDamping(0.0);
+            body->SetLinearDamping(GB_SPIN_DAMP);
             body->SetAngularVelocity(spinDirection * GB_SPIN_VELOCITY);
             //start the spin timer
             spinTimer = 0.0f;

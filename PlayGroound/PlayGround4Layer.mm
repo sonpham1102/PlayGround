@@ -41,7 +41,6 @@
         self.isTouchEnabled = YES;
         
 		self.isAccelerometerEnabled = YES;
-		//CGSize s = [CCDirector sharedDirector].winSize;
 		
 		// init physics
 		[self initPhysics];
@@ -66,6 +65,10 @@
          
         leftTouch = nil;
         rightTouch = nil;
+        
+        leftTouchPos = ccp(winSize.width/2.0 - 2.0*PTM_RATIO, winSize.height/2.0);
+        rightTouchPos = ccp(winSize.width/2.0 + 2.0*PTM_RATIO, winSize.height/2.0);
+
         [self scheduleUpdate];
         
 	}
@@ -253,6 +256,24 @@
             rightTouch = nil;
             rightTouchPos = ccp(0, 0);
         }
+    }
+    
+    //if the left touch has ended but the right touch is still there, set the left manually
+    if ((rightTouch != nil) && (leftTouch == nil))
+    {
+        leftTouchPos.y = rightTouchPos.y;
+        leftTouchPos.x = rightTouchPos.x - 2.0*PTM_RATIO;
+    }
+    else if ((leftTouch != nil) && (rightTouch == nil))
+    {
+        rightTouchPos.y = leftTouchPos.y;
+        rightTouchPos.x = leftTouchPos.x + 2.0*PTM_RATIO;
+    }
+    else if ((leftTouch == nil) && (rightTouch == nil))
+    {
+        CGSize winSize = [[CCDirector sharedDirector] winSize];
+        leftTouchPos = ccp(winSize.width/2.0 - 2.0*PTM_RATIO, winSize.height/2.0);
+        rightTouchPos = ccp(winSize.width/2.0 + 2.0*PTM_RATIO, winSize.height/2.0);
     }
 }
 

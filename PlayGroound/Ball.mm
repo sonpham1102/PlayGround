@@ -35,7 +35,7 @@
     forceVector.y = vel.y*BALL_FORCE_MAG;
     
     if (forceVector.y == 0.0f) {
-        forceVector.y += 1.0;
+        forceVector.y = 1.0;
     }
     
     if (speed > MAX_SPEED) {

@@ -8,7 +8,9 @@
 
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
-#define PADDLE_SPRING_FORCE 15.0
+
+#define MAX_DAMP 10.0
+#define PADDLE_SPRING_FORCE 50.0
 #define PADDLE_TORQUE_FORCE 20.0
 #define ANGLE_TRIGGER 30.0 * M_PI/180.0
 
@@ -73,6 +75,7 @@
 }
 
 -(void)updateStateWithDeltaTime:(ccTime)dt {
+    
     CGSize winSize = [CCDirector sharedDirector].winSize;
     b2Vec2 centre = b2Vec2(winSize.width/2/PTM_RATIO,0);
     b2Vec2 paddlecenter = body->GetWorldCenter();
@@ -80,6 +83,7 @@
     
     CGPoint leftPos = [delegate getLeftTouchPos];
     CGPoint rightPos = [delegate getRightTouchPos];
+    
     b2Vec2 leftTarget = b2Vec2(leftPos.x/PTM_RATIO,
                                leftPos.y/PTM_RATIO);
     b2Vec2 rightTarget = b2Vec2(rightPos.x/PTM_RATIO,
@@ -134,10 +138,15 @@
     
     b2Vec2 targetPos = newPos - paddlecenter;
     float length = targetPos.Length();
+    float dampForce = (1.0 - MAX_DAMP/1.4) * length + MAX_DAMP ;
+    if (dampForce < 0.0) {
+        dampForce = 0.0f;
+    }
+    body->SetLinearDamping(dampForce);
     
     b2Vec2 force;
-    force.x = PADDLE_SPRING_FORCE * targetPos.x * body->GetMass() * length;
-    force.y = PADDLE_SPRING_FORCE * targetPos.y * body->GetMass() * length;
+    force.x = PADDLE_SPRING_FORCE * targetPos.x * body->GetMass();
+    force.y = PADDLE_SPRING_FORCE * targetPos.y * body->GetMass();
     
     body->ApplyForce(force, body->GetWorldCenter());
     body->ApplyTorque(torqueToApply);

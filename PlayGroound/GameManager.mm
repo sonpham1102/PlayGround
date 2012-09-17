@@ -14,10 +14,10 @@
 #import "PlayGround2Scene.h"
 #import "PlayGround3Scene.h"
 #import "PlayGround4Scene.h"
-#import "OptionsScene.h"
 #import "PlayGround5Scene.h"
+#import "PlayGround6Scene.h"
 #import "PlayGround7Scene.h"
-
+#import "OptionsScene.h"
 
 @implementation GameManager
 //the shared gamemanager variable, returned anytime anyone calls [GameManager sharedGameManager]
@@ -463,6 +463,9 @@ static GameManager* _sharedGameManager = nil;
             break;
         case kPlayGround5:
             sceneToRun = [PlayGround5Scene node];
+            break;
+        case kPlayGround6:
+            sceneToRun = [PlayGround6Scene node];
             break;
         case kPlayGround7:
             sceneToRun = [PlayGround7Scene node];

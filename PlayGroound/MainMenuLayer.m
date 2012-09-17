@@ -26,7 +26,7 @@
     } else if ([itemPassedIn tag] == 5) {
         [[GameManager sharedGameManager] runLevelWithID:kPlayGround5];
     } else if ([itemPassedIn tag] == 6) {
-        [[GameManager sharedGameManager] runLevelWithID:kPlayGround5];
+        [[GameManager sharedGameManager] runLevelWithID:kPlayGround6];
     } else if ([itemPassedIn tag] == 7) {
         [[GameManager sharedGameManager] runLevelWithID:kPlayGround7];
     } else if ([itemPassedIn tag] == 8) {
@@ -104,7 +104,7 @@
     
     
     mainMenu = [CCMenu menuWithItems:playScene1,playScene2,playScene3,playScene4,playScene5, playScene6, playScene7, playOptions, nil];
-    [mainMenu alignItemsVerticallyWithPadding:screenSize.height * 0.059f];
+    [mainMenu alignItemsVerticallyWithPadding:screenSize.height * 0.029f];
     [mainMenu setPosition:ccp(screenSize.width/2, screenSize.height/2)];
     
     [self addChild:mainMenu z:0];

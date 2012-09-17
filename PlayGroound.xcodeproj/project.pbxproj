@@ -218,6 +218,9 @@
 		12B9470115B8611300CB76CD /* OptionsLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B9470015B8611300CB76CD /* OptionsLayer.m */; };
 		12B9470815B883BE00CB76CD /* Rocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12B9470715B883BE00CB76CD /* Rocket.mm */; };
 		12D289BD15B9E46300DB62B9 /* PlayGroundScene2UILayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 12D289BC15B9E46300DB62B9 /* PlayGroundScene2UILayer.m */; };
+		12D9B5771607943D00A07E10 /* PlayGround6Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12D9B5761607943D00A07E10 /* PlayGround6Scene.mm */; };
+		12D9B57A1607947100A07E10 /* PlayGround6Layer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12D9B5791607947100A07E10 /* PlayGround6Layer.mm */; };
+		12D9B57D160795D700A07E10 /* PlayGround6UILayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 12D9B57C160795D700A07E10 /* PlayGround6UILayer.mm */; };
 		FA1348BD15B7157600E5CDB5 /* GameManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA1348BC15B7157600E5CDB5 /* GameManager.mm */; };
 		FA1348CF15B7516400E5CDB5 /* SoundEffects.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA1348CE15B7516400E5CDB5 /* SoundEffects.plist */; };
 		FA1348D415B7536C00E5CDB5 /* BackgroundMusic.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA1348D315B7536C00E5CDB5 /* BackgroundMusic.plist */; };
@@ -699,6 +702,12 @@
 		12B9470715B883BE00CB76CD /* Rocket.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Rocket.mm; sourceTree = "<group>"; };
 		12D289BB15B9E46300DB62B9 /* PlayGroundScene2UILayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGroundScene2UILayer.h; sourceTree = "<group>"; };
 		12D289BC15B9E46300DB62B9 /* PlayGroundScene2UILayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayGroundScene2UILayer.m; sourceTree = "<group>"; };
+		12D9B5751607943D00A07E10 /* PlayGround6Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGround6Scene.h; sourceTree = "<group>"; };
+		12D9B5761607943D00A07E10 /* PlayGround6Scene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround6Scene.mm; sourceTree = "<group>"; };
+		12D9B5781607947100A07E10 /* PlayGround6Layer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGround6Layer.h; sourceTree = "<group>"; };
+		12D9B5791607947100A07E10 /* PlayGround6Layer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround6Layer.mm; sourceTree = "<group>"; };
+		12D9B57B160795D700A07E10 /* PlayGround6UILayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGround6UILayer.h; sourceTree = "<group>"; };
+		12D9B57C160795D700A07E10 /* PlayGround6UILayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround6UILayer.mm; sourceTree = "<group>"; };
 		FA1348B915B7133300E5CDB5 /* GlobalConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalConstants.h; sourceTree = "<group>"; };
 		FA1348BB15B7157600E5CDB5 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
 		FA1348BC15B7157600E5CDB5 /* GameManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameManager.mm; sourceTree = "<group>"; };
@@ -1487,6 +1496,19 @@
 			name = Options;
 			sourceTree = "<group>";
 		};
+		12D9B573160793A700A07E10 /* PlayGround6 */ = {
+			isa = PBXGroup;
+			children = (
+				12D9B5751607943D00A07E10 /* PlayGround6Scene.h */,
+				12D9B5761607943D00A07E10 /* PlayGround6Scene.mm */,
+				12D9B5781607947100A07E10 /* PlayGround6Layer.h */,
+				12D9B5791607947100A07E10 /* PlayGround6Layer.mm */,
+				12D9B57B160795D700A07E10 /* PlayGround6UILayer.h */,
+				12D9B57C160795D700A07E10 /* PlayGround6UILayer.mm */,
+			);
+			name = PlayGround6;
+			sourceTree = "<group>";
+		};
 		FA1348B415B7125F00E5CDB5 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -1535,6 +1557,7 @@
 		FA1348BA15B714E200E5CDB5 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				12D9B573160793A700A07E10 /* PlayGround6 */,
 				FAA5D5A2160789AF00F5E7CA /* PlayGround7 */,
 				FA91259215F547680016554B /* PlayGround5 */,
 				FA91258615F52EA10016554B /* SceneWithGestureBase */,
@@ -2041,6 +2064,9 @@
 				FAA5D5A916078A8000F5E7CA /* PlayGround7Layer.mm in Sources */,
 				FAA5D5AA16078A8000F5E7CA /* PlayGround7Scene.mm in Sources */,
 				FAA5D5AB16078A8000F5E7CA /* PlayGround7UILayer.mm in Sources */,
+				12D9B5771607943D00A07E10 /* PlayGround6Scene.mm in Sources */,
+				12D9B57A1607947100A07E10 /* PlayGround6Layer.mm in Sources */,
+				12D9B57D160795D700A07E10 /* PlayGround6UILayer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

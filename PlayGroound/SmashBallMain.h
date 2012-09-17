@@ -13,8 +13,8 @@
 #define SBM_DENSITY 1.0
 #define SBM_FRICTION 1.0
 #define SBM_RESTITUTION 1.0
-#define SBM_LINEAR_DAMP 1.0
-#define SBM_ANG_DAMP 1.0
+#define SBM_LINEAR_DAMP 0.1
+#define SBM_ANG_DAMP 0.1
 
 @interface SmashBallMain : GameCharPhysics
 {

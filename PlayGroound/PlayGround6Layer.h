@@ -13,6 +13,7 @@
 #import "Box2D.h"
 #import "GLES-Render.h"
 #import "GameCharPhysics.h"
+#import "JumperMan.h"
 
 #define PTM_RATIO (IS_IPAD() ? (8.0*1024.0/480.0) : 8.0)
 
@@ -23,6 +24,10 @@
 	GLESDebugDraw *m_debugDraw;		// strong ref
     
     CCSpriteBatchNode *sceneSpriteBatchNode;
+    
+    JumperMan* jumperMan;
+    
+    
 }
 
 -(void) handlePan:(CGPoint) startPoint endPoint:(CGPoint) endPoint;

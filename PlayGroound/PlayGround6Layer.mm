@@ -36,7 +36,8 @@ enum {
 		
 		self.isTouchEnabled = YES;
 		self.isAccelerometerEnabled = YES;
-        //		CGSize s = [CCDirector sharedDirector].winSize;
+        
+        CGSize s = [CCDirector sharedDirector].winSize;
 		
 		// init physics
 		[self initPhysics];
@@ -47,8 +48,15 @@ enum {
         [self createBackground];
 		
 		[self scheduleUpdate];
+        [self createJumperMan:ccp(s.width/2.0/PTM_RATIO, s.height/2.0/PTM_RATIO)];
 	}
 	return self;
+}
+
+-(void) createJumperMan: (CGPoint) location
+{
+    jumperMan = [[JumperMan alloc] initWithWorld:world atLocation:location];
+    [sceneSpriteBatchNode addChild:jumperMan z:5];
 }
 
 -(void) dealloc
@@ -68,7 +76,7 @@ enum {
 	CGSize s = [[CCDirector sharedDirector] winSize];
 	
 	b2Vec2 gravity;
-	gravity.Set(/*-10.0f*/0.0f, 0.0f);
+	gravity.Set(/*-10.0f*/0.0f, -10.0f);
 	world = new b2World(gravity);
 	
 	

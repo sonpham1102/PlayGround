@@ -19,10 +19,23 @@
     return self;
 }
 
+-(void)updateStateWithDeltaTime:(ccTime)dt {
+    
+}
+
 -(void) buildJumperManAtLocation:(CGPoint)location {
     
     head = [self createHead:location];
     torso = [self createTorso:location];
+    body = torso;
+    leftUpperArm = [self createUpperArm:location];
+    leftLowerArm = [self createLowerArm:location];
+    leftUpperLeg = [self createUpperLeg:location];
+    leftLowerLeg = [self createLowerLeg:location];
+    rightUpperArm = [self createUpperArm:location];
+    rightLowerArm = [self createLowerArm:location];
+    rightUpperLeg = [self createUpperLeg:location];
+    rightLowerLeg = [self createLowerLeg:location];
     
     b2RevoluteJointDef revJointDef;
     revJointDef.Initialize(head , torso,
@@ -32,7 +45,210 @@
     revJointDef.enableLimit = true;
     world->CreateJoint(&revJointDef);
     
+    revJointDef.Initialize(leftUpperArm,torso,
+                           leftUpperArm->GetWorldPoint(b2Vec2(0, 10.0/100.0)));
+    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(-25);
+    revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(125);
+    revJointDef.enableLimit = true;
+    
+    world->CreateJoint(&revJointDef);
+    
+    revJointDef.Initialize(rightUpperArm,torso,
+                           rightUpperArm->GetWorldPoint(b2Vec2(0, 10.0/100.0)));
+    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(-25);
+    revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(125);
+    revJointDef.enableLimit = true;
+    
+    world->CreateJoint(&revJointDef);
+    
+    revJointDef.Initialize(leftLowerArm,leftUpperArm,
+                           leftLowerArm->GetWorldPoint(b2Vec2(0, 10.0/100.0)));
+    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(0);
+    revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(-125);
+    revJointDef.enableLimit = true;
+    
+    world->CreateJoint(&revJointDef);
+    
+    revJointDef.Initialize(rightLowerArm,rightUpperArm,
+                           rightLowerArm->GetWorldPoint(b2Vec2(0, 10.0/100.0)));
+    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(0);
+    revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(-125);
+    revJointDef.enableLimit = true;
+    
+    world->CreateJoint(&revJointDef);
+    
+    revJointDef.Initialize(leftUpperLeg,torso,
+                           leftUpperLeg->GetWorldPoint(b2Vec2(0, 10.0/100.0)));
+    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(-75);
+    revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(0);
+    revJointDef.enableLimit = true;
+    
+    world->CreateJoint(&revJointDef);
+    
+    revJointDef.Initialize(rightUpperLeg,torso,
+                           rightUpperLeg->GetWorldPoint(b2Vec2(0, 10.0/100.0)));
+    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(-75);
+    revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(0);
+    revJointDef.enableLimit = true;
+    
+    world->CreateJoint(&revJointDef);
+    
+    revJointDef.Initialize(leftLowerLeg,leftUpperLeg,
+                           leftLowerLeg->GetWorldPoint(b2Vec2(0, 10.0/100.0)));
+    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(0);
+    revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(-1250);
+    revJointDef.enableLimit = true;
+    
+    world->CreateJoint(&revJointDef);
+    
+    revJointDef.Initialize(rightLowerLeg,rightUpperLeg,
+                           rightLowerLeg->GetWorldPoint(b2Vec2(0, 10.0/100.0)));
+    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(0);
+    revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(125);
+    revJointDef.enableLimit = true;
+    
+    world->CreateJoint(&revJointDef);
 }
+
+
+-(b2Body*) createLowerLeg:(CGPoint)location {
+    
+    b2Body* retVal;
+    b2BodyDef bodyDef;
+    bodyDef.type = b2_dynamicBody;
+    bodyDef.position = b2Vec2(location.x,location.y - 3.8);
+    
+    retVal = world->CreateBody(&bodyDef);
+    
+    b2FixtureDef fixtureDef;
+    fixtureDef.density = 1.0;
+    fixtureDef.friction = 1.0;
+    fixtureDef.restitution = 8.0;
+    
+    fixtureDef.filter.categoryBits = 0x2;
+    fixtureDef.filter.maskBits = 0xFFFF;
+    fixtureDef.filter.groupIndex = -1;
+    
+    b2PolygonShape shape;
+    b2Vec2 verts[] = {
+        b2Vec2(0.2,0.6),
+        b2Vec2(-0.2,0.6),
+        b2Vec2(-0.2,-1.3),
+        b2Vec2(0.2,-1.3)
+    };
+    
+    shape.Set(verts, 4);
+    fixtureDef.shape = &shape;
+    
+    retVal->CreateFixture(&fixtureDef);
+    
+    return retVal;
+}
+
+-(b2Body*) createUpperLeg:(CGPoint)location {
+    
+    b2Body* retVal;
+    b2BodyDef bodyDef;
+    bodyDef.type = b2_dynamicBody;
+    bodyDef.position = b2Vec2(location.x,location.y - 1.5);
+    
+    retVal = world->CreateBody(&bodyDef);
+    
+    b2FixtureDef fixtureDef;
+    fixtureDef.density = 1.0;
+    fixtureDef.friction = 1.0;
+    fixtureDef.restitution = 1.0;
+    
+    fixtureDef.filter.categoryBits = 0x2;
+    fixtureDef.filter.maskBits = 0xFFFF;
+    fixtureDef.filter.groupIndex = -1;
+    
+    b2PolygonShape shape;
+    b2Vec2 verts[] = {
+        b2Vec2(0.3,0.6),
+        b2Vec2(-0.3,0.6),
+        b2Vec2(-0.3,-1.8),
+        b2Vec2(0.3,-1.8)
+    };
+    
+    shape.Set(verts, 4);
+    fixtureDef.shape = &shape;
+    
+    retVal->CreateFixture(&fixtureDef);
+    
+    return retVal;
+}
+
+
+-(b2Body*) createLowerArm:(CGPoint)location {
+    
+    b2Body* retVal;
+    b2BodyDef bodyDef;
+    bodyDef.type = b2_dynamicBody;
+    bodyDef.position = b2Vec2(location.x,location.y - 0.007);
+    
+    retVal = world->CreateBody(&bodyDef);
+    
+    b2FixtureDef fixtureDef;
+    fixtureDef.density = 1.0;
+    fixtureDef.friction = 1.0;
+    fixtureDef.restitution = 1.0;
+    
+    fixtureDef.filter.categoryBits = 0x2;
+    fixtureDef.filter.maskBits = 0xFFFF;
+    fixtureDef.filter.groupIndex = -1;
+    
+    b2PolygonShape shape;
+    b2Vec2 verts[] = {
+        b2Vec2(0.2,0.2),
+        b2Vec2(-0.2,0.2),
+        b2Vec2(-0.2,-1.2),
+        b2Vec2(0.2,-1.2),
+    };
+    
+    shape.Set(verts, 4);
+    fixtureDef.shape = &shape;
+    
+    retVal->CreateFixture(&fixtureDef);
+    
+    return retVal;
+}
+
+-(b2Body*) createUpperArm:(CGPoint)location {
+    
+    b2Body* retVal;
+    b2BodyDef bodyDef;
+    bodyDef.type = b2_dynamicBody;
+    bodyDef.position = b2Vec2(location.x,location.y + 1);
+    
+    retVal = world->CreateBody(&bodyDef);
+    
+    b2FixtureDef fixtureDef;
+    fixtureDef.density = 1.0;
+    fixtureDef.friction = 1.0;
+    fixtureDef.restitution = 1.0;
+    
+    fixtureDef.filter.categoryBits = 0x2;
+    fixtureDef.filter.maskBits = 0xFFFF;
+    fixtureDef.filter.groupIndex = -1;
+    
+    b2PolygonShape shape;
+    b2Vec2 verts[] = {
+        b2Vec2(0.2,0.2),
+        b2Vec2(-0.2,0.2),
+        b2Vec2(-0.2,-1.0),
+        b2Vec2(0.2,-1.0),
+    };
+    
+    shape.Set(verts, 4);
+    fixtureDef.shape = &shape;
+    
+    retVal->CreateFixture(&fixtureDef);
+    
+    return retVal;
+}
+                    
+                    
 -(b2Body*) createTorso:(CGPoint)location {
     
     b2Body* retVal;
@@ -68,6 +284,8 @@
     
     return retVal;
 }
+                    
+                    
 
 -(b2Body*) createHead:(CGPoint)location {
     

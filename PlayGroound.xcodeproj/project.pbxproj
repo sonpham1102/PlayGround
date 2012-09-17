@@ -1701,6 +1701,12 @@
 				FAA5D59E15FA6A3500F5E7CA /* GBVortex.mm */,
 				12D9B57E1607987B00A07E10 /* JumperMan.h */,
 				12D9B57F1607987B00A07E10 /* JumperMan.mm */,
+				FAA5D5AC160797F900F5E7CA /* SmashBallMain.h */,
+				FAA5D5AD160797FA00F5E7CA /* SmashBallMain.mm */,
+				FAA5D5AF1607982900F5E7CA /* SmashBallEnd.h */,
+				FAA5D5B01607982A00F5E7CA /* SmashBallEnd.mm */,
+				FAA5D5B21607983E00F5E7CA /* SmashBallChain.h */,
+				FAA5D5B31607983F00F5E7CA /* SmashBallChain.mm */,
 			);
 			name = GameObjects;
 			sourceTree = "<group>";
@@ -2084,6 +2090,9 @@
 				12D9B57A1607947100A07E10 /* PlayGround6Layer.mm in Sources */,
 				12D9B57D160795D700A07E10 /* PlayGround6UILayer.mm in Sources */,
 				12D9B5801607987B00A07E10 /* JumperMan.mm in Sources */,
+				FAA5D5AE160797FB00F5E7CA /* SmashBallMain.mm in Sources */,
+				FAA5D5B11607982B00F5E7CA /* SmashBallEnd.mm in Sources */,
+				FAA5D5B41607984000F5E7CA /* SmashBallChain.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

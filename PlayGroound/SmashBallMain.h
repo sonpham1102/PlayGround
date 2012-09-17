@@ -9,7 +9,7 @@
 #import "GameCharPhysics.h"
 
 #define SBM_RADIUS 2.0
-#define SBM_JOINT_OFFSET SBM_RADIUS*0.80
+#define SBM_JOINT_OFFSET SBM_RADIUS*0.0
 #define SBM_DENSITY 1.0
 #define SBM_FRICTION 1.0
 #define SBM_RESTITUTION 1.0

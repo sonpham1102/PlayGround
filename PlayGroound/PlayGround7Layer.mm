@@ -18,7 +18,7 @@
 
 #import "SimpleQueryCallback.h"
 
-#define NUM_CHAINS 7
+#define NUM_CHAINS 9
 
 enum {
 	kTagParentNode = 1,

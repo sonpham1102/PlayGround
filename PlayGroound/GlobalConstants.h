@@ -32,7 +32,9 @@ typedef enum
     kPlayGround2 = 120,
     kPlayGround3 = 140,
     kPlayGround4 = 160,
-    kPlayGround5 = 180
+    kPlayGround5 = 180,
+    kPlayGround6 = 200,
+    kPlayGround7 = 220
 } LevelIDs;
 
 // GameObj types

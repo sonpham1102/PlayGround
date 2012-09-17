@@ -26,6 +26,10 @@
     } else if ([itemPassedIn tag] == 5) {
         [[GameManager sharedGameManager] runLevelWithID:kPlayGround5];
     } else if ([itemPassedIn tag] == 6) {
+        [[GameManager sharedGameManager] runLevelWithID:kPlayGround5];
+    } else if ([itemPassedIn tag] == 7) {
+        [[GameManager sharedGameManager] runLevelWithID:kPlayGround7];
+    } else if ([itemPassedIn tag] == 8) {
         [[GameManager sharedGameManager] runLevelWithID:kOptionsMenu];
     } else  {
         CCLOG(@"Damn level not found %d",[itemPassedIn tag]);
@@ -72,6 +76,23 @@
                                                           target:self 
                                                         selector:@selector(playScene:)];
     [playScene5 setTag:5];    
+
+    CCLabelTTF *playScene6Label = [CCLabelTTF labelWithString:@"Level 6"
+                                                     fontName:@"Arial-BoldMT"
+                                                     fontSize:24.0f];
+    CCMenuItemLabel *playScene6 = [CCMenuItemLabel itemWithLabel:playScene6Label
+                                                          target:self 
+                                                        selector:@selector(playScene:)];
+    [playScene6 setTag:6];    
+    
+    CCLabelTTF *playScene7Label = [CCLabelTTF labelWithString:@"Level 7"
+                                                     fontName:@"Arial-BoldMT"
+                                                     fontSize:24.0f];
+    CCMenuItemLabel *playScene7 = [CCMenuItemLabel itemWithLabel:playScene7Label
+                                                          target:self 
+                                                        selector:@selector(playScene:)];
+    [playScene7 setTag:7];    
+    
     
     CCLabelTTF *playOptionsScene = [CCLabelTTF labelWithString:@"Options"
                                                       fontName:@"Arial-BoldMT"
@@ -79,10 +100,10 @@
     CCMenuItemLabel *playOptions = [CCMenuItemLabel itemWithLabel:playOptionsScene
                                                            target:self 
                                                          selector:@selector(playScene:)];
-    [playOptions setTag:6];
+    [playOptions setTag:8];
     
     
-    mainMenu = [CCMenu menuWithItems:playScene1,playScene2,playScene3,playScene4,playScene5, playOptions, nil];
+    mainMenu = [CCMenu menuWithItems:playScene1,playScene2,playScene3,playScene4,playScene5, playScene6, playScene7, playOptions, nil];
     [mainMenu alignItemsVerticallyWithPadding:screenSize.height * 0.059f];
     [mainMenu setPosition:ccp(screenSize.width/2, screenSize.height/2)];
     

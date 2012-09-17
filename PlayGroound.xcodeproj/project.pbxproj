@@ -269,6 +269,9 @@
 		FAA5D59C15FA667300F5E7CA /* shotgun-02.wav in Resources */ = {isa = PBXBuildFile; fileRef = FAA5D59A15FA667300F5E7CA /* shotgun-02.wav */; };
 		FAA5D59F15FA6A3500F5E7CA /* GBVortex.mm in Sources */ = {isa = PBXBuildFile; fileRef = FAA5D59E15FA6A3500F5E7CA /* GBVortex.mm */; };
 		FAA5D5A115FA700300F5E7CA /* 22k_tap_move_meteorV1.wav in Resources */ = {isa = PBXBuildFile; fileRef = FAA5D5A015FA700300F5E7CA /* 22k_tap_move_meteorV1.wav */; };
+		FAA5D5A916078A8000F5E7CA /* PlayGround7Layer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FAA5D5A416078A8000F5E7CA /* PlayGround7Layer.mm */; };
+		FAA5D5AA16078A8000F5E7CA /* PlayGround7Scene.mm in Sources */ = {isa = PBXBuildFile; fileRef = FAA5D5A616078A8000F5E7CA /* PlayGround7Scene.mm */; };
+		FAA5D5AB16078A8000F5E7CA /* PlayGround7UILayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FAA5D5A816078A8000F5E7CA /* PlayGround7UILayer.mm */; };
 		FAA7D17115C6FDFB00C513A2 /* PlayGround1UILayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FAA7D17015C6FDFB00C513A2 /* PlayGround1UILayer.mm */; };
 		FAA7D17D15C9E15E00C513A2 /* CustomPanGesureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA7D17C15C9E15E00C513A2 /* CustomPanGesureRecognizer.m */; };
 		FAC2977A15BDC874008559AF /* CCNode+SFGestureRecognizers.m in Sources */ = {isa = PBXBuildFile; fileRef = FAC2977915BDC874008559AF /* CCNode+SFGestureRecognizers.m */; };
@@ -774,6 +777,12 @@
 		FAA5D59D15FA6A3500F5E7CA /* GBVortex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBVortex.h; sourceTree = "<group>"; };
 		FAA5D59E15FA6A3500F5E7CA /* GBVortex.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GBVortex.mm; sourceTree = "<group>"; };
 		FAA5D5A015FA700300F5E7CA /* 22k_tap_move_meteorV1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 22k_tap_move_meteorV1.wav; sourceTree = "<group>"; };
+		FAA5D5A316078A8000F5E7CA /* PlayGround7Layer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGround7Layer.h; sourceTree = "<group>"; };
+		FAA5D5A416078A8000F5E7CA /* PlayGround7Layer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround7Layer.mm; sourceTree = "<group>"; };
+		FAA5D5A516078A8000F5E7CA /* PlayGround7Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGround7Scene.h; sourceTree = "<group>"; };
+		FAA5D5A616078A8000F5E7CA /* PlayGround7Scene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround7Scene.mm; sourceTree = "<group>"; };
+		FAA5D5A716078A8000F5E7CA /* PlayGround7UILayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGround7UILayer.h; sourceTree = "<group>"; };
+		FAA5D5A816078A8000F5E7CA /* PlayGround7UILayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround7UILayer.mm; sourceTree = "<group>"; };
 		FAA7D16F15C6FDFB00C513A2 /* PlayGround1UILayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayGround1UILayer.h; sourceTree = "<group>"; };
 		FAA7D17015C6FDFB00C513A2 /* PlayGround1UILayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PlayGround1UILayer.mm; sourceTree = "<group>"; };
 		FAA7D17B15C9E15D00C513A2 /* CustomPanGesureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPanGesureRecognizer.h; sourceTree = "<group>"; };
@@ -1526,6 +1535,7 @@
 		FA1348BA15B714E200E5CDB5 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				FAA5D5A2160789AF00F5E7CA /* PlayGround7 */,
 				FA91259215F547680016554B /* PlayGround5 */,
 				FA91258615F52EA10016554B /* SceneWithGestureBase */,
 				1210DEDB15F29FCD00857C87 /* PlayGround4 */,
@@ -1689,6 +1699,19 @@
 				FA91259815F5484F0016554B /* PlayGround5UILayer.mm */,
 			);
 			name = PlayGround5;
+			sourceTree = "<group>";
+		};
+		FAA5D5A2160789AF00F5E7CA /* PlayGround7 */ = {
+			isa = PBXGroup;
+			children = (
+				FAA5D5A316078A8000F5E7CA /* PlayGround7Layer.h */,
+				FAA5D5A416078A8000F5E7CA /* PlayGround7Layer.mm */,
+				FAA5D5A516078A8000F5E7CA /* PlayGround7Scene.h */,
+				FAA5D5A616078A8000F5E7CA /* PlayGround7Scene.mm */,
+				FAA5D5A716078A8000F5E7CA /* PlayGround7UILayer.h */,
+				FAA5D5A816078A8000F5E7CA /* PlayGround7UILayer.mm */,
+			);
+			name = PlayGround7;
 			sourceTree = "<group>";
 		};
 		FAC2977215BDC83F008559AF /* UIGestureRecognizer */ = {
@@ -2015,6 +2038,9 @@
 				120EBAB815F8FBB10063D039 /* BreakBlock.mm in Sources */,
 				FAA5D59715FA60E900F5E7CA /* ShotGunBlast.mm in Sources */,
 				FAA5D59F15FA6A3500F5E7CA /* GBVortex.mm in Sources */,
+				FAA5D5A916078A8000F5E7CA /* PlayGround7Layer.mm in Sources */,
+				FAA5D5AA16078A8000F5E7CA /* PlayGround7Scene.mm in Sources */,
+				FAA5D5AB16078A8000F5E7CA /* PlayGround7UILayer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

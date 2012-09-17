@@ -37,7 +37,7 @@
     b2FixtureDef fixtureDef;
     fixtureDef.density = 1.0f;
     fixtureDef.restitution = 1.0f;
-    fixtureDef.friction = 1.0f;
+    fixtureDef.friction = /*1.0f*/ 0.0f;
     
     b2PolygonShape shape;
     b2Vec2 verts[] = {

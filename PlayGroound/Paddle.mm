@@ -9,8 +9,8 @@
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 
 
-#define MAX_DAMP 10.0
-#define PADDLE_SPRING_FORCE 50.0
+#define MAX_DAMP 20.0
+#define PADDLE_SPRING_FORCE 80.0
 #define PADDLE_TORQUE_FORCE 20.0
 #define ANGLE_TRIGGER 30.0 * M_PI/180.0
 
@@ -40,7 +40,7 @@
     
     b2FixtureDef fixtureDef;
     fixtureDef.density = 10.0f;
-    fixtureDef.friction = 1.0f;
+    fixtureDef.friction = /*1.0f*/ 5.0;
     fixtureDef.restitution = 1.15f;
     
     b2PolygonShape shape;
@@ -106,7 +106,8 @@
     
     //Correct To Horizontal
     float torqueToApply = 0;
-    
+    float angleDamp = 1.0;
+/*    
     if ((targetAngle < 0.25f) || 
         (targetAngle > 6.0f)) {
            if (curAngle >= 3.0 * M_PI_2){
@@ -119,15 +120,38 @@
                torqueToApply = -body->GetMass() * PADDLE_TORQUE_FORCE * (curAngle);
            }
     }
-     else {
-         if ((targetAngle > 0.25f) && (targetAngle < 1.0f)){
+     else {*/
+         /*if ((targetAngle > 0.25f) && (targetAngle < 1.0f)){
              CCLOG(@"Right Power Shot");
              [self rightPowerShot];
          } else {
              CCLOG(@"Left Power Shot");
              [self leftPowerShot];
-         }
+         }*/
+         
+    float angleDiff; 
+        if ((curAngle < M_PI_2) && (targetAngle > 1.5 * M_PI))
+        {
+            angleDiff = - (curAngle + (2.0 * M_PI - targetAngle));
+        }
+    else if ((curAngle > 1.5 * M_PI) && (targetAngle < M_PI_2))
+    {
+        angleDiff = (2.0*M_PI - curAngle) + targetAngle;
     }
+    else {
+        angleDiff = targetAngle - curAngle;
+    }        
+ 
+         
+    
+    
+        torqueToApply = body->GetMass() * 50.0 * angleDiff;
+         angleDamp = -10.0*4.0/M_PI * angleDiff + 10.0;
+         if (angleDamp < 0.0)
+         {
+             angleDamp = 0.0;
+         }
+//    }
     
     
     b2Vec2 newPos = b2Vec2(((leftPos.x + rightPos.x) / 2 / PTM_RATIO) + (offset * 10.0 / PTM_RATIO), 
@@ -149,6 +173,7 @@
     force.y = PADDLE_SPRING_FORCE * targetPos.y * body->GetMass();
     
     body->ApplyForce(force, body->GetWorldCenter());
+    body->SetAngularDamping(angleDamp);
     body->ApplyTorque(torqueToApply);
 }  
 

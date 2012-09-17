@@ -11,6 +11,7 @@
 #define PTM_RATIO (IS_IPAD() ? (32.0*1024.0/480.0) : 32.0)
 #define MAX_SPEED 10
 #define BALL_FORCE_MAG 1.25
+#define BALL_ANG_DAMP 50.0
 
 @implementation Ball
 
@@ -34,9 +35,9 @@
     forceVector.x = vel.x*BALL_FORCE_MAG;
     forceVector.y = vel.y*BALL_FORCE_MAG;
     
-    if (forceVector.y == 0.0f) {
-        forceVector.y = 1.0;
-    }
+//    if (forceVector.y == 0.0f) {
+//        forceVector.y = 1.0;
+//    }
     
     if (speed > MAX_SPEED) {
         body->ApplyForce(-forceVector, body->GetLocalCenter());
@@ -44,12 +45,16 @@
         body->ApplyForce(forceVector, body->GetLocalCenter());
     }
     
+    b2Vec2 gravityForce = b2Vec2(0.0f, -body->GetMass()*2.0);
+    
+    body->ApplyForce(gravityForce, body->GetWorldCenter());
+    
 }
 
 -(void)createBodyAtLocation:(CGPoint)location {
     b2BodyDef bodydef;
     bodydef.bullet = true;
-    bodydef.fixedRotation = true;
+    //bodydef.fixedRotation = true;
     bodydef.type = b2_dynamicBody;
     bodydef.position = b2Vec2(location.x/PTM_RATIO,
                               location.y/PTM_RATIO);
@@ -65,6 +70,8 @@
     fixtureDef.shape = &circle;
     
     body->CreateFixture(&fixtureDef);
+    
+    body->SetAngularDamping(BALL_ANG_DAMP);
     
     body->SetUserData(self);
 }

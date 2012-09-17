@@ -10,9 +10,9 @@
 // Needed to obtain the Navigation Controller
 #import "AppDelegate.h"
 
-#import "PhysicsSprite.h"
-#import "GameManager.h"
+#import "GameCharPhysics.h"
 
+#import "GameManager.h"
 
 enum {
 	kTagParentNode = 1,
@@ -30,6 +30,18 @@ enum {
 //    CGSize winSize = [CCDirector sharedDirector].winSize;
 }
 
+-(void) createSmashBall: (CGPoint) location
+{
+    b2Vec2 loc = b2Vec2(location.x/PTM_RATIO, location.y/PTM_RATIO);
+    
+    //create the smash ball
+    
+    
+    //create chain links
+    
+    //create the end ball
+}
+
 -(id) init
 {
 	if( (self=[super init])) {
@@ -38,14 +50,16 @@ enum {
 		
 		self.isTouchEnabled = YES;
 		self.isAccelerometerEnabled = YES;
-//		CGSize s = [CCDirector sharedDirector].winSize;
+		CGSize s = [CCDirector sharedDirector].winSize;
 		
 		// init physics
 		[self initPhysics];
 		        
         sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithTexture:nil];
         [self addChild:sceneSpriteBatchNode z:0];
-                
+        
+        [self createSmashBall:ccp(s.width/2.0, s.height/2.0)];
+        
         [self createBackground];
 		
 		[self scheduleUpdate];
@@ -98,7 +112,7 @@ enum {
 	// Call the body factory which allocates memory for the ground body
 	// from a pool and creates the ground box shape (also from a pool).
 	// The body is also added to the world.
-	b2Body* groundBody = world->CreateBody(&groundBodyDef);
+	groundBody = world->CreateBody(&groundBodyDef);
 	
 	// Define the ground box shape.
 	b2EdgeShape groundBox;		

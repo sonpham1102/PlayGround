@@ -63,7 +63,7 @@
     
     revJointDef.Initialize(leftLowerArm,leftUpperArm,
                            leftLowerArm->GetWorldPoint(b2Vec2(0, 15.0/100.0)));
-    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(-135);
+    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(-115);
     revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(-0);
     revJointDef.enableLimit = true;
     
@@ -71,7 +71,7 @@
     
     revJointDef.Initialize(rightLowerArm,rightUpperArm,
                            rightLowerArm->GetWorldPoint(b2Vec2(0, 15.0/100.0)));
-    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(-135);
+    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(-115);
     revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(-0);
     revJointDef.enableLimit = true;
     

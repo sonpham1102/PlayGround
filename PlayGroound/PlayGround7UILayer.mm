@@ -15,10 +15,12 @@
 @implementation PlayGround7UILayer
 
 // GESTURE SETUP FUNCTIONS
+
 -(void) setUpPanGesture
 {    
     panGestureRecognizer = [[CustomPanGesureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     panGestureRecognizer.delegate = self;
+    panGestureRecognizer.cancelsTouchesInView = FALSE;
     [self addGestureRecognizer:panGestureRecognizer];
 
     panEndPoint = CGPointZero;
@@ -39,12 +41,14 @@
 {
     longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
     longPressGestureRecognizer.delegate = self;
+    longPressGestureRecognizer.cancelsTouchesInView = FALSE;
     [self addGestureRecognizer:longPressGestureRecognizer];  
 }
 
 -(void) setUpRotationGesture
 {
     rotationsGestureRecognizer = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotationGesture:)];
+    rotationsGestureRecognizer.cancelsTouchesInView = FALSE;
     rotationsGestureRecognizer.delegate = self;
     [self addGestureRecognizer:rotationsGestureRecognizer];  
 }
@@ -267,7 +271,7 @@
         tapGestureRecognizer.enabled = false;
         longPressGestureRecognizer.enabled = false;
         rotationsGestureRecognizer.enabled = false;
-*/                
+*/               
 //        CGSize s = [CCDirector sharedDirector].winSize;
     }
     return self;
@@ -322,7 +326,5 @@
     
     [super dealloc];
 }
-
-
 
 @end

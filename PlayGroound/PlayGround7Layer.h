@@ -13,6 +13,8 @@
 #import "cocos2d.h"
 #import "Box2D.h"
 #import "GLES-Render.h"
+#import "SmashBallMain.h"
+#import "SmashBallEnd.h"
 
 #define PTM_RATIO (IS_IPAD() ? (8.0*1024.0/480.0) : 8.0)
 
@@ -25,6 +27,12 @@
     CCSpriteBatchNode *sceneSpriteBatchNode;
     
     b2Body* groundBody;
+    
+    SmashBallMain* smashBallMain;
+    
+    SmashBallEnd* smashBallEnd;
+    
+    b2MouseJoint *mouseJoint;
 }
 
 -(void) handlePan:(CGPoint) startPoint endPoint:(CGPoint) endPoint;

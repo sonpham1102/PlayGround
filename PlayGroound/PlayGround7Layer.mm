@@ -48,45 +48,6 @@ enum {
     smashBallMain = [[SmashBallMain alloc] initWithWorld:world atLocation:loc];
     [sceneSpriteBatchNode addChild:smashBallMain z:5];
     
-/*    
-    //create the first chain link
-    loc.x = SBM_JOINT_OFFSET + SBC_JOINT_OFFSET;
-    loc.y = 0.0f;
-    loc = smashBallMain.body->GetWorldPoint(loc);
-    SmashBallChain* chain1 = [[SmashBallChain alloc] initWithWorld:world atLocation:loc];
-    
-    //connect it to the main ball
-    b2RevoluteJointDef revJointDef;
-    revJointDef.Initialize(smashBallMain.body, chain1.body, smashBallMain.body->GetWorldPoint(b2Vec2(SBM_JOINT_OFFSET,0)));
-    //revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(-15);
-    //revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(15);
-    //revJointDef.enableLimit = true;
-    //revJointDef.enableMotor = true;
-    //revJointDef.motorSpeed = 0.5;
-    //revJointDef.maxMotorTorque = 50.0f;
-    world->CreateJoint(&revJointDef);
-    
-    //create the second chain link and add it to the first
-    loc.x = SBC_JOINT_OFFSET + SBC_JOINT_OFFSET;
-    loc.y = 0.0f;
-    loc = chain1.body->GetWorldPoint(loc);
-    SmashBallChain* chain2 = [[SmashBallChain alloc] initWithWorld:world atLocation:loc];
-    revJointDef.Initialize(chain1.body, chain2.body, chain1.body->GetWorldPoint(b2Vec2(SBC_JOINT_OFFSET,0)));
-
-    //create a third and link it to the second
-    loc.x = SBC_JOINT_OFFSET + SBC_JOINT_OFFSET;
-    loc.y = 0.0f;
-    loc = chain2.body->GetWorldPoint(loc);
-    SmashBallChain* chain3 = [[SmashBallChain alloc] initWithWorld:world atLocation:loc];
-    revJointDef.Initialize(chain2.body, chain3.body, chain2.body->GetWorldPoint(b2Vec2(SBC_JOINT_OFFSET,0)));
-    
-    //create the end ball and link it to the third chain
-    loc.x = SBC_JOINT_OFFSET + SBE_JOINT_OFFSET;
-    loc.y = 0.0f;
-    loc = chain3.body->GetWorldPoint(loc);
-    smashBallEnd = [[SmashBallEnd alloc] initWithWorld:world atLocation:loc];
-    revJointDef.Initialize(chain3.body, smashBallEnd.body, chain3.body->GetWorldPoint(b2Vec2(SBC_JOINT_OFFSET,0)));
-*/
     //create the first chain link
     loc.x = SBM_JOINT_OFFSET + SBC_JOINT_OFFSET;
     loc.y = 0.0f;
@@ -96,7 +57,7 @@ enum {
     revJointDef.Initialize(smashBallMain.body, chain.body, smashBallMain.body->GetWorldPoint(b2Vec2(SBM_JOINT_OFFSET,0)));
     world->CreateJoint(&revJointDef);
     [sceneSpriteBatchNode addChild:chain z:5];
-    //[chain release];
+    [chain release];
 
     // create all remaining chains
     for (int i = 1; i < NUM_CHAINS; i++)
@@ -108,7 +69,7 @@ enum {
         revJointDef.Initialize(chain.body, nextChain.body, chain.body->GetWorldPoint(b2Vec2(SBC_JOINT_OFFSET,0)));
         world->CreateJoint(&revJointDef);
         [sceneSpriteBatchNode addChild:nextChain z:5];
-        //[nextChain release];
+        [nextChain release];
         chain = nextChain;
     }
     //create the end ball and link it to the third chain

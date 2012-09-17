@@ -47,32 +47,32 @@
     
     revJointDef.Initialize(leftUpperArm,torso,
                            leftUpperArm->GetWorldPoint(b2Vec2(0, 10.0/100.0)));
-    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(-25);
-    revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(125);
+    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(-180);
+    revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(50);
     revJointDef.enableLimit = true;
     
     world->CreateJoint(&revJointDef);
     
     revJointDef.Initialize(rightUpperArm,torso,
                            rightUpperArm->GetWorldPoint(b2Vec2(0, 10.0/100.0)));
-    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(-25);
-    revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(125);
+    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(-180);
+    revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(50);
     revJointDef.enableLimit = true;
     
     world->CreateJoint(&revJointDef);
     
     revJointDef.Initialize(leftLowerArm,leftUpperArm,
-                           leftLowerArm->GetWorldPoint(b2Vec2(0, 10.0/100.0)));
-    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(0);
-    revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(-125);
+                           leftLowerArm->GetWorldPoint(b2Vec2(0, 15.0/100.0)));
+    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(-135);
+    revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(-0);
     revJointDef.enableLimit = true;
     
     world->CreateJoint(&revJointDef);
     
     revJointDef.Initialize(rightLowerArm,rightUpperArm,
-                           rightLowerArm->GetWorldPoint(b2Vec2(0, 10.0/100.0)));
-    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(0);
-    revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(-125);
+                           rightLowerArm->GetWorldPoint(b2Vec2(0, 15.0/100.0)));
+    revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(-135);
+    revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(-0);
     revJointDef.enableLimit = true;
     
     world->CreateJoint(&revJointDef);

@@ -76,6 +76,18 @@ typedef enum {
     kCollMaskWall = 0x0005
 } PG5CollFilters;
 
+// PG7Collision categories and masks
+typedef enum {
+    kCollCatSBM = 0x0001,
+    kCollMaskSBM = 0x000D,
+    kCollCatSBC = 0x0002,
+    kCollMaskSBC = 0x0000,
+    kCollCatSBE = 0x0004,
+    kCollMaskSBE = 0x000D,
+    kCollCatSBB = 0x0008,
+    kCollMaskSBB = 0x000D
+} PG7CollFilters;
+
 
 @protocol PlayGround2LayerDelegate
 

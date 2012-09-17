@@ -10,9 +10,15 @@
 // Needed to obtain the Navigation Controller
 #import "AppDelegate.h"
 
-#import "PhysicsSprite.h"
+#import "GameCharPhysics.h"
+
+#import "SmashBallChain.h"
+
 #import "GameManager.h"
 
+#import "SimpleQueryCallback.h"
+
+#define NUM_CHAINS 7
 
 enum {
 	kTagParentNode = 1,
@@ -25,9 +31,95 @@ enum {
 
 @implementation PlayGround7Layer
 
+- (void) registerWithTouchDispatcher {
+    [[[CCDirector sharedDirector] touchDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+}
+
 -(void) createBackground {
     
 //    CGSize winSize = [CCDirector sharedDirector].winSize;
+}
+
+-(void) createSmashBall: (CGPoint) location
+{
+    b2Vec2 loc = b2Vec2(location.x/PTM_RATIO, location.y/PTM_RATIO);
+    
+    //create the smash ball
+    smashBallMain = [[SmashBallMain alloc] initWithWorld:world atLocation:loc];
+    [sceneSpriteBatchNode addChild:smashBallMain z:5];
+    
+/*    
+    //create the first chain link
+    loc.x = SBM_JOINT_OFFSET + SBC_JOINT_OFFSET;
+    loc.y = 0.0f;
+    loc = smashBallMain.body->GetWorldPoint(loc);
+    SmashBallChain* chain1 = [[SmashBallChain alloc] initWithWorld:world atLocation:loc];
+    
+    //connect it to the main ball
+    b2RevoluteJointDef revJointDef;
+    revJointDef.Initialize(smashBallMain.body, chain1.body, smashBallMain.body->GetWorldPoint(b2Vec2(SBM_JOINT_OFFSET,0)));
+    //revJointDef.lowerAngle = CC_DEGREES_TO_RADIANS(-15);
+    //revJointDef.upperAngle = CC_DEGREES_TO_RADIANS(15);
+    //revJointDef.enableLimit = true;
+    //revJointDef.enableMotor = true;
+    //revJointDef.motorSpeed = 0.5;
+    //revJointDef.maxMotorTorque = 50.0f;
+    world->CreateJoint(&revJointDef);
+    
+    //create the second chain link and add it to the first
+    loc.x = SBC_JOINT_OFFSET + SBC_JOINT_OFFSET;
+    loc.y = 0.0f;
+    loc = chain1.body->GetWorldPoint(loc);
+    SmashBallChain* chain2 = [[SmashBallChain alloc] initWithWorld:world atLocation:loc];
+    revJointDef.Initialize(chain1.body, chain2.body, chain1.body->GetWorldPoint(b2Vec2(SBC_JOINT_OFFSET,0)));
+
+    //create a third and link it to the second
+    loc.x = SBC_JOINT_OFFSET + SBC_JOINT_OFFSET;
+    loc.y = 0.0f;
+    loc = chain2.body->GetWorldPoint(loc);
+    SmashBallChain* chain3 = [[SmashBallChain alloc] initWithWorld:world atLocation:loc];
+    revJointDef.Initialize(chain2.body, chain3.body, chain2.body->GetWorldPoint(b2Vec2(SBC_JOINT_OFFSET,0)));
+    
+    //create the end ball and link it to the third chain
+    loc.x = SBC_JOINT_OFFSET + SBE_JOINT_OFFSET;
+    loc.y = 0.0f;
+    loc = chain3.body->GetWorldPoint(loc);
+    smashBallEnd = [[SmashBallEnd alloc] initWithWorld:world atLocation:loc];
+    revJointDef.Initialize(chain3.body, smashBallEnd.body, chain3.body->GetWorldPoint(b2Vec2(SBC_JOINT_OFFSET,0)));
+*/
+    //create the first chain link
+    loc.x = SBM_JOINT_OFFSET + SBC_JOINT_OFFSET;
+    loc.y = 0.0f;
+    loc = smashBallMain.body->GetWorldPoint(loc);
+    SmashBallChain* chain = [[SmashBallChain alloc] initWithWorld:world atLocation:loc];
+    b2RevoluteJointDef revJointDef;
+    revJointDef.Initialize(smashBallMain.body, chain.body, smashBallMain.body->GetWorldPoint(b2Vec2(SBM_JOINT_OFFSET,0)));
+    world->CreateJoint(&revJointDef);
+    [sceneSpriteBatchNode addChild:chain z:5];
+    //[chain release];
+
+    // create all remaining chains
+    for (int i = 1; i < NUM_CHAINS; i++)
+    {
+        loc.x = SBC_JOINT_OFFSET*2.0;
+        loc.y = 0.0f;
+        loc = chain.body->GetWorldPoint(loc);
+        SmashBallChain* nextChain = [[SmashBallChain alloc] initWithWorld:world atLocation:loc];
+        revJointDef.Initialize(chain.body, nextChain.body, chain.body->GetWorldPoint(b2Vec2(SBC_JOINT_OFFSET,0)));
+        world->CreateJoint(&revJointDef);
+        [sceneSpriteBatchNode addChild:nextChain z:5];
+        //[nextChain release];
+        chain = nextChain;
+    }
+    //create the end ball and link it to the third chain
+    loc.x = SBC_JOINT_OFFSET + SBE_JOINT_OFFSET;
+    loc.y = 0.0f;
+    loc = chain.body->GetWorldPoint(loc);
+    smashBallEnd = [[SmashBallEnd alloc] initWithWorld:world atLocation:loc];
+    revJointDef.Initialize(chain.body, smashBallEnd.body, chain.body->GetWorldPoint(b2Vec2(SBC_JOINT_OFFSET,0)));
+    world->CreateJoint(&revJointDef);
+
+    [sceneSpriteBatchNode addChild:smashBallEnd z:5];
 }
 
 -(id) init
@@ -37,15 +129,18 @@ enum {
 		// enable events
 		
 		self.isTouchEnabled = YES;
+        
 		self.isAccelerometerEnabled = YES;
-//		CGSize s = [CCDirector sharedDirector].winSize;
+		CGSize s = [CCDirector sharedDirector].winSize;
 		
 		// init physics
 		[self initPhysics];
 		        
         sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithTexture:nil];
         [self addChild:sceneSpriteBatchNode z:0];
-                
+        
+        [self createSmashBall:ccp(s.width/2.0, s.height/2.0)];
+        
         [self createBackground];
 		
 		[self scheduleUpdate];
@@ -98,7 +193,7 @@ enum {
 	// Call the body factory which allocates memory for the ground body
 	// from a pool and creates the ground box shape (also from a pool).
 	// The body is also added to the world.
-	b2Body* groundBody = world->CreateBody(&groundBodyDef);
+	groundBody = world->CreateBody(&groundBodyDef);
 	
 	// Define the ground box shape.
 	b2EdgeShape groundBox;		
@@ -175,8 +270,8 @@ enum {
         timeAccumulator = MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL;
     }
     
-    int32 velocityIterations = 5;
-    int32 positionIterations = 5;
+    int32 velocityIterations = 50;
+    int32 positionIterations = 50;
     while (timeAccumulator >= UPDATE_INTERVAL)
     {
         timeAccumulator -= UPDATE_INTERVAL;
@@ -198,6 +293,67 @@ enum {
     {
         [tempChar updateStateWithDeltaTime:dt];
     }    
+}
+
+-(BOOL) ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    CGPoint touchLocation = [touch locationInView:[touch view]];
+    touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
+    touchLocation = [self convertToNodeSpace:touchLocation];
+    b2Vec2 locationWorld = b2Vec2(touchLocation.x/PTM_RATIO, touchLocation.y/PTM_RATIO);
+    
+    b2AABB aabb;
+    b2Vec2 delta = b2Vec2(1.0/PTM_RATIO, 1.0/PTM_RATIO);
+    
+    aabb.lowerBound = locationWorld - delta;
+    aabb.upperBound = locationWorld + delta;
+    
+    SimpleQueryCallback callback(locationWorld);
+    
+    world->QueryAABB(&callback, aabb);
+    
+    if (callback.fixtureFound)
+    {
+        b2Body *body = callback.fixtureFound->GetBody();
+        
+        GameCharPhysics *sprite = (GameCharPhysics *) body->GetUserData();
+        if (sprite == NULL) return FALSE;
+        if (![sprite mouseJointAccept]) return FALSE;
+        
+        b2MouseJointDef mouseJointDef;
+        mouseJointDef.bodyA = groundBody;
+        mouseJointDef.bodyB = body;
+        mouseJointDef.target = locationWorld;
+        mouseJointDef.maxForce = 10000*body->GetMass();
+        mouseJointDef.collideConnected = true;
+        
+        mouseJoint = (b2MouseJoint *) world->CreateJoint(&mouseJointDef);
+        body->SetAwake(true);
+        return YES;
+    }
+    
+    return TRUE;
+}
+
+-(void) ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    CGPoint touchLocation = [touch locationInView:[touch view]];
+    touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
+    touchLocation = [self convertToNodeSpace:touchLocation];
+    b2Vec2 locationWorld = b2Vec2(touchLocation.x/PTM_RATIO, touchLocation.y/PTM_RATIO);
+    if (mouseJoint)
+    {
+        mouseJoint->SetTarget(locationWorld);
+    }
+}
+
+-(void) ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    if (mouseJoint)
+    {
+        world->DestroyJoint(mouseJoint);
+        mouseJoint = NULL;
+    }
 }
 
 @end

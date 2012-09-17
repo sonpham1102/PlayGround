@@ -9,7 +9,7 @@
 #import "GameCharPhysics.h"
 
 #define SBE_RADIUS 1.0
-#define SBE_JOINT_OFFSET 0.9*SBE_RADIUS
+#define SBE_JOINT_OFFSET 0.0*SBE_RADIUS
 #define SBE_DENSITY 1.0
 #define SBE_FRICTION 1.0
 #define SBE_RESTITUTION 1.0

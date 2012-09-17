@@ -11,8 +11,8 @@
 #define SBC_DENSITY 1.0
 #define SBC_FRICTION 1.0
 #define SBC_RESTITUTION 1.0
-#define SBC_LINEAR_DAMP 1.0
-#define SBC_ANG_DAMP 1.0
+#define SBC_LINEAR_DAMP 0.1
+#define SBC_ANG_DAMP 0.1
 #define SBC_WIDTH 1.0
 #define SBC_HEIGHT 0.5
 #define SBC_JOINT_OFFSET 0.9*SBC_WIDTH/2.0

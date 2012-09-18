@@ -13,12 +13,15 @@
 #import "GameCharPhysics.h"
 
 #import "SmashBallChain.h"
+#import "SBBlock.h"
 
 #import "GameManager.h"
 
 #import "SimpleQueryCallback.h"
 
 #define NUM_CHAINS 9
+#define SCREEN_WIDTHS 3
+#define CAMERA_X_OFFSET 0.3
 
 enum {
 	kTagParentNode = 1,
@@ -33,6 +36,27 @@ enum {
 
 - (void) registerWithTouchDispatcher {
     [[[CCDirector sharedDirector] touchDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+}
+
+
+
+-(BOOL) displayText:(NSString *)text andOnCompleteCallTarget:(id)target selector:(SEL)selector
+{
+    [label stopAllActions];
+    [label setString:text];
+    label.visible = YES;
+    label.scale = 0.0;
+    label.opacity = 255;
+    
+    CCScaleTo *scaleUp = [CCScaleTo actionWithDuration:0.5 scale:1.2];
+    CCScaleTo *scaleBack = [CCScaleTo actionWithDuration:0.1 scale:1.0];
+    CCDelayTime *delay = [CCDelayTime actionWithDuration:2.0];
+    CCFadeOut *fade = [CCFadeOut actionWithDuration:0.5];
+    CCHide *hide = [CCHide action];
+    CCCallFuncN *onComplete = [CCCallFuncN actionWithTarget:target selector:selector];
+    CCSequence *sequence = [CCSequence actions:scaleUp, scaleBack, delay, fade, hide, onComplete, nil];
+    [label runAction:sequence];
+    return TRUE;
 }
 
 -(void) createBackground {
@@ -83,6 +107,63 @@ enum {
     [sceneSpriteBatchNode addChild:smashBallEnd z:5];
 }
 
+#define BLOCKS_WIDE 5
+#define BLOCKS_HIGH 5
+#define BLOCK_HORIZ_SPACE SBB_WIDTH*0.05
+#define BLOCK_VERT_SPACE SBB_HEIGHT*0.05
+
+-(void) createBlocks
+{
+    //for now just create a stack in the middle of the screen
+
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    
+    float startingX = winSize.width/2.0/PTM_RATIO - 0.5f*(BLOCKS_WIDE*SBB_WIDTH + (BLOCKS_WIDE - 1)*BLOCK_HORIZ_SPACE) + SBB_WIDTH/2.0;
+    
+    b2Vec2 loc = b2Vec2(startingX, SBB_HEIGHT/2.0);
+    
+    for (int i = 0; i < BLOCKS_HIGH; i++)
+    {
+        //create a row
+        for (int j = 0; j < BLOCKS_WIDE; j++)
+        {
+            SBBlock* block = [[SBBlock alloc] initWithWorld:world atLocation:loc];
+            [sceneSpriteBatchNode addChild:block z:4];
+            [block release];
+            loc.x += SBB_WIDTH + BLOCK_HORIZ_SPACE;
+        }
+        loc.y += SBB_HEIGHT + BLOCK_VERT_SPACE;
+        loc.x = startingX;
+    }
+}
+
+#define END_ZONE_SENSOR_RATIO 0.1
+
+-(void) createEndZoneSensor
+{
+    CGSize s = [CCDirector sharedDirector].winSize;
+    
+    b2BodyDef endZoneSensorDef;
+    endZoneSensorDef.type = b2_staticBody;
+    
+    float endZoneWidth = END_ZONE_SENSOR_RATIO * s.width/PTM_RATIO;
+
+    endZoneSensorDef.position.Set(s.width/PTM_RATIO*SCREEN_WIDTHS - endZoneWidth/2.0,s.height/2.0/PTM_RATIO);
+    
+    endZoneSensor = world->CreateBody(&endZoneSensorDef);
+    
+    b2PolygonShape shape;
+    shape.SetAsBox(endZoneWidth/2.0, s.height/2.0/PTM_RATIO);
+    
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &shape;
+    fixtureDef.isSensor = true;
+    fixtureDef.density = 0.0;
+    
+    endZoneSensor->CreateFixture(&fixtureDef);
+    
+}
+
 -(id) init
 {
 	if( (self=[super init])) {
@@ -100,11 +181,23 @@ enum {
         sceneSpriteBatchNode = [CCSpriteBatchNode batchNodeWithTexture:nil];
         [self addChild:sceneSpriteBatchNode z:0];
         
-        [self createSmashBall:ccp(s.width/2.0, s.height/2.0)];
+        [self createSmashBall:ccp(s.width/5.0, s.height/5.0)];
+        
+        [self createBlocks];
+        
+        [self createEndZoneSensor];
         
         [self createBackground];
 		
 		[self scheduleUpdate];
+        
+        blocksSmashed = 0;
+        gameOver = false;
+        
+        label = [CCLabelTTF labelWithString:@"" fontName:@"Helvetica" fontSize:48.0];
+        label.position = ccp(s.width/2, s.height/2);
+        label.visible = NO;
+        [self addChild:label];
 	}
 	return self;
 }
@@ -161,11 +254,11 @@ enum {
 	
 	// bottom
 	
-	groundBox.Set(b2Vec2(0,0), b2Vec2(s.width/PTM_RATIO,0));
+	groundBox.Set(b2Vec2(0,0), b2Vec2(s.width*SCREEN_WIDTHS/PTM_RATIO,0));
 	groundBody->CreateFixture(&groundBox,0);
 	
 	// top
-	groundBox.Set(b2Vec2(0,s.height/PTM_RATIO), b2Vec2(s.width/PTM_RATIO,s.height/PTM_RATIO));
+	groundBox.Set(b2Vec2(0,s.height/PTM_RATIO), b2Vec2(s.width*SCREEN_WIDTHS/PTM_RATIO,s.height/PTM_RATIO));
 	groundBody->CreateFixture(&groundBox,0);
 	
 	// left
@@ -173,7 +266,7 @@ enum {
 	groundBody->CreateFixture(&groundBox,0);
 	
 	// right
-	groundBox.Set(b2Vec2(s.width/PTM_RATIO,s.height/PTM_RATIO), b2Vec2(s.width/PTM_RATIO,0));
+	groundBox.Set(b2Vec2(s.width*SCREEN_WIDTHS/PTM_RATIO,s.height/PTM_RATIO), b2Vec2(s.width*SCREEN_WIDTHS/PTM_RATIO,0));
 	groundBody->CreateFixture(&groundBox,0);
 }
 
@@ -218,6 +311,31 @@ enum {
 
 }
 
+-(void) updateCameraPosition
+{
+    CGPoint ballLocation = ccp(smashBallMain.body->GetPosition().x*PTM_RATIO, smashBallMain.body->GetPosition().y*PTM_RATIO);
+    
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    
+    float newX = ballLocation.x - CAMERA_X_OFFSET * winSize.width;
+    newX = MAX(newX, 0);
+    newX = MIN(newX, (SCREEN_WIDTHS - 1)*winSize.width);
+    
+    [self setPosition:ccp(-newX, 0.0f)];
+    [label setPosition:ccp(newX + winSize.width/2.0,winSize.height/2.0)];
+}
+
+-(void) resetLevel:(id) sender
+{
+    [[GameManager sharedGameManager] runLevelWithID:kPlayGround7];
+}
+
+-(void) startGameOver
+{
+    gameOver = true;
+    [self displayText:[NSString stringWithFormat:@"Blocks Smashed: %i", blocksSmashed] andOnCompleteCallTarget:self selector:@selector(resetLevel:)];    
+}
+
 -(void) update: (ccTime) dt
 {
     static double UPDATE_INTERVAL = 1.0/60.0f;
@@ -249,11 +367,53 @@ enum {
         }
     }   
     
+    CCArray *listOfObjectsToDestroy = [CCArray array];
+
     CCArray *listOfGameObjects = [sceneSpriteBatchNode children];
     for (GameChar *tempChar in listOfGameObjects)
     {
         [tempChar updateStateWithDeltaTime:dt];
+        if ([tempChar gameObjType] == kObjTypeBlock)
+        {
+            GameCharPhysics *object = (GameCharPhysics*) tempChar;
+            if (object.destroyMe == true)
+            {
+                [listOfObjectsToDestroy addObject:object];
+            }
+        }
     }    
+    for (GameCharPhysics *tempChar in listOfObjectsToDestroy)
+    {
+        world->DestroyBody(tempChar.body);
+        tempChar.body = NULL;
+        [tempChar removeFromParentAndCleanup:YES];
+        blocksSmashed++;
+    }
+    // check for endzone contact
+    if (!gameOver)
+    {
+        b2ContactEdge *edge = endZoneSensor->GetContactList();
+        while (edge)
+        {
+            b2Contact *contact = edge->contact;
+            if (contact->IsTouching())
+            {
+                b2Fixture *fixtureA = contact->GetFixtureA();
+                b2Fixture *fixtureB = contact->GetFixtureB();
+                b2Body *bodyA = fixtureA->GetBody();
+                b2Body *bodyB = fixtureB->GetBody();
+            
+                if ((bodyA == smashBallMain.body) || (bodyB == smashBallMain.body) ||
+                    (bodyA == smashBallEnd.body) || (bodyB == smashBallEnd.body))
+                {
+                    [self startGameOver];
+                }
+            }
+            edge = edge->next;
+        }
+    }    
+    
+    [self updateCameraPosition];
 }
 
 -(BOOL) ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event

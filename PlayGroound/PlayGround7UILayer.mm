@@ -287,9 +287,17 @@
                               {
                                   [[GameManager sharedGameManager] runLevelWithID:kMainMenu];
                               }];
-    [mainMenu setScale:0.75f];    
+    [mainMenu setScale:0.75f];
     
-    CCMenu *menu = [CCMenu menuWithItems:mainMenu, nil];
+    // Reset Button
+	CCMenuItemLabel *reset = [CCMenuItemFont itemWithString:@"Reset" block:^(id sender)
+                              {
+                                  [[GameManager sharedGameManager] runLevelWithID:kPlayGround7];
+                              }];
+    [reset setScale:0.75f];    
+
+    
+    CCMenu *menu = [CCMenu menuWithItems:mainMenu, reset, nil];
     	
 	[menu alignItemsVertically];
 	

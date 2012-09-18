@@ -33,6 +33,14 @@
     SmashBallEnd* smashBallEnd;
     
     b2MouseJoint *mouseJoint;
+    
+    b2Body* endZoneSensor;
+    
+    int blocksSmashed;
+    
+    bool gameOver;
+    
+    CCLabelTTF *label;
 }
 
 -(void) handlePan:(CGPoint) startPoint endPoint:(CGPoint) endPoint;

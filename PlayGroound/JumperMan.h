@@ -23,6 +23,7 @@
     b2Body* rightUpperLeg;
     b2Body* leftLowerLeg;
     b2Body* rightLowerLeg;
+    float punchTimer;
 }
 
 -(id)initWithWorld:(b2World*)theWorld atLocation:(CGPoint)location;

@@ -14,13 +14,18 @@
     if ((self = [super init])){
         world = theWorld;
         gameObjType = kObjTypeBlock;
+        punchTimer = 0.0f;
         [self buildJumperManAtLocation:location];
     }
     return self;
 }
 
 -(void)updateStateWithDeltaTime:(ccTime)dt {
-    
+    punchTimer += dt;
+    if (punchTimer > 2.0) {
+        head->ApplyLinearImpulse(b2Vec2(20,20), head->GetLocalCenter());
+        punchTimer = 0.0;
+    }
 }
 
 -(void) buildJumperManAtLocation:(CGPoint)location {
@@ -123,7 +128,7 @@
     b2FixtureDef fixtureDef;
     fixtureDef.density = 1.0;
     fixtureDef.friction = 1.0;
-    fixtureDef.restitution = 8.0;
+    fixtureDef.restitution = 5.0;
     
     fixtureDef.filter.categoryBits = 0x2;
     fixtureDef.filter.maskBits = 0xFFFF;
